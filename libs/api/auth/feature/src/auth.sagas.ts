@@ -20,10 +20,10 @@ export class AuthSagas {
           new UpdateAuthCommand({
             auth: {
               id: event.profile.userId,
-              displayName: event.profile.accountDetails?.displayName,
-              email: event.profile.accountDetails?.email,
-              photoURL: event.profile.accountDetails?.photoURL,
-              password: event.profile.accountDetails?.password,
+              // displayName: event.profile.accountDetails?.displayName,
+              // email: event.profile.accountDetails?.email,
+              // photoURL: event.profile.accountDetails?.photoURL,
+              // password: event.profile.accountDetails?.password,
             },
           })
       )
@@ -41,7 +41,7 @@ export class AuthSagas {
           new UpdateAuthCommand({
             auth: {
               id: event.profile.userId,
-              phoneNumber: event.profile.contactDetails?.cellphone,
+              // phoneNumber: event.profile.contactDetails?.cellphone,
             },
           })
       )

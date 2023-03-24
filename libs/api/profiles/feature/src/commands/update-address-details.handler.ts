@@ -31,7 +31,7 @@ export class UpdateAddressDetailsHandler
 
     if (!request.profile.addressDetails)
       throw new Error('Profile address details not found');
-    profile.updateAddressDetails(request.profile.addressDetails);
+    //profile.updateAddressDetails(request.profile.addressDetails);
     profile.commit();
 
     const response: IUpdateAddressDetailsResponse = { profile };

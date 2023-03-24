@@ -18,10 +18,11 @@ export class CreateProfileHandler
 
     const request = command.request;
     const userId = request.user.id;
-    const displayName = request.user.displayName;
+    const displayName = request.user.username;
+    const username=request.user.username;
     const email = request.user.email;
     const photoURL = request.user.photoURL;
-    const cellphone = request.user.phoneNumber;
+    const cellphone = request.user.id;
 
     const data: IProfile = {
       userId,
@@ -52,6 +53,12 @@ export class CreateProfileHandler
         status: ProfileStatus.INCOMPLETE,
       },
       status: ProfileStatus.INCOMPLETE,
+      photoUrl: photoURL, 
+      time : 120 , 
+      friendCount : 0, 
+      memoryCount : 0, 
+      friendList : [] , 
+      recentPosts: [], 
       created: Timestamp.fromDate(new Date()),
     };
     const profile = this.publisher.mergeObjectContext(Profile.fromData(data));

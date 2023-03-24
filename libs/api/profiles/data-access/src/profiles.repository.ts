@@ -20,7 +20,7 @@ export class ProfilesRepository {
 
   async createProfile(profile: IProfile) {
     // Remove password field if present
-    delete profile.accountDetails?.password;
+    // delete profile.accountDetails?.password;
     return await admin
       .firestore()
       .collection('profiles')
@@ -30,7 +30,7 @@ export class ProfilesRepository {
 
   async updateProfile(profile: IProfile) {
     // Remove password field if present
-    delete profile.accountDetails?.password;
+    // delete profile.accountDetails?.password;
     return await admin
       .firestore()
       .collection('profiles')

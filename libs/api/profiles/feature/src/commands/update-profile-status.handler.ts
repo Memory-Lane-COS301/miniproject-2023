@@ -28,7 +28,7 @@ export class UpdateProfileStatusHandler
       Profile.fromData(profileData)
     );
 
-    profile.updateStatus();
+    //profile.updateStatus();
     profile.commit();
 
     const response: IUpdateProfileStatusResponse = { profile };

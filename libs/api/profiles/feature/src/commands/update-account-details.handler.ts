@@ -31,7 +31,7 @@ export class UpdateAccountDetailsHandler
 
     if (!request.profile.accountDetails)
       throw new Error('Profile account details not found');
-    profile.updateAccountDetails(request.profile.accountDetails);
+    //profile.updateAccountDetails(request.profile.accountDetails);
     profile.commit();
 
     const response: IUpdateAccountDetailsResponse = { profile };

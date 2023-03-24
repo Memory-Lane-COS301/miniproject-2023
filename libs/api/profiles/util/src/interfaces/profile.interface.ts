@@ -14,5 +14,11 @@ export interface IProfile {
   addressDetails?: IAddressDetails | null | undefined;
   occupationDetails?: IOccupationDetails | null | undefined;
   status?: ProfileStatus | null | undefined;
+  photoUrl?:string | null | undefined; 
+  time?: number | null | undefined;
+  friendCount?: number | null | undefined;
+  memoryCount?:number | null | undefined; 
+  friendList?: string[] | null | undefined;
+  recentPosts?: string[] | null | undefined;
   created?: Timestamp | null | undefined;
 }

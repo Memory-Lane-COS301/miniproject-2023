@@ -5,12 +5,13 @@ import { Timestamp } from 'firebase-admin/firestore';
 export class User extends AggregateRoot implements IUser {
   constructor(
     public id: string,
-    public email?: string | null | undefined,
-    public displayName?: string | null | undefined,
-    public photoURL?: string | null | undefined,
-    public phoneNumber?: string | null | undefined,
-    public customClaims?: { [key: string]: any } | null | undefined,
-    public created?: Timestamp | null | undefined
+    public email: string | null | undefined,
+    public username: string | null | undefined,
+    public photoURL: string | null | undefined,
+    // public phoneNumber?: string | null | undefined,
+    // public customClaims?: { [key: string]: any } | null | undefined,
+    public loginStamp:Timestamp| null | undefined,
+    public created: Timestamp | null | undefined
   ) {
     super();
   }
@@ -19,10 +20,9 @@ export class User extends AggregateRoot implements IUser {
     const instance = new User(
       user.id,
       user.email,
-      user.displayName,
+      user.username,
       user.photoURL,
-      user.phoneNumber,
-      user.customClaims,
+      user.loginStamp,
       user.created
     );
     return instance;
@@ -36,10 +36,9 @@ export class User extends AggregateRoot implements IUser {
     return {
       id: this.id,
       email: this.email,
-      displayName: this.displayName,
+      username: this.username,
       photoURL: this.photoURL,
-      phoneNumber: this.phoneNumber,
-      customClaims: this.customClaims,
+      loginStamp:this.loginStamp,
       created: this.created,
     };
   }
