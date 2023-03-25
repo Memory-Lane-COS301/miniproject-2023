@@ -177,7 +177,7 @@ export class ProfileState {
       const userId = state.profile?.userId;
       const displayName = state.accountDetailsForm.model.displayName;
       const email = state.accountDetailsForm.model.email;
-       const photoURL = state.accountDetailsForm.model.photoURL;
+      const photoURL = state.accountDetailsForm.model.photoURL;
       const password = state.accountDetailsForm.model.password;
 
       if (!userId || !displayName || !email || !password)
