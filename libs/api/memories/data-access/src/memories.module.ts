@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MemoryRepository } from './memory.repository';
+import { MemoryRepository } from './memories.repository';
 
 @Module({
   providers: [MemoryRepository],

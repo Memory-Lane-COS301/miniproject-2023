@@ -1,5 +1,5 @@
 import { IComment } from '../interfaces';
 
-export class CommentCreatedEvent {
+export class CommentUpdatedEvent {
   constructor(public readonly: IComment) {}
 }

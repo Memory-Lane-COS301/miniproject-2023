@@ -1,2 +1,2 @@
 export * from './create-comment.request';
-export * from './edit-comment.request';
+export * from './update-comment.request';

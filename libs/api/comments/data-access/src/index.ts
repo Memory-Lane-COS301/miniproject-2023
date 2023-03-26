@@ -1,3 +1,3 @@
 export * from './lib/api-comments-data-access';
-export * from './comment.module';
-export * from './comment.repository';
+export * from './comments.module';
+export * from './comments.repository';

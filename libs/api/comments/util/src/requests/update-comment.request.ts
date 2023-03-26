@@ -1,5 +1,5 @@
 import { IComment } from '../interfaces';
 
-export interface IEditCommentResponse {
+export interface IUpdateCommentRequest {
   comment: IComment;
 }

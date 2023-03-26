@@ -1,4 +1,4 @@
-import { CreateCommentCommand, CreateMemoryCommand } from '@mp/api/memories/util';
+import { CreateMemoryCommand } from '@mp/api/memories/util';
 import { Injectable } from '@nestjs/common';
 import { ICommand, ofType, Saga } from '@nestjs/cqrs';
 import { map, Observable } from 'rxjs';

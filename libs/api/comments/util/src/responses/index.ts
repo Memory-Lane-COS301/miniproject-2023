@@ -1,2 +1,2 @@
 export * from './create-comment.response';
-export * from './edit-comment.response';
+export * from './update-comment.response';

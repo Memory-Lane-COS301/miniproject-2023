@@ -1,4 +1,5 @@
-import { IMemory, IComment } from '@mp/api/memories/util';
+import { IMemory } from '@mp/api/memories/util';
+import { IComment } from '@mp/api/comments/util';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Timestamp } from 'firebase-admin/firestore';
 
