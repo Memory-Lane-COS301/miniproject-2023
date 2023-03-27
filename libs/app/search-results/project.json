@@ -5,6 +5,16 @@
   "sourceRoot": "libs/app/search-results/src",
   "prefix": "app",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/app/search-results",
+        "main": "libs/app/search-results/src/index.ts",
+        "tsConfig": "libs/app/search-results/tsconfig.lib.json",
+        "assets": ["libs/app/search-results/*.md"]
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
