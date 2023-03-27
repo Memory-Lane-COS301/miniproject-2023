@@ -5,6 +5,16 @@
   "sourceRoot": "libs/app/user-view/src",
   "prefix": "app",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/app/user-view",
+        "main": "libs/app/user-view/src/index.ts",
+        "tsConfig": "libs/app/user-view/tsconfig.lib.json",
+        "assets": ["libs/app/user-view/*.md"]
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
