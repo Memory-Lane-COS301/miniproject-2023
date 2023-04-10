@@ -1,6 +1,6 @@
 {
   "name": "app-profile-view",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/app/profile-view/src",
   "prefix": "app",
