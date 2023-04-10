@@ -1,6 +1,6 @@
 {
   "name": "app-feed",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/app/feed/src",
   "prefix": "app",
