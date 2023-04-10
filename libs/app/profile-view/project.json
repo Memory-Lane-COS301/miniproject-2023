@@ -5,6 +5,16 @@
   "sourceRoot": "libs/app/profile-view/src",
   "prefix": "app",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/app/profile-view",
+        "main": "libs/app/profile-view/src/index.ts",
+        "tsConfig": "libs/app/profile-view/tsconfig.lib.json",
+        "assets": ["libs/app/profile-view/*.md"]
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
