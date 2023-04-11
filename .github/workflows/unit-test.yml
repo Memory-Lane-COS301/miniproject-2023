@@ -29,7 +29,10 @@ jobs:
         run: yarn install
 
       # Finally, run our tests
-      - name: Run the tests
+      - name: test search results
         run: yarn nx test app-search-results
+      - name: test search page 
         run: yarn nx test app-search-page
+      - name: Run user view
         run: yarn nx test app-user-view
+           

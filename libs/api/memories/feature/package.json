@@ -4,7 +4,8 @@
   "type": "commonjs",
   "scripts": {
     "test": "jest",
-    "test:watch": "jest"
+    "test:watch": "jest",
+    "lint": "eslint --fix --ext .ts src"
   },
   "devDependencies": {
     "jest": "^29.5.0"

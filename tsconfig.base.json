@@ -14,6 +14,7 @@
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
       "@mp/api/auth/data-access": ["libs/api/auth/data-access/src/index.ts"],
