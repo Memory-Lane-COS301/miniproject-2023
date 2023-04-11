@@ -1,6 +1,6 @@
 export interface IComment {
-  userId:string;
-  username:string;
-  profileImgUrl:string;
-  comment:string;
+  userId: string;
+  username: string;
+  profileImgUrl: string;
+  comment: string;
 }
