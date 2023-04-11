@@ -1,18 +1,21 @@
 import { IMemory, IComment } from '@mp/api/memories/util';
 import { AggregateRoot } from '@nestjs/cqrs';
-import { Timestamp } from 'firebase-admin/firestore';
+
 
 export class Memory extends AggregateRoot implements IMemory {
   constructor(
-    public userId: string | null | undefined,
-    public displayName: string | null | undefined,
-    public title: string | null | undefined,
-    public description: string | null | undefined,
-    public created: Timestamp | null | undefined,
-    public imgUrl: string | null | undefined,
-    public alive: boolean | null | undefined,
-    public time: number | null | undefined,
-    public comments: IComment[] | null | undefined,
+    
+    public userId:string,
+    public username:string | null | undefined,
+    public profileUrl:string | null | undefined,
+    public imgUrl:string,
+    public title:string,
+    public description:string,
+    public comments:IComment[] | null | undefined,
+    public timePosted:string,
+    public alive:boolean,
+    public time:number,
+    
   ) {
     super();
   }
@@ -24,14 +27,15 @@ export class Memory extends AggregateRoot implements IMemory {
   static fromData(memory: IMemory): Memory {
     const instance = new Memory(
       memory.userId,
-      memory.displayName,
+      memory.username,
+      memory.profileUrl,
+      memory.imgUrl,
       memory.title,
       memory.description,
-      memory.created,
-      memory.imgUrl,
+      memory.comments,
+      memory.timePosted,
       memory.alive,
       memory.time,
-      memory.comments,
     );
 
     return instance;
@@ -40,14 +44,15 @@ export class Memory extends AggregateRoot implements IMemory {
   toJSON(): IMemory {
     return {
       userId: this.userId,
-      displayName: this.displayName,
+      username: this.username,
+      imgUrl:this.imgUrl,
       title: this.title,
       description: this.description,
-      created: this.created,
-      imgUrl: this.imgUrl,
+      comments:this.comments,
+      timePosted: this.timePosted,
       alive: this.alive,
       time: this.time,
-      comments: this.comments,
+      
     };
   }
 }

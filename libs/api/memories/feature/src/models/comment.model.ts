@@ -1,30 +1,32 @@
-import { Timestamp } from 'firebase-admin/firestore';
 import { IComment } from '@mp/api/memories/util';
 import { AggregateRoot } from '@nestjs/cqrs';
 
 export class Comment extends AggregateRoot implements IComment {
-  constructor(
-    public userId: string | null | undefined,
-    public displayName: string | null | undefined,
-    public imgUrl: string | null | undefined,
-    public text: string | null | undefined,
-    public created: Timestamp | null | undefined,
+  constructor( 
+    public userId:string,
+    public username:string,
+    public profileImgUrl:string,  
+    public comment:string 
   ) {
     super();
   }
 
   static fromData(comment: IComment): Comment {
-    const instance = new Comment(comment.userId, comment.displayName, comment.imgUrl, comment.text, comment.created);
+    const instance = new Comment(
+      comment.userId, 
+      comment.username, 
+      comment.profileImgUrl, 
+      comment.comment);
+
     return instance;
   }
 
   toJSON(): IComment {
     return {
       userId: this.userId,
-      displayName: this.displayName,
-      imgUrl: this.imgUrl,
-      text: this.text,
-      created: this.created,
+      username: this.username,
+      profileImgUrl: this.profileImgUrl,
+      comment: this.comment,
     };
   }
 }
