@@ -1,3 +1,3 @@
-export * from './lib/search-page.module';
-export * from './lib/search-page.routing';
-export * from './lib/search.page';
+export * from './search-page.module';
+export * from './search-page.routing';
+export * from './search.page';

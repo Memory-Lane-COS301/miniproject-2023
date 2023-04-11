@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ProfileImage } from '../../../../../shared/feature/src';
+import { ProfileImage } from '@mp/app/shared/feature';
 
  
 @Injectable({

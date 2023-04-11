@@ -4,7 +4,7 @@ import { SearchPageComponent } from './search.page';
 import { SearchPageRouting } from './search-page.routing';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { SharedModule } from '../../../../shared/feature/src';
+import { SharedModule } from '@mp/app/shared/feature';
 
 @NgModule({
   imports: [CommonModule, FormsModule, SharedModule, SearchPageRouting, IonicModule],

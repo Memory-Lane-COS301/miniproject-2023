@@ -3,7 +3,7 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FeedPageComponent } from './feed.page';
 import { FeedRouting } from './feed.routing';
-import { SharedModule } from '../../../shared/feature/src/lib/shared.module';
+import { SharedModule } from '@mp/app/shared/feature';
 
 @NgModule({
   imports: [CommonModule, IonicModule, FeedRouting, SharedModule],

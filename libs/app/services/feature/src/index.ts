@@ -1,4 +1,4 @@
-export * from './lib/services.module';
+export * from './services.module';
 
 export * from './lib/menubar/menubar.service';
 

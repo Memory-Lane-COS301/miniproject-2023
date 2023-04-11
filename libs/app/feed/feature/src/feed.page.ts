@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { AddMemoryPageComponent, Memory } from '../../../shared/feature/src';
+import { AddMemoryPageComponent, Memory } from '@mp/app/shared/feature';
 
 @Component({
   selector: 'app-feed',

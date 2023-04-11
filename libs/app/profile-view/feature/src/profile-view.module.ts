@@ -6,7 +6,7 @@ import { ProfileViewRouting } from './profile-view.routing';
 import { FormsModule } from '@angular/forms';
 import { EditProfilePhotoPageComponent } from './lib/edit-profile-photo/edit-profile-photo.page';
 import { ReviveMemoryPageComponent } from './lib/revive-memory/revive-memory.page';
-import { SharedModule } from '../../../shared/feature/src';
+import { SharedModule } from '@mp/app/shared/feature';
 
 @NgModule({
   imports: [CommonModule, IonicModule, ProfileViewRouting, FormsModule, SharedModule],
