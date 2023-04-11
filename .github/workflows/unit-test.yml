@@ -35,4 +35,3 @@ jobs:
         run: yarn nx test app-search-page
       - name: Run user view
         run: yarn nx test app-user-view
-           
