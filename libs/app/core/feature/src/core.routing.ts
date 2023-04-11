@@ -76,11 +76,11 @@ const routes: Routes = [
   },
   {
     path: 'user-view',
-    loadChildren: () => import('@mp/app/user-view').then((m) => m.UserViewModule),
+    loadChildren: () => import('@mp/app/user-view/feature').then((m) => m.UserViewModule),
   },
   {
     path: 'search-results',
-    loadChildren: () => import('@mp/app/search-results').then((m) => m.SearchResultsPageModule),
+    loadChildren: () => import('@mp/app/search-results/feature').then((m) => m.SearchResultsPageModule),
   },
 ];
 

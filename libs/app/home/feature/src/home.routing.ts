@@ -9,15 +9,15 @@ const routes: Routes = [
     children: [
       {
         path: 'feed',
-        loadChildren: () => import('@mp/app/feed').then((m) => m.FeedModule),
+        loadChildren: () => import('@mp/app/feed/feature').then((m) => m.FeedModule),
       },
       {
         path: 'profile-view',
-        loadChildren: () => import('@mp/app/profile-view').then((m) => m.ProfileViewModule),
+        loadChildren: () => import('@mp/app/profile-view/feature').then((m) => m.ProfileViewModule),
       },
       {
         path: 'search-page',
-        loadChildren: () => import('@mp/app/search-page').then((m) => m.SearchPageModule),
+        loadChildren: () => import('@mp/app/search-page/feature').then((m) => m.SearchPageModule),
       },
       {
         path: '',

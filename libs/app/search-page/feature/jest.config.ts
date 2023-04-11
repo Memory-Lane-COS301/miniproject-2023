@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'app-add-memory',
+  displayName: 'app-search-page',
   preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -9,7 +9,7 @@ export default {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../../coverage/libs/app/add-memory/feature',
+  coverageDirectory: '../../../coverage/libs/app/search-page/feature',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },
