@@ -1,10 +1,8 @@
 import { IMemory, IComment } from '@mp/api/memories/util';
 import { AggregateRoot } from '@nestjs/cqrs';
 
-
 export class Memory extends AggregateRoot implements IMemory {
-  constructor(
-    
+  constructor(  
     public userId:string,
     public username:string | null | undefined,
     public profileUrl:string | null | undefined,
@@ -14,8 +12,7 @@ export class Memory extends AggregateRoot implements IMemory {
     public comments:IComment[] | null | undefined,
     public timePosted:string,
     public alive:boolean,
-    public time:number,
-    
+    public time:number,  
   ) {
     super();
   }
@@ -24,6 +21,7 @@ export class Memory extends AggregateRoot implements IMemory {
   create() {
     return null;
   }
+
   static fromData(memory: IMemory): Memory {
     const instance = new Memory(
       memory.userId,
@@ -51,8 +49,7 @@ export class Memory extends AggregateRoot implements IMemory {
       comments:this.comments,
       timePosted: this.timePosted,
       alive: this.alive,
-      time: this.time,
-      
+      time: this.time,    
     };
   }
 }

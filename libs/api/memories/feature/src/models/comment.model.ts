@@ -6,8 +6,8 @@ export class Comment extends AggregateRoot implements IComment {
     public userId:string,
     public username:string,
     public profileImgUrl:string,  
-    public comment:string 
-  ) {
+    public comment:string, 
+  ){
     super();
   }
 
@@ -16,8 +16,8 @@ export class Comment extends AggregateRoot implements IComment {
       comment.userId, 
       comment.username, 
       comment.profileImgUrl, 
-      comment.comment);
-
+      comment.comment,
+      );
     return instance;
   }
 
