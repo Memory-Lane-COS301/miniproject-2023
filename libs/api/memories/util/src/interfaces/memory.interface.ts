@@ -2,13 +2,13 @@ import { IComment } from './comment.interface';
 
 export interface IMemory {
   userId: string;
-  username?: string | null | undefined;
-  profileUrl?: string | null | undefined;
+  username: string;
+  profileImgUrl?: string | null | undefined;
   imgUrl: string;
   title: string;
   description: string;
-  comments: IComment[] | null | undefined;
-  timePosted: string;
+  comments: IComment[] | [];
+  timePosted: Date;
   alive: boolean;
-  time: number;
+  time: Date;
 }
