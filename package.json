@@ -30,7 +30,9 @@
     "format": "prettier --write",
     "prettier": "prettier --check",
     "test": "jest",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "ts": "ts-standard",
+    "fix": "ts-standard --fix"
   },
   "private": true,
   "dependencies": {
@@ -71,6 +73,7 @@
     "ngx-skeleton-loader": "^7.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.5.0",
+    "ts-standard": "^12.0.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
