@@ -15,10 +15,12 @@ import {
   ProfileStatusUpdatedEvent,
 } from '@mp/api/profiles/util';
 import { AggregateRoot } from '@nestjs/cqrs';
-
+import { IUser } from '@mp/api/users/util';
+import { IMemory } from '@mp/api/memories/util';
 export class Profile extends AggregateRoot implements IProfile {
   constructor(
-    public userId: string,
+    public user?: IUser | null | undefined, 
+    public memories?:IMemory[] | null | undefined,
     public accountDetails?: IAccountDetails | null | undefined,
     public personalDetails?: IPersonalDetails | null | undefined,
     public contactDetails?: IContactDetails | null | undefined,
@@ -32,7 +34,8 @@ export class Profile extends AggregateRoot implements IProfile {
 
   static fromData(profile: IProfile): Profile {
     const instance = new Profile(
-      profile.userId,
+      profile.user,
+      profile.memories,
       profile.accountDetails,
       profile.personalDetails,
       profile.contactDetails,
@@ -207,7 +210,8 @@ export class Profile extends AggregateRoot implements IProfile {
 
   toJSON(): IProfile {
     return {
-      userId: this.userId,
+      user: this.user,
+      memories:this.memories,
       accountDetails: this.accountDetails,
       personalDetails: this.personalDetails,
       contactDetails: this.contactDetails,

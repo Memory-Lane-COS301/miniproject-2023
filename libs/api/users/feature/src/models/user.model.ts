@@ -4,36 +4,38 @@ import { Timestamp } from 'firebase-admin/firestore';
 
 export class User extends AggregateRoot implements IUser {
   constructor(
-    public id: string,
-    public time: number | null | undefined,
+    public userId: string | null | undefined,
+    public name?: string | null | undefined,
+    public surname?: string | null | undefined,
+    public username?: string | null | undefined,
     public email?: string | null | undefined,
-    public displayName?: string | null | undefined,
-    public photoURL?: string | null | undefined,
-    public phoneNumber?: string | null | undefined,
-    public customClaims?: { [key: string]: any } | null | undefined,
-    public created?: Timestamp | null | undefined,
-    public memoryCount?: number | null | undefined,
-    public friendList?: string[] | null | undefined,
+    public profileImgUrl?: string | null | undefined,
+    public bio?: string | null | undefined,
     public friendCount?: number | null | undefined,
+    public memoryCount?: number | null | undefined,
+    public accountTime?: number | null | undefined,
+    public lastOnline?: Timestamp | null | undefined,
+    public online?: boolean | null | undefined,
+    public created?: Timestamp | null | undefined,
   ) {
     super();
   }
 
   static fromData(user: IUser): User {
     const instance = new User(
-      user.id,
-      user.time,
+      user.userId,
+      user.name,
+      user.surname,
+      user.username,
       user.email,
-      user.displayName,
-      user.photoURL,
-      user.phoneNumber,
-      user.customClaims,
-      user.created,
-      // user.login,
-      user.memoryCount,
-      //user.time,
-      user.friendList,
+      user.profileImgUrl,
+      user.bio,
       user.friendCount,
+      user.memoryCount,
+      user.accountTime,
+      user.lastOnline,
+      user.online,
+      user.created,
     );
     return instance;
   }
@@ -44,18 +46,19 @@ export class User extends AggregateRoot implements IUser {
 
   toJSON(): IUser {
     return {
-      id: this.id,
-      time: this.time,
+      userId: this.userId,
+      name: this.name,
+      surname: this.surname,
+      username: this.username,
       email: this.email,
-      displayName: this.displayName,
-      photoURL: this.photoURL,
-      phoneNumber: this.phoneNumber,
-      customClaims: this.customClaims,
-      created: this.created,
-      //login:this.login,
-      //time:this.time,
-      friendList: this.friendList,
+      profileImgUrl: this.profileImgUrl,
+      bio: this.bio,
       friendCount: this.friendCount,
+      memoryCount: this.memoryCount,
+      accountTime: this.accountTime,
+      lastOnline: this.lastOnline,
+      online: this.online,
+      created: this.created,
     };
   }
 }

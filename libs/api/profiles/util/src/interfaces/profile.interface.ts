@@ -5,9 +5,14 @@ import { IAddressDetails } from './address-details.interface';
 import { IContactDetails } from './contact-details.interface';
 import { IOccupationDetails } from './occupation-details.interface';
 import { IPersonalDetails } from './personal-details.interface';
+import { IUser } from '@mp/api/users/util';
+import { IMemory } from '@mp/api/memories/util';
 
 export interface IProfile {
-  userId: string;
+  user?: IUser | null | undefined;
+  memories?: IMemory[] | null | undefined;
+
+  userId?:string | null | undefined;
   accountDetails?: IAccountDetails | null | undefined;
   personalDetails?: IPersonalDetails | null | undefined;
   contactDetails?: IContactDetails | null | undefined;

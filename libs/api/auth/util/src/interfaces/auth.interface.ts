@@ -1,7 +1,7 @@
 import { Timestamp } from 'firebase-admin/firestore';
 
 export interface IAuth {
-  id: string;
+  id?: string| null | undefined;
   email?: string | null | undefined;
   displayName?: string | null | undefined;
   photoURL?: string | null | undefined;

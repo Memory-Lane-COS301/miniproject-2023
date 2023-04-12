@@ -11,18 +11,15 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
 
     const request = command.request;
     const data: IUser = {
-      id: request.auth.id,
-      time: 120.0,
+      userId: request.auth.id,
+      name:"",
+      surname:"",
+      username:request.auth.displayName,
       email: request.auth.email,
-      displayName: request.auth.displayName,
-      photoURL: request.auth.photoURL,
-      phoneNumber: request.auth.phoneNumber,
-      customClaims: request.auth.customClaims,
+      profileImgUrl: request.auth.photoURL,
       created: request.auth.created,
-      memoryCount: 0.0,
       //time: 120.0,
-      friendList: [],
-      friendCount: 0.0,
+      
     };
     const user = this.publisher.mergeObjectContext(User.fromData(data));
 

@@ -11,14 +11,16 @@ export class CreateProfileHandler implements ICommandHandler<CreateProfileComman
     console.log(`${CreateProfileHandler.name}`);
 
     const request = command.request;
-    const userId = request.user.id;
-    const displayName = request.user.displayName;
+    const userId = request.user.userId;
+    const user=request.user;
+    const displayName = request.user.username;
     const email = request.user.email;
-    const photoURL = request.user.photoURL;
-    const cellphone = request.user.phoneNumber;
+    const photoURL = request.user.profileImgUrl;
+    //const cellphone = request.user.phoneNumber;
 
     const data: IProfile = {
-      userId,
+      user,
+  
       accountDetails: {
         displayName,
         email,
@@ -32,7 +34,7 @@ export class CreateProfileHandler implements ICommandHandler<CreateProfileComman
         status: ProfileStatus.INCOMPLETE,
       },
       contactDetails: {
-        cellphone,
+        //cellphone,
         status: ProfileStatus.INCOMPLETE,
       },
       addressDetails: {
