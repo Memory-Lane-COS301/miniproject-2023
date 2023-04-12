@@ -1,14 +1,14 @@
 import { IComment } from './comment.interface';
 
 export interface IMemory {
-  userId: string;
-  username: string;
+  userId: string | null | undefined;
+  username: string | null | undefined;
   profileImgUrl?: string | null | undefined;
-  imgUrl: string;
-  title: string;
-  description: string;
-  comments: IComment[] | [];
-  timePosted: Date;
-  alive: boolean;
-  time: Date;
+  imgUrl: string | null | undefined;
+  title: string | null | undefined;
+  description: string | null | undefined;
+  comments: IComment[] | [] | null | undefined;
+  timePosted: Date | null | undefined;
+  alive: boolean | null | undefined;
+  time: Date | null | undefined;
 }
