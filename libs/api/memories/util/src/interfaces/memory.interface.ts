@@ -2,7 +2,7 @@ import { Timestamp } from 'firebase-admin/firestore';
 import { IComment } from '@mp/api/comments/util';
 
 export interface IMemory {
-  userId: string;
+  userId?: string | null | undefined;
   username?: string | null | undefined;
   title?: string | null | undefined;
   description?: string | null | undefined;
