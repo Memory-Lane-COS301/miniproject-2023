@@ -19,6 +19,7 @@ export class CreateProfileHandler implements ICommandHandler<CreateProfileComman
     //const cellphone = request.user.phoneNumber;
 
     const data: IProfile = {
+      userId,
       user,
   
       accountDetails: {

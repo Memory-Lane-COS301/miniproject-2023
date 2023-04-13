@@ -3,7 +3,7 @@ import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { Comment } from '../models';
 
 @CommandHandler(CreateCommentCommand)
-export class EditCommentHandler implements ICommandHandler<CommentUpdatedEvent> {
+export class UpdatedCommentHandler implements ICommandHandler<CommentUpdatedEvent> {
   constructor(private publisher: EventPublisher) {}
 
   //TODO implement

@@ -1,8 +1,0 @@
-language: node_js
-git:
-  depth: 1
-deploy:
-  provider: firebase
-  token:
-    secure: "1//03eQsRjLHgJTkCgYIARAAGAMSNwF-L9Ir9FeTO7CE7HXPaZai2PwonQdg624qA3vz6VLntdG5hEV_KT8bqH9wLwrb_2URK7CTccI"
-  project: "Memory--lane-staging"

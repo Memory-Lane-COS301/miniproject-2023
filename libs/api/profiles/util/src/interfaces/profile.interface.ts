@@ -12,7 +12,7 @@ export interface IProfile {
   user?: IUser | null | undefined;
   memories?: IMemory[] | null | undefined;
 
-  userId?:string | null | undefined;
+  userId: string;
   accountDetails?: IAccountDetails | null | undefined;
   personalDetails?: IPersonalDetails | null | undefined;
   contactDetails?: IContactDetails | null | undefined;

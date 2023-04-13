@@ -5,6 +5,7 @@ import {IUser} from '@mp/api/users/util';
 import {IProfile} from '@mp/api/profiles/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { IComment } from '@mp/api/comments/util';
+import { user } from 'firebase-functions/v1/auth';
 
 admin.initializeApp();
 admin.firestore().settings({ ignoreUndefinedProperties: true });
@@ -48,6 +49,7 @@ function seed(){
        comments:[comment,comment,comment]
     }
     const profile : IProfile={ 
+        userId: user1.userId,
         user:user1,
         memories:[memory,memory,memory]
     }

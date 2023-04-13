@@ -19,6 +19,7 @@ import { IUser } from '@mp/api/users/util';
 import { IMemory } from '@mp/api/memories/util';
 export class Profile extends AggregateRoot implements IProfile {
   constructor(
+    public userId: string, 
     public user?: IUser | null | undefined, 
     public memories?:IMemory[] | null | undefined,
     public accountDetails?: IAccountDetails | null | undefined,
@@ -34,6 +35,7 @@ export class Profile extends AggregateRoot implements IProfile {
 
   static fromData(profile: IProfile): Profile {
     const instance = new Profile(
+      profile.userId,
       profile.user,
       profile.memories,
       profile.accountDetails,
@@ -210,6 +212,7 @@ export class Profile extends AggregateRoot implements IProfile {
 
   toJSON(): IProfile {
     return {
+      userId: this.userId,
       user: this.user,
       memories:this.memories,
       accountDetails: this.accountDetails,

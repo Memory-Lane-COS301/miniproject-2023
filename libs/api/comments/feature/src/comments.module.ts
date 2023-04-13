@@ -1,4 +1,4 @@
-import { CommentModule as CommentDataAccessModule } from '@mp/api/comments/data-access';
+import { CommentsModule as CommentDataAccessModule } from '@mp/api/comments/data-access';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { CreateCommentHandler } from './commands';

@@ -1,4 +1,5 @@
 {
+  "name": "@mp/api/memories/util",
   "version": "0.0.1",
   "type": "commonjs",
   "scripts": {

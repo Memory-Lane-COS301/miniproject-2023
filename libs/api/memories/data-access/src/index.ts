@@ -1,2 +1,2 @@
-export * from './memory.module';
-export * from './memory.repository';
+export * from './memories.module';
+export * from './memories.repository';

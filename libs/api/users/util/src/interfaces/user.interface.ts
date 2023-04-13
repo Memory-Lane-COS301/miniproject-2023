@@ -1,7 +1,7 @@
 import { Timestamp } from 'firebase-admin/firestore';
 
 export interface IUser {
-  userId?: string | null | undefined;
+  userId: string;
   name?: string | null | undefined;
   surname?: string | null | undefined;
   username?: string | null | undefined;

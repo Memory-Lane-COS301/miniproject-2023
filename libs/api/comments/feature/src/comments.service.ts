@@ -1,10 +1,8 @@
 import {
   ICreateCommentRequest,
   IUpdateCommentRequest,
-  CommentCreatedEvent,
-  CommentUpdatedEvent,
   CreateCommentCommand,
-  EditCommentCommand,
+  UpdateCommentCommand,
   ICreateCommentResponse,
   IUpdateCommentResponse,
 } from '@mp/api/comments/util';
@@ -15,16 +13,16 @@ import { CommandBus } from '@nestjs/cqrs';
 export class CommentsService {
   constructor(private readonly commandBus: CommandBus) {}
 
-  // async createComment(request: ICreateCommentRequest): Promise<ICreateCommentResponse> {
-  //    return await this.commandBus.execute<CreateCommentCommand, ICreateCommentResponse>(
-  //      new CommentCreatedEvent(request.comment),
-  //    ); 
+  async createComment(request: ICreateCommentRequest): Promise<ICreateCommentResponse> {
+     return await this.commandBus.execute<CreateCommentCommand, ICreateCommentResponse>(
+       new CreateCommentCommand(request.comment),
+     ); 
     
-  // }
+  }
 
-  // async editComment(request: IUpdateCommentRequest): Promise<IUpdateCommentResponse> {
-  //   // return await this.commandBus.execute<EditCommentCommand, IUpdateCommentResponse>(
-  //   //   new CommentUpdatedEvent(request.comment),
-  //   // );
-  // }
+  async updateComment(request: IUpdateCommentRequest): Promise<IUpdateCommentResponse> {
+    return await this.commandBus.execute<UpdateCommentCommand, IUpdateCommentResponse>(
+      new UpdateCommentCommand(request.comment),
+    );
+  }
 }

@@ -4,7 +4,7 @@ import { Timestamp } from 'firebase-admin/firestore';
 
 export class User extends AggregateRoot implements IUser {
   constructor(
-    public userId: string | null | undefined,
+    public userId: string,
     public name?: string | null | undefined,
     public surname?: string | null | undefined,
     public username?: string | null | undefined,

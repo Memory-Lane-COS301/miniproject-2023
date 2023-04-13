@@ -1,11 +1,11 @@
 import { IMemory } from '@mp/api/memories/util';
-import {IComment} from '@mp/api/comments/util';
+import { IComment } from '@mp/api/comments/util';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Timestamp } from 'firebase-admin/firestore';
 
 export class Memory extends AggregateRoot implements IMemory {
   constructor(
-    public userId: string,
+    public userId?: string | null | undefined,
     public username?: string | null | undefined,
     public title?: string | null | undefined,
     public description?: string | null | undefined,
