@@ -39,10 +39,6 @@ export class MemoryRepository {
       
       return comments;
   }
-  
-  async createComment(comment: IComment) {
-    return null;
-  }
 
   async editComment(comment: IComment) {
     return null;
