@@ -6,8 +6,8 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 export class MemoryCreatedHandler implements IEventHandler<MemoryCreatedEvent> {
   constructor(private readonly repository: MemoryRepository) {}
 
-  //TODO implement
   async handle(event: MemoryCreatedEvent) {
-    return null;
+    console.log(`${MemoryCreatedHandler.name}`);
+    await this.repository.createMemory(event.memory);
   }
 }

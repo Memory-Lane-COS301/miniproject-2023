@@ -55,5 +55,5 @@ export class CreateProfileHandler implements ICommandHandler<CreateProfileComman
 
     profile.create();
     profile.commit();
-  }
+  } 
 }

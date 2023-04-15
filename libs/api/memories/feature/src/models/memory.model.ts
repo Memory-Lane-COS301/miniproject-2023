@@ -1,4 +1,4 @@
-import { IMemory } from '@mp/api/memories/util';
+import { IMemory, MemoryCreatedEvent } from '@mp/api/memories/util';
 import { IComment } from '@mp/api/comments/util';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Timestamp } from 'firebase-admin/firestore';
@@ -20,9 +20,8 @@ export class Memory extends AggregateRoot implements IMemory {
     super();
   }
 
-  //TODO implement
   create() {
-    return null;
+    this.apply(new MemoryCreatedEvent(this.toJSON()))
   }
   static fromData(memory: IMemory): Memory {
     const instance = new Memory(

@@ -2,17 +2,14 @@ import { describe, expect, test } from '@jest/globals';
 import { createMemory } from './../src/functions/memories.functions';
 import { MemoriesService } from '@mp/api/memories/feature';
 import { ICreateMemoryRequest, ICreateMemoryResponse } from '@mp/api/memories/util';
-import { IMemory } from './../../../memories/util/src/interfaces/memory.interface';
 
-describe('Tesing Cloud Function: memories.functions -- with a null memory', () => {
+describe('Tesing Cloud Function: memories.functions', () => {
   test('Creating Memory', () => {
-    const memory: IMemory = {
-      userId: null,
-      displayName: null,
-      imgUrl: null,
-      alive: null,
-      time: null,
-      comments: null,
+    const memory = {
+      userId: '97841uqejdf178rgab4',
+      title: 'Summer Holiday',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+      imgUrl: 'https://bit.ly/3MCrcnB', 
     };
     const createMemoryRequest: ICreateMemoryRequest = {
       memory: memory,

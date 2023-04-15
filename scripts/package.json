@@ -1,0 +1,9 @@
+{
+	"name": "scripts",
+	"version": "1.0.0",
+	"license": "MIT",
+	"dependencies": {},
+	"devDependencies": {
+	  "@faker-js/faker": "^7.6.0"
+	}
+  }
