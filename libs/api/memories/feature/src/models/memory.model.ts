@@ -23,6 +23,7 @@ export class Memory extends AggregateRoot implements IMemory {
   create() {
     this.apply(new MemoryCreatedEvent(this.toJSON()))
   }
+  
   static fromData(memory: IMemory): Memory {
     const instance = new Memory(
       memory.userId,

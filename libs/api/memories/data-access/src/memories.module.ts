@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { MemoryRepository } from './memories.repository';
+import { MemoriesRepository } from './memories.repository';
 
 @Module({
-  providers: [MemoryRepository],
-  exports: [MemoryRepository],
+  providers: [MemoriesRepository],
+  exports: [MemoriesRepository],
 })
-export class MemoryModule {}
+export class MemoriesModule {}
