@@ -83,6 +83,7 @@
       "@mp/app/updates/data-access": ["libs/app/updates/data-access/src/index.ts"],
       "@mp/app/updates/feature": ["libs/app/updates/feature/src/index.ts"],
       "@mp/app/updates/util": ["libs/app/updates/util/src/index.ts"],
+      "@mp/app/user-view/data-access": ["libs/app/user-view/data-access/src/index.ts"],
       "@mp/app/user-view/feature": ["libs/app/user-view/feature/src/index.ts"],
       "@mp/app/user-view/feature/ui": ["libs/app/user-view/feature/ui/src/index.ts"],
       "@mp/app/user-view/util": ["libs/app/user-view/util/src/index.ts"],
