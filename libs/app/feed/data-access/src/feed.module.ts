@@ -8,4 +8,4 @@ import { FeedState } from './feed.state';
   imports: [CommonModule, NgxsModule.forFeature([FeedState])],
   providers: [FeedApi],
 })
-export class ProfileViewModule {}
+export class FeedModule {}
