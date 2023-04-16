@@ -33,4 +33,14 @@ export class UserViewApi {
       'getUserProfile'
     )(request);
   }
+
+//   async createFriendRequest(request: ICreateFriendRequest) {
+//     return await httpsCallable<
+//         ICreateFriendRequest,
+//         ICreateFriendResponse,
+//     >(
+//         this.functions,
+//         'createFriendRequest'
+//     )(request);
+//   }
 }

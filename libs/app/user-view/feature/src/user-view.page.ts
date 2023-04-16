@@ -1,5 +1,13 @@
 import { Component } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
+import { GetUserProfileRequest } from '../../util/src/user-view.actions';
+import { IProfile } from '@mp/api/profiles/util';
+import { 
+  UserViewState, 
+  UserViewStateModel 
+} from '@mp/app/user-view/data-access';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-view',
@@ -7,12 +15,18 @@ import { AlertController, ToastController } from '@ionic/angular';
   styleUrls: ['./user-view.page.scss'],
 })
 export class UserViewPageComponent {
+  @Select(UserViewState.userView) userProfile$!: Observable<IProfile | null>;
+
   added = false;
   btn_text = 'Send friend request';
   handlerMessage = '';
   roleMessage = '';
 
-  constructor(private alertController: AlertController, private toastController: ToastController) {}
+  constructor(
+    private alertController: AlertController, 
+    private toastController: ToastController,
+    private readonly store: Store,
+  ) {}
 
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -62,5 +76,22 @@ export class UserViewPageComponent {
   removeFriend() {
     this.added = false;
     this.btn_text = 'Send friend request';
+  }
+
+  //called if a user clicks on the user's username or profile image either on the feed page or during a search
+  openUserProfile(_username: string, _userId: string) {
+    const requestData : IProfile = {
+      userId: _userId,
+      user: {
+        userId: _userId,
+        username: _username
+      }
+    };
+
+    const request : UserViewStateModel = {
+      userProfile: requestData
+    };
+
+    this.store.dispatch(new GetUserProfileRequest(request));
   }
 }

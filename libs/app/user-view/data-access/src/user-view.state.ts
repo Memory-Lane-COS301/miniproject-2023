@@ -66,4 +66,7 @@ export class UserViewState {
             return ctx.dispatch(new SetError((error as Error).message));
         }
     }
+
+    // @Action(AddFriendRequest)
+    // async addFriendRequest(ctx: StateContext<UserViewStateModel>, ) // !!! How do we pass in the sender's ID?? 
 }

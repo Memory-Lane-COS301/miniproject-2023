@@ -15,3 +15,8 @@ export class SetUserView {
     static readonly type = '[UserView] SetUserView';
     constructor(public readonly profile: IProfile) {}
 }
+
+export class CreateFriendRequest {
+    static readonly type = '[UserView] CreateFriendRequest';
+    constructor(public readonly sender: IUser, receiver: IUser) {}
+}
