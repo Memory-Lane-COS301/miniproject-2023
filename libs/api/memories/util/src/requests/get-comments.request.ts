@@ -1,5 +1,5 @@
-import { IMemory } from '../interfaces'
+import { IMemory } from '../interfaces';
 
 export interface IGetCommentsRequest {
-	memory : IMemory
+  memory: IMemory;
 }

@@ -21,7 +21,7 @@ export class Comment extends AggregateRoot implements IComment {
       comment.username,
       comment.profileImgUrl,
       comment.text,
-      comment.created
+      comment.created,
     );
     return instance;
   }
