@@ -24,7 +24,6 @@ export class Memory extends AggregateRoot implements IMemory {
   create() {
     return null;
   }
-
   static fromData(memory: IMemory): Memory {
     const instance = new Memory(
       memory.userId,

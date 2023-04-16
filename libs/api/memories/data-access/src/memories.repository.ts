@@ -9,7 +9,6 @@ export class MemoriesRepository {
   async createMemory(memory: IMemory): Promise<null> {
     return null;
   }
-
   async findOne(memory: IMemory) {
     return await admin
       .firestore()

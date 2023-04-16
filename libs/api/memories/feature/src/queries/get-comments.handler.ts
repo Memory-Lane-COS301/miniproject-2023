@@ -3,7 +3,9 @@ import { IGetCommentsResponse, GetCommentsQuery } from '@mp/api/memories/util';
 import { QueryHandler, EventPublisher, IQueryHandler } from '@nestjs/cqrs';
 
 @QueryHandler(GetCommentsQuery)
-export class GetCommentsHandler implements IQueryHandler<GetCommentsQuery, IGetCommentsResponse> {
+export class GetCommentsHandler
+  implements IQueryHandler<GetCommentsQuery, IGetCommentsResponse>
+{
   constructor(private readonly publisher: EventPublisher, private readonly repository: MemoriesRepository) {}
 
   async execute(query: GetCommentsQuery) {
