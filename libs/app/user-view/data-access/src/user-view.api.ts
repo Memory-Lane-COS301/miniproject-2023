@@ -43,4 +43,14 @@ export class UserViewApi {
 //         'createFriendRequest'
 //     )(request);
 //   }
+
+//   async updateFriendRequest(request: IUpdateFriendRequest) {
+//     return await httpsCallable<
+//         IUpdateFriendRequest,
+//         IUpdateFriendResponse,
+//     >(
+//         this.functions,
+//         'updateFriendRequest'
+//     )(request);
+//   }
 }

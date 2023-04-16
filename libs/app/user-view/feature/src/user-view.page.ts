@@ -8,6 +8,7 @@ import {
 } from '@mp/app/user-view/data-access';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { FriendRequestStatus } from '@mp/api/friend/util';
 
 @Component({
   selector: 'app-user-view',
@@ -76,6 +77,10 @@ export class UserViewPageComponent {
   removeFriend() {
     this.added = false;
     this.btn_text = 'Send friend request';
+
+    // const status = FriendRequestStatus['REJECTED'];
+
+    // this.store.dispatch(new UpdateFriendRequest(status));
   }
 
   //called if a user clicks on the user's username or profile image either on the feed page or during a search

@@ -67,6 +67,12 @@ export class UserViewState {
         }
     }
 
-    // @Action(AddFriendRequest)
-    // async addFriendRequest(ctx: StateContext<UserViewStateModel>, ) // !!! How do we pass in the sender's ID?? 
+    // @Action(CreateFriendRequest)
+    // async createFriendRequest(ctx: StateContext<UserViewStateModel>, ) // !!! How do we pass in the sender's ID?? 
+
+    // @Action(UpdateFriendRequest)
+    // async updateFriendRequest(ctx: StateContext<UserViewStateModel>, status: string)
+    // {
+
+    // }
 }
