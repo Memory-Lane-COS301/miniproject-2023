@@ -11,26 +11,25 @@ export class GetUserHandler implements ICommandHandler<GetUserCommand> {
     console.log(`${GetUserHandler.name}`);
 
     const request = command.request;
-    const userId = request.user.userId;console.debug(request);
+    const userId = request.user.userId;
+    console.debug(request);
     const usersRepository = new UsersRepository();
     try {
-        const userSnapshot = await usersRepository.findUser(userId);
-        const userFromDb = userSnapshot.data();
-        if(userFromDb){
-            const data: IUser = userFromDb;
-            const user = this.publisher.mergeObjectContext(User.fromData(data));
-            user.create();
-            user.commit();
-            return userFromDb;
-        }
-        return {
-            error: 'User not found'
-        }
-    } 
-    catch (error) {
-        return {
-            error: `Failed to getUser. Infor: ${error}`
-        }
+      const userSnapshot = await usersRepository.findUser(userId);
+      const userFromDb = userSnapshot.data();
+      if (userFromDb) {
+        const data: IUser = userFromDb;
+        const user = this.publisher.mergeObjectContext(User.fromData(data));
+        user.create();
+        user.commit();
+        return userFromDb;
+      }
+      const error = 'User not found';
+      return { error };
+    } catch (error) {
+      return {
+        error: `Failed to getUser. Infor: ${error}`,
+      };
     }
   }
 }

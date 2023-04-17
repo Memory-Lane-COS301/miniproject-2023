@@ -6,9 +6,9 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 @Injectable()
 export class UsersService {
-    constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
+  constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
-    async getUser(request: IGetUserRequest): Promise<IGetUserResponse> {
-        return await this.commandBus.execute<GetUserCommand, IGetUserResponse>(new GetUserCommand(request));
-      }
+  async getUser(request: IGetUserRequest): Promise<IGetUserResponse> {
+    return await this.commandBus.execute<GetUserCommand, IGetUserResponse>(new GetUserCommand(request));
+  }
 }
