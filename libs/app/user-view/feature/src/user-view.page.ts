@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
-import { GetUserProfileRequest } from '../../util/src/user-view.actions';
+import { GetUserProfileRequest } from '@mp/app/user-view/util';
 import { IProfile } from '@mp/api/profiles/util';
 import { 
   UserViewState, 
