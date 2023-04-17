@@ -23,6 +23,7 @@
       "@mp/api/comments/feature": ["libs/api/comments/feature/src/index.ts"],
       "@mp/api/comments/util": ["libs/api/comments/util/src/index.ts"],
       "@mp/api/core/feature": ["libs/api/core/feature/src/index.ts"],
+      "@mp/api/core/seed":["libs/api/core/feature/seed/index.ts"],
       "@mp/api/eventstore/data-access": ["libs/api/eventstore/data-access/src/index.ts"],
       "@mp/api/eventstore/feature": ["libs/api/eventstore/feature/src/index.ts"],
       "@mp/api/eventstore/util": ["libs/api/eventstore/util/src/index.ts"],
