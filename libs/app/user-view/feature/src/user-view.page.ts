@@ -10,6 +10,7 @@ import {
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { FriendRequestStatus } from '@mp/api/friend/util';
+import { Memory } from '@mp/app/shared/feature';
 
 @Component({
   selector: 'app-user-view',

@@ -34,3 +34,7 @@ export class UpdateFriendRequest {
     static readonly type = '[ProfileView] UpdateFriendRequest';
     constructor(public readonly friend: IUser) {}
 }
+
+export class SubscribeToProfile {
+    static readonly type = '[ProfileView] SubscribeToProfile';
+}
