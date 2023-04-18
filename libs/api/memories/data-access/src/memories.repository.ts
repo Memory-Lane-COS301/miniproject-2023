@@ -53,7 +53,11 @@ export class MemoriesRepository {
   }
 
   async createComment(comment: IComment) {
-    return null;
+    if (!comment.userId) {
+      throw Error("User id is missing.")
+    } else {
+        return await admin.firestore().collection('memories/comments').doc(comment.userId).create(comment);
+    }
   }
 
   async editComment(comment: IComment) {
