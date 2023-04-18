@@ -17,5 +17,5 @@ export class UpdateCommentRequest {
 
 export class SetMemoryCard {
     static readonly type = '[MemoryCard] SetMemoryCard';
-    constructor(public comments: IComment[] | null | undefined) {}
+    constructor(public memory: IMemory) {}
 }

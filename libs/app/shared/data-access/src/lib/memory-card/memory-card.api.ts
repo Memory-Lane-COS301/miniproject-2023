@@ -1,7 +1,15 @@
 import { Injectable } from "@angular/core";
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { doc, docData, Firestore } from "@angular/fire/firestore";
-import { ICreateCommentRequest, IUpdateCommentRequest, IGetCommentsRequest, IMemory, IGetCommentsResponse, IUpdateCommentResponse, ICreateCommentResponse } from "@mp/api/memories/util";
+import { 
+    ICreateCommentRequest,
+    IUpdateCommentRequest,
+    IGetCommentsRequest,
+    IMemory,
+    IGetCommentsResponse,
+    IUpdateCommentResponse,
+    ICreateCommentResponse
+} from "@mp/api/memories/util";
 
 @Injectable()
 export class MemoryCardApi {
