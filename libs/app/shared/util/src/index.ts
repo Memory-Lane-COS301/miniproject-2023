@@ -1,1 +1,1 @@
-export * from './lib/memory-card/memory-card.actions';
+export * from './memory-card.actions';
