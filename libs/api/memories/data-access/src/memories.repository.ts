@@ -1,3 +1,4 @@
+import { IUser } from '@mp/api/users/util';
 import { IMemory } from '@mp/api/memories/util';
 import { IComment } from '@mp/api/memories/util';
 import { Injectable } from '@nestjs/common';
@@ -20,6 +21,20 @@ export class MemoriesRepository {
         toFirestore: (it: IMemory) => it,
       })
       .doc()
+      .get();
+  }
+
+  async findMemory(memoryId: string) {
+    return await admin
+      .firestore()
+      .collection('memories')
+      .withConverter<IMemory>({
+        fromFirestore: (snapshot) => {
+          return snapshot.data() as IMemory;
+        },
+        toFirestore: (it: IMemory) => it,
+      })
+      .doc(memoryId)
       .get();
   }
 
