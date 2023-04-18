@@ -32,8 +32,18 @@ export class MemoryCardComponent {
 
   showExpandedView = false;
   previousPageName = '';
+  addingNewComment = false;
+  new_comment: string = '';
 
   constructor(private navCtrl: NavController) {}
+
+  setAddingNewComment() {
+    this.addingNewComment = true;
+  }
+
+  unsetAddingNewComment() {
+    this.addingNewComment = false;
+  }
 
   changeMemoryView() {
     this.showExpandedView = !this.showExpandedView;
