@@ -37,11 +37,83 @@ export class ViewCommentsPageComponent {
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
           'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+      },
+      {
+        username: '@commentedUsername',
+        profileImgUrl:
+          'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+        comment:
+          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+      },
+      {
+        username: '@commentedUsername',
+        profileImgUrl:
+          'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+        comment:
+          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+      },
+      {
+        username: '@commentedUsername',
+        profileImgUrl:
+          'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+        comment:
+          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+      },
+      {
+        username: '@commentedUsername',
+        profileImgUrl:
+          'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+        comment:
+          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+      },
+      {
+        username: '@commentedUsername',
+        profileImgUrl:
+          'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+        comment:
+          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+      },
+      {
+        username: '@commentedUsername',
+        profileImgUrl:
+          'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+        comment:
+          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+      },
+      {
+        username: '@commentedUsername',
+        profileImgUrl:
+          'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+        comment:
+          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+      },
+      {
+        username: '@commentedUsername',
+        profileImgUrl:
+          'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+        comment:
+          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+      },
+      {
+        username: '@commentedUsername',
+        profileImgUrl:
+          'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+        comment:
+          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+      },
+      {
+        username: '@commentedUsername',
+        profileImgUrl:
+          'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+        comment:
+          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
       }
     ],
     timePosted: '2020-11-14T10:30:00.000-07:00',
     alive: true
   };
+  
+  new_comment = '';
 
   get Comments(){
     return this.memory.comments;
