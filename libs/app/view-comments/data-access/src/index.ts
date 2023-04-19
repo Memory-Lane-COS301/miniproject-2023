@@ -1,1 +1,3 @@
-// export * from './lib/app-view-comments-data-access';
+// export * from './view-comments.module';
+// export * from './view-comments.state';
+// export * from './view-comments.api';

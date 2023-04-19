@@ -1,1 +1,1 @@
-// export * from './lib/app-view-comments-util';
+// export * from './view-comments.actions';

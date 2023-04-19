@@ -1,0 +1,27 @@
+<ion-content color="none">
+    <div *ngFor="let comment of Comments"  ngClass="comment-profileImg-username">
+        <ion-avatar ngClass="memory-avatar-expanded">
+            <img src="{{ comment.profileImgUrl }}" ngClass="memory-comment-profileImg" routerLink="/user-view" />
+        </ion-avatar>
+        <div ngClass="memory-username-and-comment">
+            <ion-text ngClass="memory-comment-username" routerLink="/user-view">{{ comment.username }}</ion-text>
+            <ion-text ngClass="memory-comment-usercomment">{{ comment.comment }}</ion-text>
+        </div>
+    </div>
+    <!-- <div *ngIf="showExpandedView && addingNewComment" ngClass="add-new-comment">
+        <form ngClass="add-comment-form" action="addNewComment()" #formcontrol="ngForm">
+          <ion-input 
+            ngClass="add-comment-input" 
+            type="text" 
+            placeholder="Add a comment..." 
+            [(ngModel)]="new_comment" 
+            name="new_comment"
+            autofocus
+            >
+            <ion-button [disabled]="!new_comment" type="submit" ngClass="add-comment-btn" color="none">
+              <ion-icon size="small" name="send" ngClass="add-comment-icon"></ion-icon>
+            </ion-button>
+          </ion-input>
+        </form>
+      </div> -->
+</ion-content>
