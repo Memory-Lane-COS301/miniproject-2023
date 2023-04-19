@@ -22,4 +22,18 @@ export class UsersRepository {
       .doc(userId)
       .get();
   }
+  
+  async findUserWithUsername(username: string) {
+    return await admin
+      .firestore()
+      .collection('users')
+      .where("username", "==", username)
+      .withConverter<IUser>({
+        fromFirestore: (snapshot) => {
+          return snapshot.data() as IUser;
+        },
+        toFirestore: (it: IUser) => it,
+      })
+      .get();
+  }
 }

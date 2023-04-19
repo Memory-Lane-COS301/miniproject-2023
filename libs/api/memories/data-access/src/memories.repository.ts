@@ -2,7 +2,6 @@ import { IMemory } from '@mp/api/memories/util';
 import { IComment } from '@mp/api/memories/util';
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
-import { ICreateMemoryResponse } from '@mp/api/memories/util';
 
 @Injectable()
 export class MemoriesRepository {

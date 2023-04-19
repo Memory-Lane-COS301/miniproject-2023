@@ -19,8 +19,7 @@ export const createMemory = functions.https.onCall(
     catch (error) {
     if (error instanceof Error)
       throw new functions. https. HttpsError ("internal", error. message)
-    else
-      throw new functions. https. HttpsError ("unknown", "An unknown error occurred.");
+    throw new functions. https. HttpsError ("unknown", "An unknown error occurred.");
   }
 }
 );
