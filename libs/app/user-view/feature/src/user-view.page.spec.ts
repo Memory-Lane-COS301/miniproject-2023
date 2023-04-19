@@ -6,18 +6,18 @@ describe('UserViewPageComponent', () => {
   let component: UserViewPageComponent;
   let fixture: ComponentFixture<UserViewPageComponent>;
 
-  beforeEach(async () => {
-      TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [UserViewPageComponent],
       imports: [StoreModule.forRoot({})],
       providers: [Store],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(UserViewPageComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    })
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(UserViewPageComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+      });
   });
 
   it('should create', () => {
