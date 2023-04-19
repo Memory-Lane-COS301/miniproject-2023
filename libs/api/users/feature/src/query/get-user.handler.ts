@@ -1,5 +1,5 @@
 import { UsersRepository } from '@mp/api/users/data-access';
-import { IGetUserResponse, GetUserQuery } from '@mp/api/users/util';
+import { IGetUserResponse, GetUserQuery, IGetUserRequest } from '@mp/api/users/util';
 import { QueryHandler, EventPublisher, IQueryHandler } from '@nestjs/cqrs';
 
 @QueryHandler(GetUserQuery)
@@ -11,7 +11,7 @@ export class GetUserHandler
   async execute(query: GetUserQuery) {
     console.log(`${GetUserHandler.name}`);
     
-    const request = query.request;
+    const request = query.request as IGetUserRequest;
     const username = request.user.username;
     console.debug(request);
     if (!username) 
