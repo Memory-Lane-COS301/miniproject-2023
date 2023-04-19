@@ -28,8 +28,39 @@ describe('Tesing Cloud Function: createMemory', () => {
       headers: new Headers({ 'content-type': 'application/json' }),
       body: JSON.stringify(createMemoryRequest),
     });
-    const createMemoryResponse = (await res.json()).result.ICreateMemoryResponse;
+    const createMemoryResponse = (await res.json()).result.memory;
+    console.debug("createMemoryResponse: ",createMemoryResponse);
+    expect(createMemoryResponse.userId).toBe(mockData.userId); 
+    expect(createMemoryResponse.alive).toBe(true);
+    expect(createMemoryResponse.remainingTime).toBe(86400);
+    expect(createMemoryResponse.commentsCount).toBe(0);
+  });
+  test(`Creating Memory for user that does not exist using endPoint`, async () => {
+    const createMemoryRequest = {
+      data: {
+        memory: {
+          username: mockData.username,
+          userId: "12437",
+          title: mockData.title,
+          description: mockData.description,
+          imgUrl: mockData.imgUrl,
+        },
+      },
+    };
+
+    const res = await fetch('http://127.0.0.1:5005/demo-project/us-central1/createMemory', {
+      method: 'POST',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      body: JSON.stringify(createMemoryRequest),
+    });
+    const createMemoryResponse = (await res.json());
+    const errorResponse = {
+      error: {
+      message: "User not found",
+      status: "INTERNAL"
+      }
+    }
     console.debug(createMemoryResponse);
-    expect(createMemoryResponse.userId).toBe(mockData.userId);
+    expect(createMemoryResponse).toEqual(errorResponse);
   });
 });

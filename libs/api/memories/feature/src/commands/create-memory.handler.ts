@@ -17,20 +17,20 @@ export class CreateMemoryHandler implements ICommandHandler<CreateMemoryCommand>
     const userId = request.memory.userId;
     const memoryInitialDuration: number = 24 * 60 * 60; //memory lasts for 24 hours
     const usersRepository = new UsersRepository();
-    const user = (await usersRepository.findUser(userId!)).data()!;
-    
-    console.debug('user: ',user);
-    const username = user.username;
+    const userData = (await usersRepository.findUser(userId!)).data()!; // for profileImgUrl and username
+    if(!userData)
+      throw new Error('User not found');
+    const username = userData.username;
     const title = request.memory.title;
     const description = request.memory.description;
     const imgUrl = request.memory.imgUrl;
-    const profileImgUrl = user.profileImgUrl;
+    const profileImgUrl = userData.profileImgUrl;
     const created = Timestamp.fromDate(new Date());
     const commentsCount = 0;
     const remainingTime = memoryInitialDuration;
     const alive = true;
 
-    const memory: IMemory = {
+    const iMemory: IMemory = {
       userId: userId,
       username: username,
       title: title,
@@ -42,24 +42,9 @@ export class CreateMemoryHandler implements ICommandHandler<CreateMemoryCommand>
       remainingTime: remainingTime,
       alive: alive,
     };
-    const memoriesRepository:MemoriesRepository = new MemoriesRepository();
-    try{
-      const writeResults =  await memoriesRepository.createMemory(memory)
-      if(writeResults.writeTime){
-        const memoryEventPublisher = this.publisher.mergeObjectContext(Memory.fromData(memory));
-        memoryEventPublisher.create();
-        memoryEventPublisher.commit();
-        const iCreateMemoryResponse = {
-          ICreateMemoryResponse:memory
-        }
-        return iCreateMemoryResponse;
-      }
-    }
-    catch(writeError){
-      const error = {
-        error: `writing memory to peristant storage failed. Info ${writeError}`
-      };
-      return error;
-    }
+    const memory = this.publisher.mergeObjectContext(Memory.fromData(iMemory));
+    memory.create();
+    memory.commit();
+    return {memory : memory } as ICreateMemoryResponse;
   }
 }
