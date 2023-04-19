@@ -50,7 +50,7 @@ describe('Tesing Cloud Function: getUser', () => {
     const errorResponse = {
         error: {
             message: "Could not retrieve user. Info: Error: User not found",
-            status: "INTERNAL"
+            status: "NOT_FOUND"
         }
     }
     console.debug(getUserResponse);

@@ -8,6 +8,7 @@ import {
 import { NestFactory } from '@nestjs/core';
 import * as functions from 'firebase-functions';
 import { CoreModule } from '../core.module';
+import { FunctionsErrorCode } from 'firebase-functions/v1/https';
 
 export const createMemory = functions.https.onCall(
   async (request: ICreateMemoryRequest): Promise<ICreateMemoryResponse> => {
@@ -17,8 +18,11 @@ export const createMemory = functions.https.onCall(
       return await service.createMemory(request);
     }
     catch (error) {
-    if (error instanceof Error)
+    if (error instanceof Error){
+      if(error.message.includes('User not found'))
+        throw new functions. https. HttpsError ('not-found', error. message)
       throw new functions. https. HttpsError ("internal", error. message)
+    }
     throw new functions. https. HttpsError ("unknown", "An unknown error occurred.");
   }
 }

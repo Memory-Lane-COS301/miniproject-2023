@@ -12,9 +12,15 @@ export const getUser = functions.https.onCall(
           return await service.getUser(request);
       }
       catch (error) {
-      if (error instanceof Error)
-        throw new functions. https. HttpsError ("internal", error. message)
-    throw new functions. https. HttpsError ("unknown", "An unknown error occurred.");
+      if (error instanceof Error){
+      console.debug(error.message);
+            if(error.message.includes('Invalid Query: Missing username'))
+                throw new functions. https. HttpsError ("invalid-argument", error. message);
+            else
+            if(error.message.includes('User not found'))
+                throw new functions. https. HttpsError ("not-found", error. message);
+          }
+        throw new functions. https. HttpsError ("unknown", "An unknown error occurred.");
     }
     },
   );

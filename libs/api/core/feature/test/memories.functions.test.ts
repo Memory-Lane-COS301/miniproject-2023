@@ -57,7 +57,7 @@ describe('Tesing Cloud Function: createMemory', () => {
     const errorResponse = {
       error: {
       message: "User not found",
-      status: "INTERNAL"
+      status: "NOT_FOUND"
       }
     }
     console.debug(createMemoryResponse);
