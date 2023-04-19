@@ -15,7 +15,8 @@ export class SetProfileView {
     constructor(
         public readonly id: string,
         public readonly _profile?: IProfile,
-        public readonly memory?: IMemory
+        public readonly memory?: IMemory,
+        public readonly imageUrl?: string
     ) {}
 }
 

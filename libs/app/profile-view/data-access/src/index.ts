@@ -4,3 +4,9 @@ export * from './profile-view.api';
 
 export * from './profile-view.state';
 
+export * from './edit-profile-photo.module';
+
+export * from './edit-profile-photo.api';
+
+export * from './edit-profile-photo.state';
+

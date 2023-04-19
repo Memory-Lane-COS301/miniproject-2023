@@ -9,6 +9,7 @@ import produce from 'immer';
 import { IMemory } from '@mp/api/memories/util';
 import { IComment } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
+import { user } from '@angular/fire/auth';
 
 export interface ProfileViewStateModel {
     profile: IProfile;
@@ -69,11 +70,11 @@ export class ProfileViewState {
     }
 
     @Action(SetProfileView)
-    setProfile(ctx: StateContext<ProfileViewStateModel>, { id, _profile, memory }: SetProfileView) {
+    setProfile(ctx: StateContext<ProfileViewStateModel>, { id, _profile, memory, imageUrl }: SetProfileView) {
         const state = ctx.getState();
         const profile = state.profile;
 
-        if (_profile && !memory) {
+        if (_profile && !memory && !imageUrl) {
             return ctx.setState(
                 produce((draft) => {
                     draft.profile = {
@@ -83,7 +84,7 @@ export class ProfileViewState {
                 })
             );
         }
-        else {
+        else if (_profile && memory && !imageUrl) {
             if (memory) {
                 profile.memories?.push(memory);
                 return ctx.setState(
@@ -97,6 +98,39 @@ export class ProfileViewState {
                 );
             }
             else return ctx.dispatch('Memory is undefined');
+        }
+        else if (_profile && !memory && imageUrl) {
+            if (imageUrl) {
+                return ctx.setState(                    
+                    produce((draft) => {
+                        draft.profile = {
+                        ...profile,
+                        userId: id,
+                        user: {...user, userId: id, profileImgUrl: imageUrl }
+                        };
+                    })
+                );
+            }
+            else return ctx.dispatch('Image url is undefined');
+        }
+        else if (_profile && memory && imageUrl) {
+            if (imageUrl) {                
+                profile.memories?.push(memory);
+                return ctx.setState(                    
+                    produce((draft) => {
+                        draft.profile = {
+                        ...profile,
+                        userId: id,
+                        memories: profile.memories,
+                        user: {...user, userId: id, profileImgUrl: imageUrl }
+                        };
+                    })
+                );
+            }
+            else return ctx.dispatch('Memory is undefined');
+        }
+        else {
+            return ctx.dispatch(new SetError('Profile not set'));
         }
     }
 
