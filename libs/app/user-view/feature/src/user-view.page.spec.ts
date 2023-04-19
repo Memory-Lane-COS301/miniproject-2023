@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserViewPageComponent } from './user-view.page';
+import { StoreModule } from '@ngrx/store';
 
 describe('UserViewPageComponent', () => {
   let component: UserViewPageComponent;
@@ -7,6 +8,7 @@ describe('UserViewPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [StoreModule.forRoot({})],
       declarations: [UserViewPageComponent],
     }).compileComponents();
 
