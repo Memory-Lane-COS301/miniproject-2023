@@ -1,12 +1,13 @@
 import { MemoriesRepository } from '@mp/api/memories/data-access';
 import { UsersRepository } from '@mp/api/users/data-access';
-import { CreateCommentCommand, IComment } from '@mp/api/memories/util';
+import { CreateCommentCommand, IComment, ICreateCommentResponse } from '@mp/api/memories/util';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { Timestamp } from 'firebase-admin/firestore';
+import * as admin from 'firebase-admin';
 import { Comment } from '../models';
 
 @CommandHandler(CreateCommentCommand)
-export class CreateCommentHandler implements ICommandHandler<CreateCommentCommand> {
+export class CreateCommentHandler implements ICommandHandler<CreateCommentCommand, ICreateCommentResponse> {
   constructor(
     private readonly publisher: EventPublisher,
     private readonly memoriesRepository: MemoriesRepository, 
@@ -17,19 +18,20 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
     console.log(`${CreateCommentHandler.name}`);
 
     const request = command.request;
-    const userDoc = await this.usersRepository.findUser(request.comment.userId || "");
+    const userDoc = await this.usersRepository.findUser(request.comment.userId || " ");
     const userData = userDoc.data();
 
     if (!userData) throw new Error('User not found');
 
-    const memoryDoc = await this.memoriesRepository.findMemory(request.comment.memoryId || "");
+    const memoryDoc = await this.memoriesRepository.findMemory(request.comment.memoryId || " ");
     const memoryData = memoryDoc.data();
 
-    if (!memoryDoc) throw new Error('Memory not found');
+    if (!memoryData) throw new Error('Memory not found');
 
     const data: IComment = {
       userId: userData.userId,
       memoryId: memoryData?.memoryId,
+      commentId: admin.firestore().collection('memories').doc().id,
       username: userData?.username,
       profileImgUrl: userData?.profileImgUrl,
       text: request.comment?.text,
@@ -40,5 +42,8 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
     
     comment.create();
     comment.commit();
+
+    const response: ICreateCommentResponse = { comment };
+    return response;
   }
 }

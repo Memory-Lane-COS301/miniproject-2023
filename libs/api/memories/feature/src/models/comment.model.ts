@@ -36,7 +36,7 @@ export class Comment extends AggregateRoot implements IComment {
     return {
       userId: this.userId,
       memoryId: this.memoryId,
-      commentId: this.userId,
+      commentId: this.commentId,
       username: this.username,
       profileImgUrl: this.profileImgUrl,
       text: this.text,
