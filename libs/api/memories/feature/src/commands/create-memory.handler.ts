@@ -3,48 +3,46 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { Memory } from '../models';
 import { Timestamp } from 'firebase-admin/firestore';
 import { UsersRepository } from '@mp/api/users/data-access'
-import { MemoriesRepository } from '@mp/api/memories/data-access';
 
 @CommandHandler(CreateMemoryCommand)
-export class CreateMemoryHandler implements ICommandHandler<CreateMemoryCommand> {
+export class CreateMemoryHandler implements ICommandHandler<CreateMemoryCommand, ICreateMemoryResponse> {
   constructor(private publisher: EventPublisher) {}
 
   async execute(command: CreateMemoryCommand) {
-  
     console.log(`${CreateMemoryHandler.name}`);
+
     const request = command.request;
-    console.debug('request: ',request);
     const userId = request.memory.userId;
-    const memoryInitialDuration: number = 24 * 60 * 60; //memory lasts for 24 hours
+    const memoryInitialDuration: number = 24 * 60 * 60; // memory lasts for 24 hours
+
+    if (!request.memory.userId || !request.memory.title || !request.memory.description)
+      throw new Error('Missing required fields');
+
     const usersRepository = new UsersRepository();
-    const userData = (await usersRepository.findUser(userId!)).data()!; // for profileImgUrl and username
+    const userDoc = await usersRepository.findUser(userId || " ");
+    const userData = userDoc.data();
+
     if(!userData)
       throw new Error('User not found');
-    const username = userData.username;
-    const title = request.memory.title;
-    const description = request.memory.description;
-    const imgUrl = request.memory.imgUrl;
-    const profileImgUrl = userData.profileImgUrl;
-    const created = Timestamp.fromDate(new Date());
-    const commentsCount = 0;
-    const remainingTime = memoryInitialDuration;
-    const alive = true;
 
-    const iMemory: IMemory = {
-      userId: userId,
-      username: username,
-      title: title,
-      description: description,
-      imgUrl: imgUrl,
-      profileImgUrl: profileImgUrl,
-      created: created,
-      commentsCount: commentsCount,
-      remainingTime: remainingTime,
-      alive: alive,
+    const data: IMemory = {
+      userId: userData.userId,
+      username: userData.username,
+      title: request.memory.title,
+      description: request.memory.description,
+      imgUrl: request.memory.imgUrl,
+      profileImgUrl: userData.profileImgUrl,
+      created: Timestamp.now(),
+      commentsCount: 0,
+      remainingTime: memoryInitialDuration,
+      alive: true,
     };
-    const memory = this.publisher.mergeObjectContext(Memory.fromData(iMemory));
+
+    const memory = this.publisher.mergeObjectContext(Memory.fromData(data));
     memory.create();
     memory.commit();
-    return {memory : memory } as ICreateMemoryResponse;
+
+    delete data.userId;
+    return { memory : data };
   }
 }
