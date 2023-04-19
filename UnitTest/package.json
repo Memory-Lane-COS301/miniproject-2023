@@ -1,0 +1,18 @@
+{
+    "name": "unit_test",
+    "version": "0.0.0",
+    "license": "MIT",
+    "dependencies": {
+        "@types/jest": "^29.5.1",
+        "jest": "^29.5.0",
+        "jest-preset-angular": "^13.0.1"
+    },"jest": {
+        "preset": "jest-preset-angular",
+        "testPathIgnorePatterns": [
+          "<rootDir>/node_modules/",
+          "<rootDir>/dist/"
+        ]
+      },"scripts": {
+        "test": "jest"
+      }
+}
