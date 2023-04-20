@@ -1,3 +1,3 @@
-// export * from './search-results.module';
+export * from './search-results.module';
 // export * from './search-results.api';
-// export * from './search-results.state';
+export * from './search-results.state';

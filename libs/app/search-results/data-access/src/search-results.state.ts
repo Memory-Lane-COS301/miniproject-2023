@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
-import { SearchResultsApi } from './search-results.api';
-import { SetSearchResults } from './search-results.actions';
+// import { SearchResultsApi } from './search-results.api';
+import { SetSearchResults } from '@mp/app/search-results/util';
+import { IMemory } from "@mp/api/memories/util";
 
 export interface SearchResultsStateModel {
-    results: any[];
+    results: IMemory[];
 }
 
 @State<SearchResultsStateModel>({
@@ -16,7 +17,7 @@ export interface SearchResultsStateModel {
 })
 @Injectable()
 export class SearchResultsState {
-    constructor(private searchResultsApi: SearchResultsApi) {}
+    // constructor(private searchResultsApi: SearchResultsApi) {}
 
     @Selector()
     static searchResults(state: SearchResultsStateModel) {
@@ -24,20 +25,11 @@ export class SearchResultsState {
     }
 
     @Action(SetSearchResults)
-    setSearchResults(ctx: StateContext<SearchResultsStateModel>, action: SetSearchResults) {
+    async setSearchResults(ctx: StateContext<SearchResultsStateModel>, { searchResults }: SetSearchResults) {
         const state = ctx.getState();
-        const results = action.results;
+        const results = searchResults;
         ctx.setState({
-            ...state,
             results
         });
-    }
-
-    search(query: string) {
-        return this.searchResultsApi.search(query).pipe(
-            tap(results => {
-                this.setSearchResults(results);
-            })
-        );
     }
 }
