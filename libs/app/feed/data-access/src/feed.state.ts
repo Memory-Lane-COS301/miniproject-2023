@@ -26,7 +26,7 @@ export class FeedState {
     ){}
 
     @Selector()
-    static feed(state: FeedStateModel) {
+    static memories(state: FeedStateModel) {
         return state.memories;
     }
 

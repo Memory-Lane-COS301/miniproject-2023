@@ -1,38 +1,24 @@
 import { formatDate } from '@angular/common';
-import { Component, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Memory } from '../../Memory';
 import { SetViewedComments } from '@mp/app/view-comments/util';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { IMemory } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
+import { MemoryCardState } from '@mp/app/shared/data-access';
+import { Observable } from 'rxjs';
+import { SetMemoryCard } from '@mp/app/shared/util';
 
 @Component({
   selector: 'app-memory-card',
   templateUrl: './memory-card.component.html',
   styleUrls: ['./memory-card.component.scss'],
 })
-export class MemoryCardComponent {
-  @Input() memory: Memory = {
-    username: '@username',
-    profileUrl:
-      'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-    imgUrl:
-      'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80',
-    title: 'Last day of Highschool',
-    description: 'Example of a description for the memory',
-    comments: [
-      {
-        username: '@commentedUsername',
-        profileImgUrl:
-          'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-        comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
-      },
-    ],
-    timePosted:  '2020-11-14T10:30:00.000-07:00',
-    alive: true
-  };
+export class MemoryCardComponent implements OnInit{
+  @Select(MemoryCardState.memoryCard) memoryCard$ !: Observable<IMemory | null>;
+
+  @Input() memory!: IMemory;
 
   showExpandedView = false;
   previousPageName = '';
@@ -45,6 +31,10 @@ export class MemoryCardComponent {
     private navCtrl: NavController,
     private store: Store
   ) {}
+
+  ngOnInit(): void {
+      this.store.dispatch(new SetMemoryCard(this.memory)); 
+  }
 
   setAddingNewComment() {
     this.addingNewComment = true;
@@ -59,18 +49,18 @@ export class MemoryCardComponent {
   }
 
   //function to covert timePosted to dd MMMM yyyy
-  convertTimePostedToDate(timePosted: string): string {
-    if (!timePosted) return 'no time';
+  convertTimePostedToDate(timePosted: Timestamp | null | undefined): string {
+    if (!timePosted) return 'Invalid Date';
 
-    const date = new Date(timePosted);
+    const date = new Date(timePosted.seconds);
     return formatDate(date, 'dd MMMM yyyy', 'en-US');
   }
 
   //function to use timePosted to calculate how long ago the memory was posted
-  calculateHowLongAgo(timePosted: string): string {
-    if (!timePosted) return 'no time';
+  calculateHowLongAgo(timePosted: Timestamp | null | undefined): string {
+    if (!timePosted) return 'Invalid Time';
 
-    const date = new Date(timePosted);
+    const date = new Date(timePosted.seconds);
     const timeDifference = Date.now() - date.getTime();
 
     // Convert time difference to "time ago" string
@@ -109,7 +99,7 @@ export class MemoryCardComponent {
 
   getFirstCommentText() {
     if (this.memory.comments) {
-      this.first_comment_text = this.memory.comments[0].comment;
+      this.first_comment_text = this.memory.comments[0].text;
     }
 
     return this.first_comment_text;
