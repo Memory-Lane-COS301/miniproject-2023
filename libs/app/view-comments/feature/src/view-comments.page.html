@@ -1,10 +1,10 @@
 <ion-header collapse="condense">
     <ion-toolbar color="dark">
       <ion-back-button
-        ngClass="back-button"
+        ngClass="back-btn"
         slot="start"
         color="light"
-        defaultHref="/home/search"
+        defaultHref="/home/feed"
         text="Back"
       ></ion-back-button>
     </ion-toolbar>
@@ -31,7 +31,7 @@
   <ion-toolbar color="dark" ngClass="footer-toolbar">
     <div ngClass="add-comment-container">
       <form ngClass="add-comment-form" action="addNewComment()" #formcontrol="ngForm">
-        <ion-item ngClass="add-new-comment" color="none">
+        <ion-item ngClass="add-new-comment" color="none" lines="none">
           <ion-input 
           ngClass="add-comment-input" 
           type="text" 

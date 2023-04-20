@@ -21,8 +21,4 @@ export class ViewCommentsPageComponent {
   get Comments(){
     return this.viewedComments$;
   }
-
-  openUserProfile() {
-    this.navCtrl.navigateForward('/view-all-comments');
-  }
 }
