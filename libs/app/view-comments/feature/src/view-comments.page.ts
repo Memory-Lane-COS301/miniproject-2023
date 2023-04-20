@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { Memory } from "@mp/app/shared/feature";
+import { NavController } from "@ionic/angular";
 
 
 @Component({
@@ -8,7 +8,8 @@ import { Memory } from "@mp/app/shared/feature";
   styleUrls: ['./view-comments.page.scss'],
 })
 export class ViewCommentsPageComponent {
-  memory: Memory = {
+  //this memory object will be replaced by the state's memory object
+  memory: any = {
     username: '@username',
     profileUrl:
       'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
@@ -22,91 +23,91 @@ export class ViewCommentsPageComponent {
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       },
       {
         username: '@commentedUsername',
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       },
       {
         username: '@commentedUsername',
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       },
       {
         username: '@commentedUsername',
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       },
       {
         username: '@commentedUsername',
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       },
       {
         username: '@commentedUsername',
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       },
       {
         username: '@commentedUsername',
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       },
       {
         username: '@commentedUsername',
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       },
       {
         username: '@commentedUsername',
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       },
       {
         username: '@commentedUsername',
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       },
       {
         username: '@commentedUsername',
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       },
       {
         username: '@commentedUsername',
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       },
       {
         username: '@commentedUsername',
         profileImgUrl:
           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
         comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+          'This is an example comment and the comment can only be up to 80 characters long.',
       }
     ],
     timePosted: '2020-11-14T10:30:00.000-07:00',
@@ -115,7 +116,13 @@ export class ViewCommentsPageComponent {
   
   new_comment = '';
 
+  constructor(private navCtrl: NavController) {}
+
   get Comments(){
     return this.memory.comments;
+  }
+
+  openUserProfile() {
+    this.navCtrl.navigateForward('/view-all-comments');
   }
 }

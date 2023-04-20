@@ -1,20 +1,16 @@
 <ion-header collapse="condense">
-    <ion-toolbar color="none">
-      <ion-buttons slot="start">
-        <ion-icon
-          ngClass="back-icon"
-          slot="start"
-          color="light"
-          name="chevron-back-outline"
-          routerLink="/"
-          routerDirection="back"
-        ></ion-icon>
-        <ion-button ngClass="back-btn" color="light" routerLink="/" routerDirection="back">Close</ion-button>
-      </ion-buttons>
+    <ion-toolbar color="dark">
+      <ion-back-button
+        ngClass="back-button"
+        slot="start"
+        color="light"
+        defaultHref="/home/search"
+        text="Back"
+      ></ion-back-button>
     </ion-toolbar>
 </ion-header>
 
-<ion-content color="none">
+<ion-content color="dark">
     <div *ngFor="let comment of Comments"  ngClass="comment-profileImg-username">
         <ion-avatar ngClass="memory-avatar-expanded">
             <img src="{{ comment.profileImgUrl }}" ngClass="memory-comment-profileImg" routerLink="/user-view" />
@@ -24,23 +20,28 @@
             <ion-text ngClass="memory-comment-usercomment">{{ comment.comment }}</ion-text>
         </div>
     </div>
-    <div ngClass="add-comment-container">
-        <form ngClass="add-comment-form" action="addNewComment()" #formcontrol="ngForm">
-          <ion-item ngClass="add-new-comment" color="none">
-            <ion-input 
-            ngClass="add-comment-input" 
-            type="text" 
-            placeholder="Add a comment..." 
-            [(ngModel)]="new_comment" 
-            name="new_comment"
-            autofocus
-            maxlength="80"
-            >
-          </ion-input>
-          <ion-button [disabled]="!new_comment" type="submit" ngClass="add-comment-btn" color="dark">
-            <ion-icon size="small" name="send" ngClass="add-comment-icon"></ion-icon>
-          </ion-button>
-          </ion-item>
-        </form>
-      </div>
 </ion-content>
+
+<ion-footer collapse="condense">
+  <ion-toolbar color="dark" ngClass="footer-toolbar">
+    <div ngClass="add-comment-container">
+      <form ngClass="add-comment-form" action="addNewComment()" #formcontrol="ngForm">
+        <ion-item ngClass="add-new-comment" color="none">
+          <ion-input 
+          ngClass="add-comment-input" 
+          type="text" 
+          placeholder="Add a comment..." 
+          [(ngModel)]="new_comment" 
+          name="new_comment"
+          autofocus
+          maxlength="80"
+          >
+        </ion-input>
+        <ion-button [disabled]="!new_comment" type="submit" ngClass="add-comment-btn" color="dark">
+          <ion-icon size="small" name="send" ngClass="add-comment-icon"></ion-icon>
+        </ion-button>
+        </ion-item>
+      </form>
+    </div>
+  </ion-toolbar>
+</ion-footer>

@@ -40,7 +40,7 @@
         <ion-icon ngClass="memory-comment-icon" name="chatbox-outline"></ion-icon>
         <ion-label ngClass="memory-comment-text" (click)="setAddingNewComment()">Comment</ion-label>
       </div>
-      <ion-text ngClass="comment-viewAll">View all comments <b>{{ memory.comments.length }}</b></ion-text>
+      <ion-text ngClass="comment-viewAll" routerLink="/view-comments">View all comments <b>{{ memory.comments.length }}</b></ion-text>
     </div>
     <div *ngIf="showExpandedView" ngClass="comment-profileImg-username">
       <ion-avatar ngClass="memory-avatar-expanded">

@@ -12,7 +12,7 @@
   .memory-comment-username {
     font-size: 18px;
     position: absolute;
-    top: 10px;
+    top: 5px;
     left: 50px;
     opacity: 0.5;
   }
@@ -21,11 +21,8 @@
     position: absolute;
     bottom: 15px;
     left: 50px;
-    max-height: 20px;
-    max-width: 280px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    height: auto;
+    max-width: 320px;
   }
   .memory-avatar-expanded {
     width: 45px;
@@ -37,11 +34,11 @@
   }
 
   .memory-username-and-comment {
-    margin-left: 10px;
+    margin-left: 20px;
   }
   .comment-profileImg-username {
     display: flex;
-    height: 80px;
+    height: 100px;
     position: relative;
     border-bottom: 1px solid #787878;
   }
@@ -57,11 +54,7 @@
     position: absolute;
     background-color: #0a0062;
     width: 380px;
-    margin-top:10px;
-  }
-
-  .add-comment-container {
-    z-index: 1001;
+    margin-top:2px;
   }
   
   .add-comment-btn {
