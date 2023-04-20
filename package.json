@@ -6,6 +6,7 @@
     "firebase:use:dev": "firebase use default",
     "firebase:use:prod": "firebase use production",
     "export:emulators": "firebase emulators:export .emulators --project=demo-project",
+    "seed:emulators": "node scripts/seed-emulators.js",
     "start:app:dev": "yarn run env-cmd -f .env nx run app:serve --configuration=development",
     "start:api:dev": "yarn run env-cmd -f .env nx run api:serve --configuration=development",
     "start:cli:dev": "yarn run env-cmd -f .env nx run cli:serve --configuration=development",

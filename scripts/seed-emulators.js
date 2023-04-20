@@ -30,7 +30,7 @@ async function seedData() {
 // ============================================================================
 
 async function seedUsers() {
-    const users = generateUsers(100);
+    const users = generateUsers(50);
     const batch = firestore.batch();
 
     users.forEach((user) => {
