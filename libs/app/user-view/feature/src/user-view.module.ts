@@ -11,8 +11,8 @@ import { SharedModule } from '@mp/app/shared/feature';
     CommonModule,
     UserViewRouting,
     IonicModule,
-    UserViewDataAccessModule,
-    SharedModule
+    SharedModule,
+    UserViewDataAccessModule
   ],
   declarations: [UserViewPageComponent],
 })

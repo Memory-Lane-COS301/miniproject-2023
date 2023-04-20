@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { Memory } from '../../Memory';
 
 @Component({
   selector: 'app-memory-card',
@@ -8,22 +9,7 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./memory-card.component.scss'],
 })
 export class MemoryCardComponent {
-  @Input() memory: {
-    username?: string;
-    profileUrl?: string;
-    imgUrl: string;
-    title: string;
-    description: string;
-    comments: [
-      {
-        username: string;
-        profileImgUrl: string;
-        comment: string;
-      },
-    ] | [];  
-    timePosted: string;
-    alive: boolean;
-  } = {
+  @Input() memory: Memory = {
     username: '@username',
     profileUrl:
       'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
