@@ -1,4 +1,5 @@
 import { MemoriesModule as MemoriesDataAccessModule } from '@mp/api/memories/data-access';
+import { UsersModule as UsersDataAccessModule } from '@mp/api/users/data-access';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
@@ -8,7 +9,8 @@ import {
   UpdatedCommentHandler
 } from './commands';
 import {
-  GetCommentsHandler 
+  GetCommentsHandler,
+  GetFeedMemoriesHandler,
 } from './queries'
 import { 
   MemoryCreatedHandler,
@@ -24,7 +26,8 @@ export const CommandHandlers = [
   UpdatedCommentHandler
 ];
 export const QueryHandlers = [
-  GetCommentsHandler
+  GetCommentsHandler,
+  GetFeedMemoriesHandler,
 ];
 export const EventHandlers = [
   MemoryCreatedHandler,
@@ -33,7 +36,7 @@ export const EventHandlers = [
 ];
 
 @Module({
-  imports: [CqrsModule, MemoriesDataAccessModule],
+  imports: [CqrsModule, MemoriesDataAccessModule, UsersDataAccessModule],
   providers: [MemoriesService, ...CommandHandlers, ...QueryHandlers, ...EventHandlers, MemoriesSagas],
   exports: [MemoriesService],
 })

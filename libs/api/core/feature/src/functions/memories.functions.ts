@@ -28,20 +28,23 @@ export const getComments = functions.https.onCall(
 );
 
 export const getFeedMemories = functions.https.onCall(
-  async (request: IGetFeedMemoriesRequest): Promise<IGetFeedMemoriesRequest> => {
+  async (request: IGetFeedMemoriesRequest): Promise<IGetFeedMemoriesResponse> => {
     const app = await NestFactory.createApplicationContext(CoreModule);
     const service = app.get(MemoriesService);
     try {
       return await service.getFeedMemories(request);
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message.includes('Missing required'))
-          throw new functions.https.HttpsError('invalid-argument', error.message);
-        if (error.message === 'User not found')
+        if(error.message.includes('not found'))
           throw new functions.https.HttpsError('not-found', error.message);
+
+        if(error.message.includes('Missing required'))
+          throw new functions.https.HttpsError('invalid-argument', error.message);
+
+        throw new functions.https.HttpsError("internal", error.message)
       }
 
-      throw new functions.https.HttpsError('unknown', 'An unknown error occurred');
+      throw new functions.https.HttpsError("unknown", "An unknown error occurred.");
     }
   },
 );
