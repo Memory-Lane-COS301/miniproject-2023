@@ -8,14 +8,12 @@ import { IGetUserRequest, IUser } from "@mp/api/users/util";
 import { IMemory } from "@mp/api/memories/util";
 
 export interface FeedStateModel {
-    // users: IUser[];
     memories: IMemory[];
 }
 
 @State<FeedStateModel>({
     name: 'feed',
     defaults: {
-        // users: []
         memories: []
     },
 })
@@ -32,25 +30,17 @@ export class FeedState {
         return state.memories;
     }
 
-    // @Action(GetMemoryRequest)
-    // async getUserRequest(ctx: StateContext<FeedStateModel>) {
+    // @Action(GetFeedMemories)
+    // async getFeedMemories(ctx: StateContext<FeedStateModel>) {
     //     try {
     //         const state = ctx.getState();
     //         // const _userId = state.users[0]?.userId;
     //         // const _username = state.users[0]?.username;
-    //         const _memory = state.memories[0];
+    //         const _memory = state.memories;
 
-    //         const request: IGetMemoryRequest = {
-    //             memory: {
-    //                 userId,
-    //                 username,
-    //                 title,
-    //                 description,
-    //                 imgUrl,
-    //                 profileImgUrl,
-    //                 remainingTime,
-    //                 commentsCount,
-    //                 comments,
+    //         const request: IGetFeedMemoriesRequest = {
+    //             user: {
+    //                 userId: ''
     //             }
     //         }
     //         const responseRef = await this.feedApi.getFriendsMemories(request);

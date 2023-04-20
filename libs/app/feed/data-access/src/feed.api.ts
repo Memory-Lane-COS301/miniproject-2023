@@ -8,4 +8,14 @@ export class FeedApi {
     private readonly firestore: Firestore,
     private readonly functions: Functions
   ) {}
+
+  // async getFeedMemories(request: IGetFeedMemoriesRequest) {
+  //   return await httpsCallable<
+  //     IGetFeedMemoriesRequest,
+  //     IGetFeedMemoriesResponse
+  //   >(
+  //     this.functions,
+  //     'getFeedMemories'
+  //   )(request);
+  // }
 }
