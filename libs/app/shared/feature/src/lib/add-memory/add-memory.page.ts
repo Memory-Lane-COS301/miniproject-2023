@@ -3,6 +3,7 @@ import { ModalController, AlertController } from '@ionic/angular';
 import { Memory } from '../../Memory';
 import { formatDate } from '@angular/common';
 
+
 @Component({
   selector: 'app-add-memory',
   templateUrl: './add-memory.page.html',
