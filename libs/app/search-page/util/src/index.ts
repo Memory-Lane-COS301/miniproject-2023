@@ -1,1 +1,1 @@
-export * from './lib/app-search-page-util';
+export * from './search-page.actions';

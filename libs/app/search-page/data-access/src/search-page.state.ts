@@ -6,79 +6,59 @@ import { SetFeed } from "@mp/app/feed/util";
 import { IGetUserRequest, IUser } from "@mp/api/users/util";
 import { IMemory } from "@mp/api/memories/util";
 import { SearchPageApi } from "./search-page.api";
+import { tap } from "rxjs";
+import { GetFeedMemories, SearchMemories, SetSearchPage } from "@mp/app/search-page/util";
+import { state } from "@angular/animations";
 
 
-// export interface FeedStateModel {
-//     // users: IUser[];
-//     memories: IMemory[];
-// }
-
-// @State<FeedStateModel>({
-//     name: 'feed',
-//     defaults: {
-//         // users: []
-//         memories: []
-//     },
-// })
+export interface SearchPageStateModel {
+    // users: IUser[];
+    memories: IMemory[];
+}
 
 @State<SearchPageStateModel>({
   name: 'searchPage',
   defaults: {
-      searchResults: [],
-      error: null},
+      memories: [],
+    },
   })
 
 
 @Injectable()
 export class SearchPageState {
     constructor(
-        private readonly feedApi: SearchPageApi,
+        private readonly searchPageApi: SearchPageApi,
         private readonly store: Store
     ){}
 
 
-  /*@Selector()
-  static searchResults(state: SearchPageStateModel) {
-    return state.searchResults;
-  }
-*/
+    @Selector()
+    static searchResults(state: SearchPageStateModel) {
+        return state.memories;
+    }
 
- /* @Action(SetSearchResults)
-  setSearchResults(
-    ctx: StateContext<SearchPageStateModel>,
-    action: SetSearchResults
-  ) {
-    const state = ctx.getState();
-    const newState = { ...state, searchResults: action.results };
-    ctx.patchState(newState);
-  }*/
+    // @Action(GetFeedMemories) 
+    // async getSearchMemories(ctx: StateContext<SearchPageStateModel>) {
+    //     try {
+    //         const state = ctx.getState();
+    //         const _memory = state.memories[0];
 
-  @Action(SetSearchResults)
-  setSearchResults(ctx: StateContext<SearchPageStateModel>, { searchResults }: SetSearchResults) {
-      ctx.setState(
-          produce(ctx.getState(), (draft: SearchPageStateModel) => {
-              draft.searchResults = searchResults;
-          })
-      );
-  }
+    //         const request: IGetFeedMemoriesRequest = {
+    //             user: {
+    //                 userId: ''
+    //             }
+    //         }
+    //         const responseRef = await this.searchPageApi.getFeedMemories(request);
+    //         const response = responseRef.data;
+    //         return ctx.dispatch(new SetSearchPage(response.memories));
+    //     }
+    //     catch(error){
+    //         return ctx.dispatch(new SetError((error as Error).message));
+    //     }
+    // }
 
-  @Action(SetError)
-  setError(ctx: StateContext<SearchPageStateModel>, { error }: SetError) {
-      ctx.setState(
-          produce(ctx.getState(), (draft: SearchPageStateModel) => {
-              draft.error = error;
-          })
-      );
-  }
-
-  async search(ctx: StateContext<SearchPageStateModel>, { searchTerm }: SearchPageStateModel) {
-      try {
-          const searchResults = await this.searchResultsApi.search(searchTerm);
-          ctx.dispatch(new SetSearchResults(searchResults));
-      } catch (error) {
-          ctx.dispatch(new SetError(error.message));
-      }
-  }
-
-  
+    // @Action(SearchMemories)
+    // async searchMemories(ctx: StateContext<SearchPageStateModel>, { searchQuery }: SearchMemories) {
+    //     return ctx.dispatch(new SetSearchResultsPage(searchQuery));
+    // }  
 }
