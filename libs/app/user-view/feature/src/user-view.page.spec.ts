@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserViewPageComponent } from './user-view.page';
-import { StoreModule } from '@ngrx/store';
-//import { Store } from '@ngrx/store';
 import { Select, Store, NgxsModule } from '@ngxs/store';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
