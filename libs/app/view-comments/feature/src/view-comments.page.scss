@@ -1,0 +1,81 @@
+.memory-comment-text {
+    font-size: 16px;
+  }
+  .memory-comment-icon {
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+  }
+  .memory-comment-and-icon {
+    padding: 0 5px 5px 5px;
+  }
+  .memory-comment-username {
+    font-size: 18px;
+    position: absolute;
+    top: 5px;
+    left: 50px;
+    opacity: 0.5;
+  }
+  .memory-comment-usercomment {
+    font-size: 16px;
+    position: absolute;
+    bottom: 15px;
+    left: 50px;
+    height: auto;
+    max-width: 320px;
+  }
+  .memory-avatar-expanded {
+    width: 45px;
+    height: 45px;
+    margin-right: 25px;
+    position: absolute;
+    bottom: 25px;
+    left: 5px;
+  }
+
+  .memory-username-and-comment {
+    margin-left: 20px;
+  }
+  .comment-profileImg-username {
+    display: flex;
+    height: 100px;
+    position: relative;
+    border-bottom: 1px solid #787878;
+  }
+
+  .add-comment-input {
+    height: auto;
+    width: 350px;
+  }
+
+  .add-new-comment {
+    border: 2px solid #fff;
+    border-radius: 10px;
+    position: absolute;
+    background-color: #0a0062;
+    width: 380px;
+    margin-top:2px;
+  }
+  
+  .add-comment-btn {
+    position: absolute;
+    right: 5px;
+    height: 25px;
+    font-size: 12px;
+    background-color: transparent;
+  }
+
+  ion-content {
+    position: relative;
+    padding: 5px 10px;
+  }
+
+  .back-btn {
+    left: 20px;
+    position: absolute;
+    font-size: 25px;
+  }
+  .back-icon {
+    width: 30px;
+    height: 30px;
+  }

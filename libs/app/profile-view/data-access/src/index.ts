@@ -10,3 +10,9 @@ export * from './edit-profile-photo.api';
 
 export * from './edit-profile-photo.state';
 
+export * from './revive-memory.module';
+
+export * from './revive-memory.api';
+
+export * from './revive-memory.state';
+

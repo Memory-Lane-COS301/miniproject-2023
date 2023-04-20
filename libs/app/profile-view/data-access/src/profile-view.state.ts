@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { IProfile, IGetProfileRequest } from "@mp/api/profiles/util"
-import { CreateCommentRequest, GetCommentsRequest, GetProfileRequest, SetProfileView } from "@mp/app/profile-view/util"
+import { CreateCommentRequest, GetCommentsRequest, GetProfileRequest, SetProfileView, SubscribeToProfile } from "@mp/app/profile-view/util"
 import { Injectable } from '@angular/core';
 import { AuthState } from '@mp/app/auth/data-access';
 import { SetError } from '@mp/app/errors/util';
@@ -10,6 +10,7 @@ import { IMemory } from '@mp/api/memories/util';
 import { IComment } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { user } from '@angular/fire/auth';
+import { tap } from 'rxjs';
 
 export interface ProfileViewStateModel {
     profile: IProfile;
@@ -52,6 +53,7 @@ export class ProfileViewState {
         try {
             const state = ctx.getState();
             const _userId = state.profile?.userId;
+            window.alert(_userId);
             const _username = state.profile?.accountDetails?.displayName;
 
             const request: IGetProfileRequest = {
@@ -250,4 +252,14 @@ export class ProfileViewState {
     //         return ctx.dispatch(new SetError((error as Error).message));
     //     }
     // }
+
+    @Action(SubscribeToProfile)
+    subscribeToProfile(ctx: StateContext<ProfileViewStateModel>) {
+        const user = this.store.selectSnapshot(AuthState.user);
+        if (!user) return ctx.dispatch(new SetError('User not set'));
+
+        return this.profileViewApi
+        .profileView$(user.uid)
+        .pipe(tap((profile: IProfile) => ctx.dispatch(new SetProfileView(profile))));
+    }
 }

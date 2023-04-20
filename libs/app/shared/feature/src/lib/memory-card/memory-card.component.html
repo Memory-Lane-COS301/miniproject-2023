@@ -1,4 +1,4 @@
-<ion-card [ngClass]="{ 'memory-card': !showExpandedView, 'memory-card-expanded': showExpandedView }" color="none">
+<ion-card #targetCard [ngClass]="{ 'memory-card': !showExpandedView && !addingNewComment, 'memory-card-expanded': showExpandedView && !addingNewComment, 'memory-card-expanded-add-comment': showExpandedView && addingNewComment }" color="none">
   <img *ngIf="!showExpandedView" ngClass="memory-img" style="background-image: url('{{ memory.imgUrl }}');" />
   <ion-card-header>
     <div
@@ -38,21 +38,44 @@
     <div *ngIf="showExpandedView" class="commentIcon-viewAll">
       <div class="memory-comment-and-icon">
         <ion-icon ngClass="memory-comment-icon" name="chatbox-outline"></ion-icon>
-        <ion-label ngClass="memory-comment-text">Comment</ion-label>
+        <ion-label ngClass="memory-comment-text" (click)="setAddingNewComment()">Comment</ion-label>
       </div>
-      <ion-text ngClass="comment-viewAll">View all comments <b>{{ memory.comments.length }}</b></ion-text>
+      <ion-text ngClass="comment-viewAll" (click)="setViewedComments()">View all comments <b>{{ getCommentsLength() }}</b></ion-text>
     </div>
     <div *ngIf="showExpandedView" ngClass="comment-profileImg-username">
-      <ion-avatar ngClass="memory-avatar-expanded">
-        <img src="{{ memory.comments[0]?.profileImgUrl }}" ngClass="memory-comment-profileImg" routerLink="/user-view" />
-      </ion-avatar>
-      <div ngClass="memory-username-and-comment">
-        <ion-text ngClass="memory-comment-username" routerLink="/user-view">{{ memory.comments[0]?.username }}</ion-text>
-        <ion-text ngClass="memory-comment-usercomment">{{ memory.comments[0]?.comment }}</ion-text>
+      <div *ngIf="memory.comments">
+        <ion-avatar ngClass="memory-avatar-expanded">
+          <img src="{{ memory.comments[0]?.profileImgUrl }}" ngClass="memory-comment-profileImg" routerLink="/user-view" />
+        </ion-avatar>
+        <div ngClass="memory-username-and-comment">
+          <ion-text ngClass="memory-comment-username" routerLink="/user-view">{{ getFirstCommentUsername()}}</ion-text>
+          <ion-text ngClass="memory-comment-usercomment">{{ getFirstCommentText() }}</ion-text>
+        </div>
       </div>
     </div>
-    <ion-text (click)="changeMemoryView()" ngClass="memory-show-more">{{
-      !showExpandedView ? 'Show More' : 'Show Less'
-    }}</ion-text>
+    <div *ngIf="showExpandedView && addingNewComment" ngClass="add-new-comment">
+      <form ngClass="add-comment-form" action="addNewComment()" #formcontrol="ngForm">
+        <ion-input 
+          ngClass="add-comment-input" 
+          type="text" 
+          placeholder="Add a comment..." 
+          [(ngModel)]="new_comment" 
+          name="new_comment"
+          autofocus
+          >
+          <ion-button [disabled]="!new_comment" type="submit" ngClass="add-comment-btn" color="none">
+            <ion-icon size="small" name="send" ngClass="add-comment-icon"></ion-icon>
+          </ion-button>
+        </ion-input>
+      </form>
+    </div>
+    <div ngClass="show-btn-cancel-comment-btn">
+      <ion-button color="none" *ngIf="showExpandedView && addingNewComment" ngClass="cancel-new-comment" (click)="unsetAddingNewComment()">
+        <ion-text ngClass="cancel-btn-text" color="none">Cancel</ion-text>
+      </ion-button>
+      <ion-text color="none" (click)="changeMemoryView()" (click)="unsetAddingNewComment()" [ngClass]="{'memory-show-more': !showExpandedView, 'memory-show-less': showExpandedView}">{{
+        !showExpandedView ? 'Show More' : 'Show Less'
+      }}</ion-text>
+    </div>    
   </ion-card-content>
 </ion-card>

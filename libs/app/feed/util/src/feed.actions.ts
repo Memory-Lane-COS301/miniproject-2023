@@ -6,5 +6,5 @@ export class GetUserRequest {
 
 export class SetFeed {
     static readonly type = '[Feed] SetFeed';
-    constructor(public readonly memory: IMemory) {}
+    constructor(public readonly memories: IMemory) {}
 }

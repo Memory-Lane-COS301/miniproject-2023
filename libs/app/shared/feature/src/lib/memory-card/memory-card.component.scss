@@ -81,7 +81,16 @@ ion-card-header {
   border: 3px solid #686868;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 25px;
-  height: 535px;
+  height: 550px;
+  width: 350px;
+  background-color: #434343;
+  transition: 0.5s;
+}
+.memory-card-expanded-add-comment {
+  border: 3px solid #686868;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  height: 605px;
   width: 350px;
   background-color: #434343;
   transition: 0.5s;
@@ -133,7 +142,7 @@ ion-card-header {
   color: #fff;
   opacity: 0.7;
 }
-.memory-show-more {
+.memory-show-less {
   position: fixed;
   right: 15px;
   color: #fff;
@@ -141,6 +150,7 @@ ion-card-header {
   border: 2px solid #fff;
   border-radius: 5px;
   padding: 2px 5px;
+  margin-top: 15px;
 }
 .memory-comment-text {
   font-size: 16px;
@@ -195,4 +205,42 @@ ion-card-header {
 }
 .comment-viewAll b {
   opacity: 0.5;
+}
+
+.add-new-comment {
+  margin: 0 20px;
+}
+
+.cancel-new-comment {
+  width: 80px;
+  height: 30px;
+  margin-bottom: 5px;
+  margin-left: 17px;
+  margin-top: 15px;
+}
+
+.cancel-btn-text {
+  color: #ff0000;
+}
+
+.show-btn-cancel-comment-btn {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 5px;
+}
+
+.add-comment-input {
+  border: 1px solid #fff;
+  border-radius: 10px;
+  height: 30px;
+  margin: 5px 0;
+  padding: 3px;
+}
+
+.add-comment-btn {
+  position: absolute;
+  right: 5px;
+  height: 25px;
+  font-size: 12px;
+  background-color: transparent;
 }

@@ -6,17 +6,14 @@ import { FeedApi } from "./feed.api";
 import { SetFeed } from "@mp/app/feed/util";
 import { IGetUserRequest, IUser } from "@mp/api/users/util";
 import { IMemory } from "@mp/api/memories/util";
-import { state } from "@angular/animations";
 
 export interface FeedStateModel {
-    // users: IUser[];
     memories: IMemory[];
 }
 
 @State<FeedStateModel>({
     name: 'feed',
     defaults: {
-        // users: []
         memories: []
     },
 })
@@ -33,25 +30,17 @@ export class FeedState {
         return state.memories;
     }
 
-    // @Action(GetMemoryRequest)
-    // async getUserRequest(ctx: StateContext<FeedStateModel>) {
+    // @Action(GetFeedMemories)
+    // async getFeedMemories(ctx: StateContext<FeedStateModel>) {
     //     try {
     //         const state = ctx.getState();
     //         // const _userId = state.users[0]?.userId;
     //         // const _username = state.users[0]?.username;
-    //         const _memory = state.memories[0];
+    //         const _memory = state.memories;
 
-    //         const request: IGetMemoryRequest = {
-    //             memory: {
-    //                 userId,
-    //                 username,
-    //                 title,
-    //                 description,
-    //                 imgUrl,
-    //                 profileImgUrl,
-    //                 remainingTime,
-    //                 commentsCount,
-    //                 comments,
+    //         const request: IGetFeedMemoriesRequest = {
+    //             user: {
+    //                 userId: ''
     //             }
     //         }
     //         const responseRef = await this.feedApi.getFriendsMemories(request);
@@ -63,13 +52,12 @@ export class FeedState {
     //     }
     // }
 
-    @Action(SetFeed)
-    setFeed(ctx: StateContext<FeedStateModel>, { memory }: SetFeed) {
-        const state = ctx.getState();
-        return ctx.setState(
-        produce((draft) => {
-            draft.memories = [...state.memories, memory];
-        })
-        );
-    }
+    // @Action(SetFeed)
+    // setFeed(ctx: StateContext<FeedStateModel>, { memories }: SetFeed) {
+    //     return ctx.setState(
+    //     produce((draft) => {
+    //         draft.memories = memories;
+    //     })
+    //     );
+    // }
 }
