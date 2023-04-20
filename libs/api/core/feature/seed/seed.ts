@@ -10,7 +10,24 @@ export class Seed {
   }
 
   run(): void {
-    const name: string[] = ['Sam', 'John', 'Adam', 'Joe', 'Mike', 'Thabang', 'Themba', 'Jade', 'Vukani', 'Thulani'];
+    const name: string[] = [
+      'Sam',
+      'John',
+      'Adam',
+      'Joe',
+      'Mike',
+      'Thabang',
+      'Themba',
+      'Jade',
+      'Vukani',
+      'Thulani',
+      'Andrew',
+      'Mark',
+      'Samson',
+      'Angelica',
+      'Delilah',
+    ];
+    
     const surname: string[] = [
       'Ndlovu',
       'Smith',
@@ -22,21 +39,31 @@ export class Seed {
       'Mabuya',
       'Kakweza',
       'Mayors',
+      'Mathers',
+      'Moyo',
+      'Tshela',
+      'Mokoeana',
+      'Ngwenya',
     ];
 
-    const imgurls: string[] = [
-      'https://cdn.pixabay.com/photo/2018/03/23/06/27/bird-3252791__340.jpg',
-      'https://cdn.pixabay.com/photo/2021/08/21/13/31/butterfly-6562789__340.jpg',
-      'https://cdn.pixabay.com/photo/2016/07/08/20/32/national-day-1505217__340.jpg',
-      'https://cdn.pixabay.com/photo/2021/08/21/01/24/flower-6561562__340.jpg',
-      'https://cdn.pixabay.com/photo/2020/03/11/04/54/city-4920974__340.jpg',
-      'https://cdn.pixabay.com/photo/2022/11/16/20/51/trumpet-7596774__340.jpg',
-      'https://cdn.pixabay.com/photo/2015/08/08/19/10/cows-880711__340.jpg',
-      'https://cdn.pixabay.com/photo/2015/12/07/08/12/ko-1080392__340.jpg',
-      'https://cdn.pixabay.com/photo/2012/09/04/19/57/post-horn-56003__340.jpg',
-      'https://cdn.pixabay.com/photo/2019/12/22/12/07/deer-4712382__340.jpg',
-      'https://cdn.pixabay.com/photo/2015/03/23/12/28/cows-686045__340.jpg',
-      'https://cdn.pixabay.com/photo/2019/08/08/16/54/cpu-4393375__340.jpg',
+    const images: string[] = [
+      '../images/preview16 (1).jpg',
+      '../images/preview16.jpg',
+      '../images/thumb16 (1).jpg',
+      '../images/thumb16 (2).jpg',
+      '../images/thumb16 (3).jpg',
+      '../images/thumb16 (4).jpg',
+      '../images/thumb16 (5).jpg',
+      '../images/thumb16 (6).jpg',
+      '../images/thumb16 (7).jpg',
+      '../images/thumb16 (8).jpg',
+      '../images/thumb16 (9).jpg',
+      '../images/thumb16 (10).jpg',
+      '../images/thumb16 (11).jpg',
+      '../images/thumb16 (12).jpg',
+      '../images/thumb16 (3).jpg',
+      '../images/thumb16 (14).jpg',
+      '../images/thumb16 (15).jpg',
     ];
 
     const emails: string[] = [
@@ -50,6 +77,12 @@ export class Seed {
       'polkjnh@gmail.com',
       'hjn@gmail.com',
       'frygtuyh@gmail.com',
+      'gbiqb ou@gmail.com',
+      'wqnwo1uh2@gmail.com',
+      'asd2v1yhi@gmail.com',
+      'azdgj46128@gmail.com',
+      'vt8hiu310@gmail.com',
+      'nb21vjghu6821@gmail.com',
     ];
 
     const comment: IComment = {
@@ -59,22 +92,33 @@ export class Seed {
       text: 'Generic text that should take a up a while bunch of space for no reason and now some keyboard mashing dtcfvgb hjlkmfjknjlmkfghjnkm,sdxrfctvgybhunjimk,ldrcftvgybhunjimkol,dcfvgbhnjmklcfgvbhnjmk,l.;dfcgv hbkm.dcftvgybhunjimko,lp.;[drcfgvtbhunjmk,lp.;dfc gvhbmkc gvkmfvgbhujnimo,l;.[/dcftvgybhujnkmpl.;[/',
     };
 
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 15; i++) {
       const count = Math.ceil(Math.random() * 4);
       const commentList: IComment[] = [];
       for (let k = 0; k < count; k++) {
         comment.commentId = Math.ceil(Math.random() * 100000) + '';
         commentList.push(comment);
       }
+      
+      const split = images[i].lastIndexOf('/');
+      const remotepath = images[i].substring(split);
+      admin
+        .storage()
+        .bucket('user' + i)
+        .upload(images[i], { destination: remotepath, metadata: { contentType: 'image/jpeg' } });
+      const link = admin
+        .storage()
+        .bucket('user' + i)
+        .file(remotepath).cloudStorageURI.href;
 
       const mem: IMemory = {
         userId: 'user' + i,
-        memoryId: 'memory' + (10 - i),
-        username: name[i] + surname[i],
+        memoryId: 'memory' + (14 - i),
+        username: name[i] +'_'+ surname[i],
         title: 'A memory posted by user' + i,
         description: 'Some fake data for seeding purposes',
-        imgUrl: imgurls[i],
-        profileImgUrl: imgurls[i],
+        imgUrl: link,
+        profileImgUrl: link,
         created: Timestamp.now(),
         commentsCount: count,
         remainingTime: Math.ceil(Math.random()),
@@ -91,9 +135,9 @@ export class Seed {
         userId: 'user' + i,
         name: name[i],
         surname: surname[i],
-        username: name[i] + surname[i],
+        username: name[i] +'_'+ surname[i],
         email: emails[i],
-        profileImgUrl: imgurls[i],
+        profileImgUrl: link,
         bio: 'A user',
         friendCount: Math.ceil(Math.random() * 10),
         memoryCount: Math.ceil(Math.random() * 10),
@@ -110,8 +154,8 @@ export class Seed {
 
       const request: IFriendRequest = {
         senderId: 'user' + i,
-        receiverId: 'user' + (10 - i),
-        receiverUsername: name[i] + surname[i],
+        receiverId: 'user' + (14 - i),
+        receiverUsername: name[i] +'_'+ surname[i],
         status:
           i % 2 == 0
             ? i > 10 - i
@@ -124,7 +168,7 @@ export class Seed {
       admin
         .firestore()
         .collection('friendrequests')
-        .doc('user' + i + 'Xuser' + (10 - i))
+        .doc('user' + i + ' X user' + (14 - i))
         .create(request);
     }
   }
