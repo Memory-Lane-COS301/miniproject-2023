@@ -61,7 +61,7 @@ export class ProfileViewState {
             }
             const responseRef = await this.profileViewApi.getUserProfile(request);
             const response = responseRef.data;
-            return ctx.dispatch(new SetProfileView(response.profile));
+            return ctx.dispatch(new SetProfileView(response.profile.userId, response.profile));
         }
         catch(error){
             return ctx.dispatch(new SetError((error as Error).message));
@@ -69,13 +69,39 @@ export class ProfileViewState {
     }
 
     @Action(SetProfileView)
-    setProfile(ctx: StateContext<ProfileViewStateModel>, { profile }: SetProfileView) {
-        return ctx.setState(
-        produce((draft) => {
-            draft.profile = profile;
-        })
-        );
+    setProfile(ctx: StateContext<ProfileViewStateModel>, { id, _profile, memory }: SetProfileView) {
+        const state = ctx.getState();
+        const profile = state.profile;
+
+        if (_profile && !memory) {
+            return ctx.setState(
+                produce((draft) => {
+                    draft.profile = {
+                    ...profile,
+                    userId: id,
+                    };
+                })
+            );
+        }
+        else {
+            if (memory) {
+                profile.memories?.push(memory);
+                return ctx.setState(
+                    produce((draft) => {
+                        draft.profile = {
+                        ...profile,
+                        userId: id,
+                        memories: profile.memories
+                        };
+                    })
+                );
+            }
+            else return ctx.dispatch('Memory is undefined');
+        }
     }
+
+
+
 
     // @Action(GetCommentsRequest)
     // getCommentsRequest(ctx: StateContext<ProfileViewStateModel>) {

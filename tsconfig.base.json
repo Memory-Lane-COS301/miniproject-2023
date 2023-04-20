@@ -42,6 +42,8 @@
       "@mp/api/users/feature": ["libs/api/users/feature/src/index.ts"],
       "@mp/api/users/util": ["libs/api/users/util/src/index.ts"],
       "@mp/app/add-memory": ["libs/app/add-memory/src/index.ts"],
+      "@mp/app/add-memory/data-access": ["libs/app/add-memory/data-access/src/index.ts"],
+      "@mp/app/add-memory/util": ["libs/app/add-memory/util/src/index.ts"],
       "@mp/app/app-models": ["libs/app/app-models/src/index.ts"],
       "@mp/app/auth/data-access": ["libs/app/auth/data-access/src/index.ts"],
       "@mp/app/auth/feature": ["libs/app/auth/feature/src/index.ts"],

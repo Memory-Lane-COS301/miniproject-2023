@@ -1,1 +1,1 @@
-export * from './memory-card.actions';
+export * from './add-memory.actions';

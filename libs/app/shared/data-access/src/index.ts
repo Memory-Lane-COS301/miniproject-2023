@@ -1,3 +1,5 @@
-export * from './lib/memory-card/memory-card.module';
-export * from './lib/memory-card/memory-card.api';
-export * from './memory-card.state';
+export * from './add-memory.module';
+
+export * from './add-memory.api';
+
+export * from './add-memory.state';
