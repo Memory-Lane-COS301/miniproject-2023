@@ -18,20 +18,26 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
     console.log(`${CreateCommentHandler.name}`);
 
     const request = command.request;
-    const userDoc = await this.usersRepository.findUser(request.comment.userId || " ");
+
+    if (!request.comment.userId || !request.comment.memoryId || !request.comment.text)
+      throw new Error('Missing required fields');
+
+    const userDoc = await this.usersRepository.findUser(request.comment.userId);
     const userData = userDoc.data();
 
-    if (!userData) throw new Error('User not found');
+    if (!userData)
+      throw new Error('User not found');
 
-    const memoryDoc = await this.memoriesRepository.findMemory(request.comment.memoryId || " ");
+    const memoryDoc = await this.memoriesRepository.findMemory(request.comment.memoryId);
     const memoryData = memoryDoc.data();
 
-    if (!memoryData) throw new Error('Memory not found');
+    if (!memoryData)
+      throw new Error('Memory not found');
 
     const data: IComment = {
       userId: userData.userId,
       memoryId: memoryData?.memoryId,
-      commentId: admin.firestore().collection('memories').doc().id,
+      commentId: admin.firestore().collection('memories').doc().id, // need to find a better fix for this
       username: userData?.username,
       profileImgUrl: userData?.profileImgUrl,
       text: request.comment?.text,
@@ -43,7 +49,8 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
     comment.create();
     comment.commit();
 
-    const response: ICreateCommentResponse = { comment };
+    delete data.userId;
+    const response: ICreateCommentResponse = { comment: data };
     return response;
   }
 }
