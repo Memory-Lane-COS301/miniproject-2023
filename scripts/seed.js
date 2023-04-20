@@ -19,8 +19,9 @@ firestore.settings({
 });
 
 async function seedData() {
-    // await seedUsers();
-    // await generateMemories(3, 5);
+    faker.seed(123)
+    await seedUsers();
+    await generateMemories(3, 5);
     await seedFriends();
 }
 
@@ -141,7 +142,7 @@ async function seedFriends() {
     for (userDoc of usersSnapshot.docs) {
         const numFriends = getRandomInt(5);
         const randomUsers = pickRandomElements(usersSnapshot.docs, 6);
-        const randomUserIds = randomUsers.map((doc) => { return doc.id; })
+        const randomUserIds = randomUsers.map(doc => doc.id)
         const index = randomUserIds.indexOf(userDoc.id);
 
         if (index !== -1)
@@ -154,7 +155,7 @@ async function seedFriends() {
                 created: Timestamp.now()
             };
 
-            await admin.firestore().collection('friends').doc().set(friend);
+            await admin.firestore().collection('friends').doc(faker.datatype.uuid()).set(friend);
         }
     }
 
