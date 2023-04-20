@@ -1,1 +1,1 @@
-// export * from './view-comments.actions';
+export * from './view-comments.actions';
