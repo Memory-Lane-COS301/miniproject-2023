@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AddMemoryPageComponent, Memory } from '@mp/app/shared/feature';
+import { IComment } from '@mp/api/memories/util';
 
 @Component({
   selector: 'app-feed',
