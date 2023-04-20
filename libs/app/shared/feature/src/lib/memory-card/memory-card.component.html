@@ -45,7 +45,7 @@
     <div *ngIf="showExpandedView" ngClass="comment-profileImg-username">
       <div *ngIf="memory.comments">
         <ion-avatar ngClass="memory-avatar-expanded">
-          <img src="{{ memory.comments[0]?.profileImgUrl }}" ngClass="memory-comment-profileImg" routerLink="/user-view" />
+          <img src="{{ memory.comments[0].profileImgUrl }}" ngClass="memory-comment-profileImg" routerLink="/user-view" />
         </ion-avatar>
         <div ngClass="memory-username-and-comment">
           <ion-text ngClass="memory-comment-username" routerLink="/user-view">{{ getFirstCommentUsername()}}</ion-text>
