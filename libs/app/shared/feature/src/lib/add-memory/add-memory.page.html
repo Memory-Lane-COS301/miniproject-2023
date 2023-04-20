@@ -19,7 +19,7 @@
     <ion-item color="dark" ngClass="modal-list-item description">
       <ion-label>Description: </ion-label>
       <ion-textarea
-        maxlength="130"
+        maxlength="80"
         placeholder="Type a description"
         [autoGrow]="true"
         ngClass="modal-list-input description-text"
@@ -46,7 +46,7 @@
     <ion-item ngClass="preview" lines="none" color="dark">
       <ion-label>Preview memory capsule: </ion-label>
     </ion-item>
-    <ion-card ngClass="memory-card" color="none">
+    <!-- <ion-card ngClass="memory-card" color="none">
       <div ngClass="memory-img">
         <img
           style="
@@ -74,7 +74,71 @@
           >{{ currentDate | date:'dd MMMM yyyy' }}</ion-text
         >
       </ion-card-content>
-    </ion-card>
+    </ion-card> -->
+    <ion-card [ngClass]="{ 'memory-card': !showExpandedView, 'memory-card-expanded': showExpandedView }" color="none">
+      <img *ngIf="!showExpandedView" ngClass="memory-img" style="background-image: url('{{ memory.imgUrl }}');" />
+      <ion-card-header>
+        <div
+          [ngClass]="{ 'memory-avatar-username': !showExpandedView, 'memory-avatar-username-expanded': showExpandedView }"
+        >
+          <ion-avatar slot="start">
+            <img
+              src="{{ memory.profileUrl }}"
+              [ngClass]="{
+                'memory-card-profileImage': !showExpandedView,
+                'memory-card-profileImage-expanded': showExpandedView
+              }"
+            />
+          </ion-avatar>
+          <ion-card-title
+            [ngClass]="{ 'memory-card-username': !showExpandedView, 'memory-card-username-expanded': showExpandedView }"
+            >{{ memory.username }}</ion-card-title
+          >
+        </div>
+      </ion-card-header>
+      <ion-card-content scroll-y="false" [ngClass]="{ 'ion-card-content-expanded': showExpandedView }">
+        <ion-card-title *ngIf="!showExpandedView" ngClass="memory-card-title">{{ memory.title }}</ion-card-title>
+        <ion-img *ngIf="showExpandedView" 
+          style="background-image: url('{{memory.imgUrl}}'); 
+                  width: 350px;
+                  height: 233px;
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-size: cover;">
+        </ion-img>
+        <p [ngClass]="{ 'memory-card-desc': !showExpandedView, 'memory-card-desc-expanded': showExpandedView }">
+          {{ memory.description }}
+        </p>
+        <ion-text *ngIf="!showExpandedView" class="ion-padding-top" ngClass="memory-date">{{
+          currentDate | date: 'dd MMMM yyyy'
+        }}</ion-text>
+        <span [ngClass]="{'span-post-timer': !showExpandedView, 'span-post-timer-expanded':showExpandedView}">
+          <ion-buttons slot="start">
+            <ion-text color="light" ngClass="btn-add-time">+</ion-text>
+          </ion-buttons>
+          <p ngClass="memory-card-timer">0d:3h:0min</p>
+        </span>
+        <div *ngIf="showExpandedView" class="commentIcon-viewAll">
+          <div class="memory-comment-and-icon">
+            <ion-icon ngClass="memory-comment-icon" name="chatbox-outline"></ion-icon>
+            <ion-label ngClass="memory-comment-text">Comment</ion-label>
+          </div>
+          <ion-text ngClass="comment-viewAll">View all comments <b>{{ memory.comments.length }}</b></ion-text>
+        </div>
+        <div *ngIf="showExpandedView" ngClass="comment-profileImg-username">
+          <ion-avatar *ngIf="memory.comments.length > 0" ngClass="memory-avatar-expanded">
+            <img src="{{ memory.comments[0]?.profileImgUrl }}" ngClass="memory-comment-profileImg" />
+          </ion-avatar>
+          <div *ngIf="memory.comments.length > 0" ngClass="memory-username-and-comment">
+            <ion-text ngClass="memory-comment-username">{{ memory.comments[0]?.username }}</ion-text>
+            <ion-text ngClass="memory-comment-usercomment">{{ memory.comments[0]?.comment }}</ion-text>
+          </div>
+        </div>
+        <ion-text (click)="changeMemoryView()" ngClass="memory-show-more">{{
+          !showExpandedView ? 'Show More' : 'Show Less'
+        }}</ion-text>
+      </ion-card-content>
+    </ion-card> 
   </ion-list>
   <ion-item ngClass="buttons" color="none">
     <ion-button slot="start" ngClass="button-cancel" (click)="cancel()">Cancel</ion-button>

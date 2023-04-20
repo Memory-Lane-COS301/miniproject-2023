@@ -8,7 +8,6 @@
 }
 .memory-img {
   position: absolute;
-  // background-image: url("https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -82,10 +81,20 @@ ion-card-header {
   border: 3px solid #686868;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 25px;
-  height: 500px;
+  height: 535px;
   width: 350px;
   background-color: #434343;
   transition: 0.5s;
+}
+.memory-card-title-expanded {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 27px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
 }
 .memory-img-expanded {
   width: 350px;

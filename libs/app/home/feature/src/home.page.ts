@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { SubscribeToProfile } from '@mp/app/profile/util';
@@ -16,7 +16,7 @@ export class HomePage {
 
   menuShown: boolean;
 
-  constructor(private readonly store: Store, private menubarService: MenubarService) {
+  constructor(private store: Store, private menubarService: MenubarService) {
     this.menuShown = this.menubarService.menuStatus;
   }
 

@@ -26,9 +26,10 @@
     </div>
   </ion-card-header>
   <ion-card-content scroll-y="false" [ngClass]="{ 'ion-card-content-expanded': showExpandedView }">
-    <ion-card-title *ngIf="!showExpandedView" ngClass="memory-card-title">{{ memory.title }}</ion-card-title>
+    <ion-card-title *ngIf="!showExpandedView" ngClass="memory-card-title" (click)="changeMemoryView()">{{ memory.title }}</ion-card-title>
     <ion-img *ngIf="showExpandedView" ngClass="memory-img-expanded" src="{{ memory.imgUrl }}"></ion-img>
-    <p [ngClass]="{ 'memory-card-desc': !showExpandedView, 'memory-card-desc-expanded': showExpandedView }">
+    <h4 *ngIf="showExpandedView" ngClass="memory-card-title-expanded">{{ memory.title }}</h4>
+    <p [ngClass]="{ 'memory-card-desc': !showExpandedView, 'memory-card-desc-expanded': showExpandedView }" (click)="changeMemoryView()">
       {{ memory.description }}
     </p>
     <ion-text *ngIf="!showExpandedView" class="ion-padding-top" ngClass="memory-date">{{
@@ -39,15 +40,15 @@
         <ion-icon ngClass="memory-comment-icon" name="chatbox-outline"></ion-icon>
         <ion-label ngClass="memory-comment-text">Comment</ion-label>
       </div>
-      <ion-text ngClass="comment-viewAll">View all comments <b>5000</b></ion-text>
+      <ion-text ngClass="comment-viewAll">View all comments <b>{{ memory.comments.length }}</b></ion-text>
     </div>
     <div *ngIf="showExpandedView" ngClass="comment-profileImg-username">
       <ion-avatar ngClass="memory-avatar-expanded">
-        <img src="{{ memory.comments[0].profileImgUrl }}" ngClass="memory-comment-profileImg" routerLink="/user-view" />
+        <img src="{{ memory.comments[0]?.profileImgUrl }}" ngClass="memory-comment-profileImg" routerLink="/user-view" />
       </ion-avatar>
       <div ngClass="memory-username-and-comment">
-        <ion-text ngClass="memory-comment-username" routerLink="/user-view">{{ memory.comments[0].username }}</ion-text>
-        <ion-text ngClass="memory-comment-usercomment">{{ memory.comments[0].comment }}</ion-text>
+        <ion-text ngClass="memory-comment-username" routerLink="/user-view">{{ memory.comments[0]?.username }}</ion-text>
+        <ion-text ngClass="memory-comment-usercomment">{{ memory.comments[0]?.comment }}</ion-text>
       </div>
     </div>
     <ion-text (click)="changeMemoryView()" ngClass="memory-show-more">{{
