@@ -11,14 +11,19 @@
 </ion-header>
 
 <ion-content color="dark">
-    <div *ngFor="let comment of Comments"  ngClass="comment-profileImg-username">
+    <div *ngFor="let comment of viewedComments$ | async"  ngClass="comment-profileImg-username">
         <ion-avatar ngClass="memory-avatar-expanded">
             <img src="{{ comment.profileImgUrl }}" ngClass="memory-comment-profileImg" routerLink="/user-view" />
         </ion-avatar>
         <div ngClass="memory-username-and-comment">
             <ion-text ngClass="memory-comment-username" routerLink="/user-view">{{ comment.username }}</ion-text>
-            <ion-text ngClass="memory-comment-usercomment">{{ comment.comment }}</ion-text>
+            <ion-text ngClass="memory-comment-usercomment">{{ comment.text }}</ion-text>
         </div>
+    </div>
+    <div *ngIf="viewedComments$ | async as comments">
+      <ion-item *ngIf="comments.length == 0" color="none">
+        <ion-text size="large" color="danger">No Comments</ion-text>
+      </ion-item>
     </div>
 </ion-content>
 
