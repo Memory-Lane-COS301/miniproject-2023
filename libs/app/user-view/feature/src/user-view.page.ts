@@ -11,11 +11,14 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { FriendRequestStatus } from '@mp/api/friend/util';
 import { Memory } from '@mp/app/shared/feature';
+import { StoreModule} from '@ngrx/store';
 
 @Component({
   selector: 'app-user-view',
   templateUrl: './user-view.page.html',
   styleUrls: ['./user-view.page.scss'],
+  //imports: [StoreModule.forRoot({})],
+  providers: [Store]
 })
 export class UserViewPageComponent {
   @Select(UserViewState.userView) userProfile$!: Observable<IProfile | null>;

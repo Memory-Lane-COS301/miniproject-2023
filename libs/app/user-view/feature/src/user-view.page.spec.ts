@@ -1,23 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserViewPageComponent } from './user-view.page';
-import { Store, StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
+//import { Store } from '@ngrx/store';
+import { Select, Store, NgxsModule } from '@ngxs/store';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('UserViewPageComponent', () => {
   let component: UserViewPageComponent;
   let fixture: ComponentFixture<UserViewPageComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [UserViewPageComponent],
-      imports: [StoreModule.forRoot({})],
+      imports: [NgxsModule.forRoot([])],
       providers: [Store],
-    })
-      .compileComponents()
-      .then(() => {
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+    }).compileComponents()
         fixture = TestBed.createComponent(UserViewPageComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
-      });
   });
 
   it('should create', () => {

@@ -5,6 +5,7 @@ import { UserViewRouting } from './user-view.routing';
 import { IonicModule } from '@ionic/angular';
 import { UserViewModule as UserViewDataAccessModule } from '@mp/app/user-view/data-access';
 import { SharedModule } from '@mp/app/shared/feature';
+import { StoreModule, Store } from '@ngrx/store';
 
 @NgModule({
   imports: [
@@ -12,8 +13,10 @@ import { SharedModule } from '@mp/app/shared/feature';
     UserViewRouting,
     IonicModule,
     SharedModule,
-    UserViewDataAccessModule
+    UserViewDataAccessModule,
+    //StoreModule.forRoot({}),
   ],
+  providers: [],
   declarations: [UserViewPageComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
