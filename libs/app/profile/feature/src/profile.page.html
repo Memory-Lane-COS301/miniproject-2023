@@ -3,10 +3,6 @@
     <ion-back-button [text]="previousPageName" defaultHref="/profile-view" color="light" slot="start"></ion-back-button>
     <ion-title color="light" class="ion-align-items-center">
       Profile Settings
-      <ng-container *ngIf="(profile$ | async) as profile;">
-        <ion-icon *ngIf="profile.status == 'Incomplete'" color="danger" name="alert-circle-outline"></ion-icon>
-        <ion-icon *ngIf="profile.status == 'Complete'" color="success" name="checkmark-circle-outline"></ion-icon>
-      </ng-container>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -15,10 +11,6 @@
     <ion-toolbar color="dark">
       <ion-title color="light" size="large" class="ion-align-items-center">
         Profile Settings
-        <ng-container *ngIf="(profile$ | async) as profile;">
-          <ion-icon *ngIf="profile.status == 'Incomplete'" color="danger" name="alert-circle-outline"></ion-icon>
-          <ion-icon *ngIf="profile.status == 'Complete'" color="success" name="checkmark-circle-outline"></ion-icon>
-        </ng-container>
       </ion-title>
     </ion-toolbar>
   </ion-header>

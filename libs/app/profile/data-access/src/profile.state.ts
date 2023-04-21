@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-    IProfile,
-} from '@mp/api/profiles/util';
-import {
   IUpdateUserRequest 
 } from '@mp/api/users/util'
 import { AuthState } from '@mp/app/auth/data-access';
@@ -10,9 +7,7 @@ import { Logout as AuthLogout } from '@mp/app/auth/util';
 import { SetError } from '@mp/app/errors/util';
 import {
     Logout,
-    SetProfile,
     SetUser,
-    SubscribeToProfile,
     SubscribeToUser,
     UpdateUserDetails
 } from '@mp/app/profile/util';
@@ -21,6 +16,7 @@ import produce from 'immer';
 import { tap } from 'rxjs';
 import { ProfilesApi } from './profiles.api';
 import { IUser } from '@mp/api/users/util';
+import { IProfile } from '@mp/api/profiles/util';
 
 export interface ProfileStateModel {
   profile: IProfile | null;
@@ -81,16 +77,6 @@ export class ProfileState {
     return ctx.dispatch(new AuthLogout());
   }
 
-  @Action(SubscribeToProfile)
-  subscribeToProfile(ctx: StateContext<ProfileStateModel>) {
-    const user = this.store.selectSnapshot(AuthState.user);
-    if (!user) return ctx.dispatch(new SetError('User not set'));
-
-    return this.profileApi
-      .profile$(user.uid)
-      .pipe(tap((profile: IProfile) => ctx.dispatch(new SetProfile(profile))));
-  }
-
   @Action(SubscribeToUser)
   subscribeToUser(ctx: StateContext<ProfileStateModel>) {
     const user = this.store.selectSnapshot(AuthState.user);
@@ -99,15 +85,6 @@ export class ProfileState {
     return this.profileApi
       .user$(user.uid)
       .pipe(tap((user: IUser) => ctx.dispatch(new SetUser(user))));
-  }
-
-  @Action(SetProfile)
-  setProfile(ctx: StateContext<ProfileStateModel>, { profile }: SetProfile) {
-    return ctx.setState(
-      produce((draft) => {
-        draft.profile = profile;
-      })
-    );
   }
 
   @Action(SetUser)

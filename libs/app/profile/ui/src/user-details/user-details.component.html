@@ -1,5 +1,5 @@
 <ng-container *ngIf="user$ | async as user; else loading">
-  <form [formGroup]="userDetailsForm" ngxsForm="user.userDetailsForm" (submit)="updateUserDetails()">
+  <form [formGroup]="userDetailsForm" ngxsForm="profile.userDetailsForm" (submit)="updateUserDetails()">
     <ion-card *ngIf="user">
       <ion-card-content>
         <ion-list>
