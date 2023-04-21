@@ -10,6 +10,8 @@ import {
   IUpdateOccupationDetailsResponse,
   IUpdatePersonalDetailsRequest,
   IUpdatePersonalDetailsResponse,
+  IGetProfileRequest,
+  IGetProfileResponse,
 } from '@mp/api/profiles/util';
 import { NestFactory } from '@nestjs/core';
 import * as functions from 'firebase-functions';
@@ -52,5 +54,21 @@ export const updateOccupationDetails = functions.https.onCall(
     const app = await NestFactory.createApplicationContext(CoreModule);
     const service = app.get(ProfilesService);
     return service.updateOccupationDetails(request);
+  },
+);
+
+export const getUserProfile = functions.https.onCall(
+  async (request: IGetProfileRequest): Promise<IGetProfileResponse> => {
+    const app = await NestFactory.createApplicationContext(CoreModule);
+    const service = app.get(ProfilesService);
+    return service.getProfileRequest(request);
+  },
+);
+
+export const getDeadMemories = functions.https.onCall(
+  async (request: IGetProfileRequest): Promise<IGetProfileResponse> => {
+    const app = await NestFactory.createApplicationContext(CoreModule);
+    const service = app.get(ProfilesService);
+    return service.getDeadMemoriesRequest(request);
   },
 );

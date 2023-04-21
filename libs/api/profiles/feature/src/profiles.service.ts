@@ -14,13 +14,17 @@ import {
   UpdateContactDetailsCommand,
   UpdateOccupationDetailsCommand,
   UpdatePersonalDetailsCommand,
+  IGetProfileRequest,
+  IGetProfileResponse,
+  GetProfileQuery,
+  GetDeadMemoriesQuery,
 } from '@mp/api/profiles/util';
 import { Injectable } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 @Injectable()
 export class ProfilesService {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
   async updateAccountDetails(request: IUpdateAccountDetailsRequest): Promise<IUpdateAccountDetailsResponse> {
     return await this.commandBus.execute<UpdateAccountDetailsCommand, IUpdateAccountDetailsResponse>(
@@ -50,5 +54,13 @@ export class ProfilesService {
     return await this.commandBus.execute<UpdateOccupationDetailsCommand, IUpdateOccupationDetailsResponse>(
       new UpdateOccupationDetailsCommand(request),
     );
+  }
+
+  async getProfileRequest(request: IGetProfileRequest): Promise<IGetProfileResponse> {
+    return await this.queryBus.execute<GetProfileQuery, IGetProfileResponse>(new GetProfileQuery(request));
+  }
+
+  async getDeadMemoriesRequest(request: IGetProfileRequest): Promise<IGetProfileResponse> {
+    return await this.queryBus.execute<GetDeadMemoriesQuery, IGetProfileResponse>(new GetDeadMemoriesQuery(request));
   }
 }

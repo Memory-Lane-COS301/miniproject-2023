@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+  - '16'
+
+dist: trusty
+
+branches:
+  only:
+    - dev
+
+cache:
+  directories:
+     - ./node_modules
+
+deploy:
+  cleanup: true
+  provider: firebase
+  token: "1//03UrKAVdHn-9yCgYIARAAGAMSNwF-L9Irqinx7k2eBrgHr6DHB_7-ScgGGHss1KKW95DMpkZjNl9b5F6xw8XqzJMFVN2QSN0n1Zo"

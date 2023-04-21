@@ -1,5 +1,7 @@
-import { IMemory } from '@mp/api/memories/util';
-import { IComment } from '@mp/api/memories/util';
+import { 
+  IMemory, 
+  MemoryCreatedEvent, 
+  IComment } from '@mp/api/memories/util';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Timestamp } from 'firebase-admin/firestore';
 
@@ -9,7 +11,7 @@ export class Memory extends AggregateRoot implements IMemory {
     public username?: string | null | undefined,
     public title?: string | null | undefined,
     public description?: string | null | undefined,
-    public imgUrl?:string | null | undefined,
+    public imgUrl?: string | null | undefined,
     public profileImgUrl?: string | null | undefined,
     public created?: Timestamp | null | undefined,
     public commentsCount?: number | null | undefined,
@@ -19,12 +21,10 @@ export class Memory extends AggregateRoot implements IMemory {
   ) {
     super();
   }
-
-  //TODO implement
-  create() {
-    return null;
-  }
   
+  create() {
+    this.apply(new MemoryCreatedEvent(this.toJSON()));
+  }
   static fromData(memory: IMemory): Memory {
     const instance = new Memory(
       memory.userId,
@@ -49,11 +49,11 @@ export class Memory extends AggregateRoot implements IMemory {
       username: this.username,
       title: this.title,
       description: this.description,
-      imgUrl:this.imgUrl,
-      profileImgUrl:this.profileImgUrl,
+      imgUrl: this.imgUrl,
+      profileImgUrl: this.profileImgUrl,
       created: this.created,
-      commentsCount:this.commentsCount,
-      remainingTime:this.remainingTime,
+      commentsCount: this.commentsCount,
+      remainingTime: this.remainingTime,
       alive: this.alive,
       comments: this.comments,
     };

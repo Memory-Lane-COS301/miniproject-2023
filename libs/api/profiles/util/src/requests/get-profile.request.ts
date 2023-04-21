@@ -1,5 +1,5 @@
-import { IUser } from "@mp/api/users/util";
+import { IUser } from '@mp/api/users/util';
 
-interface IGetProfileRequest{ 
-    user:IUser;
+export interface IGetProfileRequest {
+  user: IUser;
 }

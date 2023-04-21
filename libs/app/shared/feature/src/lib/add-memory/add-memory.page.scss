@@ -66,70 +66,236 @@
   --background: #ff0000;
 }
 
-.memory-card {
-  border: 3px solid #686868;
-  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 25px;
-  height: 280px;
-  color: #ffffff;
-  // text-align: center;
-}
-.memory-card-title {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 22px;
-  position: absolute;
-  top: 20px;
-  left: 40px;
-}
-.memory-card-desc {
-  font-family: 'Inter';
-  font-style: normal;
-  letter-spacing: 1px;
-  font-weight: 600;
-  font-size: 15px;
-  position: absolute;
-  width: 212px;
-  height: 68px;
-  left: 40px;
-  top: 40px;
-}
+
 .memory-card-timer {
   font-family: 'Lato';
   color: #000000;
   font-style: normal;
   font-weight: 700;
   font-size: 15px;
-  position: absolute;
-  padding: 2px;
-  top: 100px;
-  margin-top: 60px;
-  right: 20px;
+  padding: 5px 2px;
   background-color: #dddddd;
   border-radius: 5px;
 }
 .btn-add-time {
   font-family: 'Lato';
-  color: #ffffff;
+  color: #fff;
   font-style: normal;
   font-weight: bolder;
   font-size: 25px;
+}
+.span-post-timer {
+  display: flex;
+  position: fixed;
+  bottom: 40%;
+  right: 10px;
+}
+.span-post-timer-expanded {
+  display: flex;
+  position: fixed;
+  bottom: 10px;
+  left: 20px;
+}
+.memory-card {
+  border: 3px solid #686868;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  height: 280px;
+  width: 350px;
+  transition: 0.5s;
+}
+.memory-img {
   position: absolute;
-  // width: 97px;
-  top: 95px;
-  margin-top: 60px;
-  right: 85px;
+  // background-image: url("https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+
+  filter: blur(8px);
+  -webkit-filter: blur(20px);
+}
+.memory-card-title {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 27px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+.memory-avatar-username {
+  display: flex;
+  height: 100%;
+  padding-left: 10px;
+}
+.memory-card-username {
+  font-size: 20px;
+  margin-left: 5px;
+  margin-top: 10px;
+}
+.memory-card-profileImage {
+  width: 50px;
+  height: 50px;
+}
+ion-card-header {
+  padding: 10px 10px;
+}
+.memory-card-desc {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 15px;
+  width: 100%;
+  max-width: 200px;
+  max-height: 115px;
+  height: 115px;
+  margin-top: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .memory-date {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
-  position: absolute;
+  position: fixed;
   width: 212px;
   height: 68px;
-  top: 100px;
-  margin-top: 70px;
-  right: 0;
+  bottom: 0;
+  left: 10px;
+}
+.memory-card-time-ago {
+  position: fixed;
+  right: 20px;
+  color: #fff;
+  opacity: 0.7;
+}
+.memory-show-more {
+  position: fixed;
+  right: 15px;
+  color: #fff;
+  opacity: 0.7;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  padding: 2px 5px;
+}
+.ion-card-content-expanded {
+  padding: 0;
+}
+.memory-card-expanded {
+  border: 3px solid #686868;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  height: 500px;
+  width: 350px;
+  background-color: #434343;
+  transition: 0.5s;
+}
+.memory-img-expanded {
+  width: 350px;
+  height: 233px;
+  object-fit: cover;
+}
+.memory-avatar-username-expanded {
+  display: flex;
+  height: 100%;
+  padding-left: 10px;
+}
+.memory-card-username-expanded {
+  font-size: 22px;
+  margin-left: 5px;
+  margin-top: 10px;
+}
+.memory-card-profileImage-expanded {
+  width: 50px;
+  height: 50px;
+}
+.memory-card-desc-expanded {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 13px;
+  width: 100%;
+  height: 70px;
+  max-width: 330px;
+  max-height: 40px;
+  margin: 5px 0 2px 0;
+  padding: 0 3px 3px 3px;
+  border-bottom: 1px solid #686868;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.memory-card-time-ago-expanded {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  color: #fff;
+  opacity: 0.7;
+}
+.memory-show-more {
+  position: fixed;
+  right: 15px;
+  bottom: 20px;
+  color: #fff;
+  opacity: 0.7;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  padding: 2px 5px;
+}
+.memory-comment-text {
+  font-size: 16px;
+}
+.memory-comment-icon {
+  height: 20px;
+  width: 20px;
+  margin-right: 5px;
+}
+.memory-comment-and-icon {
+  padding: 0 5px 5px 5px;
+}
+.memory-comment-username {
+  font-size: 12px;
+  position: absolute;
+  top: 2px;
+  left: 40px;
+  opacity: 0.5;
+}
+.memory-comment-usercomment {
+  font-size: 12px;
+  position: absolute;
+  bottom: 15px;
+  left: 50px;
+  max-height: 13px;
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.memory-avatar-expanded {
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+}
+.comment-profileImg-username {
+  display: flex;
+  height: 50px;
+  position: relative;
+}
+.commentIcon-viewAll {
+  display: flex;
+  justify-content: space-between;
+}
+.comment-viewAll {
+  margin-right: 10px;
+  margin-top: 5px;
+  opacity: 0.8;
+}
+.comment-viewAll b {
+  opacity: 0.5;
 }

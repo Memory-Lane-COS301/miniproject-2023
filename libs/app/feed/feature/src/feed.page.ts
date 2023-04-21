@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AddMemoryPageComponent, Memory } from '@mp/app/shared/feature';
+import { IComment } from '@mp/api/memories/util';
 
 @Component({
   selector: 'app-feed',
@@ -11,7 +12,7 @@ import { AddMemoryPageComponent, Memory } from '@mp/app/shared/feature';
 export class FeedPageComponent {
   showExpandedView = false;
 
-  memoriesArray: any[] = [
+  memories: Memory[] = [
     {
       username: '@username',
       profileUrl:
@@ -30,10 +31,9 @@ export class FeedPageComponent {
         },
       ],
       timePosted: '2020-11-14T10:30:00.000-07:00',
+      alive: true
     },
   ];
-
-  memories: Memory[] = [];
 
   constructor(private modalController: ModalController) {}
 
@@ -56,7 +56,7 @@ export class FeedPageComponent {
   }
 
   get Memories() {
-    return this.memoriesArray;
+    return this.memories;
   }
 
   //function to covert timePosted to dd MMMM yyyy

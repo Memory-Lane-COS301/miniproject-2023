@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'api-memories-feature',
+  displayName: 'app-search-page-util',
   preset: '../../../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +11,5 @@ export default {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../../coverage/libs/api/memories/feature',
+  coverageDirectory: '../../../../coverage/libs/app/search-page/util',
 };

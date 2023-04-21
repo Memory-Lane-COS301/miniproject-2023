@@ -21,7 +21,7 @@ export class GetCommentsHandler
       const response: IGetCommentsResponse = { comments: comments };
       return response;
     } catch (e) {
-      throw new Error('Could not retrieve comments') 
+      throw new Error('Could not retrieve comments');
     }
   }
 }

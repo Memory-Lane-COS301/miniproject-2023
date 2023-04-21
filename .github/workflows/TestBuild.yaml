@@ -1,5 +1,5 @@
 name: Deploy to Firebase on push
-on: 
+on:
   push:
     branches:
       - dev
@@ -38,7 +38,6 @@ jobs:
         run: |
           source .env.prod
           yarn build:api:prod
-      
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
