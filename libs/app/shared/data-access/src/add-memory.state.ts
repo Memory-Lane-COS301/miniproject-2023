@@ -6,7 +6,7 @@ import { AddMemoryApi } from './add-memory.api';
 import { IMemory } from '@mp/api/memories/util';
 import { AddNewMemory } from '@mp/app/profile-view/util';
 import { CreateMemory } from "@mp/app/shared/util";
-import { SetFeed } from '@mp/app/feed/util';
+import { AddMemoryToFeedPage } from '@mp/app/feed/util';
 
 export interface AddMemoryStateModel {
     memory: IMemory;
@@ -63,7 +63,7 @@ export class AddMemoryState {
             const responseRef = await this.addMemoryApi.createMemory(request);
             const response = responseRef.data;
             return ctx.dispatch([
-                new SetFeed(response.memory),
+                new AddMemoryToFeedPage(response.memory),
                 new AddNewMemory(response.memory)
             ]);
         }
