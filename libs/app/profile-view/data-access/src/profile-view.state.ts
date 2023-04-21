@@ -100,8 +100,6 @@ export class ProfileViewState {
     async changeProfileViewImage(ctx: StateContext<ProfileViewStateModel>, { imageUrl, id } : ChangeProfileViewImage) {
         try {
             const state = ctx.getState();
-            let old_profileImgUrl = state.profile.user?.profileImgUrl;
-            old_profileImgUrl = imageUrl;
 
             const updated_user : IUser = {
                 userId: state.profile.userId,

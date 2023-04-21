@@ -5,6 +5,7 @@ export interface Comment {
 }
 
 export interface Memory {
+  
   username?: string;
   profileUrl?: string;
   imgUrl: string;

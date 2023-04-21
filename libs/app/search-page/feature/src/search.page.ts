@@ -6,8 +6,10 @@ import { GetUserProfileRequest } from '@mp/app/user-view/util';
 import { Select, Store } from '@ngxs/store';
 import { SearchPageState, SearchPageStateModel } from '../../data-access/src/search-page.state';
 import { IMemory } from '@mp/api/memories/util';
-import { Observable, skip } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SetSearchResults } from '@mp/app/search-results/util';
+import { Timestamp } from 'firebase-admin/firestore';
+import { Memory } from '@mp/app/shared/feature';
 
 @Component({
   selector: 'app-search',
@@ -48,7 +50,7 @@ export class SearchPageComponent {
       });
 
       this.navCtrl.navigateForward('/search-results');
-      // this.store.dispatch(new SetSearchResults())
+      this.store.dispatch(new SetSearchResults(this.searchResults));
     }
     //fetch user accounts based on search value and populate searchUsers array
   }
@@ -132,4 +134,30 @@ export class SearchPageComponent {
       this.store.dispatch(new GetUserProfileRequest(request));
     }
   }
+
+  // tempMem : Memory[] = [
+  //   {
+  //     userId: '18298782739172',
+  //     username: '@username',
+  //     profileImgUrl:
+  //       'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+  //     imgUrl:
+  //       'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80',
+  //     title: 'Last day of Highschool',
+  //     description: 'Example of a description for the memory',
+  //     comments: [
+  //       {
+  //         username: '@commentedUsername',
+  //         profileImgUrl:
+  //           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+  //         text:
+  //           'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+  //       },
+  //     ],
+  //     created: new Timestamp(1605371400, 0),
+  //   },
+  // ]
+  // get SearchResults() {
+  //   return this.tempMem;
+  // }
 }

@@ -4,9 +4,10 @@ import { tap } from 'rxjs/operators';
 // import { SearchResultsApi } from './search-results.api';
 import { SetSearchResults } from '@mp/app/search-results/util';
 import { IMemory } from "@mp/api/memories/util";
+import produce from "immer";
 
 export interface SearchResultsStateModel {
-    results: IMemory[];
+    results: IMemory[] | null | undefined;
 }
 
 @State<SearchResultsStateModel>({
@@ -25,11 +26,11 @@ export class SearchResultsState {
     }
 
     @Action(SetSearchResults)
-    async setSearchResults(ctx: StateContext<SearchResultsStateModel>, { searchResults }: SetSearchResults) {
-        const state = ctx.getState();
-        const results = searchResults;
-        ctx.setState({
-            results
-        });
+    async setSearchResults(ctx: StateContext<SearchResultsStateModel>, { results }: SetSearchResults) {
+        ctx.setState(
+            produce((draft) => {
+                draft.results = results;
+            })
+        );
     }
 }
