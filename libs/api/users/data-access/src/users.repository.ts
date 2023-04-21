@@ -6,7 +6,7 @@ import * as admin from 'firebase-admin';
 export class UsersRepository {
   async createUser(user: IUser) {
     console.log(user);
-    return await admin.firestore().collection('users').doc().create(user);
+    return await admin.firestore().collection('users').doc(user.userId).create(user);
   }
   
   async findUser(userId: string) {

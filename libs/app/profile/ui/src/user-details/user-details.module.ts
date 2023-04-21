@@ -5,10 +5,10 @@ import { IonicModule } from '@ionic/angular';
 import { ProfileModule } from '@mp/app/profile/data-access';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { ContactDetailsComponent } from './contact-details.component';
+import { UserDetailsComponent } from './user-details.component';
 
 @NgModule({
-  declarations: [ContactDetailsComponent],
+  declarations: [UserDetailsComponent],
   imports: [
     CommonModule,
     IonicModule,
@@ -17,6 +17,6 @@ import { ContactDetailsComponent } from './contact-details.component';
     ReactiveFormsModule,
     ProfileModule,
   ],
-  exports: [ContactDetailsComponent],
+  exports: [UserDetailsComponent],
 })
-export class ContactDetailsModule {}
+export class UserDetailsModule {}

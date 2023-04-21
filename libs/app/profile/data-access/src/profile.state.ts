@@ -17,7 +17,9 @@ import { SetError } from '@mp/app/errors/util';
 import {
     Logout,
     SetProfile,
+    SetUser,
     SubscribeToProfile,
+    SubscribeToUser,
     UpdateAccountDetails,
     UpdateAddressDetails,
     UpdateContactDetails,
@@ -28,10 +30,12 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
 import { tap } from 'rxjs';
 import { ProfilesApi } from './profiles.api';
+import { IUser } from '@mp/api/users/util';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ProfileStateModel {
   profile: IProfile | null;
+  user: IUser | null;
   accountDetailsForm: {
     model: {
       displayName: string | null;
@@ -85,6 +89,7 @@ export interface ProfileStateModel {
   name: 'profile',
   defaults: {
     profile: null,
+    user: null,
     accountDetailsForm: {
       model: {
         displayName: null,
@@ -146,6 +151,11 @@ export class ProfileState {
     return state.profile;
   }
 
+  @Selector()
+  static user(state: ProfileStateModel) {
+    return state.user;
+  }
+
   @Action(Logout)
   async logout(ctx: StateContext<ProfileStateModel>) {
     return ctx.dispatch(new AuthLogout());
@@ -161,11 +171,30 @@ export class ProfileState {
       .pipe(tap((profile: IProfile) => ctx.dispatch(new SetProfile(profile))));
   }
 
+  @Action(SubscribeToUser)
+  subscribeToUser(ctx: StateContext<ProfileStateModel>) {
+    const user = this.store.selectSnapshot(AuthState.user);
+    if (!user) return ctx.dispatch(new SetError('User not set'));
+
+    return this.profileApi
+      .user$(user.uid)
+      .pipe(tap((user: IUser) => ctx.dispatch(new SetUser(user))));
+  }
+
   @Action(SetProfile)
   setProfile(ctx: StateContext<ProfileStateModel>, { profile }: SetProfile) {
     return ctx.setState(
       produce((draft) => {
         draft.profile = profile;
+      })
+    );
+  }
+
+  @Action(SetUser)
+  setUser(ctx: StateContext<ProfileStateModel>, { user }: SetUser) {
+    return ctx.setState(
+      produce((draft) => {
+        draft.user = user;
       })
     );
   }

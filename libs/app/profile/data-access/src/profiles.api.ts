@@ -14,6 +14,9 @@ import {
     IUpdatePersonalDetailsRequest,
     IUpdatePersonalDetailsResponse
 } from '@mp/api/profiles/util';
+import {
+  IUser
+} from '@mp/api/users/util'
 
 @Injectable()
 export class ProfilesApi {
@@ -33,6 +36,17 @@ export class ProfilesApi {
       toFirestore: (it: IProfile) => it,
     });
     return docData(docRef, { idField: 'id' });
+  }
+
+  user$(id: string) {
+    const docRef = doc(
+      this.firestore,
+      `users/${id}`
+    ).withConverter<IUser>({
+      fromFirestore: snapshot => snapshot.data() as IUser,
+      toFirestore: it => it,
+    });
+    return docData(docRef);
   }
 
   async updateAccountDetails(request: IUpdateAccountDetailsRequest) {
