@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { IProfile, IGetProfileRequest } from "@mp/api/profiles/util"
-import { CreateCommentRequest, GetCommentsRequest, GetProfileRequest, SetProfileView } from "@mp/app/profile-view/util"
+import { ChangeProfileViewImage, CreateCommentRequest, GetCommentsRequest, GetProfileRequest, SetProfileView } from "@mp/app/profile-view/util"
 import { Injectable } from '@angular/core';
 import { AuthState } from '@mp/app/auth/data-access';
 import { SetError } from '@mp/app/errors/util';
@@ -66,7 +66,7 @@ export class EditProfilePhotoState {
             }
             const responseRef = await this.editProfilePhotoApi.getUserProfile(request);
             const response = responseRef.data;
-            return ctx.dispatch(new SetProfileView(response.profile.userId, undefined, undefined, response.profile.user?.profileImgUrl ?? ''));
+            return ctx.dispatch(new ChangeProfileViewImage(_profileImgUrl, _userId));
         }
         catch(error){
             return ctx.dispatch(new SetError((error as Error).message));
