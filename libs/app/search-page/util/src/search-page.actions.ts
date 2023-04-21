@@ -13,3 +13,8 @@ export class SetSearchPage {
   static readonly type = '[SearchPage] SetSearchResults';
   constructor(public readonly profile: IProfile) {}
 }
+
+export class AddNewSearchValue {
+  static readonly type = '[SearchPage] AddNewSearchValue';
+  constructor(public readonly searchValue : string) {}
+}
