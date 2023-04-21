@@ -1,3 +1,4 @@
+import { IUser } from '@mp/api/users/util';
 import { IMemory } from '@mp/api/memories/util';
 import { IComment } from '@mp/api/memories/util';
 import { Injectable } from '@nestjs/common';
@@ -26,6 +27,20 @@ export class MemoriesRepository {
       .get();
   }
 
+  async findMemory(memoryId: string) {
+    return await admin
+      .firestore()
+      .collection('memories')
+      .withConverter<IMemory>({
+        fromFirestore: (snapshot) => {
+          return snapshot.data() as IMemory;
+        },
+        toFirestore: (it: IMemory) => it,
+      })
+      .doc(memoryId)
+      .get();
+  }
+
   async getComments(memoryId: string): Promise<IComment[]> {
     const querySnapshot = await admin.firestore().collection(`memories/${memoryId}/comments`).get();
 
@@ -41,8 +56,16 @@ export class MemoriesRepository {
   }
 
   async createComment(comment: IComment) {
-    return null;
+        if (!comment.commentId)
+          throw Error('Missing commentId');
+
+        return await admin
+          .firestore()
+          .collection(`memories/${comment.memoryId}/comments`)
+          .doc(comment.commentId)
+          .set(comment);
   }
+  
 
   async editComment(comment: IComment) {
     return null;

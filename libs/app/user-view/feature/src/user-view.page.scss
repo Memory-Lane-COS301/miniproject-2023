@@ -87,59 +87,9 @@
   font-size: 25px;
   font-weight: bold;
 }
-
-//---------------<app-user-memories>------------------------------
 .memory-list {
   background-color: transparent;
   padding-right: 8px;
-}
-.memory-card {
-  border: 3px solid #686868;
-  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 25px;
-  height: 280px;
-}
-.memory-img {
-  position: absolute;
-  background-image: url('https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
-
-  filter: blur(8px);
-  -webkit-filter: blur(20px);
-}
-.memory-card-title {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 22px;
-  position: absolute;
-  top: 20px;
-}
-.memory-card-desc {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 800;
-  font-size: 12px;
-  position: absolute;
-  width: 212px;
-  height: 68px;
-  left: 40px;
-  top: 40px;
-}
-.memory-date {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  position: absolute;
-  width: 212px;
-  height: 68px;
-  top: 100px;
-  margin-top: 60px;
 }
 
 //------------ success animation when adding a friend

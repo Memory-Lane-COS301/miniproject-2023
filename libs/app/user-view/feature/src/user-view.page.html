@@ -5,7 +5,7 @@
       slot="start"
       color="light"
       defaultHref="/home/search"
-      text="Search"
+      text="Back"
     ></ion-back-button>
     <ion-title ngClass="title">Memory Lane</ion-title>
     <small slot="end" ngClass="account-time">22h:52m:11s</small>
@@ -61,57 +61,6 @@
   <!----------------------------------------------------------------------->
 
   <ion-list ngClass="memory-list">
-    <ion-card ngClass="memory-card" color="none">
-      <div ngClass="memory-img"></div>
-      <ion-card-header>
-        <ion-card-title ngClass="memory-card-title">Last day of highschool</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p ngClass="memory-card-desc">
-          Example text for what a user might write about their memory. The text is only limited to display about this
-          much...
-        </p>
-        <ion-text class="ion-padding-top" ngClass="memory-date">14 November 2020</ion-text>
-      </ion-card-content>
-    </ion-card>
-    <ion-card ngClass="memory-card" color="none">
-      <div ngClass="memory-img"></div>
-      <ion-card-header>
-        <ion-card-title ngClass="memory-card-title">Last day of highschool</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p ngClass="memory-card-desc">
-          Example text for what a user might write about their memory. The text is only limited to display about this
-          much...
-        </p>
-        <ion-text class="ion-padding-top" ngClass="memory-date">14 November 2020</ion-text>
-      </ion-card-content>
-    </ion-card>
-    <ion-card ngClass="memory-card" color="none">
-      <div ngClass="memory-img"></div>
-      <ion-card-header>
-        <ion-card-title ngClass="memory-card-title">Last day of highschool</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p ngClass="memory-card-desc">
-          Example text for what a user might write about their memory. The text is only limited to display about this
-          much...
-        </p>
-        <ion-text class="ion-padding-top" ngClass="memory-date">14 November 2020</ion-text>
-      </ion-card-content>
-    </ion-card>
-    <ion-card ngClass="memory-card" color="none">
-      <div ngClass="memory-img"></div>
-      <ion-card-header>
-        <ion-card-title ngClass="memory-card-title">Last day of highschool</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p ngClass="memory-card-desc">
-          Example text for what a user might write about their memory. The text is only limited to display about this
-          much...
-        </p>
-        <ion-text class="ion-padding-top" ngClass="memory-date">14 November 2020</ion-text>
-      </ion-card-content>
-    </ion-card>
+      <app-memory-card *ngFor="let memory of Memories" [memory]="memory"></app-memory-card>
   </ion-list>
 </ion-content>

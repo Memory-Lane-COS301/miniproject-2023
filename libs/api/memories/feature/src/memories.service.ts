@@ -1,8 +1,10 @@
 import {
   ICreateMemoryRequest,
   ICreateMemoryResponse,
-  MemoryCreatedEvent,
+  ICreateCommentRequest,
+  ICreateCommentResponse,
   CreateMemoryCommand,
+  CreateCommentCommand,
   GetCommentsQuery,
   IGetCommentsRequest,
   IGetCommentsResponse,
@@ -20,5 +22,9 @@ export class MemoriesService {
 
   async getComments(request: IGetCommentsRequest): Promise<IGetCommentsResponse> {
     return await this.queryBus.execute<GetCommentsQuery, IGetCommentsResponse>(new GetCommentsQuery(request));
+  }
+
+  async createComment(request: ICreateCommentRequest): Promise<ICreateCommentResponse> {
+    return await this.commandBus.execute<CreateCommentCommand, ICreateCommentResponse>(new CreateCommentCommand(request));
   }
 }
