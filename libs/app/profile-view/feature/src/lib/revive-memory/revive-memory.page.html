@@ -5,36 +5,43 @@
 </ion-header>
 <ion-content color="dark">
   <ion-list ngClass="memory-list">
-    <ion-card
-      *ngFor="let element of elements"
-      (click)="selectedImage(element)"
-      [ngClass]="{ 'selected': element.selected }"
-      ngClass="memory-card"
-    >
-      <div ngClass="memory-img">
-        <img
-          style="
-                    position: absolute;
-                    background-image: url('{{ element.imageUrl }}');
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    background-size: cover;
-                    width: 100%;
-                    height: 100%;
-
-                    filter: blur(8px);
-                    -webkit-filter: blur(8px);"
-        />
-      </div>
+    <ion-card *ngFor="let memory of deadMemories$ | async" ngClass="memory-card" color="none">
+      <img ngClass="memory-img" style="background-image: url('{{ memory.imgUrl }}');" />
       <ion-card-header>
-        <ion-card-title ngClass="memory-card-title">{{ element.title }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p ngClass="memory-card-desc">{{ element.description }}</p>
-        <p ngClass="memory-card-timer">0d:0h:4min</p>
-        <ion-text class="ion-padding-top" ngClass="memory-date" color="light"
-          >{{ element.date | date:'dd MMMM yyyy' }}</ion-text
+        <div
+          ngClass="memory-avatar-username"
         >
+          <ion-avatar slot="start">
+            <img
+              src="{{ memory.profileImgUrl }}"
+              ngClass="memory-card-profileImage"
+            />
+          </ion-avatar>
+          <ion-card-title
+            ngClass="memory-card-username"
+            >{{ memory.username }}</ion-card-title
+          >
+          <ion-text
+            ngClass="memory-card-time-ago"
+            >{{ calculateHowLongAgo(memory.created) }}</ion-text
+          >
+        </div>
+      </ion-card-header>
+      <ion-card-content scroll-y="false">
+        <ion-card-title ngClass="memory-card-title">{{ memory.title }}</ion-card-title>
+        <p ngClass="memory-card-desc">
+          {{ memory.description }}
+        </p>
+        <ion-text class="ion-padding-top" ngClass="memory-date">{{
+          convertTimePostedToDate(memory.created)
+        }}</ion-text>
+        <span ngClass="span-post-timer">
+          <ion-buttons slot="start">
+            <ion-text color="light" ngClass="btn-add-time">+</ion-text>
+          </ion-buttons>
+          <p ngClass="memory-card-timer">0d:3h:0min</p>
+        </span>
+        <ion-text ngClass="memory-show-more">Show More</ion-text>
       </ion-card-content>
     </ion-card>
   </ion-list>

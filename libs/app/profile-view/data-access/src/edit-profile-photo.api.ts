@@ -24,23 +24,17 @@ export class EditProfilePhotoApi {
 //     return docData(docRef, { idField: 'id' });
 //   }
 
-  async getUserProfile(request: IGetProfileRequest) {
-    return await httpsCallable<
-      IGetProfileRequest,
-      IGetProfileResponse
-    >(
-      this.functions,
-      'getUserProfile'
-    )(request);
+  async updateProfileImg(id: string, imgUrl: string) {
+      const docRef = doc(
+        this.firestore,
+        `users/${id}${imgUrl}`
+    ).withConverter<IUser>({
+      fromFirestore: (snapshot) => {
+        return snapshot.data() as IUser;
+      },
+      toFirestore: (it: IUser) => it,
+    });
+    return docData(docRef, { idField: 'id' });
   }
 
-//   async getUserProfileImgUrl(request: IGetProfileRequest) {
-//     return await httpsCallable<
-//       IGetProfileRequest,
-//       IGetProfileResponse
-//     >(
-//       this.functions,
-//       'getUserProfileImgUrl'
-//     )(request);
-//   }
 }

@@ -2,59 +2,124 @@
   background-color: transparent;
   padding-right: 8px;
 }
-.memory-card {
-  border: 3px solid #686868;
-  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 25px;
-  height: 280px;
-  color: #ffffff;
-  // text-align: center;
-}
-.memory-card-title {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 22px;
-  position: absolute;
-  top: 20px;
-  left: 40px;
-}
-.memory-card-desc {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 800;
-  font-size: 12px;
-  position: absolute;
-  width: 212px;
-  height: 68px;
-  left: 40px;
-  top: 40px;
-}
 .memory-card-timer {
   font-family: 'Lato';
   color: #ff0000;
   font-style: normal;
   font-weight: 700;
   font-size: 15px;
-  position: absolute;
-  padding: 2px;
-  top: 100px;
-  margin-top: 60px;
-  right: 20px;
+  padding: 5px 2px;
   background-color: #dddddd;
   border-radius: 5px;
+}
+.btn-add-time {
+  font-family: 'Lato';
+  color: #fff;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 25px;
+}
+.span-post-timer {
+  display: flex;
+  position: fixed;
+  bottom: 40%;
+  right: 10px;
+}
+.memory-card {
+  border: 3px solid #686868;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  height: 280px;
+  width: 350px;
+  transition: 0.5s;
+}
+.memory-img {
+  position: absolute;
+  // background-image: url("https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+
+  filter: blur(8px);
+  -webkit-filter: blur(20px);
+}
+.memory-card-title {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 27px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+.memory-avatar-username {
+  display: flex;
+  height: 100%;
+  padding-left: 10px;
+}
+.memory-card-username {
+  font-size: 20px;
+  margin-left: 5px;
+  margin-top: 10px;
+}
+.memory-card-profileImage {
+  width: 50px;
+  height: 50px;
+}
+ion-card-header {
+  padding: 10px 10px;
+}
+.memory-card-desc {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 15px;
+  width: 100%;
+  max-width: 200px;
+  max-height: 115px;
+  height: 115px;
+  margin-top: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .memory-date {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
-  position: absolute;
+  position: fixed;
   width: 212px;
   height: 68px;
-  top: 100px;
-  margin-top: 70px;
-  right: 0;
+  bottom: 0;
+  left: 10px;
+}
+.memory-card-time-ago {
+  position: fixed;
+  right: 20px;
+  color: #fff;
+  opacity: 0.7;
+}
+.memory-show-more {
+  position: fixed;
+  right: 15px;
+  color: #fff;
+  opacity: 0.7;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  padding: 2px 5px;
+}
+.memory-show-more {
+  position: fixed;
+  right: 15px;
+  bottom: 20px;
+  color: #fff;
+  opacity: 0.7;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  padding: 2px 5px;
 }
 
 .button-add,

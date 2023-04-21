@@ -5,7 +5,7 @@ import { AddMemoryPageComponent, ProfileImage } from '@mp/app/shared/feature';
 import { ReviveMemoryPageComponent } from './lib/revive-memory/revive-memory.page';
 import { MenubarService, ProfileImageService } from '@mp/app/services/feature';
 import { formatDate } from '@angular/common';
-import { GetCommentsRequest, GetProfileRequest } from '@mp/app/profile-view/util';
+import { GetCommentsRequest, GetProfileRequest, SetEditProfileImageUserId, SetReviveMemoryUserId } from '@mp/app/profile-view/util';
 import { Select, Store } from '@ngxs/store';
 import { ProfileViewState } from '../../data-access/src/profile-view.state';
 import { Observable } from 'rxjs';
@@ -68,6 +68,13 @@ export class ProfileViewPageComponent implements OnInit {
       component: EditProfilePhotoPageComponent,
     });
 
+    let id : string | null | undefined = '';
+    this.profileView$.subscribe((profileView) => {
+      id = profileView?.userId;
+    })
+
+    this.store.dispatch(new SetEditProfileImageUserId(id));
+
     await modal.present();
 
     const { data } = await modal.onDidDismiss();
@@ -77,6 +84,13 @@ export class ProfileViewPageComponent implements OnInit {
     const modal = await this.modalController.create({
       component: ReviveMemoryPageComponent,
     });
+
+    let id : string | null | undefined = '';
+    this.profileView$.subscribe((profileView) => {
+      id = profileView?.userId;
+    })
+
+    this.store.dispatch(new SetReviveMemoryUserId(id));
 
     await modal.present();
 
@@ -147,9 +161,7 @@ export class ProfileViewPageComponent implements OnInit {
 
   //function that executes when the page is about to enter
   ionViewWillEnter() {
-    this.store.dispatch(new GetProfileRequest()).subscribe((data) => {
-      this.profileView$ = data;
-    });
+    this.store.dispatch(new GetProfileRequest());
   }
 
   openViewedComments() {
