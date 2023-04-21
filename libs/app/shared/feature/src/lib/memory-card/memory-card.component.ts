@@ -1,7 +1,11 @@
 import { formatDate } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Memory } from '../../Memory';
+import { SetViewedComments } from '@mp/app/view-comments/util';
+import { Store } from '@ngxs/store';
+import { IMemory } from '@mp/api/memories/util';
+import { Timestamp } from 'firebase-admin/firestore';
 
 @Component({
   selector: 'app-memory-card',
@@ -26,14 +30,29 @@ export class MemoryCardComponent {
           'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
       },
     ],
-    timePosted: '2020-11-14T10:30:00.000-07:00',
+    timePosted:  '2020-11-14T10:30:00.000-07:00',
     alive: true
   };
 
   showExpandedView = false;
   previousPageName = '';
+  addingNewComment = false;
+  new_comment: string = '';
+  first_comment_text : string | null | undefined = '';
+  first_comment_username : string | null | undefined = '';
 
-  constructor(private navCtrl: NavController) {}
+  constructor(
+    private navCtrl: NavController,
+    private store: Store
+  ) {}
+
+  setAddingNewComment() {
+    this.addingNewComment = true;
+  }
+
+  unsetAddingNewComment() {
+    this.addingNewComment = false;
+  }
 
   changeMemoryView() {
     this.showExpandedView = !this.showExpandedView;
@@ -41,12 +60,16 @@ export class MemoryCardComponent {
 
   //function to covert timePosted to dd MMMM yyyy
   convertTimePostedToDate(timePosted: string): string {
+    if (!timePosted) return 'no time';
+
     const date = new Date(timePosted);
     return formatDate(date, 'dd MMMM yyyy', 'en-US');
   }
 
   //function to use timePosted to calculate how long ago the memory was posted
   calculateHowLongAgo(timePosted: string): string {
+    if (!timePosted) return 'no time';
+
     const date = new Date(timePosted);
     const timeDifference = Date.now() - date.getTime();
 
@@ -74,6 +97,37 @@ export class MemoryCardComponent {
   }
 
   openUserProfile() {
-    this.navCtrl.navigateForward('/user-view');
+    const currentPosition = window.pageYOffset;
+    this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
+  }
+
+  setViewedComments() {
+    const currentPosition = window.pageYOffset;
+    this.store.dispatch(new SetViewedComments(this.memory));
+    this.navCtrl.navigateForward('/view-comments', { state: { scrollPosition: currentPosition } });
+  }
+
+  getFirstCommentText() {
+    if (this.memory.comments) {
+      this.first_comment_text = this.memory.comments[0].comment;
+    }
+
+    return this.first_comment_text;
+  }
+
+  getFirstCommentUsername() {
+    if (this.memory.comments) {
+      this.first_comment_username = this.memory.comments[0].username;
+    }
+
+    return this.first_comment_username;
+  }
+
+  getCommentsLength() {
+    if (this.memory.comments) {
+      return this.memory.comments.length;
+    }
+
+    return 0;
   }
 }

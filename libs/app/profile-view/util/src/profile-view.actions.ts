@@ -15,7 +15,8 @@ export class SetProfileView {
     constructor(
         public readonly id: string,
         public readonly _profile?: IProfile,
-        public readonly memory?: IMemory
+        public readonly memory?: IMemory,
+        public readonly imageUrl?: string
     ) {}
 }
 
@@ -41,4 +42,8 @@ export class CreateFriendRequest {
 export class UpdateFriendRequest {
     static readonly type = '[ProfileView] UpdateFriendRequest';
     constructor(public readonly friend: IUser) {}
+}
+
+export class SubscribeToProfile {
+    static readonly type = '[ProfileView] SubscribeToProfile';
 }

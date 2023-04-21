@@ -17,7 +17,7 @@ export class GetProfileHandler implements IQueryHandler<GetProfileQuery, IGetPro
 
     const profileMemories = await this.repository.getProfileMemories(request.user);
     const CurrentMemories: IMemory[] = [];
-
+  
     const profile: IProfile = {
       userId: request.user.userId,
       memories: profileMemories,

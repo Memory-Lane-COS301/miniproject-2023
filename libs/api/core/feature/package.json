@@ -1,10 +1,24 @@
 {
   "name": "@mp/api/core/feature",
   "version": "0.0.1",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "jest": {
+      "transform": {
+        "^.+\\.tsx?$": "ts-jest"
+      },
+      "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+      "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json",
+        "node"
+      ]
+    }
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",

@@ -1,5 +1,5 @@
-import {IFriendRequest} from '../interfaces'; 
+import { IFriendRequest } from '../interfaces';
 
-interface ICreateFriendRequest{ 
-    friendRequest: IFriendRequest;
+export interface ICreateFriendRequest {
+  friendRequest: IFriendRequest;
 }

@@ -6,8 +6,8 @@ import { MemoriesRepository } from '@mp/api/memories/data-access';
 export class CommentCreatedHandler implements IEventHandler<CommentCreatedEvent> {
   constructor(private readonly repository: MemoriesRepository) {}
 
-  //TODO implement
   async handle(event: CommentCreatedEvent) {
-    return null;
+    console.log(`${CommentCreatedHandler.name}`);
+    await this.repository.createComment(event.comment);
   }
 }

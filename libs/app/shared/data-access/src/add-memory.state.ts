@@ -73,7 +73,7 @@ export class AddMemoryState {
             const response = responseRef.data;
             return ctx.dispatch([
                 new SetFeed(response.memory),
-                new SetProfileView(response.memory?.userId ?? '', undefined, response.memory)
+                new SetProfileView(response.memory?.userId ?? '', undefined, response.memory, undefined)
             ]);
         }
         catch(error){

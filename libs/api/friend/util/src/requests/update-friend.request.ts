@@ -1,5 +1,4 @@
-//import {IFriendRequest} from '../interfaces'; 
-import{IFriendRequest} from '@mp/api/friend/util';
-interface IUpdateFriendRequest{ 
-    friendRequest: IFriendRequest;
+import { IFriendRequest } from '../interfaces';
+export interface IUpdateFriendRequest {
+  friendRequest: IFriendRequest;
 }

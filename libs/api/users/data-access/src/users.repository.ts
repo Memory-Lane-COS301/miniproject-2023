@@ -8,7 +8,7 @@ export class UsersRepository {
     console.log(user);
     return await admin.firestore().collection('users').doc().create(user);
   }
-
+  
   async findUser(userId: string) {
     return await admin
       .firestore()
@@ -20,6 +20,20 @@ export class UsersRepository {
         toFirestore: (it: IUser) => it,
       })
       .doc(userId)
+      .get();
+  }
+  
+  async findUserWithUsername(username: string) {
+    return await admin
+      .firestore()
+      .collection('users')
+      .where("username", "==", username)
+      .withConverter<IUser>({
+        fromFirestore: (snapshot) => {
+          return snapshot.data() as IUser;
+        },
+        toFirestore: (it: IUser) => it,
+      })
       .get();
   }
 }

@@ -1,1 +1,1 @@
-export * from './friend-request.created';
+export * from './friend-request.created.event';

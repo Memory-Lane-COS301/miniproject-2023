@@ -1,7 +1,10 @@
 import {
   ICreateMemoryRequest,
   ICreateMemoryResponse,
+  ICreateCommentRequest,
+  ICreateCommentResponse,
   CreateMemoryCommand,
+  CreateCommentCommand,
   GetCommentsQuery,
   GetFeedMemoriesQuery,
   IGetCommentsRequest,
@@ -16,7 +19,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 export class MemoriesService {
   constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
-  async createMemory(request: ICreateMemoryRequest): Promise<ICreateMemoryResponse> {
+  async createMemory(request: ICreateMemoryRequest) {
     return await this.commandBus.execute<CreateMemoryCommand, ICreateMemoryResponse>(new CreateMemoryCommand(request));
   }
 
@@ -26,5 +29,9 @@ export class MemoriesService {
 
   async getFeedMemories(request: IGetFeedMemoriesRequest): Promise<IGetFeedMemoriesResponse> {
     return await this.queryBus.execute<GetFeedMemoriesQuery, IGetFeedMemoriesResponse>(new GetFeedMemoriesQuery(request));
+  }
+
+  async createComment(request: ICreateCommentRequest): Promise<ICreateCommentResponse> {
+    return await this.commandBus.execute<CreateCommentCommand, ICreateCommentResponse>(new CreateCommentCommand(request));
   }
 }

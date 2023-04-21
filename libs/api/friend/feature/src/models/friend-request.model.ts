@@ -1,14 +1,14 @@
-import { IFriendRequest,FriendRequestStatus, FriendRequestCreatedEvent } from '@mp/api/friend/util';
+import { IFriendRequest, FriendRequestStatus, FriendRequestCreatedEvent } from '@mp/api/friend/util';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Timestamp } from 'firebase-admin/firestore';
 
 export class FriendRequest extends AggregateRoot implements IFriendRequest {
   constructor(
     public senderId: string,
-    public receiverId: string ,
-    public status: FriendRequestStatus,
-    public lastUpdated?: Timestamp,
-    public created?:Timestamp,
+    public receiverId?: string | null | undefined,
+    public status?: FriendRequestStatus | null | undefined,
+    public lastUpdated?: Timestamp | null | undefined,
+    public created?: Timestamp | null | undefined,
   ) {
     super();
   }
@@ -25,16 +25,15 @@ export class FriendRequest extends AggregateRoot implements IFriendRequest {
   }
 
   create() {
-    this.apply(new FriendRequestCreatedEvent
-        (this.toJSON()));
+    this.apply(new FriendRequestCreatedEvent(this.toJSON()));
   }
 
   toJSON(): IFriendRequest {
     return {
-      senderId:this.senderId,  
-      receiverId:this.receiverId,
-      status:this.status,
-      lastUpdated:this.lastUpdated,
+      senderId: this.senderId,
+      receiverId: this.receiverId,
+      status: this.status,
+      lastUpdated: this.lastUpdated,
       created: this.created,
     };
   }

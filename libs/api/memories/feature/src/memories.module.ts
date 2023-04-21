@@ -6,7 +6,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { 
   CreateMemoryHandler,
   CreateCommentHandler,
-  UpdatedCommentHandler
+  UpdateCommentHandler
 } from './commands';
 import {
   GetCommentsHandler,
@@ -23,7 +23,7 @@ import { MemoriesService } from './memories.service';
 export const CommandHandlers = [
   CreateMemoryHandler,
   CreateCommentHandler,
-  UpdatedCommentHandler
+  UpdateCommentHandler
 ];
 export const QueryHandlers = [
   GetCommentsHandler,

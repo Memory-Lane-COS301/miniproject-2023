@@ -50,7 +50,6 @@ pubsub-debug.log
 
 # Emulators
 .emulators
-scripts
 
 # Keys
 .keys/*.json

@@ -1,5 +1,5 @@
 import { ICreateMemoryRequest } from '../requests';
 
 export class CreateMemoryCommand {
-  constructor(public readonly: ICreateMemoryRequest) {}
+  constructor(public readonly request: ICreateMemoryRequest) {}
 }
