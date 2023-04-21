@@ -38,7 +38,10 @@
     [ngClass]="{'search-list-searched': showFilters, 'search-list': !showFilters}"
   >
     <ion-item color="none" *ngFor="let result of results$ | async" ngClass="search-item" (click)="openUserProfile(result.userId, result.username)">
-      <ion-text>{{result}}</ion-text>
+      <ion-avatar ngClass="result-avatar">
+        <img src="{{ result.profileImgUrl }}" ngClass="result-profileImg" />
+      </ion-avatar>
+      <ion-text ngClass="result-username">{{ result.username }}</ion-text>
     </ion-item>
   </ion-list>
 </ion-content>
