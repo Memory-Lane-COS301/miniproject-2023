@@ -1,76 +1,114 @@
 <ng-container *ngIf="user$ | async as user; else loading">
-  <form [formGroup]="userDetailsForm" ngxsForm="user.userDetailsForm" (submit)="updateAccountDetails()">
-    <ion-card *ngIf="user as user">
-      <ion-card-header>
-        <ion-card-title class="ion-align-items-center">
-          User Details
-        </ion-card-title>
-      </ion-card-header>
+  <form [formGroup]="userDetailsForm" ngxsForm="user.userDetailsForm" (submit)="updateUserDetails()">
+    <ion-card *ngIf="user">
       <ion-card-content>
         <ion-list>
           <ion-item class="ion-no-padding">
             <ion-label position="floating" class="required">Name</ion-label>
             <ion-input
               type="text"
-              minlength="4"
+              minlength="1"
               maxlength="64"
               required="true"
-              placeholder="Enter name"
+              placeholder="Name"
               formControlName="name"
               [value]="user.name"
               autocomplete="name"
             ></ion-input>
           </ion-item>
-          <!-- <ion-text
-            *ngIf="displayName?.invalid && (displayName?.dirty || displayName?.touched)"
+          <ion-text
+            *ngIf="name?.invalid && (name?.dirty || name?.touched)"
             class="ion-padding-start"
             color="danger"
           >
-            <small>{{ displayNameError }}</small>
+            <small>{{ nameError }}</small>
           </ion-text>
+
+          <ion-item class="ion-no-padding">
+            <ion-label position="floating" class="required">Surname</ion-label>
+            <ion-input
+              type="text"
+              minlength="1"
+              maxlength="64"
+              required="true"
+              placeholder="Surname"
+              formControlName="surname"
+              [value]="user.surname"
+              autocomplete="surname"
+            ></ion-input>
+          </ion-item>
+          <ion-text
+            *ngIf="surname?.invalid && (surname?.dirty || surname?.touched)"
+            class="ion-padding-start"
+            color="danger"
+          >
+            <small>{{ surnameError }}</small>
+          </ion-text>
+
+          <ion-item class="ion-no-padding">
+            <ion-label position="floating" class="required">Username</ion-label>
+            <ion-input
+              type="text"
+              minlength="1"
+              maxlength="64"
+              required="true"
+              placeholder="Username"
+              formControlName="username"
+              [value]="user.username"
+              autocomplete="username"
+            ></ion-input>
+          </ion-item>
+          <ion-text
+            *ngIf="username?.invalid && (username?.dirty || username?.touched)"
+            class="ion-padding-start"
+            color="danger"
+          >
+            <small>{{ usernameError }}</small>
+          </ion-text>
+
           <ion-item class="ion-no-padding">
             <ion-label position="floating" class="required">Email</ion-label>
             <ion-input
               type="email"
-              minlength="4"
+              minlength="1"
               maxlength="64"
               required="true"
-              placeholder="Enter email"
+              placeholder="Email"
               formControlName="email"
-              [value]="accountDetails.email"
+              [value]="user.email"
               autocomplete="email"
             ></ion-input>
           </ion-item>
-          <ion-text *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="ion-padding-start" color="danger">
-            <small>{{ emailError }}</small>
-          </ion-text>
-          <ion-item class="ion-no-padding">
-            <ion-label position="floating" class="required"> Password </ion-label>
-            <ion-input
-              type="password"
-              minlength="4"
-              maxlength="64"
-              placeholder="Enter password"
-              required="true"
-              formControlName="password"
-              autocomplete="password"
-            ></ion-input>
-          </ion-item>
           <ion-text
-            *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+            *ngIf="email?.invalid && (email?.dirty || email?.touched)"
             class="ion-padding-start"
             color="danger"
           >
-            <small>{{ passwordError }}</small>
-          </ion-text> -->
+            <small>{{ emailError }}</small>
+          </ion-text>
+
+          <ion-item class="ion-no-padding">
+            <ion-label position="floating" class="required">Bio</ion-label>
+            <ion-input
+              type="text"
+              minlength="1"
+              maxlength="64"
+              required="true"
+              placeholder="Bio"
+              formControlName="bio"
+              [value]="user.bio"
+              autocomplete="bio"
+            ></ion-input>
+          </ion-item>
+
         </ion-list>
       </ion-card-content>
-      <ion-button fill="clear" class="ion-float-left" type="button" (click)="logout()" color="danger">
-        Logout
-      </ion-button>
       <ion-button fill="clear" class="ion-float-right" type="submit">Save</ion-button>
     </ion-card>
   </form>
+  <ion-button expand="block" type="button" (click)="logout()" color="danger">
+    Logout
+  </ion-button>
 </ng-container>
 <ng-template #loading>
   <ion-grid>

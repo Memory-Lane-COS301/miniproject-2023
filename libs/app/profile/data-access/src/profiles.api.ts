@@ -3,19 +3,11 @@ import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import {
     IProfile,
-    IUpdateAccountDetailsRequest,
-    IUpdateAccountDetailsResponse,
-    IUpdateAddressDetailsRequest,
-    IUpdateAddressDetailsResponse,
-    IUpdateContactDetailsRequest,
-    IUpdateContactDetailsResponse,
-    IUpdateOccupationDetailsRequest,
-    IUpdateOccupationDetailsResponse,
-    IUpdatePersonalDetailsRequest,
-    IUpdatePersonalDetailsResponse
 } from '@mp/api/profiles/util';
 import {
-  IUser
+  IUser,
+  IUpdateUserRequest,
+  IUpdateUserResponse,
 } from '@mp/api/users/util'
 
 @Injectable()
@@ -49,53 +41,14 @@ export class ProfilesApi {
     return docData(docRef);
   }
 
-  async updateAccountDetails(request: IUpdateAccountDetailsRequest) {
+  async updateUserDetails(request: IUpdateUserRequest) {
     return await httpsCallable<
-      IUpdateAccountDetailsRequest,
-      IUpdateAccountDetailsResponse
+      IUpdateUserRequest,
+      IUpdateUserResponse
     >(
       this.functions,
-      'updateAccountDetails'
+      'updateUserDetails'
     )(request);
   }
 
-  async updateContactDetails(request: IUpdateContactDetailsRequest) {
-    return await httpsCallable<
-      IUpdateContactDetailsRequest,
-      IUpdateContactDetailsResponse
-    >(
-      this.functions,
-      'updateContactDetails'
-    )(request);
-  }
-
-  async updateAddressDetails(request: IUpdateAddressDetailsRequest) {
-    return await httpsCallable<
-      IUpdateAddressDetailsRequest,
-      IUpdateAddressDetailsResponse
-    >(
-      this.functions,
-      'updateAddressDetails'
-    )(request);
-  }
-
-  async updatePersonalDetails(request: IUpdatePersonalDetailsRequest) {
-    return await httpsCallable<
-      IUpdatePersonalDetailsRequest,
-      IUpdatePersonalDetailsResponse
-    >(
-      this.functions,
-      'updatePersonalDetails'
-    )(request);
-  }
-
-  async updateOccupationDetails(request: IUpdateOccupationDetailsRequest) {
-    return await httpsCallable<
-      IUpdateOccupationDetailsRequest,
-      IUpdateOccupationDetailsResponse
-    >(
-      this.functions,
-      'updateOccupationDetails'
-    )(request);
-  }
 }

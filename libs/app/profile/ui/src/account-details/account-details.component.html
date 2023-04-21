@@ -1,5 +1,5 @@
 <ng-container *ngIf="profile$ | async as profile; else loading">
-  <form [formGroup]="accountDetailsForm" ngxsForm="profile.accountDetailsForm" (submit)="updateAccountDetails()">
+  <form [formGroup]="accountDetailsForm" ngxsForm="profile.userDetailsForm" (submit)="updateAccountDetails()">
     <ion-card *ngIf="profile.accountDetails as accountDetails">
       <ion-card-header>
         <ion-card-title class="ion-align-items-center">
