@@ -12,7 +12,7 @@ Memory Lane
 | Reuben | Jooste | u21457060 | UI Engineer/Integration Tester |
 | Armand | Krynauw | u04868286 | API Engineer/Services Engineer/Tester |
 | Luca | Loubster | u20439963 | API Engineer/Deployment |
-| Mbofho Mamatsharaga | u18045881 | Business Analyst |
+| Mbofho | Mamatsharaga | u18045881 | Business Analyst |
 | Bandisa | Masilela | u19018182 | API Engineer/Services Engineer |
 | Keabetswe | Mothapo | u21543462 | Business Analyst/Data Engineer Helper |
 | Andile | Ngwenya | u20612894 | Data Engineer |
