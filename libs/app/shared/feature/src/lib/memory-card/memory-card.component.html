@@ -12,12 +12,12 @@
               'memory-card-profileImage': !showExpandedView,
               'memory-card-profileImage-expanded': showExpandedView
             }"
-            (click)="openUserProfile()"
+            (click)="validateMemoryCardLocation(null, null)"
           />
         </ion-avatar>
         <ion-card-title
           [ngClass]="{ 'memory-card-username': !showExpandedView, 'memory-card-username-expanded': showExpandedView }"
-          (click)="openUserProfile()"
+          (click)="validateMemoryCardLocation(null,null)"
           >{{ memory.username }}</ion-card-title
         >
         <ion-text
@@ -46,10 +46,10 @@
       <div *ngIf="showExpandedView" ngClass="comment-profileImg-username">
         <div *ngIf="memory.comments">
           <ion-avatar ngClass="memory-avatar-expanded">
-            <img src="{{ memory.comments[0].profileImgUrl }}" ngClass="memory-comment-profileImg" routerLink="/user-view" />
+            <img src="{{ memory.comments[0].profileImgUrl }}" ngClass="memory-comment-profileImg" (click)="validateMemoryCardLocation(memory.comments[0].userId, memory.comments[0].username)" />
           </ion-avatar>
           <div ngClass="memory-username-and-comment">
-            <ion-text ngClass="memory-comment-username" routerLink="/user-view">{{ getFirstCommentUsername()}}</ion-text>
+            <ion-text ngClass="memory-comment-username" (click)="validateMemoryCardLocation(memory.comments[0].userId, memory.comments[0].username)">{{ getFirstCommentUsername()}}</ion-text>
             <ion-text ngClass="memory-comment-usercomment">{{ getFirstCommentText() }}</ion-text>
           </div>
         </div>

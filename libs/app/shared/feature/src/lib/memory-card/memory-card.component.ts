@@ -1,13 +1,15 @@
 import { formatDate } from '@angular/common';
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Memory } from '../../Memory';
 import { Select, Store } from '@ngxs/store';
 import { IMemory } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { MemoryCardState } from '@mp/app/shared/data-access';
 import { Observable } from 'rxjs';
 import { GetCommentsRequest, SetMemoryCard } from '@mp/app/shared/util';
+import { GetUserProfileRequest } from '@mp/app/user-view/util';
+import { IUser } from '@mp/api/users/util';
+import { IGetProfileRequest } from '@mp/api/profiles/util';
 
 @Component({
   selector: 'app-memory-card',
@@ -18,6 +20,7 @@ export class MemoryCardComponent implements OnInit{
   @Select(MemoryCardState.memoryCard) memoryCard$ !: Observable<IMemory | null>;
 
   @Input() memory!: IMemory;
+  @Input() onUserProfile: boolean | undefined; //we use this to determine whether the memory card is displayed on the user's page or on the feed/search pages
 
   showExpandedView = false;
   previousPageName = '';
@@ -25,7 +28,7 @@ export class MemoryCardComponent implements OnInit{
   new_comment: string = '';
   first_comment_text : string | null | undefined = '';
   first_comment_username : string | null | undefined = '';
-
+  
   constructor(
     private navCtrl: NavController,
     private store: Store
@@ -89,9 +92,43 @@ export class MemoryCardComponent implements OnInit{
     }
   }
 
-  openUserProfile() {
+  openUserProfile(i_userId: string | null | undefined, i_username: string | null | undefined) {
     const currentPosition = window.pageYOffset;
     this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
+
+    let _userId :string | null | undefined = '';
+    let _username :string | null | undefined = '';
+
+    let request: IUser;
+    
+    //we either want to navigate to the user's profile (i.e. the person who posted the memory)
+    if (!(i_userId && i_username)) {
+      this.memoryCard$.subscribe((user) => {
+        _userId = user?.userId,
+        _username = user?.username;
+      })
+
+      request = {
+        userId: _userId,
+        username: _username
+      }
+    }
+    //or we want to open a user's - who commented - profile
+    else {
+      request = {
+        userId: i_userId,
+        username: i_username
+      }
+    }
+
+    this.store.dispatch(new GetUserProfileRequest(request));
+  }
+
+  //we do not want to open the user profile again by tapping the profile image or username of a post, if we are already on their profile
+  validateMemoryCardLocation(uid: string | null | undefined, uname: string | null | undefined) {
+    if (this.onUserProfile) {
+      this.openUserProfile(uid, uname);
+    }
   }
 
   openViewedComments() {
