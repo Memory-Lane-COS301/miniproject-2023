@@ -18,10 +18,10 @@ export const createMemory = functions.https.onCall(
     }
     catch (error) {
       if (error instanceof Error){
-        if(error.message.includes('User not found'))
+        if(error.message.includes('not found'))
           throw new functions.https.HttpsError ('not-found', error.message);
 
-        if(error.message.includes('Missing required fields'))
+        if(error.message.includes('Missing required'))
           throw new functions.https.HttpsError('invalid-argument', error.message);
 
         throw new functions. https. HttpsError ("internal", error.message)
