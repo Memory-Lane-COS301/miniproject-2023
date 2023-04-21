@@ -18,6 +18,7 @@ import {
     UpdateCommentRequest
 } from '@mp/app/shared/util';
 import { MemoryCardApi } from './memory-card.api';
+import { SetViewedComments } from '@mp/app/view-comments/util';
 
 export interface MemoryCardStateModel {
     memoryCard: IMemory;
@@ -84,7 +85,7 @@ export class MemoryCardState {
                 comments: responseRef.data.comments
             };
 
-            return ctx.dispatch(new SetMemoryCard(response));
+            return ctx.dispatch([new SetMemoryCard(response), new SetViewedComments(response)]);
         }
         catch(error){
             return ctx.dispatch(new SetError((error as Error).message));
@@ -99,10 +100,10 @@ export class MemoryCardState {
             const _memoryId = state.memoryCard.memoryId;
             const _text = action.comment.text;
 
-            const request : ICreateCommentRequest = { //data needs to be added
+            const request : ICreateCommentRequest = {
                 comment: {
                     userId: _userId,
-                    // memoryId: _memoryId,
+                    memoryId: _memoryId,
                     text: _text
                 }
             }
@@ -130,10 +131,10 @@ export class MemoryCardState {
             const _memoryId = state.memoryCard.memoryId;
             const _text = action.comment.text;
 
-            const request : IUpdateCommentRequest = { //data needs to be added
+            const request : IUpdateCommentRequest = {
                 comment: {
                     userId: _userId,
-                    // memoryId: _memoryId,
+                    memoryId: _memoryId,
                     text: _text
                 }
             }

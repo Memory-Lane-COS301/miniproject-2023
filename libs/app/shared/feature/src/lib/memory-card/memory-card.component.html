@@ -41,7 +41,7 @@
           <ion-icon ngClass="memory-comment-icon" name="chatbox-outline"></ion-icon>
           <ion-label ngClass="memory-comment-text" (click)="setAddingNewComment()">Comment</ion-label>
         </div>
-        <ion-text ngClass="comment-viewAll" (click)="setViewedComments()">View all comments <b>{{ getCommentsLength() }}</b></ion-text>
+        <ion-text ngClass="comment-viewAll" (click)="openViewedComments()">View all comments <b>{{ getCommentsLength() }}</b></ion-text>
       </div>
       <div *ngIf="showExpandedView" ngClass="comment-profileImg-username">
         <div *ngIf="memory.comments">

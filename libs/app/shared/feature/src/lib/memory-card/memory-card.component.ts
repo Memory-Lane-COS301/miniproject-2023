@@ -2,13 +2,12 @@ import { formatDate } from '@angular/common';
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Memory } from '../../Memory';
-import { SetViewedComments } from '@mp/app/view-comments/util';
 import { Select, Store } from '@ngxs/store';
 import { IMemory } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { MemoryCardState } from '@mp/app/shared/data-access';
 import { Observable } from 'rxjs';
-import { SetMemoryCard } from '@mp/app/shared/util';
+import { GetCommentsRequest, SetMemoryCard } from '@mp/app/shared/util';
 
 @Component({
   selector: 'app-memory-card',
@@ -46,6 +45,10 @@ export class MemoryCardComponent implements OnInit{
 
   changeMemoryView() {
     this.showExpandedView = !this.showExpandedView;
+
+    if(this.showExpandedView) {      
+      this.store.dispatch(new GetCommentsRequest(this.memory)); //we only request the comments if we want to display them
+    }
   }
 
   //function to covert timePosted to dd MMMM yyyy
@@ -91,9 +94,8 @@ export class MemoryCardComponent implements OnInit{
     this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
   }
 
-  setViewedComments() {
+  openViewedComments() {
     const currentPosition = window.pageYOffset;
-    this.store.dispatch(new SetViewedComments(this.memory));
     this.navCtrl.navigateForward('/view-comments', { state: { scrollPosition: currentPosition } });
   }
 
