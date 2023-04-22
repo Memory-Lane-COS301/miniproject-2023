@@ -42,18 +42,19 @@ export class MemoriesRepository {
       .get();
   }
 
-  async getComments(memoryId: string): Promise<IComment[]> {
-    const querySnapshot = await admin.firestore().collection(`memories/${memoryId}/comments`).get();
-
-    const comments: IComment[] = [];
-
-    querySnapshot.forEach((doc) => {
-      const comment = doc.data() as IComment;
-      delete comment.userId;
-      comments.push(comment);
-    });
-
-    return comments;
+  async getComments(memoryId: string) {
+    return await admin
+      .firestore()
+      .collection(`memories/${memoryId}/comments`)
+      .withConverter<IComment>({
+        fromFirestore: (doc) => {
+          const comment = doc.data() as IComment;
+          delete comment.userId;
+          return comment;
+        },
+        toFirestore: (it: IMemory) => it,
+      })
+      .get();
   }
 
   async getFeedMemories(userId: string) {

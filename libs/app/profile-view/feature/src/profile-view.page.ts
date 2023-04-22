@@ -101,14 +101,15 @@ export class ProfileViewPageComponent implements OnInit {
     const { data } = await modal.onDidDismiss();
   }
 
-  changeMemoryView(i_userId: string | null | undefined, i_memoryId: string | null | undefined) {
+  changeMemoryView(userId: string | null | undefined, memoryId: string | null | undefined) {
     this.showExpandedView = !this.showExpandedView;
 
     if(this.showExpandedView) {      
       const request : IMemory = {
-        userId: i_userId,
-        memoryId: i_memoryId
+        userId: userId,
+        memoryId: memoryId
       }
+
       this.store.dispatch(new GetCommentsRequest(request)); //we only request the comments if we want to display them
     }
   }
@@ -126,21 +127,20 @@ export class ProfileViewPageComponent implements OnInit {
   }
 
   //function to covert timePosted to dd MMMM yyyy
-  convertTimePostedToDate(timePosted: Timestamp | null | undefined): string {
+  convertTimePostedToDate(timePosted: any | null | undefined): string {
     if (!timePosted) return 'Invalid Date';
 
-    const date = new Date(timePosted.seconds);
+    const date = new Date(timePosted._seconds);
     return formatDate(date, 'dd MMMM yyyy', 'en-US');
   }
 
-  //function to use timePosted to calculate how long ago the memory was posted
-  calculateHowLongAgo(timePosted: Timestamp | null | undefined): string {
+  calculateHowLongAgo(timePosted: any | null | undefined): string {
     if (!timePosted) return 'Invalid Time';
 
-    const date = new Date(timePosted.seconds);
-    const timeDifference = Date.now() - date.getTime();
+    const now = new Date();
+    const date = new Date(timePosted._seconds);
+    const timeDifference = now.getTime() - date.getTime();
 
-    // Convert time difference to "time ago" string
     const seconds = Math.floor(timeDifference / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);

@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store, Select } from '@ngxs/store';
 import { IProfile, IGetProfileRequest } from "@mp/api/profiles/util"
 import { AddNewMemory, ChangeProfileViewImage, CreateCommentRequest, GetCommentsRequest, GetProfileRequest, SetProfileView, SubscribeToProfile, UpdateCommentRequest } from "@mp/app/profile-view/util"
 import { Injectable } from '@angular/core';
@@ -10,11 +10,11 @@ import { ICreateCommentRequest, IGetCommentsRequest, IMemory, IUpdateCommentRequ
 import { IComment } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { user } from '@angular/fire/auth';
-import { tap } from 'rxjs';
+import { tap, Observable } from 'rxjs';
 import { SetViewedComments } from '@mp/app/view-comments/util';
 import { SetUser } from '@mp/app/profile/util';
 import { IUser } from '@mp/api/users/util';
-import { ProfileStateModel } from '@mp/app/profile/data-access'
+import { ProfileState } from '@mp/app/profile/data-access'
 
 export interface ProfileViewStateModel {
     profile: IProfile;
@@ -42,6 +42,8 @@ export interface ProfileViewStateModel {
 
 @Injectable()
 export class ProfileViewState {
+  @Select(ProfileState.user) user$!: Observable<IUser | null>;
+
     constructor(
         private readonly profileViewApi: ProfileViewApi,
         private readonly store: Store
@@ -55,17 +57,18 @@ export class ProfileViewState {
     @Action(GetProfileRequest)
     async getProfileRequest(ctx: StateContext<ProfileViewStateModel>) {
         try {
-            const state = ctx.getState();
-            const _userId = state.profile?.userId;
-            // window.alert(_userId);
-            const _username = state.profile?.accountDetails?.displayName;
+            const user = this.store.selectSnapshot(ProfileState.user);
+
+            if (!user || !user.userId || !user.username)
+                return ctx.dispatch(new SetError('User not set'));
 
             const request: IGetProfileRequest = {
                 user: {
-                    userId: _userId,
-                    username: _username
+                    userId: user?.userId,
+                    username: user?.username, 
                 }
-            }
+            };
+
             const responseRef = await this.profileViewApi.getUserProfile(request);
             const response = responseRef.data;
             return ctx.dispatch(new SetProfileView(response.profile));
@@ -290,14 +293,4 @@ export class ProfileViewState {
     //         return ctx.dispatch(new SetError((error as Error).message));
     //     }
     // }
-
-    @Action(SubscribeToProfile)
-    subscribeToProfile(ctx: StateContext<ProfileViewStateModel>) {
-        const user = this.store.selectSnapshot(AuthState.user);
-        if (!user) return ctx.dispatch(new SetError('User not set'));
-
-        return this.profileViewApi
-        .profileView$(user.uid)
-        .pipe(tap((profile: IProfile) => ctx.dispatch(new SetProfileView(profile))));
-    }
 }

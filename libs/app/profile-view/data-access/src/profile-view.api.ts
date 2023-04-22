@@ -12,19 +12,6 @@ export class ProfileViewApi {
     private readonly functions: Functions
   ) {}
 
-  profileView$(id: string) {
-    const docRef = doc(
-      this.firestore,
-      `users/${id}`
-    ).withConverter<IUser>({
-      fromFirestore: (snapshot) => {
-        return snapshot.data() as IUser;
-      },
-      toFirestore: (it: IUser) => it,
-    });
-    return docData(docRef, { idField: 'id' });
-  }
-
   async getUserProfile(request: IGetProfileRequest) {
     return await httpsCallable<
       IGetProfileRequest,
