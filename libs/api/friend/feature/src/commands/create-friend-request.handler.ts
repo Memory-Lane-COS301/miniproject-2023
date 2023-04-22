@@ -1,4 +1,5 @@
 import { UsersRepository } from '@mp/api/users/data-access';
+import { FriendsRepository } from '@mp/api/friend/data-access';
 import {
   ICreateFriendResponse,
   CreateFriendRequestCommand,
@@ -14,7 +15,8 @@ import { Timestamp } from 'firebase-admin/firestore';
 export class CreateFriendRequestHandler implements ICommandHandler<CreateFriendRequestCommand, ICreateFriendResponse> {
   constructor(
     private readonly publisher: EventPublisher,
-    private readonly userRepository: UsersRepository
+    private readonly userRepository: UsersRepository,
+    private readonly friendsRepository: FriendsRepository,
   ) {}
 
   async execute(command: CreateFriendRequestCommand) {
@@ -27,28 +29,40 @@ export class CreateFriendRequestHandler implements ICommandHandler<CreateFriendR
 
     const userDoc = await this.userRepository.findUser(request.friendRequest.senderId);
 
-    if (!userDoc.data())
-      throw new Error('User not found')
+    if (!userDoc.data()) throw new Error('User not found');
 
     const receiverUserSnapshot = await this.userRepository.findUserWithUsername(request.friendRequest.receiverUsername);
 
-    if (receiverUserSnapshot.empty)
-      throw new Error('Receiver not found')
+    if (receiverUserSnapshot.empty) throw new Error('Receiver not found');
 
     const receiverUserDoc = receiverUserSnapshot.docs[0];
 
-    const friendData: IFriendRequest = {
-      senderId: request.friendRequest.senderId,
-      receiverId: receiverUserDoc.id,
-      status: FriendRequestStatus.PENDING,
-      lastUpdated: Timestamp.now(),
-      created: Timestamp.now(),
-    };
+    //check that friend request not already sent by other user
+    const possibleFriendRequestsSnapshot = await this.friendsRepository.getCurrentFriendRequest(
+      receiverUserDoc.id,
+      request.friendRequest.senderId,
+    );
+    if (possibleFriendRequestsSnapshot.size == 0) {
+      //check that the current user has not already sent a freind request
+      const currentFriendRequestsSnapshot = await this.friendsRepository.getCurrentFriendRequest(
+        request.friendRequest.senderId,
+        receiverUserDoc.id,
+      );
+      if (currentFriendRequestsSnapshot.size == 0) {
+        const friendData: IFriendRequest = {
+          senderId: request.friendRequest.senderId,
+          receiverId: receiverUserDoc.id,
+          status: FriendRequestStatus.PENDING,
+          lastUpdated: Timestamp.now(),
+          created: Timestamp.now(),
+        };
 
-    const friendRequest = this.publisher.mergeObjectContext(FriendRequest.fromData(friendData));
+        const friendRequest = this.publisher.mergeObjectContext(FriendRequest.fromData(friendData));
 
-    friendRequest.create();
-    friendRequest.commit();
+        friendRequest.create();
+        friendRequest.commit();
+      }
+    }
 
     return { status: Status.SUCCESS };
   }

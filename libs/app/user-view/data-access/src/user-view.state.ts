@@ -47,10 +47,10 @@ export class UserViewState {
     }
 
     @Action(GetUserProfileRequest) //GetUserProfileRequest is the same as the GetProfileRequest
-    async getUserProfileRequest(ctx: StateContext<UserViewStateModel>, { userProfile }: UserViewStateModel) {
+    async getUserProfileRequest(ctx: StateContext<UserViewStateModel>, { user }: GetUserProfileRequest) {
         try {
-            const _userId = userProfile.userId;
-            const _username = userProfile.user?.username;
+            const _userId = user.userId;
+            const _username = user.username;
 
             const request: IGetProfileRequest = {
                 user: {

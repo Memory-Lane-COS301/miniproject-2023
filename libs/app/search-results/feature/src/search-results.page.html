@@ -13,7 +13,7 @@
 
 <ion-content color="dark">
   <ion-list ngClass="memory-list" *ngIf="currentFilter==='Memories' || currentFilter==='Date'">
-    <app-memory-card *ngFor="let memory of Memories" [memory]="memory"></app-memory-card>
+    <app-memory-card *ngFor="let memory of results$ | async" [memory]="memory"></app-memory-card>
   </ion-list>
   <!-- Show filters when searched i.e. pressed Enter -->
   <ion-tabs color="none" ngClass="filter-tabs">
@@ -37,9 +37,11 @@
     *ngIf="currentFilter==='Top Accounts' && searchValue"
     [ngClass]="{'search-list-searched': showFilters, 'search-list': !showFilters}"
   >
-    <!-- Change ion-item to user-view component; this way we can send the inputs of the search result down to the user-view component -->
-    <ion-item color="none" *ngFor="let result of SearchResults" ngClass="search-item" routerLink="/user-view">
-      <ion-text>{{result}}</ion-text>
+    <ion-item color="none" *ngFor="let result of results$ | async" ngClass="search-item" (click)="openUserProfile(result.userId, result.username)">
+      <ion-avatar ngClass="result-avatar">
+        <img src="{{ result.profileImgUrl }}" ngClass="result-profileImg" />
+      </ion-avatar>
+      <ion-text ngClass="result-username">{{ result.username }}</ion-text>
     </ion-item>
   </ion-list>
 </ion-content>

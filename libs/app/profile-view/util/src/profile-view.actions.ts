@@ -6,22 +6,14 @@ export class GetProfileRequest {
     static readonly type = '[ProfileView] GetProfileRequest';
 }
 
-// export class SetProfileView {
-//     static readonly type = '[ProfileView] SetProfileView';
-//     constructor(public readonly profile: IProfile) {}
-// }
 export class SetProfileView {
     static readonly type = '[SetProfileView] SetProfileView';
-    constructor(
-        public readonly id: string,
-        public readonly _profile?: IProfile,
-        public readonly memory?: IMemory,
-        public readonly imageUrl?: string
-    ) {}
+    constructor(public readonly _profile: IProfile) {}
 }
 
 export class GetCommentsRequest {
     static readonly type = '[ProfileView] GetCommentsRequest';
+    constructor(public readonly memory: IMemory) {}
 }
 
 export class CreateCommentRequest {
@@ -46,4 +38,14 @@ export class UpdateFriendRequest {
 
 export class SubscribeToProfile {
     static readonly type = '[ProfileView] SubscribeToProfile';
+}
+
+export class AddNewMemory {
+    static readonly type = '[ProfileView] AddNewMemory';
+    constructor(public readonly memory: IMemory) {}
+}
+
+export class ChangeProfileViewImage {
+    static readonly type = '[ProfileView] ChangeProfileViewImage';
+    constructor(public readonly imageUrl: string | null | undefined, public readonly id: string) {}
 }

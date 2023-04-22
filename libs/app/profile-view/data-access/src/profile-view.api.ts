@@ -3,6 +3,7 @@ import { Functions, httpsCallable } from '@angular/fire/functions';
 import { IUser } from "@mp/api/users/util";
 import { doc, docData, Firestore } from "@angular/fire/firestore";
 import { IGetProfileRequest, IGetProfileResponse } from "@mp/api/profiles/util";
+import { ICreateCommentRequest, ICreateCommentResponse, IGetCommentsRequest, IGetCommentsResponse, IUpdateCommentRequest, IUpdateCommentResponse } from "@mp/api/memories/util";
 
 @Injectable()
 export class ProfileViewApi {
@@ -64,35 +65,35 @@ export class ProfileViewApi {
   //   )(request);
   // }
 
-  // async getComments(request: IGetCommentsRequest) {
-  //   return await httpsCallable<
-  //     IGetCommentsRequest,
-  //     IGetCommentsResponse
-  //   >(
-  //     this.functions,
-  //     'getComments'
-  //   )(request);
-  // }
+  async getComments(request: IGetCommentsRequest) {
+    return await httpsCallable<
+      IGetCommentsRequest,
+      IGetCommentsResponse
+    >(
+      this.functions,
+      'getComments'
+    )(request);
+  }
 
-  // async createComment(request: ICreateCommentRequest) {
-  //   return await httpsCallable<
-  //     ICreateCommentRequest,
-  //     ICreateCommentResponse
-  //   >(
-  //     this.functions,
-  //     'createComment'
-  //   )(request);
-  // }
+  async createComment(request: ICreateCommentRequest) {
+    return await httpsCallable<
+      ICreateCommentRequest,
+      ICreateCommentResponse
+    >(
+      this.functions,
+      'createComment'
+    )(request);
+  }
 
-  // async updateComment(request: IUpdateCommentRequest) {
-  //   return await httpsCallable<
-  //     IUpdateCommentRequest,
-  //     IUpdateCommentResponse
-  //   >(
-  //     this.functions,
-  //     'updateComment'
-  //   )(request);
-  // }
+  async updateComment(request: IUpdateCommentRequest) {
+    return await httpsCallable<
+      IUpdateCommentRequest,
+      IUpdateCommentResponse
+    >(
+      this.functions,
+      'updateComment'
+    )(request);
+  }
 
   // async createFriendRequest(request: ICreateFriendRequestRequest) {
   //   return await httpsCallable<

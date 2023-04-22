@@ -34,23 +34,23 @@ export class ReviveMemoryApi {
 //     )(request);
 //   }
 
-  // async getDeadMemories(request: IGetDeadMemoriesRequest) {
+  async getDeadMemories(request: IGetProfileRequest) {
+    return await httpsCallable<
+      IGetProfileRequest,
+      IGetProfileResponse
+    >(
+      this.functions,
+      'getDeadMemories'
+    )(request);
+  }
+
+  // async reviveMemory(request: IReviveMemoryRequest) {
   //   return await httpsCallable<
-  //     IGetDeadMemoriesRequest,
-  //     IGetDeadMemoriesResponse
+  //     IReviveMemoryRequest,
+  //     IReviveMemoryResponse
   //   >(
   //     this.functions,
-  //     'getDeadMemories'
+  //     'reviveMemory'
   //   )(request);
   // }
-
-//   async reviveMemory(request: IReviveMemoryRequest) {
-//     return await httpsCallable<
-//       IReviveMemoryRequest,
-//       IReviveMemoryResponse
-//     >(
-//       this.functions,
-//       'reviveMemory'
-//     )(request);
-//   }
 }

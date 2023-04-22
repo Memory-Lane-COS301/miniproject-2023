@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
+import { IUser } from '@mp/api/users/util';
+import { EditProfilePhotoState } from '@mp/app/profile-view/data-access';
+import { ChangeProfileViewImage, SetEditProfileImagePhoto } from '@mp/app/profile-view/util';
 import { ProfileImageService } from '@mp/app/services/feature';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-edit-profile-photo',
@@ -8,12 +13,15 @@ import { ProfileImageService } from '@mp/app/services/feature';
   styleUrls: ['./edit-profile-photo.page.scss'],
 })
 export class EditProfilePhotoPageComponent {
+  @Select(EditProfilePhotoState.editProfilePhoto) user$!: Observable<IUser | null>;
+
   previousUrl: string;
 
   constructor(
     public modalController: ModalController,
     private alertCtrl: AlertController,
     private profileImageService: ProfileImageService,
+    private store: Store
   ) {
     this.previousUrl = '';
 
@@ -71,5 +79,13 @@ export class EditProfilePhotoPageComponent {
 
   setProfileImage(url: string) {
     this.profileImageService.imageUrl = url;
+
+    let id : string | null | undefined = '';
+    this.user$.subscribe((user) => {
+      id = user?.userId;
+    })
+
+    this.store.dispatch(new SetEditProfileImagePhoto(url));
+    this.store.dispatch(new ChangeProfileViewImage(url, id));
   }
 }

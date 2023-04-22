@@ -1,5 +1,12 @@
-import { Component } from '@angular/core';
+import { formatDate } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
+import { IMemory } from '@mp/api/memories/util';
+import { ReviveMemoryState } from '@mp/app/profile-view/data-access';
+import { ReviveMemory, SetDeadMemories } from '@mp/app/profile-view/util';
+import { Select, Store } from '@ngxs/store';
+import { Timestamp } from 'firebase-admin/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-revive-memory',
@@ -7,40 +14,12 @@ import { AlertController, ModalController } from '@ionic/angular';
   styleUrls: ['./revive-memory.page.scss'],
 })
 export class ReviveMemoryPageComponent {
-  elements = [
-    {
-      id: 1,
-      title: 'Element 1',
-      description: 'Description 1',
-      imageUrl:
-        'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YWJzdHJhY3R8ZW58MHx8MHx8&auto=format&fit=crop&w=1000&q=60',
-      date: 'Date 1',
-      selected: false,
-    },
-    {
-      id: 2,
-      title: 'Element 2',
-      description: 'Description 2',
-      imageUrl:
-        'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YWJzdHJhY3R8ZW58MHx8MHx8&auto=format&fit=crop&w=1000&q=60',
-      date: 'Date 2',
-      selected: false,
-    },
-    {
-      id: 3,
-      title: 'Element 3',
-      description: 'Description 3',
-      imageUrl:
-        'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YWJzdHJhY3R8ZW58MHx8MHx8&auto=format&fit=crop&w=1000&q=60',
-      date: 'Date 3',
-      selected: false,
-    },
-  ];
+  @Select(ReviveMemoryState.deadMemories) deadMemories$!: Observable<IMemory[] | null>;
 
   didSelect: boolean;
   selectedElement: any;
 
-  constructor(public modalController: ModalController, private alertCtrl: AlertController) {
+  constructor(public modalController: ModalController, private alertCtrl: AlertController, private store: Store) {
     this.didSelect = false;
   }
 
@@ -72,6 +51,8 @@ export class ReviveMemoryPageComponent {
       });
 
       await alert.present();
+
+      this.store.dispatch(new SetDeadMemories(this.selectedElement));
     } else {
       this.modalController.dismiss();
     }
@@ -79,5 +60,43 @@ export class ReviveMemoryPageComponent {
 
   cancel() {
     this.modalController.dismiss();
+  }
+
+  //function to covert timePosted to dd MMMM yyyy
+  convertTimePostedToDate(timePosted: Timestamp | null | undefined): string {
+    if (!timePosted) return 'Invalid Date';
+
+    const date = new Date(timePosted.seconds);
+    return formatDate(date, 'dd MMMM yyyy', 'en-US');
+  }
+
+  //function to use timePosted to calculate how long ago the memory was posted
+  calculateHowLongAgo(timePosted: Timestamp | null | undefined): string {
+    if (!timePosted) return 'Invalid Time';
+
+    const date = new Date(timePosted.seconds);
+    const timeDifference = Date.now() - date.getTime();
+
+    // Convert time difference to "time ago" string
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const weeks = Math.floor(days / 7);
+    const years = Math.floor(days / 365);
+
+    if (years > 0) {
+      return `${years} year${years > 1 ? 's' : ''} ago`;
+    } else if (weeks > 0) {
+      return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+    } else if (days > 0) {
+      return `${days} day${days > 1 ? 's' : ''} ago`;
+    } else if (hours > 0) {
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else {
+      return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+    }
   }
 }
