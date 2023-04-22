@@ -8,6 +8,7 @@ import {
   IDeleteFriendResponse,
   IDeleteFriendRequest,
   DeleteFriendRequestCommand,
+  DeleteFriendCommand,
 } from '@mp/api/friend/util';
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
@@ -32,5 +33,9 @@ export class FriendsService {
     return await this.commandBus.execute<DeleteFriendRequestCommand, IDeleteFriendResponse>(
       new DeleteFriendRequestCommand(request),
     );
+  }
+
+  async deleteFriend(request: IDeleteFriendRequest): Promise<IDeleteFriendResponse> {
+    return await this.commandBus.execute<DeleteFriendCommand, IDeleteFriendResponse>(new DeleteFriendCommand(request));
   }
 }
