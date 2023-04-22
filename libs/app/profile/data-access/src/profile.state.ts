@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 import {
   IUpdateUserRequest 
 } from '@mp/api/users/util'
@@ -59,7 +60,8 @@ export interface ProfileStateModel {
 export class ProfileState {
   constructor(
     private readonly profileApi: ProfilesApi,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly toastController: ToastController
   ) {}
 
   @Selector()
@@ -107,10 +109,17 @@ export class ProfileState {
       const email = state.userDetailsForm.model.email;
       const bio = state.userDetailsForm.model.bio;
 
-      if (!userId || !name || !surname || !username || !email || !bio)
+      if (!userId)
         return ctx.dispatch(
           new SetError(
-            'UserId, name, surname, username, email or bio not set'
+            'User not set'
+          )
+        );
+
+      if (!username || !email)
+        return ctx.dispatch(
+          new SetError(
+            'Username, or email not set'
           )
         );
 
@@ -126,6 +135,16 @@ export class ProfileState {
       };
       const responseRef = await this.profileApi.updateUserDetails(request);
       const response = responseRef.data;
+
+      const toast = await this.toastController.create({
+        message: "Updated user details",
+        color: 'success',
+        duration: 1500,
+        position: 'bottom',
+      });
+  
+      toast.present();
+
       return ctx.dispatch(new SetUser(response.user));
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));

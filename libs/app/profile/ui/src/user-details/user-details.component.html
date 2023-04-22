@@ -4,12 +4,12 @@
       <ion-card-content>
         <ion-list>
           <ion-item class="ion-no-padding">
-            <ion-label position="floating" class="required">Name</ion-label>
+            <ion-label position="floating">Name</ion-label>
             <ion-input
               type="text"
               minlength="1"
               maxlength="64"
-              required="true"
+              required="false"
               placeholder="Name"
               formControlName="name"
               [value]="user.name"
@@ -25,12 +25,12 @@
           </ion-text>
 
           <ion-item class="ion-no-padding">
-            <ion-label position="floating" class="required">Surname</ion-label>
+            <ion-label position="floating">Surname</ion-label>
             <ion-input
               type="text"
               minlength="1"
               maxlength="64"
-              required="true"
+              required="false"
               placeholder="Surname"
               formControlName="surname"
               [value]="user.surname"
@@ -88,12 +88,12 @@
           </ion-text>
 
           <ion-item class="ion-no-padding">
-            <ion-label position="floating" class="required">Bio</ion-label>
+            <ion-label position="floating">Bio</ion-label>
             <ion-input
               type="text"
               minlength="1"
-              maxlength="64"
-              required="true"
+              maxlength="128"
+              required="false"
               placeholder="Bio"
               formControlName="bio"
               [value]="user.bio"

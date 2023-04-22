@@ -25,7 +25,7 @@ export class UserDetailsComponent {
     surname: ['', [Validators.minLength(1), Validators.maxLength(64)]],
     username: ['', [Validators.minLength(1), Validators.maxLength(64)]],
     email: ['', [Validators.minLength(1), Validators.maxLength(64)]],
-    bio: ['', [Validators.minLength(1), Validators.maxLength(64)]],
+    bio: ['', [Validators.minLength(1), Validators.maxLength(128)]],
   });
   showPassword = false;
 
@@ -119,4 +119,19 @@ export class UserDetailsComponent {
   updateUserDetails() {
     this.store.dispatch(new UpdateUserDetails());
   }
+
+  ngOnInit(): void {
+    this.user$.subscribe(user => {
+      if (user) {
+        this.userDetailsForm.patchValue({
+          name: user.name,
+          surname: user.surname,
+          username: user.username,
+          email: user.email,
+          bio: user.bio,
+        });
+      }
+    });
+  }
+
 }

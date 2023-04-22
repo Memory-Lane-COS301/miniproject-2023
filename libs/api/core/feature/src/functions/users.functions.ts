@@ -37,11 +37,14 @@ export const updateUser = functions.https.onCall(
         return await service.updateUser(request);
       } catch (error) {
         if (error instanceof Error) {
-          if(error.message.includes('not found'))
+          if (error.message.includes('not found'))
             throw new functions.https.HttpsError('not-found', error.message);
   
-          if(error.message.includes('Missing required'))
+          if (error.message.includes('Missing required'))
             throw new functions.https.HttpsError('invalid-argument', error.message);
+
+          if (error.message.includes("Username"))
+            throw new functions.https.HttpsError('already-exists', error.message);
   
           throw new functions.https.HttpsError("internal", error.message)
         }
@@ -49,5 +52,5 @@ export const updateUser = functions.https.onCall(
         throw new functions.https.HttpsError("unknown", "An unknown error occurred.");
       }
     },
-  );
+);
   
