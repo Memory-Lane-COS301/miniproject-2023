@@ -4,7 +4,7 @@ import { NavController } from '@ionic/angular';
 import { IUser } from '@mp/api/users/util';
 import { GetUserProfileRequest } from '@mp/app/user-view/util';
 import { Select, Store } from '@ngxs/store';
-import { SearchPageState, SearchPageStateModel } from '../../data-access/src/search-page.state';
+import { SearchPageState } from '@mp/app/search-page/data-access';
 import { IMemory } from '@mp/api/memories/util';
 import { Observable } from 'rxjs';
 import { SetSearchResults } from '@mp/app/search-results/util';

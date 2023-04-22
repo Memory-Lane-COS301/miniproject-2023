@@ -2,7 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { IMemory } from '@mp/api/memories/util';
 import { Select, Store } from '@ngxs/store';
-import { SearchResultsState } from '../../data-access/src/search-results.state';
+import { SearchResultsState } from '@mp/app/search-results/data-access';
 import { Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { IUser } from '@mp/api/users/util';

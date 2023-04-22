@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { AddMemoryPageComponent, Memory } from '@mp/app/shared/feature';
 import { IComment, IMemory } from '@mp/api/memories/util';
 import { Select, Store } from '@ngxs/store';
-import { FeedState } from '../../data-access/src/feed.state';
+import { FeedState } from '@mp/app/feed/data-access';
 import { Observable } from 'rxjs';
 import { GetFeedMemories } from '@mp/app/search-page/util';
 import { Timestamp } from 'firebase-admin/firestore';

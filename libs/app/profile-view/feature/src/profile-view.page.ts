@@ -7,7 +7,7 @@ import { MenubarService, ProfileImageService } from '@mp/app/services/feature';
 import { formatDate } from '@angular/common';
 import { GetCommentsRequest, GetProfileRequest, SetEditProfileImageUserId, SetReviveMemoryUserId } from '@mp/app/profile-view/util';
 import { Select, Store } from '@ngxs/store';
-import { ProfileViewState } from '../../data-access/src/profile-view.state';
+import { ProfileViewState } from '@mp/app/profile-view/data-access';
 import { Observable } from 'rxjs';
 import { IProfile } from '@mp/api/profiles/util';
 import { IMemory } from '@mp/api/memories/util';
