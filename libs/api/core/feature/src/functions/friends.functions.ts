@@ -74,6 +74,7 @@ export const deleteFriendRequest = functions.https.onCall(
   },
 );
 
+
 export const deleteFriend = functions.https.onCall(
   async (request: IDeleteFriendRequest): Promise<IDeleteFriendResponse> => {
     const app = await NestFactory.createApplicationContext(CoreModule);
