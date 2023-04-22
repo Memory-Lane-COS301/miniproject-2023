@@ -1,16 +1,19 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { IProfile, IGetProfileRequest } from "@mp/api/profiles/util"
-import { CreateCommentRequest, GetCommentsRequest, GetProfileRequest, SetProfileView, SubscribeToProfile } from "@mp/app/profile-view/util"
+import { AddNewMemory, ChangeProfileViewImage, CreateCommentRequest, GetCommentsRequest, GetProfileRequest, SetProfileView, SubscribeToProfile, UpdateCommentRequest } from "@mp/app/profile-view/util"
 import { Injectable } from '@angular/core';
 import { AuthState } from '@mp/app/auth/data-access';
 import { SetError } from '@mp/app/errors/util';
 import { ProfileViewApi } from './profile-view.api';
 import produce from 'immer';
-import { IMemory } from '@mp/api/memories/util';
+import { ICreateCommentRequest, IGetCommentsRequest, IMemory, IUpdateCommentRequest } from '@mp/api/memories/util';
 import { IComment } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { user } from '@angular/fire/auth';
 import { tap } from 'rxjs';
+import { SetViewedComments } from '@mp/app/view-comments/util';
+import { SetProfile } from '@mp/app/profile/util';
+import { IUser } from '@mp/api/users/util';
 
 export interface ProfileViewStateModel {
     profile: IProfile;
@@ -53,7 +56,6 @@ export class ProfileViewState {
         try {
             const state = ctx.getState();
             const _userId = state.profile?.userId;
-            window.alert(_userId);
             const _username = state.profile?.accountDetails?.displayName;
 
             const request: IGetProfileRequest = {
@@ -64,7 +66,7 @@ export class ProfileViewState {
             }
             const responseRef = await this.profileViewApi.getUserProfile(request);
             const response = responseRef.data;
-            return ctx.dispatch(new SetProfileView(response.profile.userId, response.profile));
+            return ctx.dispatch(new SetProfileView(response.profile));
         }
         catch(error){
             return ctx.dispatch(new SetError((error as Error).message));
@@ -72,150 +74,175 @@ export class ProfileViewState {
     }
 
     @Action(SetProfileView)
-    setProfile(ctx: StateContext<ProfileViewStateModel>, { id, _profile, memory, imageUrl }: SetProfileView) {
-        const state = ctx.getState();
-        const profile = state.profile;
+    setProfile(ctx: StateContext<ProfileViewStateModel>, { _profile }: SetProfileView) {
+        return ctx.setState(
+            produce((draft) => {
+                draft.profile = _profile
+            })
+        );
+    }
 
-        if (_profile && !memory && !imageUrl) {
-            return ctx.setState(
-                produce((draft) => {
-                    draft.profile = {
-                    ...profile,
-                    userId: id,
-                    };
-                })
-            );
+    @Action(AddNewMemory)
+    async addNewMemory(ctx: StateContext<ProfileViewStateModel>, { memory } : AddNewMemory) {
+        try {
+            const state = ctx.getState();
+            state.profile.memories?.unshift(memory);
+
+            return this.store.dispatch(new SetProfileView(state.profile));
         }
-        else if (_profile && memory && !imageUrl) {
-            if (memory) {
-                profile.memories?.push(memory);
-                return ctx.setState(
-                    produce((draft) => {
-                        draft.profile = {
-                        ...profile,
-                        userId: id,
-                        memories: profile.memories
-                        };
-                    })
-                );
-            }
-            else return ctx.dispatch('Memory is undefined');
-        }
-        else if (_profile && !memory && imageUrl) {
-            if (imageUrl) {
-                return ctx.setState(                    
-                    produce((draft) => {
-                        draft.profile = {
-                        ...profile,
-                        userId: id,
-                        user: {...user, userId: id, profileImgUrl: imageUrl }
-                        };
-                    })
-                );
-            }
-            else return ctx.dispatch('Image url is undefined');
-        }
-        else if (_profile && memory && imageUrl) {
-            if (imageUrl) {                
-                profile.memories?.push(memory);
-                return ctx.setState(                    
-                    produce((draft) => {
-                        draft.profile = {
-                        ...profile,
-                        userId: id,
-                        memories: profile.memories,
-                        user: {...user, userId: id, profileImgUrl: imageUrl }
-                        };
-                    })
-                );
-            }
-            else return ctx.dispatch('Memory is undefined');
-        }
-        else {
-            return ctx.dispatch(new SetError('Profile not set'));
+        catch (error) {
+            return this.store.dispatch(new SetError('Unabled to add new memory to Profile View page.'));
         }
     }
 
+    @Action(ChangeProfileViewImage)
+    async changeProfileViewImage(ctx: StateContext<ProfileViewStateModel>, { imageUrl, id } : ChangeProfileViewImage) {
+        try {
+            const state = ctx.getState();
+
+            const updated_user : IUser = {
+                userId: state.profile.userId,
+                name: state.profile.user?.name,
+                surname: state.profile.user?.surname,
+                username: state.profile.user?.username,
+                email: state.profile.user?.email,
+                profileImgUrl: imageUrl,
+                bio: state.profile.user?.bio,
+                friendCount: state.profile.user?.friendCount,
+                memoryCount: state.profile.user?.memoryCount,
+                accountTime: state.profile.user?.accountTime,
+                lastOnline: state.profile.user?.lastOnline,
+                online: state.profile.user?.online,
+                created: state.profile.user?.created
+            }
+
+            const response : IProfile = {
+                userId: id,
+                user: updated_user,
+                memories: state.profile.memories
+            }
 
 
+            return this.store.dispatch(new SetProfileView(response));
+        }
+        catch (error) {
+            return this.store.dispatch(new SetError('Unabled to add new memory to Profile View page.'));
+        }
+    }
 
-    // @Action(GetCommentsRequest)
-    // getCommentsRequest(ctx: StateContext<ProfileViewStateModel>) {
-    //     try {
-    //         const state = ctx.getState();
-    //         const _userId = state.profile.userId;
-    //         const _memories = state.profile?.memories;
+    @Action(GetCommentsRequest)
+    async getCommentsRequest(ctx: StateContext<ProfileViewStateModel>, { memory }: GetCommentsRequest) {
+        try {
+            const state = ctx.getState();
+            const _userId = memory.userId;
+
+            const _memoryId = memory.memoryId;
+
+            const request: IGetCommentsRequest = {
+                memory: {
+                    userId: _userId,
+                    memoryId: _memoryId
+                }
+            }
+            const responseRef = await this.profileViewApi.getComments(request);
+            const response : IMemory = {
+                ...memory,
+                comments: responseRef.data.comments
+            };
+
+            //we need to update the profile state's comments
+            state.profile.memories?.map((mem) => {
+                if (mem.memoryId === memory.memoryId) {
+                    return {
+                        ...mem,
+                        comments: response.comments
+                    }
+                }
+                return mem;
+            });
+
+            return ctx.dispatch([new SetProfileView(state.profile), new SetViewedComments(response)]);
+        }
+        catch(error){
+            return ctx.dispatch(new SetError((error as Error).message));
+        }
+    }
+
+    @Action(CreateCommentRequest) 
+    async createCommentRequest(ctx: StateContext<ProfileViewStateModel>, { memory }: GetCommentsRequest, action: CreateCommentRequest) {
+        try{
+            const state = ctx.getState();
+            const _userId = memory.userId;
+            const _memoryId = memory.memoryId;
+            const _text = action.comment.text;
+
+            const request : ICreateCommentRequest = {
+                comment: {
+                    userId: _userId,
+                    memoryId: _memoryId,
+                    text: _text
+                }
+            }
+
+            const responseRef = await this.profileViewApi.createComment(request);
+            memory.comments?.push(responseRef.data.comment);
+
+            const response : IMemory = {
+                ...memory,
+                comments: memory.comments
+            };
+
+            state.profile.memories?.map((mem) => {
+                if (mem.memoryId === memory.memoryId) {
+                    return response;
+                }
+                return mem;
+            });
             
-    //         let _memory: IMemory;
-    //         _memories?.map((m)=>{
-    //             if (m.userId === _userId){
-    //                 _memory = m;
-    //             }
-    //             return m;
-    //         });
+            return ctx.dispatch([new SetProfileView(state.profile), new SetViewedComments(response)]);
+        }
+        catch (error) {
+            return ctx.dispatch(new SetError((error as Error).message));
+        }
+    }
 
-    //         const _memoryId = _memory.memoryId;
+    @Action(UpdateCommentRequest) 
+    async updateCommentRequest(ctx: StateContext<ProfileViewStateModel>, { memory }: GetCommentsRequest, action: UpdateCommentRequest) {
+        try{
+            const state = ctx.getState();
+            const _userId = memory.userId;
+            const _memoryId = memory.memoryId;
+            const _text = action.comment.text;
 
-    //         const request: IGetCommentsRequest = {
-    //             memory: {
-    //                 userId: _userId,
-    //                 memoryId: _memoryId
-    //             }
-    //         }
-    //         const responseRef = await this.profileViewApi.getComments(request);
-    //         const response = responseRef.data;
-    //         return ctx.dispatch(new SetProfileView(response.profile));
-    //     }
-    //     catch(error){
-    //         return ctx.dispatch(new SetError((error as Error).message));
-    //     }
-    // }
+            const request : IUpdateCommentRequest = {
+                comment: {
+                    userId: _userId,
+                    memoryId: _memoryId,
+                    text: _text
+                }
+            }
 
-    // @Action(CreateCommentRequest) 
-    // async createCommentRequest(ctx: StateContext<ProfileViewStateModel>, action: CreateCommentRequest) {
-    //     try{
-    //         const state = ctx.getState();
+            const responseRef = await this.profileViewApi.updateComment(request);
+            memory.comments?.push(responseRef.data.comment);
 
-    //         const request : IComment = { //data needs to be added
-    //             userId: '',
-    //             commentId: '',
-    //             username: '',
-    //             profileImgUrl: '',
-    //             text: '',
-    //             created: new Timestamp(0,0)
-    //         }
+            const response : IMemory = {
+                ...memory,
+                comments: memory.comments
+            };
 
-    //         const responseRef = this.profileViewApi.createComment(request);
-    //         const response = response.data;
-    //         return ctx.dispatch(new SetProfileView(response.profile));
-    //     }
-    //     catch (error) {
-    //         return ctx.dispatch(new SetError((error as Error).message));
-    //     }
-    // }
-
-    // @Action(UpdateCommentRequest) 
-    // async updateCommentRequest(ctx: StateContext<ProfileViewStateModel>, action: UpdateCommentRequest) {
-    //     try{
-    //         const state = ctx.getState();
-
-    //         const request : IComment = { //data needs to be added
-    //             userId: '',
-    //             commentId: '',
-    //             username: '',
-    //             profileImgUrl: '',
-    //             text: '',
-    //             created: new Timestamp(0,0)
-    //         }
-
-    //         const responseRef = this.profileViewApi.updateComment(request);
-    //         const response = response.data;
-    //         return ctx.dispatch(new SetProfileView(response.profile));
-    //     }
-    //     catch (error) {
-    //         return ctx.dispatch(new SetError((error as Error).message));
-    //     }
-    // }
+            state.profile.memories?.map((mem) => {
+                if (mem.memoryId === memory.memoryId) {
+                    return response;
+                }
+                return mem;
+            });
+            
+            return ctx.dispatch([new SetProfileView(state.profile), new SetViewedComments(response)]);
+        }
+        catch (error) {
+            return ctx.dispatch(new SetError((error as Error).message));
+        }
+    }
 
     // @Action(CreateFriendRequest) 
     // async createFriendRequest(ctx: StateContext<ProfileViewStateModel>, action: CreateFriendRequest) {
@@ -260,6 +287,6 @@ export class ProfileViewState {
 
         return this.profileViewApi
         .profileView$(user.uid)
-        .pipe(tap((profile: IProfile) => ctx.dispatch(new SetProfileView(profile.userId, profile))));
+        .pipe(tap((profile: IProfile) => ctx.dispatch(new SetProfileView(profile))));
     }
 }

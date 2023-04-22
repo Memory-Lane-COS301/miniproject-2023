@@ -14,12 +14,14 @@ import { state } from "@angular/animations";
 export interface SearchPageStateModel {
     // users: IUser[];
     memories: IMemory[];
+    recentSearches: string[];
 }
 
 @State<SearchPageStateModel>({
   name: 'searchPage',
   defaults: {
       memories: [],
+      recentSearches: []
     },
   })
 
@@ -33,8 +35,12 @@ export class SearchPageState {
 
 
     @Selector()
-    static searchResults(state: SearchPageStateModel) {
+    static memories(state: SearchPageStateModel) {
         return state.memories;
+    }
+    @Selector()
+    static recentSearches(state: SearchPageStateModel) {
+        return state.recentSearches;
     }
 
     // @Action(GetFeedMemories) 

@@ -38,7 +38,7 @@ export class FriendRequest extends AggregateRoot implements IFriendRequest {
   delete() {
     this.apply(new DeleteFriendRequestEvent(this.toJSON()));
   }
-
+  
   acceptFriendRequest() {
     this.apply(new UpdateAcceptFriendRequestEvent(this.toJSON()));
   }

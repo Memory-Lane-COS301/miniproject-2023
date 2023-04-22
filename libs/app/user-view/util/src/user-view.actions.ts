@@ -2,13 +2,9 @@ import { IComment } from "@mp/api/memories/util";
 import { IProfile } from "@mp/api/profiles/util";
 import { IUser } from "@mp/api/users/util";
 
-export interface UserViewStateModel {
-    userProfile: IProfile;
-}
-
 export class GetUserProfileRequest {
     static readonly type = '[UserView] GetUserProfileRequest';
-    constructor(public readonly user: UserViewStateModel) {}
+    constructor(public readonly user: IUser) {}
 }
 
 export class SetUserView {

@@ -44,9 +44,6 @@
   color: #fff;
   background-color: transparent;
 }
-.search-item {
-  border-bottom: 1px solid #686868;
-}
 .search-item ion-text:hover {
   cursor: pointer;
   background-color: #434343;
@@ -63,4 +60,26 @@
 .no-results ion-icon {
   width: 50px;
   height: 50px;
+}
+
+.search-item {
+  border-bottom: 1px solid #686868;
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.result-username {
+  font-size: 17px;
+  max-width: 230px;
+  max-height: 25px;  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.result-avatar {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
 }

@@ -1,38 +1,26 @@
 import { formatDate } from '@angular/common';
-import { Component, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Memory } from '../../Memory';
-import { SetViewedComments } from '@mp/app/view-comments/util';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { IMemory } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
+import { MemoryCardState } from '@mp/app/shared/data-access';
+import { Observable } from 'rxjs';
+import { GetCommentsRequest, SetMemoryCard } from '@mp/app/shared/util';
+import { GetUserProfileRequest } from '@mp/app/user-view/util';
+import { IUser } from '@mp/api/users/util';
+import { IGetProfileRequest } from '@mp/api/profiles/util';
 
 @Component({
   selector: 'app-memory-card',
   templateUrl: './memory-card.component.html',
   styleUrls: ['./memory-card.component.scss'],
 })
-export class MemoryCardComponent {
-  @Input() memory: Memory = {
-    username: '@username',
-    profileUrl:
-      'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-    imgUrl:
-      'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80',
-    title: 'Last day of Highschool',
-    description: 'Example of a description for the memory',
-    comments: [
-      {
-        username: '@commentedUsername',
-        profileImgUrl:
-          'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-        comment:
-          'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
-      },
-    ],
-    timePosted:  '2020-11-14T10:30:00.000-07:00',
-    alive: true
-  };
+export class MemoryCardComponent implements OnInit{
+  @Select(MemoryCardState.memoryCard) memoryCard$ !: Observable<IMemory | null>;
+
+  @Input() memory!: IMemory;
+  @Input() onUserProfile: boolean | undefined; //we use this to determine whether the memory card is displayed on the user's page or on the feed/search pages
 
   showExpandedView = false;
   previousPageName = '';
@@ -40,11 +28,15 @@ export class MemoryCardComponent {
   new_comment: string = '';
   first_comment_text : string | null | undefined = '';
   first_comment_username : string | null | undefined = '';
-
+  
   constructor(
     private navCtrl: NavController,
     private store: Store
   ) {}
+
+  ngOnInit(): void {
+      this.store.dispatch(new SetMemoryCard(this.memory)); 
+  }
 
   setAddingNewComment() {
     this.addingNewComment = true;
@@ -56,21 +48,25 @@ export class MemoryCardComponent {
 
   changeMemoryView() {
     this.showExpandedView = !this.showExpandedView;
+
+    if(this.showExpandedView) {      
+      this.store.dispatch(new GetCommentsRequest(this.memory)); //we only request the comments if we want to display them
+    }
   }
 
   //function to covert timePosted to dd MMMM yyyy
-  convertTimePostedToDate(timePosted: string): string {
-    if (!timePosted) return 'no time';
+  convertTimePostedToDate(timePosted: Timestamp | null | undefined): string {
+    if (!timePosted) return 'Invalid Date';
 
-    const date = new Date(timePosted);
+    const date = new Date(timePosted.seconds);
     return formatDate(date, 'dd MMMM yyyy', 'en-US');
   }
 
   //function to use timePosted to calculate how long ago the memory was posted
-  calculateHowLongAgo(timePosted: string): string {
-    if (!timePosted) return 'no time';
+  calculateHowLongAgo(timePosted: Timestamp | null | undefined): string {
+    if (!timePosted) return 'Invalid Time';
 
-    const date = new Date(timePosted);
+    const date = new Date(timePosted.seconds);
     const timeDifference = Date.now() - date.getTime();
 
     // Convert time difference to "time ago" string
@@ -96,20 +92,53 @@ export class MemoryCardComponent {
     }
   }
 
-  openUserProfile() {
+  openUserProfile(i_userId: string | null | undefined, i_username: string | null | undefined) {
     const currentPosition = window.pageYOffset;
     this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
+
+    let _userId :string | null | undefined = '';
+    let _username :string | null | undefined = '';
+
+    let request: IUser;
+    
+    //we either want to navigate to the user's profile (i.e. the person who posted the memory)
+    if (!(i_userId && i_username)) {
+      this.memoryCard$.subscribe((user) => {
+        _userId = user?.userId,
+        _username = user?.username;
+      })
+
+      request = {
+        userId: _userId,
+        username: _username
+      }
+    }
+    //or we want to open a user's - who commented - profile
+    else {
+      request = {
+        userId: i_userId,
+        username: i_username
+      }
+    }
+
+    this.store.dispatch(new GetUserProfileRequest(request));
   }
 
-  setViewedComments() {
+  //we do not want to open the user profile again by tapping the profile image or username of a post, if we are already on their profile
+  validateMemoryCardLocation(uid: string | null | undefined, uname: string | null | undefined) {
+    if (this.onUserProfile) {
+      this.openUserProfile(uid, uname);
+    }
+  }
+
+  openViewedComments() {
     const currentPosition = window.pageYOffset;
-    this.store.dispatch(new SetViewedComments(this.memory));
     this.navCtrl.navigateForward('/view-comments', { state: { scrollPosition: currentPosition } });
   }
 
   getFirstCommentText() {
     if (this.memory.comments) {
-      this.first_comment_text = this.memory.comments[0].comment;
+      this.first_comment_text = this.memory.comments[0].text;
     }
 
     return this.first_comment_text;

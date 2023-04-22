@@ -2,7 +2,7 @@ import { FriendsModule as FriendsDataAccessModule } from '@mp/api/friend/data-ac
 import { UsersModule as UsersDataAccessModule } from '@mp/api/users/data-access';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import {
+import { 
   CreateFriendRequestHandler,
   UpdateFriendRequestHandler,
   CreateFriendHandler,

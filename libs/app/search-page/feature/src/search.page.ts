@@ -1,6 +1,15 @@
 import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { IUser } from '@mp/api/users/util';
+import { GetUserProfileRequest } from '@mp/app/user-view/util';
+import { Select, Store } from '@ngxs/store';
+import { SearchPageState } from '@mp/app/search-page/data-access';
+import { IMemory } from '@mp/api/memories/util';
+import { Observable } from 'rxjs';
+import { SetSearchResults } from '@mp/app/search-results/util';
+import { Timestamp } from 'firebase-admin/firestore';
+import { Memory } from '@mp/app/shared/feature';
 
 @Component({
   selector: 'app-search',
@@ -8,47 +17,20 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./search.page.scss'],
 })
 export class SearchPageComponent {
+  @Select(SearchPageState.memories) memories$!: Observable<IMemory[] | null>;
+  @Select(SearchPageState.recentSearches) recentSearches$!: Observable<string[] | null>;
+
   searchValue = '';
   searchFocus = false;
   currentFilter = 'Top';
   showExpandedView = false;
 
-  memoriesArray: any[] = [
-    {
-      username: '@username',
-      profileUrl:
-        'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-      imgUrl:
-        'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80',
-      title: 'Last day of Highschool',
-      description: 'Example of a description for the memory',
-      comments: [
-        {
-          username: '@commentedUsername',
-          profileImgUrl:
-            'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-          comment:
-            'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
-        },
-      ],
-      timePosted: '2020-11-14T10:30:00.000-07:00',
-    },
-  ];
-  recentSearches: string[] = ['1', '2', '3', '4', '5']; //first 7 recents are shown
-  searchResults: string[] = [
-    '@user1',
-    '@user2exa',
-    '@user3',
-    '@user4',
-    '@user5example',
-    '@user6',
-    '@user7test',
-    '@user8',
-    '@user9sport',
-  ];
-  tempSearchResults: string[] = [];
+  memoriesArray: IMemory[] | null | undefined;
+  recentSearches: string[] | null | undefined; //only the first 10 will show
+  searchResults: IMemory[] | null | undefined;
+  tempSearchResults: IMemory[] | null | undefined;
 
-  constructor(private navCtrl: NavController) {}
+  constructor(private navCtrl: NavController, private store: Store) {}
 
   onSearchFocus() {
     this.searchFocus = true;
@@ -63,9 +45,13 @@ export class SearchPageComponent {
   onSearch(searchTerm: string) {
     // Add search term to the beginning of the array
     if (searchTerm != '') {
-      this.recentSearches.unshift(searchTerm);
+      this.recentSearches$.subscribe((recentSearches) => {
+        recentSearches?.unshift(searchTerm);
+      });
+
+      this.navCtrl.navigateForward('/search-results');
+      this.store.dispatch(new SetSearchResults(this.searchResults));
     }
-    this.navCtrl.navigateForward('/search-results');
     //fetch user accounts based on search value and populate searchUsers array
   }
   chosenRecentSearch(event: MouseEvent, search: string) {
@@ -78,12 +64,23 @@ export class SearchPageComponent {
   }
 
   get RecentSearches() {
+    this.recentSearches$.subscribe((recentSearches) =>{
+      this.recentSearches = recentSearches;
+    })
+
     return this.recentSearches;
   }
+
   get SearchResults() {
-    return this.searchResults.filter((user) => {
-      return user.toLowerCase().includes(this.searchValue.toLowerCase());
-    });
+    this.memories$.subscribe((memories) =>{
+      memories?.filter((mem) => {
+        if (mem.username?.toLocaleLowerCase().includes(this.searchValue.toLocaleLowerCase())) {
+          this.searchResults?.push(mem);
+        }
+      });
+    })
+
+    return this.searchResults;
   }
 
   get Memories() {
@@ -123,4 +120,44 @@ export class SearchPageComponent {
       return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
     }
   }
+
+  openUserProfile(i_userId: string | null | undefined, i_username: string | null | undefined) {
+    if (i_userId != null && i_username) {
+      const currentPosition = window.pageYOffset;
+      this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
+
+      const request : IUser = {
+        userId: i_userId,
+        username: i_username
+      }
+
+      this.store.dispatch(new GetUserProfileRequest(request));
+    }
+  }
+
+  // tempMem : Memory[] = [
+  //   {
+  //     userId: '18298782739172',
+  //     username: '@username',
+  //     profileImgUrl:
+  //       'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+  //     imgUrl:
+  //       'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80',
+  //     title: 'Last day of Highschool',
+  //     description: 'Example of a description for the memory',
+  //     comments: [
+  //       {
+  //         username: '@commentedUsername',
+  //         profileImgUrl:
+  //           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+  //         text:
+  //           'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
+  //       },
+  //     ],
+  //     created: new Timestamp(1605371400, 0),
+  //   },
+  // ]
+  // get SearchResults() {
+  //   return this.tempMem;
+  // }
 }

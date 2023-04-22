@@ -123,15 +123,15 @@
             <ion-icon ngClass="memory-comment-icon" name="chatbox-outline"></ion-icon>
             <ion-label ngClass="memory-comment-text">Comment</ion-label>
           </div>
-          <ion-text ngClass="comment-viewAll">View all comments <b>{{ memory.comments.length }}</b></ion-text>
+          <ion-text ngClass="comment-viewAll">View all comments <b>1</b></ion-text>
         </div>
         <div *ngIf="showExpandedView" ngClass="comment-profileImg-username">
-          <ion-avatar *ngIf="memory.comments.length > 0" ngClass="memory-avatar-expanded">
-            <img src="{{ memory.comments[0]?.profileImgUrl }}" ngClass="memory-comment-profileImg" />
+          <ion-avatar ngClass="memory-avatar-expanded">
+            <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60" ngClass="memory-comment-profileImg" />
           </ion-avatar>
-          <div *ngIf="memory.comments.length > 0" ngClass="memory-username-and-comment">
-            <ion-text ngClass="memory-comment-username">{{ memory.comments[0]?.username }}</ion-text>
-            <ion-text ngClass="memory-comment-usercomment">{{ memory.comments[0]?.comment }}</ion-text>
+          <div ngClass="memory-username-and-comment">
+            <ion-text ngClass="memory-comment-username">@example_username</ion-text>
+            <ion-text ngClass="memory-comment-usercomment">Example comment</ion-text>
           </div>
         </div>
         <ion-text (click)="changeMemoryView()" ngClass="memory-show-more">{{

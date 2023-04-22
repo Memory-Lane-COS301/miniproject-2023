@@ -1,15 +1,12 @@
-import { Action, Selector, State, StateContext, StateOperator, Store } from '@ngxs/store';
-import { patch, append, removeItem, insertItem, updateItem } from '@ngxs/store/operators';
-import { ICreateMemoryRequest, ICreateMemoryResponse } from "@mp/api/memories/util";
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { ICreateMemoryRequest } from "@mp/api/memories/util";
 import { Injectable } from '@angular/core';
 import { SetError } from '@mp/app/errors/util';
 import { AddMemoryApi } from './add-memory.api';
 import { IMemory } from '@mp/api/memories/util';
-import { IProfile } from '@mp/api/profiles/util';
-import { SetProfileView } from '@mp/app/profile-view/util';
+import { AddNewMemory } from '@mp/app/profile-view/util';
 import { CreateMemory } from "@mp/app/shared/util";
-import { SetFeed } from '@mp/app/feed/util';
-import { state } from '@angular/animations';
+import { AddMemoryToFeedPage } from '@mp/app/feed/util';
 
 export interface AddMemoryStateModel {
     memory: IMemory;
@@ -47,12 +44,6 @@ export class AddMemoryState {
         return state.memory;
     }
 
-    // @Action(SetProfileView)
-    // setProfile(ctx: StateContext<AddMemoryStateModel>, { profile }: SetProfileView) {
-    //     ctx.patchState(
-    //         profile.memories
-    //     )
-    // }
     @Action(CreateMemory)
     async createMemory(ctx: StateContext<AddMemoryStateModel>, { memory }: CreateMemory) {
         try {
@@ -72,8 +63,8 @@ export class AddMemoryState {
             const responseRef = await this.addMemoryApi.createMemory(request);
             const response = responseRef.data;
             return ctx.dispatch([
-                new SetFeed(response.memory),
-                new SetProfileView(response.memory?.userId ?? '', undefined, response.memory, undefined)
+                new AddMemoryToFeedPage(response.memory),
+                new AddNewMemory(response.memory)
             ]);
         }
         catch(error){

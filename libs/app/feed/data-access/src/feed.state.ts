@@ -3,8 +3,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SetError } from '@mp/app/errors/util';
 import produce from 'immer';
 import { FeedApi } from "./feed.api";
-import { SetFeed } from "@mp/app/feed/util";
-import { IGetUserRequest, IUser } from "@mp/api/users/util";
+import { AddMemoryToFeedPage, GetFeedMemoriesRequest, SetFeed } from "@mp/app/feed/util";
 import { IMemory } from "@mp/api/memories/util";
 
 export interface FeedStateModel {
@@ -26,24 +25,21 @@ export class FeedState {
     ){}
 
     @Selector()
-    static feed(state: FeedStateModel) {
+    static memories(state: FeedStateModel) {
         return state.memories;
     }
 
-    // @Action(GetFeedMemories)
-    // async getFeedMemories(ctx: StateContext<FeedStateModel>) {
+    // @Action(GetFeedMemoriesRequest)
+    // async getFeedMemories(ctx: StateContext<FeedStateModel>, { user } : GetFeedMemoriesRequest) {
     //     try {
     //         const state = ctx.getState();
-    //         // const _userId = state.users[0]?.userId;
-    //         // const _username = state.users[0]?.username;
-    //         const _memory = state.memories;
 
     //         const request: IGetFeedMemoriesRequest = {
     //             user: {
-    //                 userId: ''
+    //                 userId: user.userId
     //             }
     //         }
-    //         const responseRef = await this.feedApi.getFriendsMemories(request);
+    //         const responseRef = await this.feedApi.getFeedMemories(request);
     //         const response = responseRef.data;
     //         return ctx.dispatch(new SetFeed(response.memories));
     //     }
@@ -52,12 +48,29 @@ export class FeedState {
     //     }
     // }
 
-    // @Action(SetFeed)
-    // setFeed(ctx: StateContext<FeedStateModel>, { memories }: SetFeed) {
-    //     return ctx.setState(
-    //     produce((draft) => {
-    //         draft.memories = memories;
-    //     })
-    //     );
-    // }
+    @Action(SetFeed)
+    setFeed(ctx: StateContext<FeedStateModel>, { memories }: SetFeed) {
+        return ctx.setState(
+            produce((draft) => {
+                draft.memories = memories;
+            })
+        );
+    }
+
+    @Action(AddMemoryToFeedPage) 
+    addMemory(ctx: StateContext<FeedStateModel>, { memory } : AddMemoryToFeedPage) {
+        try{
+            const state = ctx.getState();
+
+            const response :IMemory[] = [
+                ...state.memories,
+                memory
+            ];
+
+            return this.store.dispatch(new SetFeed(response));
+        }
+        catch (error) {
+            return this.store.dispatch(new SetError('Unable to add memory to feed page.'));
+        }
+    }
 }

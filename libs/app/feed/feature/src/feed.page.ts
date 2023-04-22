@@ -2,7 +2,12 @@ import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AddMemoryPageComponent, Memory } from '@mp/app/shared/feature';
-import { IComment } from '@mp/api/memories/util';
+import { IComment, IMemory } from '@mp/api/memories/util';
+import { Select, Store } from '@ngxs/store';
+import { FeedState } from '@mp/app/feed/data-access';
+import { Observable } from 'rxjs';
+import { GetFeedMemories } from '@mp/app/search-page/util';
+import { Timestamp } from 'firebase-admin/firestore';
 
 @Component({
   selector: 'app-feed',
@@ -10,32 +15,11 @@ import { IComment } from '@mp/api/memories/util';
   styleUrls: ['./feed.page.scss'],
 })
 export class FeedPageComponent {
+  @Select(FeedState.memories) feedMemories$!: Observable<IMemory[]>;
+
   showExpandedView = false;
 
-  memories: Memory[] = [
-    {
-      username: '@username',
-      profileUrl:
-        'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-      imgUrl:
-        'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80',
-      title: 'Last day of Highschool',
-      description: 'Example of a description for the memory',
-      comments: [
-        {
-          username: '@commentedUsername',
-          profileImgUrl:
-            'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-          comment:
-            'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
-        },
-      ],
-      timePosted: '2020-11-14T10:30:00.000-07:00',
-      alive: true
-    },
-  ];
-
-  constructor(private modalController: ModalController) {}
+  constructor(private modalController: ModalController, private store: Store) {}
 
   async addMemory() {
     const modal = await this.modalController.create({
@@ -47,7 +31,8 @@ export class FeedPageComponent {
     const { data } = await modal.onDidDismiss();
 
     if (data) {
-      this.memories.unshift(data);
+      this.feedMemories$.subscribe( (memories) => {
+        memories.unshift(data)});
     }
   }
 
@@ -55,19 +40,23 @@ export class FeedPageComponent {
     this.showExpandedView = !this.showExpandedView;
   }
 
-  get Memories() {
-    return this.memories;
-  }
+  // get Memories() {
+  //   return this.memories;
+  // }
 
   //function to covert timePosted to dd MMMM yyyy
-  convertTimePostedToDate(timePosted: string): string {
-    const date = new Date(timePosted);
+  convertTimePostedToDate(timePosted: Timestamp | null | undefined): string {
+    if (!timePosted) return 'Invalid Date';
+
+    const date = new Date(timePosted?.seconds);
     return formatDate(date, 'dd MMMM yyyy', 'en-US');
   }
 
   //function to use timePosted to calculate how long ago the memory was posted
-  calculateHowLongAgo(timePosted: string): string {
-    const date = new Date(timePosted);
+  calculateHowLongAgo(timePosted: Timestamp | null | undefined ): string {
+    if (!timePosted) return 'Invalid Time';
+
+    const date = new Date(timePosted?.seconds);
     const timeDifference = Date.now() - date.getTime();
 
     // Convert time difference to "time ago" string
@@ -91,5 +80,9 @@ export class FeedPageComponent {
     } else {
       return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
     }
+  }
+
+  ionViewWillEnter() {
+    this.store.dispatch(new GetFeedMemories());
   }
 }
