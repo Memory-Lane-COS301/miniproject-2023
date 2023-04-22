@@ -8,10 +8,12 @@ import { formatDate } from '@angular/common';
 import { GetCommentsRequest, GetProfileRequest, SetEditProfileImageUserId, SetReviveMemoryUserId } from '@mp/app/profile-view/util';
 import { Select, Store } from '@ngxs/store';
 import { ProfileViewState } from '@mp/app/profile-view/data-access';
+import { ProfileState } from '@mp/app/profile/data-access';
 import { Observable } from 'rxjs';
 import { IProfile } from '@mp/api/profiles/util';
 import { IMemory } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
+import { IUser } from '@mp/api/users/util';
 
 @Component({
   selector: 'app-profile-view',
@@ -20,6 +22,8 @@ import { Timestamp } from 'firebase-admin/firestore';
 })
 export class ProfileViewPageComponent implements OnInit {
   @Select(ProfileViewState.profileView) profileView$!: Observable<IProfile | null>;
+  @Select(ProfileState.user) user$!: Observable<IUser | null>;
+
   showExpandedView = false;
   memories: IMemory[] | null | undefined;
   profileImage: ProfileImage;
@@ -217,15 +221,14 @@ export class ProfileViewPageComponent implements OnInit {
     return '';
   }
 
-  getMemoriesLength() {
-    let size = 0;
+  formatTime(seconds: number | null | undefined): string {
+    if (!seconds)
+      seconds = 0;
 
-    this.profileView$.subscribe( (profile) => {
-      if (profile?.memories) {
-        size = profile.memories.length;
-      }
-    });
-
-    return size;
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
   }
+
 }

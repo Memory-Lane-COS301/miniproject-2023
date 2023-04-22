@@ -14,6 +14,7 @@ import { tap } from 'rxjs';
 import { SetViewedComments } from '@mp/app/view-comments/util';
 import { SetUser } from '@mp/app/profile/util';
 import { IUser } from '@mp/api/users/util';
+import { ProfileStateModel } from '@mp/app/profile/data-access'
 
 export interface ProfileViewStateModel {
     profile: IProfile;
@@ -82,6 +83,15 @@ export class ProfileViewState {
             })
         );
     }
+
+    // @Action(SetProfileUserDetails)
+    // setProfileUserDetails(ctx: StateContext<ProfileViewStateModel>, { profile }: SetUserProfileDetails) {
+    //     return ctx.setState(
+    //         produce((draft) => {
+    //             draft.profile = _profile
+    //         })
+    //     );
+    // }
 
     @Action(AddNewMemory)
     async addNewMemory(ctx: StateContext<ProfileViewStateModel>, { memory } : AddNewMemory) {
