@@ -12,6 +12,10 @@ export class SetUser {
   static readonly type = '[Profile] SetUser';
   constructor(public readonly user: IUser | null) {}
 }
+export class SetUserDetailsForm {
+  static readonly type = '[Profile] SetUserDetailsForm';
+  constructor(public readonly user: IUser | null) {}
+}
 
 export class UpdateUserDetails {
   static readonly type = '[Profile] UpdateUserDetails';

@@ -9,6 +9,7 @@ import { SetError } from '@mp/app/errors/util';
 import {
     Logout,
     SetUser,
+    SetUserDetailsForm,
     SubscribeToUser,
     UpdateUserDetails
 } from '@mp/app/profile/util';
@@ -24,11 +25,11 @@ export interface ProfileStateModel {
   user: IUser | null;
   userDetailsForm: {
     model: {
-      name: string | null;
-      surname: string | null;
-      username: string | null;
-      email: string | null;
-      bio: string | null;
+      name: string | null | undefined;
+      surname: string | null | undefined;
+      username: string | null | undefined;
+      email: string | null | undefined;
+      bio: string | null | undefined;
     };
     dirty: false;
     status: string;
@@ -98,6 +99,19 @@ export class ProfileState {
     );
   }
 
+  @Action(SetUserDetailsForm)
+  setUserDetailsForm(ctx: StateContext<ProfileStateModel>, { user }: SetUserDetailsForm) {
+    return ctx.setState(
+      produce((draft) => {
+        draft.userDetailsForm.model.name = user?.name;
+        draft.userDetailsForm.model.surname = user?.surname;
+        draft.userDetailsForm.model.username = user?.username;
+        draft.userDetailsForm.model.email = user?.email;
+        draft.userDetailsForm.model.bio = user?.bio;
+      })
+    );
+  }
+
   @Action(UpdateUserDetails)
   async updateUserDetails(ctx: StateContext<ProfileStateModel>) {
     try {
@@ -147,6 +161,7 @@ export class ProfileState {
 
       return ctx.dispatch(new SetUser(response.user));
     } catch (error) {
+      ctx.dispatch(new SetUserDetailsForm(ctx.getState().user));
       return ctx.dispatch(new SetError((error as Error).message));
     }
   }
