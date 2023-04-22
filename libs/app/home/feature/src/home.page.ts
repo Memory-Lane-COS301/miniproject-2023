@@ -13,8 +13,6 @@ import { MenubarService } from '@mp/app/services/feature';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage {
-  @Select(ProfileState.user) user$!: Observable<IUser | null>;
-
   menuShown: boolean;
 
   constructor(private store: Store, private menubarService: MenubarService) {

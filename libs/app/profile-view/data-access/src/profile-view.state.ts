@@ -53,7 +53,7 @@ export class ProfileViewState {
         try {
             const state = ctx.getState();
             const _userId = state.profile?.userId;
-            window.alert(_userId);
+            // window.alert(_userId);
             const _username = state.profile?.accountDetails?.displayName;
 
             const request: IGetProfileRequest = {
