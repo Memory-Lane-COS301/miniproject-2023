@@ -10,7 +10,7 @@ export interface Memory {
   imgUrl: string;
   title: string;
   description: string;
-  comments: Comment[];  
+  comments: Comment[];
   timePosted: string;
   alive: boolean;
 }

@@ -1,10 +1,10 @@
-import { Component } from "@angular/core";
-import { NavController } from "@ionic/angular";
-import { Select } from "@ngxs/store";
-import { ViewedCommentsState } from "@mp/app/view-comments/data-access";
-import { Observable } from "rxjs";
-import { IComment } from "@mp/api/memories/util";
-
+import { Component } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { Select, Store } from '@ngxs/store';
+import { ViewedCommentsState } from '@mp/app/view-comments/data-access';
+import { Observable } from 'rxjs';
+import { IComment } from '@mp/api/memories/util';
+import { CreateCommentRequest } from '@mp/app/view-comments/util';
 
 @Component({
   selector: 'app-view-comments',
@@ -13,16 +13,16 @@ import { IComment } from "@mp/api/memories/util";
 })
 export class ViewCommentsPageComponent {
   @Select(ViewedCommentsState.viewedComments) viewedComments$!: Observable<IComment[] | null>;
-  
+
   new_comment = '';
 
-  constructor(private navCtrl: NavController) {}
+  constructor(private store: Store) {}
 
-  get Comments(){
+  get Comments() {
     return this.viewedComments$;
   }
 
-  openUserProfile() {
-    this.navCtrl.navigateForward('/view-all-comments');
+  addNewComment() {
+    this.store.dispatch(new CreateCommentRequest(this.new_comment));
   }
 }

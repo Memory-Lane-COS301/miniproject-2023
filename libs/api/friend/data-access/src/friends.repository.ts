@@ -21,7 +21,6 @@ export class FriendsRepository {
   async deleteFriendRequest(friendRequestId: string) {
     return await admin.firestore().collection('friendRequests').doc(friendRequestId).delete();
   }
-
   async getCurrentFriendRequest(senderId: string, receiverId: string) {
     return await admin
       .firestore()

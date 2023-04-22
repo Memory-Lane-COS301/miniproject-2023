@@ -1,21 +1,23 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { Functions, httpsCallable } from '@angular/fire/functions';
-import { IUser } from "@mp/api/users/util";
-import { doc, docData, Firestore } from "@angular/fire/firestore";
-import { IGetProfileRequest, IGetProfileResponse } from "@mp/api/profiles/util";
+import { IUser } from '@mp/api/users/util';
+import { doc, docData, Firestore } from '@angular/fire/firestore';
+import { IGetProfileRequest, IGetProfileResponse } from '@mp/api/profiles/util';
+import {
+  ICreateCommentRequest,
+  ICreateCommentResponse,
+  IGetCommentsRequest,
+  IGetCommentsResponse,
+  IUpdateCommentRequest,
+  IUpdateCommentResponse,
+} from '@mp/api/memories/util';
 
 @Injectable()
 export class ProfileViewApi {
-  constructor(
-    private readonly firestore: Firestore,
-    private readonly functions: Functions
-  ) {}
+  constructor(private readonly firestore: Firestore, private readonly functions: Functions) {}
 
   profileView$(id: string) {
-    const docRef = doc(
-      this.firestore,
-      `users/${id}`
-    ).withConverter<IUser>({
+    const docRef = doc(this.firestore, `users/${id}`).withConverter<IUser>({
       fromFirestore: (snapshot) => {
         return snapshot.data() as IUser;
       },
@@ -25,13 +27,7 @@ export class ProfileViewApi {
   }
 
   async getUserProfile(request: IGetProfileRequest) {
-    return await httpsCallable<
-      IGetProfileRequest,
-      IGetProfileResponse
-    >(
-      this.functions,
-      'getUserProfile'
-    )(request);
+    return await httpsCallable<IGetProfileRequest, IGetProfileResponse>(this.functions, 'getUserProfile')(request);
   }
 
   // async getDeadMemories(request: IGetDeadMemoriesRequest) {
@@ -64,35 +60,17 @@ export class ProfileViewApi {
   //   )(request);
   // }
 
-  // async getComments(request: IGetCommentsRequest) {
-  //   return await httpsCallable<
-  //     IGetCommentsRequest,
-  //     IGetCommentsResponse
-  //   >(
-  //     this.functions,
-  //     'getComments'
-  //   )(request);
-  // }
+  async getComments(request: IGetCommentsRequest) {
+    return await httpsCallable<IGetCommentsRequest, IGetCommentsResponse>(this.functions, 'getComments')(request);
+  }
 
-  // async createComment(request: ICreateCommentRequest) {
-  //   return await httpsCallable<
-  //     ICreateCommentRequest,
-  //     ICreateCommentResponse
-  //   >(
-  //     this.functions,
-  //     'createComment'
-  //   )(request);
-  // }
+  async createComment(request: ICreateCommentRequest) {
+    return await httpsCallable<ICreateCommentRequest, ICreateCommentResponse>(this.functions, 'createComment')(request);
+  }
 
-  // async updateComment(request: IUpdateCommentRequest) {
-  //   return await httpsCallable<
-  //     IUpdateCommentRequest,
-  //     IUpdateCommentResponse
-  //   >(
-  //     this.functions,
-  //     'updateComment'
-  //   )(request);
-  // }
+  async updateComment(request: IUpdateCommentRequest) {
+    return await httpsCallable<IUpdateCommentRequest, IUpdateCommentResponse>(this.functions, 'updateComment')(request);
+  }
 
   // async createFriendRequest(request: ICreateFriendRequestRequest) {
   //   return await httpsCallable<
