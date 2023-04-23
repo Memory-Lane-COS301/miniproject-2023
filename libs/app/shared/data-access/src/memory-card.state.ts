@@ -95,9 +95,20 @@ export class MemoryCardState {
     @Action(CreateCommentRequest) 
     async createCommentRequest(ctx: StateContext<MemoryCardStateModel>, { text }: CreateCommentRequest) {
         try{
-            const state = ctx.getState();
-            const _userId = state.memoryCard.userId;
-            const _memoryId = state.memoryCard.memoryId;
+            const card = this.store.selectSnapshot(MemoryCardState.memoryCard);
+
+            if (!card) {
+                return ctx.dispatch(new SetError('Memory Card not set'));
+            }
+            else if (!card.userId) {
+                return ctx.dispatch(new SetError('Card userId not set'));
+            }
+            else if (!card.username) {
+                return ctx.dispatch(new SetError('Card username not set'));
+            }
+
+            const _userId = card.userId;
+            const _memoryId = card.memoryId;
             const _text = text;
 
             const request : ICreateCommentRequest = {
@@ -109,11 +120,11 @@ export class MemoryCardState {
             }
 
             const responseRef = await this.memoryCardApi.createComment(request);
-            state.memoryCard.comments?.push(responseRef.data.comment);
+            card.comments?.push(responseRef.data.comment);
 
             const response : IMemory = {
-                ...state.memoryCard,
-                comments: state.memoryCard.comments
+                ...card,
+                comments: card.comments
             };
             
             return ctx.dispatch(new SetMemoryCard(response));

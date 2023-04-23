@@ -71,6 +71,15 @@ export class ProfileViewState {
 
             const responseRef = await this.profileViewApi.getUserProfile(request);
             const response = responseRef.data;
+
+            response.profile.memories = response.profile.memories?.map((mem) => {
+                return {
+                    ...mem,
+                    userId: user.userId,
+                    username: user.username
+                }
+            })
+
             return ctx.dispatch(new SetProfileView(response.profile));
         }
         catch(error){
