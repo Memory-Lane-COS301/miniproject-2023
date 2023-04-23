@@ -20,7 +20,8 @@ export class MemoryCardComponent implements OnInit{
   @Select(MemoryCardState.memoryCard) memoryCard$ !: Observable<IMemory | null>;
 
   @Input() memory!: IMemory;
-  @Input() onUserProfile: boolean | undefined; //we use this to determine whether the memory card is displayed on the user's page or on the feed/search pages
+  @Input() ownerUserId: string | null | undefined; //used to validate if we can navigate to the UserView page when clicking on the card's profileImg or username
+  @Input() onProfileView: boolean | undefined;
 
   showExpandedView = false;
   previousPageName = '';
@@ -55,21 +56,20 @@ export class MemoryCardComponent implements OnInit{
   }
 
   //function to covert timePosted to dd MMMM yyyy
-  convertTimePostedToDate(timePosted: Timestamp | null | undefined): string {
+  convertTimePostedToDate(timePosted: any | null | undefined): string {
     if (!timePosted) return 'Invalid Date';
 
-    const date = new Date(timePosted.seconds);
+    const date = new Date(timePosted._seconds);
     return formatDate(date, 'dd MMMM yyyy', 'en-US');
   }
 
-  //function to use timePosted to calculate how long ago the memory was posted
-  calculateHowLongAgo(timePosted: Timestamp | null | undefined): string {
+  calculateHowLongAgo(timePosted: any | null | undefined): string {
     if (!timePosted) return 'Invalid Time';
 
-    const date = new Date(timePosted.seconds);
-    const timeDifference = Date.now() - date.getTime();
+    const now = new Date();
+    const date = new Date(timePosted._seconds);
+    const timeDifference = now.getTime() - date.getTime();
 
-    // Convert time difference to "time ago" string
     const seconds = Math.floor(timeDifference / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
@@ -92,42 +92,19 @@ export class MemoryCardComponent implements OnInit{
     }
   }
 
-  openUserProfile(i_userId: string | null | undefined, i_username: string | null | undefined) {
-    const currentPosition = window.pageYOffset;
-    this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
+  openUserProfile(uid: string | null | undefined, uname: string | null | undefined) {
+    if (uid != this.ownerUserId) {//if we are on the feed page
+      const currentPosition = window.pageYOffset;
+      this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
 
-    let _userId :string | null | undefined = '';
-    let _username :string | null | undefined = '';
+      if (uid == null || uname == null) return;
 
-    let request: IUser;
-    
-    //we either want to navigate to the user's profile (i.e. the person who posted the memory)
-    if (!(i_userId && i_username)) {
-      this.memoryCard$.subscribe((user) => {
-        _userId = user?.userId,
-        _username = user?.username;
-      })
-
-      request = {
-        userId: _userId,
-        username: _username
+      const request : IUser = {
+        userId: uid,
+        username: uname
       }
-    }
-    //or we want to open a user's - who commented - profile
-    else {
-      request = {
-        userId: i_userId,
-        username: i_username
-      }
-    }
 
-    this.store.dispatch(new GetUserProfileRequest(request));
-  }
-
-  //we do not want to open the user profile again by tapping the profile image or username of a post, if we are already on their profile
-  validateMemoryCardLocation(uid: string | null | undefined, uname: string | null | undefined) {
-    if (this.onUserProfile) {
-      this.openUserProfile(uid, uname);
+      this.store.dispatch(new GetUserProfileRequest(request));
     }
   }
 
@@ -158,5 +135,15 @@ export class MemoryCardComponent implements OnInit{
     }
 
     return 0;
+  }
+
+  formatTime(seconds: number | null | undefined): string {
+    if (!seconds)
+      seconds = 0;
+
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
   }
 }
