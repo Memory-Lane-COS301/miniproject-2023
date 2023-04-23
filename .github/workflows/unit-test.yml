@@ -28,6 +28,10 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
+      # Install Nx
+      - name: Install Dependencies
+        run: yarn add nx
+
       # Finally, run our tests
       - name: run Unit tests
         run: yarn nx test-user-data-access
