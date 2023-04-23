@@ -93,12 +93,12 @@ export class MemoryCardState {
     }
 
     @Action(CreateCommentRequest) 
-    async createCommentRequest(ctx: StateContext<MemoryCardStateModel>, action: CreateCommentRequest) {
+    async createCommentRequest(ctx: StateContext<MemoryCardStateModel>, { text }: CreateCommentRequest) {
         try{
             const state = ctx.getState();
             const _userId = state.memoryCard.userId;
             const _memoryId = state.memoryCard.memoryId;
-            const _text = action.comment.text;
+            const _text = text;
 
             const request : ICreateCommentRequest = {
                 comment: {
@@ -124,12 +124,12 @@ export class MemoryCardState {
     }
 
     @Action(UpdateCommentRequest) 
-    async updateCommentRequest(ctx: StateContext<MemoryCardStateModel>, action: UpdateCommentRequest) {
+    async updateCommentRequest(ctx: StateContext<MemoryCardStateModel>, { text }: UpdateCommentRequest) {
         try{
             const state = ctx.getState();
             const _userId = state.memoryCard.userId;
             const _memoryId = state.memoryCard.memoryId;
-            const _text = action.comment.text;
+            const _text = text;
 
             const request : IUpdateCommentRequest = {
                 comment: {

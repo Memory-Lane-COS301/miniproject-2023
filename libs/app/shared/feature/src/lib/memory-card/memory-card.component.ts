@@ -6,7 +6,7 @@ import { IMemory } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { MemoryCardState } from '@mp/app/shared/data-access';
 import { Observable } from 'rxjs';
-import { GetCommentsRequest, SetMemoryCard } from '@mp/app/shared/util';
+import { CreateCommentRequest, GetCommentsRequest, SetMemoryCard } from '@mp/app/shared/util';
 import { GetUserProfileRequest } from '@mp/app/user-view/util';
 import { IUser } from '@mp/api/users/util';
 import { IGetProfileRequest } from '@mp/api/profiles/util';
@@ -145,5 +145,9 @@ export class MemoryCardComponent implements OnInit{
     const m = Math.floor((seconds % 3600) / 60);
     const s = Math.floor(seconds % 60);
     return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
+  }
+
+  addNewComment() {
+    this.store.dispatch(new CreateCommentRequest(this.new_comment));
   }
 }

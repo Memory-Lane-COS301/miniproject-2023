@@ -55,17 +55,16 @@
   .add-new-comment {
     border: 2px solid #fff;
     border-radius: 10px;
-    background-color: #0a0062;
     width: 380px;
     margin-top:2px 0 0 2px;
   }
   
   .add-comment-btn {
-    position: absolute;
-    right: 5px;
     height: 25px;
     font-size: 12px;
     background-color: transparent;
+    margin-top: 7px;
+    margin-right: 3px;
   }
 
   ion-content {

@@ -73,12 +73,12 @@ export class ViewedCommentsState {
     }
 
     @Action(UpdateCommentRequest) 
-    async updateCommentRequest(ctx: StateContext<ViewedCommentsStateModel>, action: UpdateCommentRequest) {
+    async updateCommentRequest(ctx: StateContext<ViewedCommentsStateModel>, { text }: UpdateCommentRequest) {
         try{
             const state = ctx.getState();
             const _userId = state.memory?.userId;
             const _memoryId = state.memory?.memoryId;
-            const _text = action.comment.text;
+            const _text = text;
 
             const request : IUpdateCommentRequest = {
                 comment: {

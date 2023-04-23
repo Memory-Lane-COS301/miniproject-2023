@@ -30,8 +30,7 @@
 <ion-footer collapse="condense">
   <ion-toolbar color="dark" ngClass="footer-toolbar">
     <div ngClass="add-comment-container">
-      <form ngClass="add-comment-form" ngxsForm="viewedComments$.viewedComments" (submit)="addNewComment()" #formcontrol="ngForm">
-        <ion-item ngClass="add-new-comment" color="none" lines="none">
+      <ion-item ngClass="add-new-comment" color="none" lines="none">
           <ion-input 
           ngClass="add-comment-input" 
           type="text" 
@@ -42,11 +41,10 @@
           maxlength="80"
           >
         </ion-input>
-        <ion-button [disabled]="!new_comment" type="submit" ngClass="add-comment-btn" color="dark">
+        <ion-button [disabled]="!new_comment" (click)="addNewComment()" ngClass="add-comment-btn" color="dark">
           <ion-icon size="small" name="send" ngClass="add-comment-icon"></ion-icon>
         </ion-button>
         </ion-item>
-      </form>
     </div>
   </ion-toolbar>
 </ion-footer>
