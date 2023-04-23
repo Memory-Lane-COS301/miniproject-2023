@@ -23,7 +23,8 @@ async function seedData() {
     // await seedUsers();
     // await generateMemories(3, 5);
     // await seedFriends();
-    await generateMemoriesFor('dDbHNIRIOO0BO7IlSO7olJ86iYtl', 5, 2);
+    await generateMemoriesFor('qaHHYYII46lF5RSmyHsxi3IzZ9a7', 5, 2);
+    await generateFriendsFor('qaHHYYII46lF5RSmyHsxi3IzZ9a7', 5);
 }
 
 // ============================================================================
@@ -202,6 +203,31 @@ async function seedFriends() {
     }
 
     console.log('Friends seeded successfully.');
+}
+
+async function generateFriendsFor(userId, numFriends) {
+    const usersSnapshot = await firestore.collection('users').get();
+    const userDoc = await firestore.collection('users').doc(userId).get();
+    const user = userDoc.data();
+
+    const randomUsers = pickRandomElements(usersSnapshot.docs, 6);
+    const randomUserIds = randomUsers.map(doc => doc.id)
+    const index = randomUserIds.indexOf(userDoc.id);
+
+    if (index !== -1)
+        randomUsers.splice(index, 1);
+    
+    for (let i = 0; i < numFriends; i++) {
+        const friend = {
+            userId1: userDoc.id,
+            userId2: randomUsers[i].id,
+            created: Timestamp.now()
+        };
+
+        await admin.firestore().collection('friends').doc(faker.datatype.uuid()).set(friend);
+    }
+
+    console.log(`Friends for ${user.username} seeded successfully.`);
 }
 
 // ============================================================================

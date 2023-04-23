@@ -116,7 +116,8 @@ export class ProfileState {
   async updateUserDetails(ctx: StateContext<ProfileStateModel>) {
     try {
       const state = ctx.getState();
-      const userId = state.user?.userId;
+      const authState = this.store.selectSnapshot(AuthState.user);
+      const userId = authState?.uid;
       const name = state.userDetailsForm.model.name;
       const surname = state.userDetailsForm.model.surname;
       const username = state.userDetailsForm.model.username;
