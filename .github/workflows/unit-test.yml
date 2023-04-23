@@ -30,15 +30,34 @@ jobs:
 
       # Finally, run our tests
       - name: run Unit tests
-        run: |
-          yarn nx test-user-data-access
-          yarn nx  test app-user-data-access
-          yarn nx test app-dashboard-feature
-          yarn nx  test app-user-feature
-          yarn nx  test app-user-util
-          yarn nx test app-feed
-          yarn nx test app-forgot-feature
-          yarn nx test app-profile-view
-          yarn nx test app-search-page
-          yarn nx test app-search-results
-          yarn nx  test app-shared
+        run: yarn nx test-user-data-access
+      # Finally, run our tests
+      - name: run Unit tests
+        run: yarn nx test app-user-data-access
+      # Finally, run our tests
+      - name: run Unit tests
+        run: yarn nx test app-dashboard-feature
+      # Finally, run our tests
+      - name: run Unit tests
+        run: yarn nx test app-user-feature
+      # Finally, run our tests
+      - name: run Unit tests
+        run: yarn nx test app-user-util
+      # Finally, run our tests
+      - name: run Unit tests
+        run: yarn nx test app-feed
+      # Finally, run our tests
+      - name: run Unit tests
+        run: yarn nx test app-forgot-feature
+      # Finally, run our tests
+      - name: run Unit tests
+        run: yarn nx test app-profile-view
+      # Finally, run our tests
+      - name: run Unit tests
+        run: yarn nx test app-search-page
+      # Finally, run our tests
+      - name: run Unit tests
+        run: yarn nx test app-search-results
+      # Finally, run our tests
+      - name: run Unit tests
+        run: yarn nx test app-shared
