@@ -22,6 +22,9 @@
   font-style: normal;
   font-weight: 700;
   font-size: 27px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .memory-avatar-username {
   display: flex;
@@ -46,9 +49,29 @@ ion-card-header {
   font-weight: 800;
   font-size: 15px;
   width: 100%;
-  height: 115px;
+  max-height: 115px;
   margin-top: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
+
+.memory-card-desc-profileView {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 15px;
+  width: 100%;
+  max-width: 200px;
+  max-height: 110px;
+  margin-top: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .memory-date {
   font-family: 'Lato';
   font-style: normal;
@@ -129,11 +152,14 @@ ion-card-header {
   font-weight: 800;
   font-size: 13px;
   width: 100%;
-  height: 70px;
-  // height: auto;
+  max-height: 70px;
   margin: 5px 0 2px 0;
   padding: 0 3px 3px 3px;
   border-bottom: 1px solid #686868;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .memory-card-time-ago-expanded {
   position: fixed;

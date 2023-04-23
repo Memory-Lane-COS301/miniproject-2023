@@ -17,12 +17,16 @@
     opacity: 0.5;
   }
   .memory-comment-usercomment {
-    font-size: 16px;
+    font-size: 12px;
     position: absolute;
-    bottom: 15px;
-    left: 50px;
-    height: auto;
+    top: 30px;
+    left: 60px;
+    max-height: 80px;
     max-width: 320px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .memory-avatar-expanded {
     width: 45px;
