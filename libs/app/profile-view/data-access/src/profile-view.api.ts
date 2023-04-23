@@ -3,6 +3,7 @@ import { Functions, httpsCallable } from '@angular/fire/functions';
 import { IUser } from "@mp/api/users/util";
 import { doc, docData, Firestore } from "@angular/fire/firestore";
 import { IGetProfileRequest, IGetProfileResponse } from "@mp/api/profiles/util";
+import { ICreateMemoryRequest, ICreateMemoryResponse } from "@mp/api/memories/util";
 import { ICreateCommentRequest, ICreateCommentResponse, IGetCommentsRequest, IGetCommentsResponse, IUpdateCommentRequest, IUpdateCommentResponse } from "@mp/api/memories/util";
 
 @Injectable()
@@ -42,15 +43,15 @@ export class ProfileViewApi {
   //   )(request);
   // }
 
-  // async createMemory(request: ICreateMemoryRequest) {
-  //   return await httpsCallable<
-  //     ICreateMemoryRequest,
-  //     ICreateMemoryResponse
-  //   >(
-  //     this.functions,
-  //     'createMemory'
-  //   )(request);
-  // }
+  async createMemory(request: ICreateMemoryRequest) {
+    return await httpsCallable<
+      ICreateMemoryRequest,
+      ICreateMemoryResponse
+    >(
+      this.functions,
+      'createMemory'
+    )(request);
+  }
 
   async getComments(request: IGetCommentsRequest) {
     return await httpsCallable<

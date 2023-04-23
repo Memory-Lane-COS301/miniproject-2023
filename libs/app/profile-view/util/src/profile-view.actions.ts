@@ -45,6 +45,11 @@ export class AddNewMemory {
     constructor(public readonly memory: IMemory) {}
 }
 
+export class CreateNewMemory {
+    static readonly type = '[ProfileView] CreateNewMemory';
+    constructor(public readonly memory: IMemory) {}
+}
+
 export class ChangeProfileViewImage {
     static readonly type = '[ProfileView] ChangeProfileViewImage';
     constructor(public readonly imageUrl: string | null | undefined, public readonly id: string) {}

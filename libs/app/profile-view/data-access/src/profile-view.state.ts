@@ -1,12 +1,19 @@
 import { Action, Selector, State, StateContext, Store, Select } from '@ngxs/store';
 import { IProfile, IGetProfileRequest } from "@mp/api/profiles/util"
-import { AddNewMemory, ChangeProfileViewImage, CreateCommentRequest, GetCommentsRequest, GetProfileRequest, SetProfileView, SubscribeToProfile, UpdateCommentRequest } from "@mp/app/profile-view/util"
+import { CreateNewMemory, AddNewMemory, ChangeProfileViewImage, CreateCommentRequest, GetCommentsRequest, GetProfileRequest, SetProfileView, SubscribeToProfile, UpdateCommentRequest } from "@mp/app/profile-view/util"
 import { Injectable } from '@angular/core';
 import { AuthState } from '@mp/app/auth/data-access';
 import { SetError } from '@mp/app/errors/util';
 import { ProfileViewApi } from './profile-view.api';
 import produce from 'immer';
-import { ICreateCommentRequest, IGetCommentsRequest, IMemory, IUpdateCommentRequest } from '@mp/api/memories/util';
+import { 
+    ICreateMemoryRequest,
+    ICreateMemoryResponse,
+    ICreateCommentRequest,
+    IGetCommentsRequest,
+    IMemory,
+    IUpdateCommentRequest
+} from '@mp/api/memories/util';
 import { IComment } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { user } from '@angular/fire/auth';
@@ -115,6 +122,21 @@ export class ProfileViewState {
         }
         catch (error) {
             return this.store.dispatch(new SetError('Unabled to add new memory to Profile View page.'));
+        }
+    }
+
+    @Action(CreateNewMemory)
+    async createNewMemory({ memory } : CreateNewMemory) {
+        try {
+            const request: ICreateMemoryRequest = {
+                memory: memory
+            };
+
+            const responseRef = await this.profileViewApi.createMemory(request);
+            return this.store.dispatch(new GetProfileRequest());
+        }
+        catch (error) {
+            return this.store.dispatch(new SetError('Unable to create new memory'));
         }
     }
 
