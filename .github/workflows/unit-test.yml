@@ -1,4 +1,4 @@
-name: Jest Testing
+name: Jest Front-End Unit Testing
 on: push
 jobs:
   test:
