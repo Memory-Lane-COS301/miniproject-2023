@@ -92,6 +92,8 @@ export class AddMemoryPageComponent {
         this.store.dispatch(new SetError('User not set'));
       } else {
         this.memory.userId = user.uid;
+        console.log("In add memory page")
+        console.log(this.memory)
         this.store.dispatch(new CreateNewMemory(this.memory))
         this.modalController.dismiss();
       }

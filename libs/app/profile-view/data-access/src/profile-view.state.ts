@@ -61,6 +61,11 @@ export class ProfileViewState {
         return state.profile;
     }
 
+    @Selector()
+    static memories(state: ProfileViewStateModel) {
+        return state.profile.memories;
+    }
+
     @Action(GetProfileRequest)
     async getProfileRequest(ctx: StateContext<ProfileViewStateModel>) {
         try {
@@ -126,7 +131,7 @@ export class ProfileViewState {
     }
 
     @Action(CreateNewMemory)
-    async createNewMemory({ memory } : CreateNewMemory) {
+    async createNewMemory(ctx: StateContext<ProfileViewStateModel>, { memory } : CreateNewMemory) {
         try {
             const request: ICreateMemoryRequest = {
                 memory: memory

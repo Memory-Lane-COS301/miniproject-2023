@@ -65,9 +65,9 @@
     </ion-row>
   </ion-grid>
 
-  <ion-list ngClass="memory-list">
+  <ion-list ngClass="memory-list" *ngIf="memories$ | async as memories">
     <app-memory-card 
-      *ngFor="let memory of Memories" 
+      *ngFor="let memory of  memories" 
       [memory]="memory"
       [onProfileView]="true"
       [ownerUserId]="memory.userId"

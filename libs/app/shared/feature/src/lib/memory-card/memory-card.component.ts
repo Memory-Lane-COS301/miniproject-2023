@@ -32,8 +32,9 @@ export class MemoryCardComponent implements OnInit{
   
   constructor(
     private navCtrl: NavController,
-    private store: Store
-  ) {}
+    private store: Store,
+    private state: MemoryCardState
+  ) { }
 
   ngOnInit(): void {
       this.store.dispatch(new SetMemoryCard(this.memory)); 
@@ -59,7 +60,7 @@ export class MemoryCardComponent implements OnInit{
   convertTimePostedToDate(timePosted: any | null | undefined): string {
     if (!timePosted) return 'Invalid Date';
 
-    const date = new Date(timePosted._seconds);
+    const date = new Date(timePosted._seconds * 1000);
     return formatDate(date, 'dd MMMM yyyy', 'en-US');
   }
 
@@ -67,7 +68,7 @@ export class MemoryCardComponent implements OnInit{
     if (!timePosted) return 'Invalid Time';
 
     const now = new Date();
-    const date = new Date(timePosted._seconds);
+    const date = new Date(timePosted._seconds * 1000);
     const timeDifference = now.getTime() - date.getTime();
 
     const seconds = Math.floor(timeDifference / 1000);

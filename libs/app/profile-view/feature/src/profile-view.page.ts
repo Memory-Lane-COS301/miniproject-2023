@@ -21,7 +21,7 @@ import { IUser } from '@mp/api/users/util';
   styleUrls: ['./profile-view.page.scss'],
 })
 export class ProfileViewPageComponent implements OnInit {
-  @Select(ProfileViewState.profileView) profileView$!: Observable<IProfile | null>;
+  @Select(ProfileViewState.memories) memories$!: Observable<IMemory[] | null>;
   @Select(ProfileState.user) user$!: Observable<IUser | null>;
 
   showExpandedView = false;
@@ -62,8 +62,8 @@ export class ProfileViewPageComponent implements OnInit {
     const { data } = await modal.onDidDismiss();
 
     if (data) {
-      this.profileView$.subscribe( (profileView) => {
-        profileView?.memories?.unshift(data)});
+      // this.profileView$.subscribe( (profileView) => {
+      //   profileView?.memories?.unshift(data)});
     }
   }
 
@@ -73,9 +73,9 @@ export class ProfileViewPageComponent implements OnInit {
     });
 
     let id : string | null | undefined = '';
-    this.profileView$.subscribe((profileView) => {
-      id = profileView?.userId;
-    })
+    // this.profileView$.subscribe((profileView) => {
+    //   id = profileView?.userId;
+    // })
 
     this.store.dispatch(new SetEditProfileImageUserId(id));
 
@@ -90,9 +90,9 @@ export class ProfileViewPageComponent implements OnInit {
     });
 
     let id : string | null | undefined = '';
-    this.profileView$.subscribe((profileView) => {
-      id = profileView?.userId;
-    })
+    // this.profileView$.subscribe((profileView) => {
+    //   id = profileView?.userId;
+    // })
 
     this.store.dispatch(new SetReviveMemoryUserId(id));
 
@@ -114,17 +114,17 @@ export class ProfileViewPageComponent implements OnInit {
     }
   }
 
-  get Memories() : IMemory[] | null {
-    this.profileView$.subscribe((profileView) => {
-      this.memories = profileView?.memories;
-    });
+  // get Memories() : IMemory[] | null {
+  //   this.profileView$.subscribe((profileView) => {
+  //     this.memories = profileView?.memories;
+  //   });
 
-    if (!this.memories) return null;
+  //   if (!this.memories) return null;
 
-    this.memory = this.memories[0];
+  //   this.memory = this.memories[0];
 
-    return this.memories;
-  }
+  //   return this.memories;
+  // }
 
   //function to covert timePosted to dd MMMM yyyy
   convertTimePostedToDate(timePosted: any | null | undefined): string {
