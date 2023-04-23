@@ -3,7 +3,6 @@
 }
 
 .modal-list-item {
-  border: 1px solid #ffffff;
   padding: 10px;
   font-size: 20px;
   font-weight: bold;
@@ -59,11 +58,11 @@
 }
 
 .button-add {
-  --background: #08ff08cd;
+  --background: #16a34a;
 }
 
 .button-cancel {
-  --background: #ff0000;
+  --background: #b91c1c;
 }
 
 
@@ -189,7 +188,7 @@ ion-card-header {
   border: 3px solid #686868;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 25px;
-  height: 500px;
+  height: 430px;
   width: 350px;
   background-color: #434343;
   transition: 0.5s;
