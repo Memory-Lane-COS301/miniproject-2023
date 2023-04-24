@@ -12,7 +12,8 @@ import {
     SetUserDetailsForm,
     SubscribeToUser,
     UpdateUserDetails,
-    DecrementUserTime
+    DecrementUserTime,
+    UpdateUser
 } from '@mp/app/profile/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
@@ -180,6 +181,44 @@ export class ProfileState {
       return ctx.dispatch(new SetUser(response.user));
     } catch (error) {
       ctx.dispatch(new SetUserDetailsForm(ctx.getState().user));
+      return ctx.dispatch(new SetError((error as Error).message));
+    }
+  }
+
+  @Action(UpdateUser)
+  async updateUser(ctx: StateContext<ProfileStateModel>, { user }: UpdateUser) {
+    try {
+      const state = ctx.getState();
+      const authState = this.store.selectSnapshot(AuthState.user);
+      const userId = authState?.uid;
+      const name = user?.name ? user.name : state.user?.name;
+      const surname = user?.surname ? user.surname : state.user?.surname;
+      const username = user?.username ? user.username : state.user?.username;
+      const email = user?.email ? user.email : state.user?.email;
+      const profileImgUrl = user?.profileImgUrl ? user.profileImgUrl : state.user?.profileImgUrl;
+      const bio = user?.bio ? user.bio : state.user?.bio;
+
+      if (!userId)
+        return ctx.dispatch(new SetError('User not set'));
+
+      const request: IUpdateUserRequest = {
+        user: {
+          userId: userId,
+          name: name,
+          surname: surname,
+          username: username,
+          email: email,
+          profileImgUrl: profileImgUrl,
+          bio: bio,
+        } 
+      };
+
+      const responseRef = await this.profileApi.updateUserDetails(request);
+      const response = responseRef.data;
+
+
+      return ctx.dispatch(new SetUser(response.user));
+    } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
     }
   }

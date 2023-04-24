@@ -23,3 +23,8 @@ export class SetUserDetailsForm {
 export class UpdateUserDetails {
   static readonly type = '[Profile] UpdateUserDetails';
 }
+
+export class UpdateUser {
+  static readonly type = '[Profile] UpdateUser';
+  constructor(public readonly user: IUser | null) {}
+}

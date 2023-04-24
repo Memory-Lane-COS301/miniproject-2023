@@ -30,9 +30,43 @@
 }
 
 .button-save {
-  --background: #08ff08cd;
+  --background: #15803d;
+  --background-activated: #16a34a;
+  --background-hover: #16a34a;
+  width: 100%;
 }
 
 .button-cancel {
-  --background: #ff0000;
+  --background: #374151;
+  --background-activated: #4b5563;
+  --background-hover: #4b5563;
+  width: 100%;
+}
+
+.profile-photo-container {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-photo-preview {
+  border-radius: 50%;
+  border: 1px solid white;
+  min-width: 200px;
+  min-height: 200px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+ion-button {
+  margin-top: 20px;
+}
+
+ion-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

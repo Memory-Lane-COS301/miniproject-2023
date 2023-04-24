@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { IMemory } from '@mp/api/memories/util';
 import { 
@@ -41,7 +41,7 @@ export class AddMemoryPageComponent {
 
   constructor(
     public modalController: ModalController,
-    private readonly store: Store  
+    private readonly store: Store,
   ) {
     this.currentDate = new Date().toISOString();
     // Change in production!!!!!
@@ -93,7 +93,7 @@ export class AddMemoryPageComponent {
       } else {
         this.memory.userId = user.uid;
         this.store.dispatch(new CreateNewMemory(this.memory))
-        this.modalController.dismiss();
+        await this.modalController.dismiss();
       }
     }
   }
