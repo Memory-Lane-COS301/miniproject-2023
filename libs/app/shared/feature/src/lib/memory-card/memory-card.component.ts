@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Select, Store } from '@ngxs/store';
 import { IMemory } from '@mp/api/memories/util';
@@ -10,6 +10,7 @@ import { CreateCommentRequest, GetCommentsRequest, SetMemoryCard } from '@mp/app
 import { GetUserProfileRequest } from '@mp/app/user-view/util';
 import { IUser } from '@mp/api/users/util';
 import { IGetProfileRequest } from '@mp/api/profiles/util';
+import { on } from 'stream';
 
 @Component({
   selector: 'app-memory-card',
@@ -18,9 +19,11 @@ import { IGetProfileRequest } from '@mp/api/profiles/util';
 })
 export class MemoryCardComponent implements OnInit {
   @Input() memory!: IMemory;
+  @Input() onProfileView!: boolean;
+  @Output() postClick = new EventEmitter<IMemory>();
+
 
   showExpandedView = false;
-  onProfileView = false;
   previousPageName = '';
   addingNewComment = false;
   new_comment: string = '';
@@ -49,7 +52,8 @@ export class MemoryCardComponent implements OnInit {
     this.showExpandedView = !this.showExpandedView;
 
     if(this.showExpandedView) {      
-      this.store.dispatch(new GetCommentsRequest(this.memory)); //we only request the comments if we want to display them
+      // this.store.dispatch(new GetCommentsRequest(this.memory)); //we only request the comments if we want to display them
+      this.onPostClick();
     }
   }
 
@@ -147,6 +151,10 @@ export class MemoryCardComponent implements OnInit {
 
   addNewComment() {
     this.store.dispatch(new CreateCommentRequest(this.new_comment));
+  }
+
+  onPostClick(): void {
+    this.postClick.emit(this.memory);
   }
 
 }

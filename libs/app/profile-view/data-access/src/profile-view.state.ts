@@ -4,6 +4,7 @@ import { CreateNewMemory, AddNewMemory, ChangeProfileViewImage, CreateCommentReq
 import { Injectable } from '@angular/core';
 import { AuthState } from '@mp/app/auth/data-access';
 import { SetError } from '@mp/app/errors/util';
+import { Logout } from '@mp/app/auth/util';
 import { ProfileViewApi } from './profile-view.api';
 import produce from 'immer';
 import { 
@@ -22,6 +23,7 @@ import { SetViewedComments } from '@mp/app/view-comments/util';
 import { SetUser } from '@mp/app/profile/util';
 import { IUser } from '@mp/api/users/util';
 import { ProfileState } from '@mp/app/profile/data-access'
+import { profile } from 'console';
 
 export interface ProfileViewStateModel {
     profile: IProfile;
@@ -91,12 +93,14 @@ export class ProfileViewState {
             const response = responseRef.data;
 
             response.profile.memories = response.profile.memories?.map((mem) => {
+                mem.comments = [];
                 return {
                     ...mem,
                     userId: user.userId,
                     username: user.username
                 }
             })
+
 
             return ctx.dispatch(new SetProfileView(response.profile));
         }
@@ -189,25 +193,33 @@ export class ProfileViewState {
     @Action(GetCommentsRequest)
     async getCommentsRequest(ctx: StateContext<ProfileViewStateModel>, { memory }: GetCommentsRequest) {
         try {
+            console.log("Hello World");
+            console.log(memory)
             const state = ctx.getState();
-            const _userId = memory.userId;
 
-            const _memoryId = memory.memoryId;
+            const authState = this.store.selectSnapshot(AuthState);
+
+            if (!authState.user.uid)
+                return ctx.dispatch(new Logout());
 
             const request: IGetCommentsRequest = {
                 memory: {
-                    userId: _userId,
-                    memoryId: _memoryId
+                    userId: authState.user.uid,
+                    memoryId: memory.memoryId
                 }
             }
+
             const responseRef = await this.profileViewApi.getComments(request);
             const response : IMemory = {
                 ...memory,
                 comments: responseRef.data.comments
             };
 
+            console.log("Response");
+            console.log(responseRef.data.comments);
+
             //we need to update the profile state's comments
-            state.profile.memories?.map((mem) => {
+            const newMemories = state.profile.memories?.map((mem) => {
                 if (mem.memoryId === memory.memoryId) {
                     return {
                         ...mem,
@@ -217,7 +229,18 @@ export class ProfileViewState {
                 return mem;
             });
 
-            return ctx.dispatch([new SetProfileView(state.profile), new SetViewedComments(response)]);
+            console.log("New memories")
+            console.log(newMemories);
+
+            // return ctx.setState(
+            //     produce((draft) => {
+            //         draft.profile.memories = newMemories;
+            //     })
+            // );
+
+            return responseRef.data.comments;
+
+            // return ctx.dispatch([new SetProfileView(newState), new SetViewedComments(response)]);
         }
         catch(error){
             return ctx.dispatch(new SetError((error as Error).message));
