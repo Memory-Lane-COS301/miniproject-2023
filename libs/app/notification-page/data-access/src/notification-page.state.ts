@@ -5,6 +5,13 @@ import produce from 'immer';
 import { IComment } from '@mp/api/memories/util';
 import { IUser } from '@mp/api/users/util';
 import { NotificationPageApi } from './notification-page.api';
+import {
+    SetNotificationPage,
+    AddNewFriendRequest,
+    UpdateFriendRequest,
+    AddNewComment,
+    DeleteFriendRequest
+} from '@mp/app/notification-page/util';
 
 export interface NotificationPageStateModel {
     friendsRequests: IUser[] | null | undefined;
@@ -27,48 +34,87 @@ export class NotificationPageState {
         private readonly store: Store
     ) {}
 
-    // @Action(SetProfileView)
-    // setProfile(ctx: StateContext<ProfileViewStateModel>, { _profile }: SetProfileView) {
-    //     return ctx.setState(
-    //         produce((draft) => {
-    //             draft.profile = _profile
-    //         })
-    //     );
-    // }
+    @Selector()
+    friendRequests(state: NotificationPageStateModel) {
+        return state.friendsRequests;
+    }
 
-    // @Action(CreateFriendRequest) 
-    // async createFriendRequest(ctx: StateContext<ProfileViewStateModel>, action: CreateFriendRequest) {
-    //     try{
-    //         const state = ctx.getState();
+    @Selector()
+    comments(state: NotificationPageStateModel) {
+        return state.commentNotifications;
+    }
 
-    //         const request : IUser = { //data needs to be added
-    //             userId: '',
-    //         }
+    @Action(SetNotificationPage)
+    setNotificationPage(ctx: StateContext<NotificationPageStateModel>, { friendRequests, comments }: SetNotificationPage) {
+        return ctx.setState(
+            produce((draft) => {
+                draft.friendsRequests = friendRequests,
+                draft.commentNotifications = comments
+            })
+        );
+    }
 
-    //         const responseRef = this.profileViewApi.createFriendRequest(request);
-    //         const response = response.data;
-    //         return ctx.dispatch(new SetProfileView(response.profile));
-    //     }
-    //     catch (error) {
-    //         return ctx.dispatch(new SetError((error as Error).message));
-    //     }
-    // }
+    @Action(AddNewFriendRequest) 
+    async addNewFriendRequest(ctx: StateContext<NotificationPageStateModel>, { friend } : AddNewFriendRequest) {
+        try{
+            const state = ctx.getState();
 
-    // @Action(UpdateFriendRequest) 
-    // async updateFriendRequest(ctx: StateContext<ProfileViewStateModel>, action: UpdateFriendRequest) {
-    //     try{
-    //         const state = ctx.getState();
+            state.friendsRequests?.unshift(friend);
 
-    //         const request : IUser = { //data needs to be added
-    //             userId: '',
-    //         }
+            return ctx.dispatch(new SetNotificationPage(state.friendsRequests, state.commentNotifications));
+        }
+        catch (error) {
+            return ctx.dispatch(new SetError((error as Error).message));
+        }
+    }
 
-    //         const responseRef = this.profileViewApi.updateFriendRequest(request);
-    //         const response = response.data;
-    //         return ctx.dispatch(new SetProfileView(response.profile));
-    //     }
-    //     catch (error) {
-    //         return ctx.dispatch(new SetError((error as Error).message));
-    //     }
-    // }
+    @Action(UpdateFriendRequest) 
+    async updateFriendRequest(ctx: StateContext<NotificationPageStateModel>, { friend } : UpdateFriendRequest) {
+        try{
+            const state = ctx.getState();
+
+            state.friendsRequests = state.friendsRequests?.map((old_friend) => {
+                if (old_friend.userId === friend.userId) {
+                    return friend;
+                }
+
+                return old_friend;
+            })
+
+            return this.store.dispatch(new SetNotificationPage(state.friendsRequests, state.commentNotifications));
+        }
+        catch (error) {
+            return ctx.dispatch(new SetError((error as Error).message));
+        }
+    }
+
+    @Action(DeleteFriendRequest) 
+    async DeleteFriendRequest(ctx: StateContext<NotificationPageStateModel>, { friend } : DeleteFriendRequest) {
+        try{
+            const state = ctx.getState();
+
+            state.friendsRequests = state.friendsRequests?.filter((old_friend) => {
+                return old_friend.userId != friend.userId;
+            })
+
+            return this.store.dispatch(new SetNotificationPage(state.friendsRequests, state.commentNotifications));
+        }
+        catch (error) {
+            return ctx.dispatch(new SetError((error as Error).message));
+        }
+    }
+
+    @Action(AddNewComment) 
+    async addNewComment(ctx: StateContext<NotificationPageStateModel>, { comment } : AddNewComment) {
+        try{
+            const state = ctx.getState();
+
+            state.commentNotifications?.unshift(comment);
+
+            return ctx.dispatch(new SetNotificationPage(state.friendsRequests, state.commentNotifications));
+        }
+        catch (error) {
+            return ctx.dispatch(new SetError((error as Error).message));
+        }
+    }
 }
