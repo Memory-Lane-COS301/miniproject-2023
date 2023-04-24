@@ -1,1 +1,3 @@
-// export * from './lib/app-notification-page-feature';
+export * from './notification-page.module';
+export * from './notification-page.page';
+export * from './notification-page.routing';
