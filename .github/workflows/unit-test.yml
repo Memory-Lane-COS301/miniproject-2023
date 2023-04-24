@@ -36,4 +36,5 @@ jobs:
       - name: run Tests
         run: |
           yarn nx test app-user-view
-          yarn nx  test app-user-feature
+          yarn nx test app-user-feature
+          yarn nx test app-user-util
