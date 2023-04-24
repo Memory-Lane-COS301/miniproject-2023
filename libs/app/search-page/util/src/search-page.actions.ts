@@ -1,3 +1,4 @@
+import { IMemory } from "@mp/api/memories/util";
 import { IProfile } from "@mp/api/profiles/util";
 
 export class SearchMemories {
@@ -5,13 +6,13 @@ export class SearchMemories {
     constructor(public readonly searchQuery: string) {}
 }
 
-export class GetFeedMemories {
-  static readonly type = '[SearchPage] GetFeedMemories';
+export class GetSearchPageMemories {
+  static readonly type = '[SearchPage] GetSearchPageMemories';
 }
 
 export class SetSearchPage {
-  static readonly type = '[SearchPage] SetSearchResults';
-  constructor(public readonly profile: IProfile) {}
+  static readonly type = '[SearchPage] SetSearchPage';
+  constructor(public readonly memories: IMemory[]) {}
 }
 
 export class AddNewSearchValue {

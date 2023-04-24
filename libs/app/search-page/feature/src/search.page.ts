@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { SetSearchResults } from '@mp/app/search-results/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Memory } from '@mp/app/shared/feature';
+import { GetSearchPageMemories } from '@mp/app/search-page/util';
 
 @Component({
   selector: 'app-search',
@@ -17,7 +18,7 @@ import { Memory } from '@mp/app/shared/feature';
   styleUrls: ['./search.page.scss'],
 })
 export class SearchPageComponent {
-  @Select(SearchPageState.memories) memories$!: Observable<IMemory[] | null>;
+  @Select(SearchPageState.memories) searchPageMemories$!: Observable<IMemory[] | null>;
   @Select(SearchPageState.recentSearches) recentSearches$!: Observable<string[] | null>;
 
   searchValue = '';
@@ -72,8 +73,8 @@ export class SearchPageComponent {
   }
 
   get SearchResults() {
-    this.memories$.subscribe((memories) =>{
-      memories?.filter((mem) => {
+    this.searchPageMemories$.subscribe((searchPageMemories) =>{
+      searchPageMemories?.filter((mem) => {
         if (mem.username?.toLocaleLowerCase().includes(this.searchValue.toLocaleLowerCase())) {
           this.searchResults?.push(mem);
         }
@@ -160,4 +161,25 @@ export class SearchPageComponent {
   // get SearchResults() {
   //   return this.tempMem;
   // }
+
+  formatTime(seconds: number | null | undefined): string {
+    if (!seconds)
+      seconds = 0;
+
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
+  }
+
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      this.store.dispatch(new GetSearchPageMemories());
+      event.target.complete();
+    }, 2000);
+  }
+
+ ngOnInit(): void { 
+    this.store.dispatch(new GetSearchPageMemories());
+ }
 }
