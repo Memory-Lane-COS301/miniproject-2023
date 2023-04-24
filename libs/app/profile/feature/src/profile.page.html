@@ -18,6 +18,9 @@
   <ng-container *ngIf="(user$ | async) as user; else noProfile">
     <ms-profile-user-details-component></ms-profile-user-details-component>
   </ng-container>
+  <ion-button expand="block" type="button" (click)="logout()" color="danger">
+    Logout
+  </ion-button>
   <ng-template #noProfile>
     <ion-grid>
       <ion-row>

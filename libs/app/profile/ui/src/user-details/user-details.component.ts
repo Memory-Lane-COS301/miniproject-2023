@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { IUser } from '@mp/api/users/util';
 import { ProfileState } from '@mp/app/profile/data-access';
-import { Logout, UpdateUserDetails } from '@mp/app/profile/util';
+import { UpdateUserDetails } from '@mp/app/profile/util';
 import {
     ActionsExecuting,
     actionsExecuting
@@ -112,9 +112,6 @@ export class UserDetailsComponent {
     private readonly store: Store
   ) {}
 
-  logout() {
-    this.store.dispatch(new Logout());
-  }
 
   updateUserDetails() {
     this.store.dispatch(new UpdateUserDetails());

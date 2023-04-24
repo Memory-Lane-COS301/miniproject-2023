@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { IUser } from '@mp/api/users/util';
 import { ProfileState } from '@mp/app/profile/data-access';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { Logout } from '@mp/app/profile/util';
 
 @Component({
   selector: 'ms-profile-page',
@@ -15,7 +16,14 @@ export class ProfilePage implements OnInit {
 
   previousPageName = '';
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private readonly store: Store
+  ) {}
+
+  logout() {
+    this.store.dispatch(new Logout());
+  }
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params) => {

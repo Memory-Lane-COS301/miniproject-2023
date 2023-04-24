@@ -230,4 +230,18 @@ export class ProfileViewPageComponent implements OnInit {
     const s = Math.floor(seconds % 60);
     return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
   }
+
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      this.store.dispatch(new GetProfileRequest());
+      event.target.complete();
+    }, 2000);
+  }
+
+  onPostClick(memory: any): void {
+    console.log("Hello World");
+    console.log(memory);
+    this.store.dispatch(new GetCommentsRequest(memory as IMemory)); //we only request the comments if we want to display them
+  }
+
 }
