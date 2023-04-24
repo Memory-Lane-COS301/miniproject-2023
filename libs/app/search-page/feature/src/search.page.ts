@@ -11,6 +11,9 @@ import { SetSearchResults } from '@mp/app/search-results/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Memory } from '@mp/app/shared/feature';
 import { GetSearchPageMemories } from '@mp/app/search-page/util';
+import { GetFeedMemories } from '@mp/app/feed/util';
+import { FeedState } from '@mp/app/feed/data-access';
+
 
 @Component({
   selector: 'app-search',
@@ -18,7 +21,7 @@ import { GetSearchPageMemories } from '@mp/app/search-page/util';
   styleUrls: ['./search.page.scss'],
 })
 export class SearchPageComponent {
-  @Select(SearchPageState.memories) searchPageMemories$!: Observable<IMemory[] | null>;
+  @Select(FeedState.memories) searchPageMemories$!: Observable<IMemory[] | null>;
   @Select(SearchPageState.recentSearches) recentSearches$!: Observable<string[] | null>;
 
   searchValue = '';
@@ -174,12 +177,12 @@ export class SearchPageComponent {
 
   handleRefresh(event: any) {
     setTimeout(() => {
-      this.store.dispatch(new GetSearchPageMemories());
+      this.store.dispatch(new GetFeedMemories());
       event.target.complete();
     }, 2000);
   }
 
  ngOnInit(): void { 
-    this.store.dispatch(new GetSearchPageMemories());
+    this.store.dispatch(new GetFeedMemories());
  }
 }
