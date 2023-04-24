@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { IUser } from '@mp/api/users/util';
 import { ProfileState } from '@mp/app/profile/data-access';
@@ -27,6 +27,7 @@ import { ToastController } from '@ionic/angular';
 })
 export class EditProfilePhotoPageComponent {
   @Select(ProfileState.user) user$!: Observable<IUser | null>;
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   storage: FirebaseStorage;
   storageRef: StorageReference;
@@ -105,6 +106,10 @@ export class EditProfilePhotoPageComponent {
         await this.modalController.dismiss();
       }
     }
+  }
+
+  onEditIconClicked() {
+    this.fileInput.nativeElement.click();
   }
 
 }

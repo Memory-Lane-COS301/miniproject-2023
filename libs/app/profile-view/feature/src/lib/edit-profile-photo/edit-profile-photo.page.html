@@ -9,7 +9,8 @@
     <label for="profile-photo-input">
       <img class="profile-photo-preview" src="{{ imgUrl }}">
     </label>
-    <input id="profile-photo-input" type="file" accept="image/*" (change)="onFileSelected($event)">
+    <ion-icon ngClass="edit-icon" name="create-outline" (click)="fileInput.click()"></ion-icon>
+    <input id="profile-photo-input" type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput>
   </div>
   <ion-button expand="block" class="button-save" (click)="save()">Save</ion-button>
   <ion-button expand="block" class="button-cancel" (click)="cancel()">Cancel</ion-button>
