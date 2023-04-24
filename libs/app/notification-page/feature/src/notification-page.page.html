@@ -1,0 +1,43 @@
+<ion-header color="none">
+    <ion-toolbar color="none" [ngClass]="'menu-toolbar'">
+      <ion-title ngClass="title">Memory Lane</ion-title>
+      <small slot="end" ngClass="account-time">22h:52m:11s</small>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content color="dark">
+    <ion-list> <!-- Friend requests -->
+        <ion-text size="large">Friend Requests [count]</ion-text>
+        <div *ngFor="let request of FriendRequests"  ngClass="comment-profileImg-username">
+            <ion-avatar ngClass="memory-avatar-expanded">
+                <img src="{{ request.profileImgUrl }}" ngClass="memory-comment-profileImg" />
+            </ion-avatar>
+            <div ngClass="memory-username-and-comment">
+                <ion-text ngClass="memory-comment-username">{{ request.username }}</ion-text>
+                <ion-text ngClass="memory-comment-usercomment">{{ request.name }} {{ request.surname }}</ion-text>
+            </div>
+        </div>
+        <div *ngIf="FriendRequests.length">
+          <ion-item color="none">
+            <ion-text size="large" color="primary">No Friend Requests</ion-text>
+          </ion-item>
+        </div>
+    </ion-list>
+    <hr>
+    <ion-list> <!-- Comments -->
+        <div *ngFor="let comment of Comments"  ngClass="comment-profileImg-username">
+            <ion-avatar ngClass="memory-avatar-expanded">
+                <img src="{{ comment.profileImgUrl }}" ngClass="memory-comment-profileImg" routerLink="/user-view" />
+            </ion-avatar>
+            <div ngClass="memory-username-and-comment">
+                <ion-text ngClass="memory-comment-username" routerLink="/user-view">{{ comment.username }}</ion-text>
+                <ion-text ngClass="memory-comment-usercomment">{{ comment.text }}</ion-text>
+            </div>
+        </div>
+        <div *ngIf="Comments.lemgth">
+          <ion-item color="none">
+            <ion-text size="large" color="danger">No Comments</ion-text>
+          </ion-item>
+        </div>
+    </ion-list>
+</ion-content>
