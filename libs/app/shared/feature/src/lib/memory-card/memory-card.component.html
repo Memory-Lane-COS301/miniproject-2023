@@ -1,4 +1,4 @@
-<div *ngIf="memoryCard$ | async as memory">
+<div>
   <ion-card #targetCard [ngClass]="{ 'memory-card': !showExpandedView && !addingNewComment, 'memory-card-expanded': showExpandedView && !addingNewComment, 'memory-card-expanded-add-comment': showExpandedView && addingNewComment }" color="none">
     <img *ngIf="!showExpandedView" ngClass="memory-img" style="background-image: url('{{ memory.imgUrl }}');" />
     <ion-card-header>
