@@ -3,7 +3,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SetError } from '@mp/app/errors/util';
 import produce from 'immer';
 import { FeedApi } from "./feed.api";
-import { AddMemoryToFeedPage, GetFeedMemoriesRequest, SetFeed } from "@mp/app/feed/util";
+import { AddMemoryToFeedPage, GetFeedMemories, SetFeed } from "@mp/app/feed/util";
 import { IMemory } from "@mp/api/memories/util";
 
 export interface FeedStateModel {

@@ -6,7 +6,7 @@ import { IComment, IMemory } from '@mp/api/memories/util';
 import { Select, Store } from '@ngxs/store';
 import { FeedState } from '@mp/app/feed/data-access';
 import { Observable } from 'rxjs';
-import { GetFeedMemories } from '@mp/app/search-page/util';
+import { GetFeedMemories } from '@mp/app/feed/util';
 import { Timestamp } from 'firebase-admin/firestore';
 
 @Component({
