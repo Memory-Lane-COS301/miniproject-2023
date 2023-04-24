@@ -62,7 +62,18 @@ export class NotificationPage {
             profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
             text: "Example comment jakbhbdcjhsjdcbsjdcb"
         },
-    ]
+    ];
+
+    friendRequestsListExpanded = false;
+    commentsListExpanded = false;
+
+    toggleFriendRequestsList() {
+        this.friendRequestsListExpanded = !this.friendRequestsListExpanded;
+    }
+
+    toggleCommentsList() {
+        this.commentsListExpanded = !this.commentsListExpanded;
+    }
 
     constructor(
         private store: Store

@@ -127,3 +127,36 @@ hr {
     overflow: hidden;
     margin-top:2px;
 }
+
+.friend-requests-shown,
+.comments-shown {    
+    height: 310px;
+    max-height: 310px;
+    transition: 0.5s;
+}
+
+.friend-requests-hidden,
+.comments-hidden {    
+    height: 0px;
+    max-height: 380px;
+    transition: 0.5s;
+}
+
+.toggleIcon-comments,
+.toggleIcon-requests {
+    font-size: 30px;
+    transition: 0.2s;
+}
+
+.toggleIcon-comments-90deg,
+.toggleIcon-requests-90deg {
+    font-size: 30px;
+    transform: rotate(90deg);
+    transition: 0.2s;
+}
+
+.comments-list-title,
+.friend-request-list-title {
+    display: flex;
+    justify-content: space-between;
+}
