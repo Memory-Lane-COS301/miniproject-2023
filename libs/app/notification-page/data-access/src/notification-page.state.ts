@@ -35,12 +35,12 @@ export class NotificationPageState {
     ) {}
 
     @Selector()
-    friendRequests(state: NotificationPageStateModel) {
+    static friendRequests(state: NotificationPageStateModel) {
         return state.friendsRequests;
     }
 
     @Selector()
-    comments(state: NotificationPageStateModel) {
+    static comments(state: NotificationPageStateModel) {
         return state.commentNotifications;
     }
 
