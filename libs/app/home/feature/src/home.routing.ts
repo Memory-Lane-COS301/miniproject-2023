@@ -16,6 +16,10 @@ const routes: Routes = [
         loadChildren: () => import('@mp/app/profile-view/feature').then((m) => m.ProfileViewModule),
       },
       {
+        path: 'notification-page',
+        loadChildren: () => import('@mp/app/notification-page/feature').then((m) => m.NotificationPageModule),
+      },
+      {
         path: 'search-page',
         loadChildren: () => import('@mp/app/search-page/feature').then((m) => m.SearchPageModule),
       },
