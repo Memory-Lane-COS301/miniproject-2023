@@ -12,7 +12,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list ngClass="memory-list">
-    <app-memory-card *ngFor="let memory of feedMemories$ | async" [memory]="memory"></app-memory-card>
+  <ion-list ngClass="memory-list" *ngIf="feedMemories$ | async as memories">
+    <app-memory-card *ngFor="let memory of memories" [memory]="memory"></app-memory-card>
   </ion-list>
 </ion-content>

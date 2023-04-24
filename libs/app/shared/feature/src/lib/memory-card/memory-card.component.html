@@ -1,4 +1,4 @@
-<div *ngIf="memoryCard$ | async as memory">
+<div>
   <ion-card #targetCard [ngClass]="{ 'memory-card': !showExpandedView && !addingNewComment, 'memory-card-expanded': showExpandedView && !addingNewComment, 'memory-card-expanded-add-comment': showExpandedView && addingNewComment }" color="none">
     <img *ngIf="!showExpandedView" ngClass="memory-img" style="background-image: url('{{ memory.imgUrl }}');" />
     <ion-card-header>
@@ -52,7 +52,7 @@
         <ion-text ngClass="comment-viewAll" (click)="openViewedComments()">View all comments <b>{{ getCommentsLength() }}</b></ion-text>
       </div>
       <div *ngIf="showExpandedView" ngClass="comment-profileImg-username">
-        <div *ngIf="memory.comments">
+        <div *ngIf="memory.comments && memory.comments.length > 0">
           <ion-avatar ngClass="memory-avatar-expanded">
             <img src="{{ memory.comments[0].profileImgUrl }}" ngClass="memory-comment-profileImg" (click)="openUserProfile(memory.comments[0].userId, memory.comments[0].username)" />
           </ion-avatar>

@@ -71,8 +71,14 @@ export class ProfileViewState {
         try {
             const user = this.store.selectSnapshot(ProfileState.user);
 
-            if (!user || !user.userId || !user.username)
+            if (!user || !user.userId || !user.username) {
+                ctx.setState(
+                    produce((draft) => {
+                        draft.profile.memories = []
+                    })
+                );
                 return ctx.dispatch(new SetError('User not set'));
+            }
 
             const request: IGetProfileRequest = {
                 user: {

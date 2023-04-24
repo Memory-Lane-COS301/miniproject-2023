@@ -20,11 +20,11 @@ firestore.settings({
 
 async function seedData() {
     faker.seed(123)
-    // await seedUsers();
-    // await generateMemories(3, 5);
-    // await seedFriends();
-    await generateMemoriesFor('qaHHYYII46lF5RSmyHsxi3IzZ9a7', 5, 2);
-    await generateFriendsFor('qaHHYYII46lF5RSmyHsxi3IzZ9a7', 5);
+    await seedUsers();
+    await generateMemories(3, 5);
+    await seedFriends();
+    // await generateMemoriesFor('dEcglwbDCnIFt9X3ZVPu3cgU92iS', 5, 2);
+    // await generateFriendsFor('dEcglwbDCnIFt9X3ZVPu3cgU92iS', 5);
 }
 
 // ============================================================================
@@ -90,7 +90,7 @@ async function generateMemories(numMemories, numComments) {
                 username: user.username,
                 title: faker.lorem.words(3),
                 description: faker.lorem.paragraph(3),
-                imgUrl: faker.image.imageUrl(),
+                imgUrl: faker.image.image(640, 480, true),
                 profileImgUrl: user.profileImgUrl,
                 created: Timestamp.now(),
                 commentsCount: numComments,
@@ -132,7 +132,7 @@ async function generateMemoriesFor(userId, numMemories, numComments) {
             username: user.username,
             title: faker.lorem.words(3),
             description: faker.lorem.paragraph(3),
-            imgUrl: faker.image.imageUrl(),
+            imgUrl: faker.image.image(640, 480, true),
             profileImgUrl: user.profileImgUrl,
             created: Timestamp.now(),
             commentsCount: numComments,

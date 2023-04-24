@@ -231,4 +231,11 @@ export class ProfileViewPageComponent implements OnInit {
     return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
   }
 
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      this.store.dispatch(new GetProfileRequest());
+      event.target.complete();
+    }, 2000);
+  }
+
 }

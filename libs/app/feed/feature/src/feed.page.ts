@@ -106,5 +106,4 @@ export class FeedPageComponent {
     this.store.dispatch(new GetFeedMemories());
  }
 
-
 }

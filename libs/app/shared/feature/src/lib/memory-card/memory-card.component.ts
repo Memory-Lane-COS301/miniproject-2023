@@ -16,14 +16,11 @@ import { IGetProfileRequest } from '@mp/api/profiles/util';
   templateUrl: './memory-card.component.html',
   styleUrls: ['./memory-card.component.scss'],
 })
-export class MemoryCardComponent implements OnInit{
-  @Select(MemoryCardState.memoryCard) memoryCard$ !: Observable<IMemory | null>;
-
+export class MemoryCardComponent implements OnInit {
   @Input() memory!: IMemory;
-  @Input() ownerUserId: string | null | undefined; //used to validate if we can navigate to the UserView page when clicking on the card's profileImg or username
-  @Input() onProfileView: boolean | undefined;
 
   showExpandedView = false;
+  onProfileView = false;
   previousPageName = '';
   addingNewComment = false;
   new_comment: string = '';
@@ -37,7 +34,7 @@ export class MemoryCardComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-      this.store.dispatch(new SetMemoryCard(this.memory)); 
+      // this.store.dispatch(new SetMemoryCard(this.memory)); 
   }
 
   setAddingNewComment() {
@@ -94,19 +91,19 @@ export class MemoryCardComponent implements OnInit{
   }
 
   openUserProfile(uid: string | null | undefined, uname: string | null | undefined) {
-    if (uid != this.ownerUserId) {//if we are on the feed page
-      const currentPosition = window.pageYOffset;
-      this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
+    // if (uid != this.ownerUserId) {//if we are on the feed page
+    //   const currentPosition = window.pageYOffset;
+    //   this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
 
-      if (uid == null || uname == null) return;
+    //   if (uid == null || uname == null) return;
 
-      const request : IUser = {
-        userId: uid,
-        username: uname
-      }
+    //   const request : IUser = {
+    //     userId: uid,
+    //     username: uname
+    //   }
 
-      this.store.dispatch(new GetUserProfileRequest(request));
-    }
+    //   this.store.dispatch(new GetUserProfileRequest(request));
+    // }
   }
 
   openViewedComments() {
@@ -151,4 +148,5 @@ export class MemoryCardComponent implements OnInit{
   addNewComment() {
     this.store.dispatch(new CreateCommentRequest(this.new_comment));
   }
+
 }

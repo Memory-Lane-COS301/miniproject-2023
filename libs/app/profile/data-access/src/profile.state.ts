@@ -11,7 +11,8 @@ import {
     SetUser,
     SetUserDetailsForm,
     SubscribeToUser,
-    UpdateUserDetails
+    UpdateUserDetails,
+    DecrementUserTime
 } from '@mp/app/profile/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
@@ -59,11 +60,15 @@ export interface ProfileStateModel {
 
 @Injectable()
 export class ProfileState {
+  private intervalId: any;
+
   constructor(
     private readonly profileApi: ProfilesApi,
     private readonly store: Store,
     private readonly toastController: ToastController
-  ) {}
+  ) {
+    // this.startDecrement();
+  }
 
   @Selector()
   static profile(state: ProfileStateModel) {
@@ -92,9 +97,21 @@ export class ProfileState {
 
   @Action(SetUser)
   setUser(ctx: StateContext<ProfileStateModel>, { user }: SetUser) {
-    return ctx.setState(
+    ctx.setState(
       produce((draft) => {
         draft.user = user;
+      })
+    );
+
+    return ctx.dispatch(new SetUserDetailsForm(user));
+  }
+
+  @Action(DecrementUserTime)
+  decrementUserTime(ctx: StateContext<ProfileStateModel>) {
+    ctx.setState(
+      produce((draft) => {
+        if (draft.user?.accountTime)
+          draft.user.accountTime--;
       })
     );
   }
@@ -165,6 +182,12 @@ export class ProfileState {
       ctx.dispatch(new SetUserDetailsForm(ctx.getState().user));
       return ctx.dispatch(new SetError((error as Error).message));
     }
+  }
+
+  startDecrement() {
+    this.intervalId = setInterval(() => {
+      this.store.dispatch(new DecrementUserTime());
+    }, 1000);
   }
 
 }

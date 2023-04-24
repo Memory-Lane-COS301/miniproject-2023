@@ -54,7 +54,7 @@ export class ProfilesRepository {
       .collection('memories')
       .where('userId', '==', profile.userId)
       .where('alive', '==', true)
-      .orderBy('created')
+      .orderBy('created', 'desc')
       .get();
 
     const memories: IMemory[] = [];
