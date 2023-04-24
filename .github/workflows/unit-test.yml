@@ -33,5 +33,5 @@ jobs:
       #  run: yarn add nx
 
       # Finally, run our tests
-      - name: run Unit tests
-        run: yarn test
+      - name: run Tests
+        run: yarn nx test app-user-view

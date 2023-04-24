@@ -29,8 +29,7 @@
     "host:app": "http-server dist/apps/app",
     "format": "prettier --write",
     "prettier": "prettier --check",
-    "test": "yarn test",
-    "jest_test": "jest",
+    "test": "jest",
     "prepare": "husky install",
     "editorconfig": "editorconfig-checker"
   },
