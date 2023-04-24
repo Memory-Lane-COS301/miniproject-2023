@@ -1,4 +1,4 @@
-name: Jest Testing
+name: Jest Front-End Unit Testing
 on: push
 jobs:
   test:
@@ -28,17 +28,10 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
+      # Install Nx
+      #- name: Install Dependencies
+      #  run: yarn add nx
+
       # Finally, run our tests
       - name: run Unit tests
-        run: |
-          yarn nx test-user-data-access
-          yarn nx  test app-user-data-access
-          yarn nx test app-dashboard-feature
-          yarn nx  test app-user-feature
-          yarn nx  test app-user-util
-          yarn nx test app-feed
-          yarn nx test app-forgot-feature
-          yarn nx test app-profile-view
-          yarn nx test app-search-page
-          yarn nx test app-search-results
-          yarn nx  test app-shared
+        run: yarn test
