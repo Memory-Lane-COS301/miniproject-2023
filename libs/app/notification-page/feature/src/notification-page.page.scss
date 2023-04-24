@@ -95,6 +95,11 @@ hr {
     margin-right: 10px;
 }
 
+.accept-decline-request-btns:active {
+    translate: 0 2px;
+    opacity: 0.6;
+}
+
 .comment-profileImg-username {
     display: flex;
     margin-top: 10px;
