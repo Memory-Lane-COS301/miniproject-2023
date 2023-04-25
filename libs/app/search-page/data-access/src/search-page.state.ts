@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SetError } from '@mp/app/errors/util';
 import produce from 'immer';
@@ -14,20 +14,18 @@ import { AuthState } from "@mp/app/auth/data-access";
 
 
 export interface SearchPageStateModel {
-    // users: IUser[];
-    memories: IMemory[];
-    recentSearches: string[];
+  // users: IUser[];
+  memories: IMemory[];
+  recentSearches: string[];
 }
 
 @State<SearchPageStateModel>({
   name: 'searchPage',
   defaults: {
-      memories: [],
-      recentSearches: []
-    },
-  })
-
-
+    memories: [],
+    recentSearches: [],
+  },
+})
 @Injectable()
 export class SearchPageState {
     constructor(
@@ -38,15 +36,20 @@ export class SearchPageState {
         private readonly feedApi: FeedApi
     ){}
 
+  @Selector()
+  static memories(state: SearchPageStateModel) {
+    return state.memories;
+  }
+  @Selector()
+  static recentSearches(state: SearchPageStateModel) {
+    return state.recentSearches;
+  }
 
-    @Selector()
-    static memories(state: SearchPageStateModel) {
-        return state.memories;
-    }
-    @Selector()
-    static recentSearches(state: SearchPageStateModel) {
-        return state.recentSearches;
-    }
+  // @Action(GetFeedMemories)
+  // async getSearchMemories(ctx: StateContext<SearchPageStateModel>) {
+  //     try {
+  //         const state = ctx.getState();
+  //         const _memory = state.memories[0];
 
     //Temporary actions until search page has endpoint
     @Action(SetFeed)

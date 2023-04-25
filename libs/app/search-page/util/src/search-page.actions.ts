@@ -1,9 +1,8 @@
 import { IMemory } from "@mp/api/memories/util";
-import { IProfile } from "@mp/api/profiles/util";
 
 export class SearchMemories {
-    static readonly type = '[SearchPage] SearchMemories';
-    constructor(public readonly searchQuery: string) {}
+  static readonly type = '[SearchPage] SearchMemories';
+  constructor(public readonly searchQuery: string) {}
 }
 
 export class GetSearchPageMemories {
@@ -17,5 +16,5 @@ export class SetSearchPage {
 
 export class AddNewSearchValue {
   static readonly type = '[SearchPage] AddNewSearchValue';
-  constructor(public readonly searchValue : string) {}
+  constructor(public readonly searchValue: string) {}
 }

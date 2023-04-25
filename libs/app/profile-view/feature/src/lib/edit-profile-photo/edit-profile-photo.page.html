@@ -4,18 +4,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="dark">
-  <ion-list ngClass="modal-list">
-    <ion-item color="dark" ngClass="modal-list-item">
-      <input id="fileInput" type="file" accept="image/*" (change)="onFileSelected($event)" />
-    </ion-item>
-    <ion-item color="dark" ngClass="modal-list-item">
-      <ion-label>No image to display</ion-label>
-      <ion-img [src]="getProfileImageUrl()" *ngIf="getProfileImageUrl()"></ion-img>
-    </ion-item>
-  </ion-list>
-  <ion-item ngClass="buttons" color="none">
-    <ion-button slot="start" ngClass="button-cancel" (click)="cancel()">Cancel</ion-button>
-    <ion-button slot="end" ngClass="button-save" (click)="save()">Save</ion-button>
-  </ion-item>
+<ion-content class="ion-padding" color="dark">
+  <div class="profile-photo-container">
+    <label for="profile-photo-input">
+      <img class="profile-photo-preview" src="{{ imgUrl }}">
+    </label>
+    <ion-icon ngClass="edit-icon" name="create-outline" (click)="fileInput.click()"></ion-icon>
+    <input id="profile-photo-input" type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput>
+  </div>
+  <ion-button expand="block" class="button-save" (click)="save()">Save</ion-button>
+  <ion-button expand="block" class="button-cancel" (click)="cancel()">Cancel</ion-button>
 </ion-content>

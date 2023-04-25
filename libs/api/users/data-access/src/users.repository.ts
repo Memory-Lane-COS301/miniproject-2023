@@ -10,14 +10,16 @@ export class UsersRepository {
     return await admin.firestore().collection('users').doc(user.userId).create(user);
   }
 
-  async updateUser(user: IUser) {
-    return await admin
-      .firestore()
-      .collection('users')
-      .doc(user.userId)
-      .set(user, { merge: true });
+  async setUserTime(userId: string, newTime: number) {
+    return await admin.firestore().collection('users').doc(userId).update({
+      accountTime: newTime,
+    });
   }
-  
+
+  async updateUser(user: IUser) {
+    return await admin.firestore().collection('users').doc(user.userId).set(user, { merge: true });
+  }
+
   async findUser(userId: string) {
     return await admin
       .firestore()
@@ -32,11 +34,15 @@ export class UsersRepository {
       .get();
   }
 
+  async findUserById(userId: string) {
+    return await admin.firestore().collection('users').doc(userId).get();
+  }
+
   async findUserWithUsername(username: string) {
     return await admin
       .firestore()
       .collection('users')
-      .where("username", "==", username)
+      .where('username', '==', username)
       .withConverter<IUser>({
         fromFirestore: (snapshot) => {
           return snapshot.data() as IUser;
@@ -66,5 +72,4 @@ export class UsersRepository {
         memoryCount: FieldValue.increment(-1) 
       });
   }
-
 }

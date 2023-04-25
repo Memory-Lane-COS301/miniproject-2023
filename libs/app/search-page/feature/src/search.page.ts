@@ -68,9 +68,9 @@ export class SearchPageComponent implements OnInit{
   }
 
   get RecentSearches() {
-    this.recentSearches$.subscribe((recentSearches) =>{
+    this.recentSearches$.subscribe((recentSearches) => {
       this.recentSearches = recentSearches;
-    })
+    });
 
     return this.recentSearches;
   }
@@ -82,7 +82,7 @@ export class SearchPageComponent implements OnInit{
           this.searchResults?.push(mem);
         }
       });
-    })
+    });
 
     return this.searchResults;
   }
@@ -130,10 +130,10 @@ export class SearchPageComponent implements OnInit{
       const currentPosition = window.pageYOffset;
       this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
 
-      const request : IUser = {
+      const request: IUser = {
         userId: i_userId,
-        username: i_username
-      }
+        username: i_username,
+      };
 
       this.store.dispatch(new GetUserProfileRequest(request));
     }

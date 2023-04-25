@@ -4,3 +4,4 @@ export * from './enums';
 export * from './events';
 export * from './responses';
 export * from './commands';
+export * from './queries';

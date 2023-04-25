@@ -5,11 +5,11 @@ import { AddMemoryPageComponent, Memory } from '@mp/app/shared/feature';
 import { IComment, IMemory } from '@mp/api/memories/util';
 import { Select, Store } from '@ngxs/store';
 import { FeedState } from '@mp/app/feed/data-access';
+import { ProfileState } from '@mp/app/profile/data-access';
 import { Observable } from 'rxjs';
 import { GetFeedMemories } from '@mp/app/feed/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { IUser } from '@mp/api/users/util';
-import { ProfileState } from '@mp/app/profile/data-access';
 
 @Component({
   selector: 'app-feed',
@@ -19,7 +19,7 @@ import { ProfileState } from '@mp/app/profile/data-access';
 export class FeedPageComponent {
   @Select(FeedState.memories) feedMemories$!: Observable<IMemory[]>;
   @Select(ProfileState.user) user$!: Observable<IUser>;
-  
+
   showExpandedView = false;
 
   constructor(private modalController: ModalController, private store: Store) {}
@@ -34,8 +34,9 @@ export class FeedPageComponent {
     const { data } = await modal.onDidDismiss();
 
     if (data) {
-      this.feedMemories$.subscribe( (memories) => {
-        memories.unshift(data)});
+      this.feedMemories$.subscribe((memories) => {
+        memories.unshift(data);
+      });
     }
   }
 
@@ -56,7 +57,7 @@ export class FeedPageComponent {
   }
 
   //function to use timePosted to calculate how long ago the memory was posted
-  calculateHowLongAgo(timePosted: Timestamp | null | undefined ): string {
+  calculateHowLongAgo(timePosted: Timestamp | null | undefined): string {
     if (!timePosted) return 'Invalid Time';
 
     const date = new Date(timePosted?.seconds);
@@ -85,9 +86,6 @@ export class FeedPageComponent {
     }
   }
 
-  // ionViewWillEnter() {
-  //   this.store.dispatch(new GetFeedMemories());
-  // }
   formatTime(seconds: number | null | undefined): string {
     if (!seconds)
       seconds = 0;

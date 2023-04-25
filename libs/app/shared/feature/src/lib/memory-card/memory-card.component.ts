@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Select, Store } from '@ngxs/store';
 import { IMemory } from '@mp/api/memories/util';
@@ -10,18 +10,18 @@ import { CreateCommentRequest, GetCommentsRequest, SetMemoryCard } from '@mp/app
 import { GetUserProfileRequest } from '@mp/app/user-view/util';
 import { IUser } from '@mp/api/users/util';
 import { IGetProfileRequest } from '@mp/api/profiles/util';
+import { on } from 'stream';
 
 @Component({
   selector: 'app-memory-card',
   templateUrl: './memory-card.component.html',
   styleUrls: ['./memory-card.component.scss'],
 })
-export class MemoryCardComponent implements OnInit{
-  @Select(MemoryCardState.memoryCard) memoryCard$ !: Observable<IMemory | null>;
-
+export class MemoryCardComponent implements OnInit {
   @Input() memory!: IMemory;
-  @Input() ownerUserId: string | null | undefined; //used to validate if we can navigate to the UserView page when clicking on the card's profileImg or username
-  @Input() onProfileView: boolean | undefined;
+  @Input() onProfileView!: boolean;
+  @Output() postClick = new EventEmitter<IMemory>();
+
 
   showExpandedView = false;
   previousPageName = '';
@@ -37,7 +37,7 @@ export class MemoryCardComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-      this.store.dispatch(new SetMemoryCard(this.memory)); 
+      // this.store.dispatch(new SetMemoryCard(this.memory)); 
   }
 
   setAddingNewComment() {
@@ -52,7 +52,8 @@ export class MemoryCardComponent implements OnInit{
     this.showExpandedView = !this.showExpandedView;
 
     if(this.showExpandedView) {      
-      this.store.dispatch(new GetCommentsRequest(this.memory)); //we only request the comments if we want to display them
+      // this.store.dispatch(new GetCommentsRequest(this.memory)); //we only request the comments if we want to display them
+      this.onPostClick();
     }
   }
 
@@ -94,19 +95,46 @@ export class MemoryCardComponent implements OnInit{
   }
 
   openUserProfile(uid: string | null | undefined, uname: string | null | undefined) {
-    if (uid != this.ownerUserId) {//if we are on the feed page
-      const currentPosition = window.pageYOffset;
-      this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
+    // if (uid != this.ownerUserId) {//if we are on the feed page
+    //   const currentPosition = window.pageYOffset;
+    //   this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
 
-      if (uid == null || uname == null) return;
+    //   if (uid == null || uname == null) return;
 
-      const request : IUser = {
-        userId: uid,
-        username: uname
-      }
+    //   const request : IUser = {
+    //     userId: uid,
+    //     username: uname
+    //   }
 
-      this.store.dispatch(new GetUserProfileRequest(request));
-    }
+    //   this.store.dispatch(new GetUserProfileRequest(request));
+    // }
+
+    // let _userId: string | null | undefined = '';
+    // let _username: string | null | undefined = '';
+
+    // let request: IUser;
+
+    // //we either want to navigate to the user's profile (i.e. the person who posted the memory)
+    // if (!(i_userId && i_username)) {
+    //   this.memoryCard$.subscribe((user) => {
+    //     (_userId = user?.userId), (_username = user?.username);
+    //   });
+
+    //   request = {
+    //     userId: _userId,
+    //     username: _username,
+    //   };
+    // }
+    // //or we want to open a user's - who commented - profile
+    // else {
+    //   request = {
+    //     userId: i_userId,
+    //     username: i_username,
+    //   };
+    // }
+
+    // this.store.dispatch(new GetUserProfileRequest(request));
+
   }
 
   openViewedComments() {
@@ -151,4 +179,9 @@ export class MemoryCardComponent implements OnInit{
   addNewComment() {
     this.store.dispatch(new CreateCommentRequest(this.new_comment));
   }
+
+  onPostClick(): void {
+    this.postClick.emit(this.memory);
+  }
+
 }

@@ -121,11 +121,13 @@ const FIREBASE_OPTIONS: FirebaseOptions = {
       return database;
     }),
     provideStorage(() => {
-      const storage = getStorage();
       if (FIREBASE_USE_EMULATORS) {
+        const storage = getStorage(undefined, 'gs://demo-project.appspot.com');
         connectStorageEmulator(storage, 'localhost', 5006);
+        return storage;
+      } else {
+        return getStorage();
       }
-      return storage;
     }),
     provideFunctions(() => {
       const functions = getFunctions();
@@ -158,7 +160,9 @@ const FIREBASE_OPTIONS: FirebaseOptions = {
     AuthModule,
     ErrorsModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+  ],
   bootstrap: [CoreShell],
 })
 export class CoreModule {}

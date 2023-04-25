@@ -11,7 +11,9 @@ import {
     SetUser,
     SetUserDetailsForm,
     SubscribeToUser,
-    UpdateUserDetails
+    UpdateUserDetails,
+    DecrementUserTime,
+    UpdateUser
 } from '@mp/app/profile/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
@@ -59,11 +61,15 @@ export interface ProfileStateModel {
 
 @Injectable()
 export class ProfileState {
+  private intervalId: any;
+
   constructor(
     private readonly profileApi: ProfilesApi,
     private readonly store: Store,
     private readonly toastController: ToastController
-  ) {}
+  ) {
+    // this.startDecrement();
+  }
 
   @Selector()
   static profile(state: ProfileStateModel) {
@@ -92,9 +98,21 @@ export class ProfileState {
 
   @Action(SetUser)
   setUser(ctx: StateContext<ProfileStateModel>, { user }: SetUser) {
-    return ctx.setState(
+    ctx.setState(
       produce((draft) => {
         draft.user = user;
+      })
+    );
+
+    return ctx.dispatch(new SetUserDetailsForm(user));
+  }
+
+  @Action(DecrementUserTime)
+  decrementUserTime(ctx: StateContext<ProfileStateModel>) {
+    ctx.setState(
+      produce((draft) => {
+        if (draft.user?.accountTime)
+          draft.user.accountTime--;
       })
     );
   }
@@ -116,7 +134,8 @@ export class ProfileState {
   async updateUserDetails(ctx: StateContext<ProfileStateModel>) {
     try {
       const state = ctx.getState();
-      const userId = state.user?.userId;
+      const authState = this.store.selectSnapshot(AuthState.user);
+      const userId = authState?.uid;
       const name = state.userDetailsForm.model.name;
       const surname = state.userDetailsForm.model.surname;
       const username = state.userDetailsForm.model.username;
@@ -164,6 +183,50 @@ export class ProfileState {
       ctx.dispatch(new SetUserDetailsForm(ctx.getState().user));
       return ctx.dispatch(new SetError((error as Error).message));
     }
+  }
+
+  @Action(UpdateUser)
+  async updateUser(ctx: StateContext<ProfileStateModel>, { user }: UpdateUser) {
+    try {
+      const state = ctx.getState();
+      const authState = this.store.selectSnapshot(AuthState.user);
+      const userId = authState?.uid;
+      const name = user?.name ? user.name : state.user?.name;
+      const surname = user?.surname ? user.surname : state.user?.surname;
+      const username = user?.username ? user.username : state.user?.username;
+      const email = user?.email ? user.email : state.user?.email;
+      const profileImgUrl = user?.profileImgUrl ? user.profileImgUrl : state.user?.profileImgUrl;
+      const bio = user?.bio ? user.bio : state.user?.bio;
+
+      if (!userId)
+        return ctx.dispatch(new SetError('User not set'));
+
+      const request: IUpdateUserRequest = {
+        user: {
+          userId: userId,
+          name: name,
+          surname: surname,
+          username: username,
+          email: email,
+          profileImgUrl: profileImgUrl,
+          bio: bio,
+        } 
+      };
+
+      const responseRef = await this.profileApi.updateUserDetails(request);
+      const response = responseRef.data;
+
+
+      return ctx.dispatch(new SetUser(response.user));
+    } catch (error) {
+      return ctx.dispatch(new SetError((error as Error).message));
+    }
+  }
+
+  startDecrement() {
+    this.intervalId = setInterval(() => {
+      this.store.dispatch(new DecrementUserTime());
+    }, 1000);
   }
 
 }

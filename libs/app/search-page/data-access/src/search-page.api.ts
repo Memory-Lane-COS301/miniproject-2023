@@ -10,7 +10,7 @@ export class SearchPageApi {
   constructor(
     private readonly firestore: Firestore,
     private readonly store: Store,
-    private readonly functions: Functions
+    private readonly functions: Functions,
   ) {}
 
   async getFeedMemories(request: IGetFeedMemoriesRequest) {
