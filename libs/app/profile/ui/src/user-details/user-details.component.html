@@ -1,0 +1,121 @@
+<ng-container *ngIf="user$ | async as user; else loading">
+  <form [formGroup]="userDetailsForm" ngxsForm="profile.userDetailsForm" (submit)="updateUserDetails()">
+    <ion-card *ngIf="user">
+      <ion-card-content>
+        <ion-list>
+          <ion-item class="ion-no-padding">
+            <ion-label position="floating">Name</ion-label>
+            <ion-input
+              type="text"
+              minlength="1"
+              maxlength="64"
+              required="false"
+              placeholder="Name"
+              formControlName="name"
+              [value]="user.name"
+              autocomplete="name"
+            ></ion-input>
+          </ion-item>
+          <ion-text
+            *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+            class="ion-padding-start"
+            color="danger"
+          >
+            <small>{{ nameError }}</small>
+          </ion-text>
+
+          <ion-item class="ion-no-padding">
+            <ion-label position="floating">Surname</ion-label>
+            <ion-input
+              type="text"
+              minlength="1"
+              maxlength="64"
+              required="false"
+              placeholder="Surname"
+              formControlName="surname"
+              [value]="user.surname"
+              autocomplete="surname"
+            ></ion-input>
+          </ion-item>
+          <ion-text
+            *ngIf="surname?.invalid && (surname?.dirty || surname?.touched)"
+            class="ion-padding-start"
+            color="danger"
+          >
+            <small>{{ surnameError }}</small>
+          </ion-text>
+
+          <ion-item class="ion-no-padding">
+            <ion-label position="floating" class="required">Username</ion-label>
+            <ion-input
+              type="text"
+              minlength="1"
+              maxlength="64"
+              required="true"
+              placeholder="Username"
+              formControlName="username"
+              [value]="user.username"
+              autocomplete="username"
+            ></ion-input>
+          </ion-item>
+          <ion-text
+            *ngIf="username?.invalid && (username?.dirty || username?.touched)"
+            class="ion-padding-start"
+            color="danger"
+          >
+            <small>{{ usernameError }}</small>
+          </ion-text>
+
+          <ion-item class="ion-no-padding">
+            <ion-label position="floating" class="required">Email</ion-label>
+            <ion-input
+              type="email"
+              minlength="1"
+              maxlength="64"
+              required="true"
+              placeholder="Email"
+              formControlName="email"
+              [value]="user.email"
+              autocomplete="email"
+            ></ion-input>
+          </ion-item>
+          <ion-text
+            *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+            class="ion-padding-start"
+            color="danger"
+          >
+            <small>{{ emailError }}</small>
+          </ion-text>
+
+          <ion-item class="ion-no-padding">
+            <ion-label position="floating">Bio</ion-label>
+            <ion-input
+              type="text"
+              minlength="1"
+              maxlength="128"
+              required="false"
+              placeholder="Bio"
+              formControlName="bio"
+              [value]="user.bio"
+              autocomplete="bio"
+            ></ion-input>
+          </ion-item>
+
+        </ion-list>
+      </ion-card-content>
+      <ion-button fill="clear" class="ion-float-right" type="submit">Save</ion-button>
+    </ion-card>
+  </form>
+  <ion-button expand="block" type="button" (click)="logout()" color="danger">
+    Logout
+  </ion-button>
+</ng-container>
+<ng-template #loading>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ngx-skeleton-loader count="1" [theme]="{ height: '150px' }" appearance="line"></ngx-skeleton-loader>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ng-template>

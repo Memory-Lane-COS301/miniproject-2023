@@ -1,73 +1,68 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SetError } from '@mp/app/errors/util';
 import produce from 'immer';
-import { FeedApi } from "./feed.api";
-import { SetFeed } from "@mp/app/feed/util";
-import { IGetUserRequest, IUser } from "@mp/api/users/util";
-import { IMemory } from "@mp/api/memories/util";
+import { FeedApi } from './feed.api';
+import { AddMemoryToFeedPage, GetFeedMemoriesRequest, SetFeed } from '@mp/app/feed/util';
+import { IMemory } from '@mp/api/memories/util';
 
 export interface FeedStateModel {
-    // users: IUser[];
-    memories: IMemory[];
+  memories: IMemory[];
 }
 
 @State<FeedStateModel>({
-    name: 'feed',
-    defaults: {
-        // users: []
-        memories: []
-    },
+  name: 'feed',
+  defaults: {
+    memories: [],
+  },
 })
-
 @Injectable()
 export class FeedState {
-    constructor(
-        private readonly feedApi: FeedApi,
-        private readonly store: Store
-    ){}
+  constructor(private readonly feedApi: FeedApi, private readonly store: Store) {}
 
-    @Selector()
-    static feed(state: FeedStateModel) {
-        return state.memories;
+  @Selector()
+  static memories(state: FeedStateModel) {
+    return state.memories;
+  }
+
+  // @Action(GetFeedMemoriesRequest)
+  // async getFeedMemories(ctx: StateContext<FeedStateModel>, { user } : GetFeedMemoriesRequest) {
+  //     try {
+  //         const state = ctx.getState();
+
+  //         const request: IGetFeedMemoriesRequest = {
+  //             user: {
+  //                 userId: user.userId
+  //             }
+  //         }
+  //         const responseRef = await this.feedApi.getFeedMemories(request);
+  //         const response = responseRef.data;
+  //         return ctx.dispatch(new SetFeed(response.memories));
+  //     }
+  //     catch(error){
+  //         return ctx.dispatch(new SetError((error as Error).message));
+  //     }
+  // }
+
+  @Action(SetFeed)
+  setFeed(ctx: StateContext<FeedStateModel>, { memories }: SetFeed) {
+    return ctx.setState(
+      produce((draft) => {
+        draft.memories = memories;
+      }),
+    );
+  }
+
+  @Action(AddMemoryToFeedPage)
+  addMemory(ctx: StateContext<FeedStateModel>, { memory }: AddMemoryToFeedPage) {
+    try {
+      const state = ctx.getState();
+
+      const response: IMemory[] = [...state.memories, memory];
+
+      return this.store.dispatch(new SetFeed(response));
+    } catch (error) {
+      return this.store.dispatch(new SetError('Unable to add memory to feed page.'));
     }
-
-    // @Action(GetMemoryRequest)
-    // async getUserRequest(ctx: StateContext<FeedStateModel>) {
-    //     try {
-    //         const state = ctx.getState();
-    //         // const _userId = state.users[0]?.userId;
-    //         // const _username = state.users[0]?.username;
-    //         const _memory = state.memories[0];
-
-    //         const request: IGetMemoryRequest = {
-    //             memory: {
-    //                 userId,
-    //                 username,
-    //                 title,
-    //                 description,
-    //                 imgUrl,
-    //                 profileImgUrl,
-    //                 remainingTime,
-    //                 commentsCount,
-    //                 comments,
-    //             }
-    //         }
-    //         const responseRef = await this.feedApi.getFriendsMemories(request);
-    //         const response = responseRef.data;
-    //         return ctx.dispatch(new SetFeed(response.memories));
-    //     }
-    //     catch(error){
-    //         return ctx.dispatch(new SetError((error as Error).message));
-    //     }
-    // }
-
-    // @Action(SetFeed)
-    // setFeed(ctx: StateContext<FeedStateModel>, { memories }: SetFeed) {
-    //     return ctx.setState(
-    //     produce((draft) => {
-    //         draft.memories = memories;
-    //     })
-    //     );
-    // }
+  }
 }

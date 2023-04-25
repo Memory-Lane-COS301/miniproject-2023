@@ -82,6 +82,10 @@ const routes: Routes = [
     path: 'search-results',
     loadChildren: () => import('@mp/app/search-results/feature').then((m) => m.SearchResultsPageModule),
   },
+  {
+    path: 'view-comments',
+    loadChildren: () => import('@mp/app/view-comments/feature').then((m) => m.ViewCommentsModule),
+  },
 ];
 
 @NgModule({
