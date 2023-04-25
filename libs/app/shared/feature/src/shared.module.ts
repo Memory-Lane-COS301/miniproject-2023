@@ -15,7 +15,6 @@ import {
     CommonModule,
     IonicModule,
     FormsModule,
-    ViewCommentsRouting,
     MemoryCardDataAccessModule,
     AddMemoryDataAccessModule,
   ],
