@@ -119,14 +119,14 @@ export class ProfileViewState {
         }
     }
 
-    @Action(SetProfileView)
-    setProfile(ctx: StateContext<ProfileViewStateModel>, { _profile }: SetProfileView) {
-        return ctx.setState(
-            produce((draft) => {
-                draft.profile = _profile
-            })
-        );
-    }
+  @Action(SetProfileView)
+  setProfile(ctx: StateContext<ProfileViewStateModel>, { _profile }: SetProfileView) {
+    return ctx.setState(
+      produce((draft) => {
+        draft.profile = _profile;
+      }),
+    );
+  }
 
     // @Action(SetProfileUserDetails)
     // setProfileUserDetails(ctx: StateContext<ProfileViewStateModel>, { profile }: SetUserProfileDetails) {
@@ -143,12 +143,11 @@ export class ProfileViewState {
       const state = ctx.getState();
       state.profile.memories?.unshift(memory);
 
-            return this.store.dispatch(new SetProfileView(state.profile));
-        }
-        catch (error) {
-            return this.store.dispatch(new SetError('Unabled to add new memory to Profile View page.'));
-        }
+      return this.store.dispatch(new SetProfileView(state.profile));
+    } catch (error) {
+      return this.store.dispatch(new SetError('Unabled to add new memory to Profile View page.'));
     }
+  }
 
     @Action(CreateNewMemory)
     async createNewMemory(ctx: StateContext<ProfileViewStateModel>, { memory } : CreateNewMemory) {

@@ -149,4 +149,5 @@ export class MemoryCardState {
             return ctx.dispatch(new SetError((error as Error).message));
         }
     }
+
 }

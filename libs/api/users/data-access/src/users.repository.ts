@@ -72,5 +72,4 @@ export class UsersRepository {
         memoryCount: FieldValue.increment(-1) 
       });
   }
-
 }
