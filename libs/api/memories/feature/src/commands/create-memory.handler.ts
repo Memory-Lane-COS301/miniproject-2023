@@ -2,7 +2,7 @@ import { IMemory, CreateMemoryCommand, ICreateMemoryResponse } from '@mp/api/mem
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { Memory } from '../models';
 import { Timestamp } from 'firebase-admin/firestore';
-import { UsersRepository } from '@mp/api/users/data-access'
+import { UsersRepository } from '@mp/api/users/data-access';
 
 @CommandHandler(CreateMemoryCommand)
 export class CreateMemoryHandler implements ICommandHandler<CreateMemoryCommand, ICreateMemoryResponse> {
@@ -19,11 +19,10 @@ export class CreateMemoryHandler implements ICommandHandler<CreateMemoryCommand,
       throw new Error('Missing required fields');
 
     const usersRepository = new UsersRepository();
-    const userDoc = await usersRepository.findUser(userId || " ");
+    const userDoc = await usersRepository.findUser(userId || ' ');
     const userData = userDoc.data();
 
-    if(!userData)
-      throw new Error('User not found');
+    if (!userData) throw new Error('User not found');
 
     const data: IMemory = {
       userId: userData.userId,
@@ -43,6 +42,6 @@ export class CreateMemoryHandler implements ICommandHandler<CreateMemoryCommand,
     memory.commit();
 
     delete data.userId;
-    return { memory : data };
+    return { memory: data };
   }
 }

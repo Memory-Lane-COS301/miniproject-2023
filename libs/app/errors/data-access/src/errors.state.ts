@@ -25,7 +25,7 @@ export class ErrorsState {
     ctx.setState(
       produce((draft) => {
         draft.error = error;
-      })
+      }),
     );
 
     const toast = await this.toastController.create({

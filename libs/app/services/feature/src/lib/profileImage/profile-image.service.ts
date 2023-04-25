@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ProfileImage } from '@mp/app/shared/feature';
 
- 
 @Injectable({
   providedIn: 'root',
 })

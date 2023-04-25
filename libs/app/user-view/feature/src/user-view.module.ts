@@ -7,13 +7,7 @@ import { UserViewModule as UserViewDataAccessModule } from '@mp/app/user-view/da
 import { SharedModule } from '@mp/app/shared/feature';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    UserViewRouting,
-    IonicModule,
-    SharedModule,
-    UserViewDataAccessModule
-  ],
+  imports: [CommonModule, UserViewRouting, IonicModule, SharedModule, UserViewDataAccessModule],
   declarations: [UserViewPageComponent],
 })
 export class UserViewModule {}

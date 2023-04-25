@@ -54,3 +54,6 @@ pubsub-debug.log
 # Keys
 .keys/*.json
 .env.prod
+
+# Test env
+config.env.test.ts

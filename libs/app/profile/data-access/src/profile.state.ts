@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
 import {
-    AgeGroup,
-    Ethnicity,
-    Gender,
-    HouseholdIncome,
-    IProfile,
-    IUpdateAccountDetailsRequest,
-    IUpdateAddressDetailsRequest,
-    IUpdateContactDetailsRequest,
-    IUpdateOccupationDetailsRequest,
-    IUpdatePersonalDetailsRequest
+  AgeGroup,
+  Ethnicity,
+  Gender,
+  HouseholdIncome,
+  IProfile,
+  IUpdateAccountDetailsRequest,
+  IUpdateAddressDetailsRequest,
+  IUpdateContactDetailsRequest,
+  IUpdateOccupationDetailsRequest,
+  IUpdatePersonalDetailsRequest,
 } from '@mp/api/profiles/util';
 import { AuthState } from '@mp/app/auth/data-access';
 import { Logout as AuthLogout } from '@mp/app/auth/util';
 import { SetError } from '@mp/app/errors/util';
 import {
-    Logout,
-    SetProfile,
-    SubscribeToProfile,
-    UpdateAccountDetails,
-    UpdateAddressDetails,
-    UpdateContactDetails,
-    UpdateOccupationDetails,
-    UpdatePersonalDetails
+  Logout,
+  SetProfile,
+  SubscribeToProfile,
+  UpdateAccountDetails,
+  UpdateAddressDetails,
+  UpdateContactDetails,
+  UpdateOccupationDetails,
+  UpdatePersonalDetails,
 } from '@mp/app/profile/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
@@ -136,10 +136,7 @@ export interface ProfileStateModel {
 })
 @Injectable()
 export class ProfileState {
-  constructor(
-    private readonly profileApi: ProfilesApi,
-    private readonly store: Store
-  ) {}
+  constructor(private readonly profileApi: ProfilesApi, private readonly store: Store) {}
 
   @Selector()
   static profile(state: ProfileStateModel) {
@@ -156,9 +153,7 @@ export class ProfileState {
     const user = this.store.selectSnapshot(AuthState.user);
     if (!user) return ctx.dispatch(new SetError('User not set'));
 
-    return this.profileApi
-      .profile$(user.uid)
-      .pipe(tap((profile: IProfile) => ctx.dispatch(new SetProfile(profile))));
+    return this.profileApi.profile$(user.uid).pipe(tap((profile: IProfile) => ctx.dispatch(new SetProfile(profile))));
   }
 
   @Action(SetProfile)
@@ -166,7 +161,7 @@ export class ProfileState {
     return ctx.setState(
       produce((draft) => {
         draft.profile = profile;
-      })
+      }),
     );
   }
 
@@ -181,11 +176,7 @@ export class ProfileState {
       const password = state.accountDetailsForm.model.password;
 
       if (!userId || !displayName || !email || !password)
-        return ctx.dispatch(
-          new SetError(
-            'UserId or display name or email or photo URL or password not set'
-          )
-        );
+        return ctx.dispatch(new SetError('UserId or display name or email or photo URL or password not set'));
 
       const request: IUpdateAccountDetailsRequest = {
         profile: {
@@ -212,8 +203,7 @@ export class ProfileState {
       const userId = state.profile?.userId;
       const cellphone = state.contactDetailsForm.model.cellphone;
 
-      if (!userId || !cellphone)
-        return ctx.dispatch(new SetError('UserId or cellphone not set'));
+      if (!userId || !cellphone) return ctx.dispatch(new SetError('UserId or cellphone not set'));
 
       const request: IUpdateContactDetailsRequest = {
         profile: {
@@ -240,9 +230,7 @@ export class ProfileState {
       const workArea = state.addressDetailsForm.model.workArea;
 
       if (!userId || !residentialArea || !workArea)
-        return ctx.dispatch(
-          new SetError('UserId or residential area or work area not set')
-        );
+        return ctx.dispatch(new SetError('UserId or residential area or work area not set'));
 
       const request: IUpdateAddressDetailsRequest = {
         profile: {
@@ -271,9 +259,7 @@ export class ProfileState {
       const ethnicity = state.personalDetailsForm.model.ethnicity;
 
       if (!userId || !age || !gender || !ethnicity)
-        return ctx.dispatch(
-          new SetError('UserId or age or gender or ethnicity not set')
-        );
+        return ctx.dispatch(new SetError('UserId or age or gender or ethnicity not set'));
 
       const request: IUpdatePersonalDetailsRequest = {
         profile: {
@@ -302,9 +288,7 @@ export class ProfileState {
       const occupation = state.occupationDetailsForm.model.occupation;
 
       if (!userId || !householdIncome || !occupation)
-        return ctx.dispatch(
-          new SetError('UserId or householdIncome or occupation not set')
-        );
+        return ctx.dispatch(new SetError('UserId or householdIncome or occupation not set'));
 
       const request: IUpdateOccupationDetailsRequest = {
         profile: {
@@ -315,9 +299,7 @@ export class ProfileState {
           },
         },
       };
-      const responseRef = await this.profileApi.updateOccupationDetails(
-        request
-      );
+      const responseRef = await this.profileApi.updateOccupationDetails(request);
       const response = responseRef.data;
       return ctx.dispatch(new SetProfile(response.profile));
     } catch (error) {

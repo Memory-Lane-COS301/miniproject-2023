@@ -15,4 +15,3 @@ export * from './revive-memory.module';
 export * from './revive-memory.api';
 
 export * from './revive-memory.state';
-

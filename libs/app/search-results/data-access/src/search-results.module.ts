@@ -5,6 +5,6 @@ import { SearchResultsState } from './search-results.state';
 
 @NgModule({
   imports: [CommonModule, NgxsModule.forFeature([SearchResultsState])],
-//   providers: [ProfileViewApi],
+  //   providers: [ProfileViewApi],
 })
 export class SearchResultsModule {}

@@ -7,7 +7,7 @@ export class MemoryCreatedHandler implements IEventHandler<MemoryCreatedEvent> {
   constructor(private readonly repository: MemoriesRepository) {}
 
   async handle(event: MemoryCreatedEvent) {
-    console.debug(`${MemoryCreatedEvent.name}`)
+    console.debug(`${MemoryCreatedEvent.name}`);
     return this.repository.createMemory(event.memory);
   }
 }

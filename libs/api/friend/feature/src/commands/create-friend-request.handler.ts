@@ -12,10 +12,7 @@ import { Timestamp } from 'firebase-admin/firestore';
 
 @CommandHandler(CreateFriendRequestCommand)
 export class CreateFriendRequestHandler implements ICommandHandler<CreateFriendRequestCommand, ICreateFriendResponse> {
-  constructor(
-    private readonly publisher: EventPublisher,
-    private readonly userRepository: UsersRepository
-  ) {}
+  constructor(private readonly publisher: EventPublisher, private readonly userRepository: UsersRepository) {}
 
   async execute(command: CreateFriendRequestCommand) {
     console.log(`${CreateFriendRequestCommand.name}`);
@@ -27,13 +24,11 @@ export class CreateFriendRequestHandler implements ICommandHandler<CreateFriendR
 
     const userDoc = await this.userRepository.findUser(request.friendRequest.senderId);
 
-    if (!userDoc.data())
-      throw new Error('User not found')
+    if (!userDoc.data()) throw new Error('User not found');
 
     const receiverUserSnapshot = await this.userRepository.findUserWithUsername(request.friendRequest.receiverUsername);
 
-    if (receiverUserSnapshot.empty)
-      throw new Error('Receiver not found')
+    if (receiverUserSnapshot.empty) throw new Error('Receiver not found');
 
     const receiverUserDoc = receiverUserSnapshot.docs[0];
 

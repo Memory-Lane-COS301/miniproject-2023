@@ -34,7 +34,7 @@ export class ProfileViewPageComponent implements OnInit {
         },
       ],
       timePosted: '2020-11-14T10:30:00.000-07:00',
-      alive: true
+      alive: true,
     },
   ];
   profileImage: ProfileImage;
@@ -43,12 +43,12 @@ export class ProfileViewPageComponent implements OnInit {
     private store: Store,
     public modalController: ModalController,
     private profileImageService: ProfileImageService,
-    private menubarService: MenubarService
+    private menubarService: MenubarService,
   ) {
     this.profileImage = profileImageService.profileImage;
   }
 
-  data:any;
+  data: any;
 
   ngOnInit(): void {
     this.profileImage = this.profileImageService.profileImage;

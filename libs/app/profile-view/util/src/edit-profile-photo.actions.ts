@@ -1,6 +1,6 @@
-import { IComment, IMemory } from "@mp/api/memories/util";
-import { IProfile } from "@mp/api/profiles/util";
-import { IUser } from "@mp/api/users/util";
+import { IComment, IMemory } from '@mp/api/memories/util';
+import { IProfile } from '@mp/api/profiles/util';
+import { IUser } from '@mp/api/users/util';
 
 // export class GetProfileRequest {
 //     static readonly type = '[ProfileView] GetProfileRequest';

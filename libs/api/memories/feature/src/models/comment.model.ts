@@ -43,5 +43,4 @@ export class Comment extends AggregateRoot implements IComment {
       created: this.created,
     };
   }
-  
 }

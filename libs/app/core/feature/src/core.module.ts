@@ -1,37 +1,18 @@
 import { isDevMode, NgModule } from '@angular/core';
 import { getAnalytics, provideAnalytics } from '@angular/fire/analytics';
-import {
-    FirebaseOptions,
-    initializeApp,
-    provideFirebaseApp
-} from '@angular/fire/app';
+import { FirebaseOptions, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
+import { connectDatabaseEmulator, getDatabase, provideDatabase } from '@angular/fire/database';
 import {
-    connectDatabaseEmulator,
-    getDatabase,
-    provideDatabase
-} from '@angular/fire/database';
-import {
-    connectFirestoreEmulator,
-    enableMultiTabIndexedDbPersistence,
-    getFirestore,
-    provideFirestore
+  connectFirestoreEmulator,
+  enableMultiTabIndexedDbPersistence,
+  getFirestore,
+  provideFirestore,
 } from '@angular/fire/firestore';
-import {
-    connectFunctionsEmulator,
-    getFunctions,
-    provideFunctions
-} from '@angular/fire/functions';
+import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { getMessaging, provideMessaging } from '@angular/fire/messaging';
-import {
-    getRemoteConfig,
-    provideRemoteConfig
-} from '@angular/fire/remote-config';
-import {
-    connectStorageEmulator,
-    getStorage,
-    provideStorage
-} from '@angular/fire/storage';
+import { getRemoteConfig, provideRemoteConfig } from '@angular/fire/remote-config';
+import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -58,16 +39,13 @@ export const persistenceEnabled = new Promise<boolean>((resolve) => {
 });
 
 const ENVIRONMENT = process.env['NX_ENVIRONMENT'] || 'development';
-const FIREBASE_USE_EMULATORS = JSON.parse(
-  process.env['NX_FIREBASE_USE_EMULATORS'] || 'true'
-);
+const FIREBASE_USE_EMULATORS = JSON.parse(process.env['NX_FIREBASE_USE_EMULATORS'] || 'true');
 const FIREBASE_API_KEY = process.env['NX_FIREBASE_API_KEY'] || '';
 const FIREBASE_AUTH_DOMAIN = process.env['NX_FIREBASE_AUTH_DOMAIN'] || '';
 const FIREBASE_DATABASE_URL = process.env['NX_FIREBASE_DATABASE_URL'] || '';
 const FIREBASE_PROJECT_ID = process.env['NX_FIREBASE_PROJECT_ID'] || '';
 const FIREBASE_STORAGE_BUCKET = process.env['NX_FIREBASE_STORAGE_BUCKET'] || '';
-const FIREBASE_MESSAGING_SENDER_ID =
-  process.env['NX_FIREBASE_MESSAGING_SENDER_ID'] || '';
+const FIREBASE_MESSAGING_SENDER_ID = process.env['NX_FIREBASE_MESSAGING_SENDER_ID'] || '';
 const FIREBASE_APP_ID = process.env['NX_FIREBASE_APP_ID'] || '';
 const FIREBASE_MEASUREMENT_ID = process.env['NX_FIREBASE_MEASUREMENT_ID'] || '';
 
@@ -109,7 +87,7 @@ const FIREBASE_OPTIONS: FirebaseOptions = {
       }
       enableMultiTabIndexedDbPersistence(firestore).then(
         () => resolvePersistenceEnabled(true),
-        () => resolvePersistenceEnabled(false)
+        () => resolvePersistenceEnabled(false),
       );
       return firestore;
     }),

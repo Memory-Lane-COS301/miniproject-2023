@@ -6,6 +6,6 @@ import { ViewedCommentsState } from './view-comments.state';
 
 @NgModule({
   imports: [CommonModule, NgxsModule.forFeature([ViewedCommentsState]), AuthModule],
-//   providers: [ViewedCommentsApi],
+  //   providers: [ViewedCommentsApi],
 })
 export class ViewCommentsModule {}

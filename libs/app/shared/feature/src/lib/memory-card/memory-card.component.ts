@@ -30,21 +30,18 @@ export class MemoryCardComponent {
           'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
       },
     ],
-    timePosted:  '2020-11-14T10:30:00.000-07:00',
-    alive: true
+    timePosted: '2020-11-14T10:30:00.000-07:00',
+    alive: true,
   };
 
   showExpandedView = false;
   previousPageName = '';
   addingNewComment = false;
   new_comment: string = '';
-  first_comment_text : string | null | undefined = '';
-  first_comment_username : string | null | undefined = '';
+  first_comment_text: string | null | undefined = '';
+  first_comment_username: string | null | undefined = '';
 
-  constructor(
-    private navCtrl: NavController,
-    private store: Store
-  ) {}
+  constructor(private navCtrl: NavController, private store: Store) {}
 
   setAddingNewComment() {
     this.addingNewComment = true;

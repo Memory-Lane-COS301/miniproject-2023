@@ -3,10 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { UpdateContactDetails } from '@mp/app/profile/util';
-import {
-    ActionsExecuting,
-    actionsExecuting
-} from '@ngxs-labs/actions-executing';
+import { ActionsExecuting, actionsExecuting } from '@ngxs-labs/actions-executing';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 
@@ -30,18 +27,13 @@ export class ContactDetailsComponent {
 
   get cellphoneError(): string {
     if (this.cellphone?.errors?.['required']) return 'Cellphone is required';
-    if (this.cellphone?.errors?.['minlength'])
-      return 'Cellphone should be longer than 6 characters';
-    if (this.cellphone?.errors?.['maxlength'])
-      return 'Cellphone should be shorter than 64 characters';
+    if (this.cellphone?.errors?.['minlength']) return 'Cellphone should be longer than 6 characters';
+    if (this.cellphone?.errors?.['maxlength']) return 'Cellphone should be shorter than 64 characters';
 
     return 'Cellphone is invalid';
   }
 
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly store: Store
-  ) {}
+  constructor(private readonly fb: FormBuilder, private readonly store: Store) {}
 
   updateContactDetails() {
     this.store.dispatch(new UpdateContactDetails());

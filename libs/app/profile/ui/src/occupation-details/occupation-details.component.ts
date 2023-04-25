@@ -3,10 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { UpdateOccupationDetails } from '@mp/app/profile/util';
-import {
-    ActionsExecuting,
-    actionsExecuting
-} from '@ngxs-labs/actions-executing';
+import { ActionsExecuting, actionsExecuting } from '@ngxs-labs/actions-executing';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 
@@ -34,30 +31,22 @@ export class OccupationDetailsComponent {
   }
 
   get householdIncomeError(): string {
-    if (this.householdIncome?.errors?.['required'])
-      return 'Household income is required';
-    if (this.householdIncome?.errors?.['minlength'])
-      return 'Household income should be longer than 4 characters';
-    if (this.householdIncome?.errors?.['maxlength'])
-      return 'Household income should be shorter than 64 characters';
+    if (this.householdIncome?.errors?.['required']) return 'Household income is required';
+    if (this.householdIncome?.errors?.['minlength']) return 'Household income should be longer than 4 characters';
+    if (this.householdIncome?.errors?.['maxlength']) return 'Household income should be shorter than 64 characters';
 
     return 'Household income is invalid';
   }
 
   get occupationError(): string {
     if (this.occupation?.errors?.['required']) return 'Occupation is required';
-    if (this.occupation?.errors?.['minlength'])
-      return 'Occupation should be longer than 4 characters';
-    if (this.occupation?.errors?.['maxlength'])
-      return 'Occupation should be shorter than 64 characters';
+    if (this.occupation?.errors?.['minlength']) return 'Occupation should be longer than 4 characters';
+    if (this.occupation?.errors?.['maxlength']) return 'Occupation should be shorter than 64 characters';
 
     return 'Occupation is invalid';
   }
 
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly store: Store
-  ) {}
+  constructor(private readonly fb: FormBuilder, private readonly store: Store) {}
 
   updateOccupationDetails() {
     this.store.dispatch(new UpdateOccupationDetails());

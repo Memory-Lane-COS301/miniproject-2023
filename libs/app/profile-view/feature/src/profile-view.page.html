@@ -66,7 +66,11 @@
   </ion-grid>
 
   <ion-list ngClass="memory-list">
-    <ion-card *ngFor="let memory of Memories" [ngClass]="{ 'memory-card': !showExpandedView, 'memory-card-expanded': showExpandedView }" color="none">
+    <ion-card
+      *ngFor="let memory of Memories"
+      [ngClass]="{ 'memory-card': !showExpandedView, 'memory-card-expanded': showExpandedView }"
+      color="none"
+    >
       <img *ngIf="!showExpandedView" ngClass="memory-img" style="background-image: url('{{ memory.imgUrl }}');" />
       <ion-card-header>
         <div
@@ -92,15 +96,20 @@
         </div>
       </ion-card-header>
       <ion-card-content scroll-y="false" [ngClass]="{ 'ion-card-content-expanded': showExpandedView }">
-        <ion-card-title *ngIf="!showExpandedView" ngClass="memory-card-title" (click)="changeMemoryView()">{{ memory.title }}</ion-card-title>
+        <ion-card-title *ngIf="!showExpandedView" ngClass="memory-card-title" (click)="changeMemoryView()"
+          >{{ memory.title }}</ion-card-title
+        >
         <ion-img *ngIf="showExpandedView" ngClass="memory-img-expanded" src="{{ memory.imgUrl }}"></ion-img>
         <h4 *ngIf="showExpandedView" ngClass="memory-card-title-expanded">{{ memory.title }}</h4>
-        <p [ngClass]="{ 'memory-card-desc': !showExpandedView, 'memory-card-desc-expanded': showExpandedView }" (click)="changeMemoryView()">
+        <p
+          [ngClass]="{ 'memory-card-desc': !showExpandedView, 'memory-card-desc-expanded': showExpandedView }"
+          (click)="changeMemoryView()"
+        >
           {{ memory.description }}
         </p>
-        <ion-text *ngIf="!showExpandedView" class="ion-padding-top" ngClass="memory-date">{{
-          convertTimePostedToDate(memory.timePosted)
-        }}</ion-text>
+        <ion-text *ngIf="!showExpandedView" class="ion-padding-top" ngClass="memory-date"
+          >{{ convertTimePostedToDate(memory.timePosted) }}</ion-text
+        >
         <span [ngClass]="{'span-post-timer': !showExpandedView, 'span-post-timer-expanded':showExpandedView}">
           <ion-buttons slot="start">
             <ion-text color="light" ngClass="btn-add-time">+</ion-text>
@@ -123,11 +132,10 @@
             <ion-text ngClass="memory-comment-usercomment">{{ memory.comments[0]?.comment }}</ion-text>
           </div>
         </div>
-        <ion-text (click)="changeMemoryView()" ngClass="memory-show-more">{{
-          !showExpandedView ? 'Show More' : 'Show Less'
-        }}</ion-text>
+        <ion-text (click)="changeMemoryView()" ngClass="memory-show-more"
+          >{{ !showExpandedView ? 'Show More' : 'Show Less' }}</ion-text
+        >
       </ion-card-content>
     </ion-card>
-    
   </ion-list>
-</ion-content> 
+</ion-content>

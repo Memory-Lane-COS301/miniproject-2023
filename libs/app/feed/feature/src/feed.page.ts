@@ -31,7 +31,7 @@ export class FeedPageComponent {
         },
       ],
       timePosted: '2020-11-14T10:30:00.000-07:00',
-      alive: true
+      alive: true,
     },
   ];
 

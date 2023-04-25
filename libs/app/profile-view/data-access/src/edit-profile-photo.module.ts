@@ -4,7 +4,6 @@ import { NgxsModule } from '@ngxs/store';
 import { EditProfilePhotoState } from './edit-profile-photo.state';
 import { EditProfilePhotoApi } from './edit-profile-photo.api';
 
-
 @NgModule({
   imports: [CommonModule, NgxsModule.forFeature([EditProfilePhotoState])],
   providers: [EditProfilePhotoApi],

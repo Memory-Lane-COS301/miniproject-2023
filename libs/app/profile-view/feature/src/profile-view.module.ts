@@ -10,14 +10,7 @@ import { ReviveMemoryPageComponent } from './lib/revive-memory/revive-memory.pag
 import { SharedModule } from '@mp/app/shared/feature';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    IonicModule,
-    ProfileViewRouting,
-    FormsModule,
-    SharedModule,
-    ProfileViewDataAccessModule
-  ],
+  imports: [CommonModule, IonicModule, ProfileViewRouting, FormsModule, SharedModule, ProfileViewDataAccessModule],
   declarations: [ProfileViewPageComponent, EditProfilePhotoPageComponent, ReviveMemoryPageComponent],
   exports: [ProfileViewPageComponent, EditProfilePhotoPageComponent, ReviveMemoryPageComponent],
 })

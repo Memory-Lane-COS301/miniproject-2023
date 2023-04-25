@@ -7,14 +7,8 @@ import { ViewCommentsRouting } from './view-comments.routing';
 import { ViewCommentsModule as ViewCommentsDataAccessModule } from '@mp/app/view-comments/data-access';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    ViewCommentsRouting,
-    ViewCommentsDataAccessModule
-  ],
+  imports: [CommonModule, IonicModule, FormsModule, ViewCommentsRouting, ViewCommentsDataAccessModule],
   declarations: [ViewCommentsPageComponent],
-  exports: [ViewCommentsPageComponent]
+  exports: [ViewCommentsPageComponent],
 })
 export class ViewCommentsModule {}

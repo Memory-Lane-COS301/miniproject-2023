@@ -1,8 +1,5 @@
 <ng-container *ngIf="profile$ | async as profile; else loading">
-  <form
-    [formGroup]="personalDetailsForm"
-    ngxsForm="profile.personalDetailsForm"
-    (submit)="updatePersonalDetails()">
+  <form [formGroup]="personalDetailsForm" ngxsForm="profile.personalDetailsForm" (submit)="updatePersonalDetails()">
     <ion-card *ngIf="profile.personalDetails as personalDetails">
       <ion-card-header>
         <ion-card-title class="ion-align-items-center">
@@ -10,11 +7,13 @@
           <ion-icon
             *ngIf="personalDetails.status == 'Incomplete'"
             color="danger"
-            name="alert-circle-outline"></ion-icon>
+            name="alert-circle-outline"
+          ></ion-icon>
           <ion-icon
             *ngIf="personalDetails.status == 'Complete'"
             color="success"
-            name="checkmark-circle-outline"></ion-icon>
+            name="checkmark-circle-outline"
+          ></ion-icon>
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
@@ -28,12 +27,10 @@
               required="true"
               [value]="personalDetails.age"
               formControlName="age"
-              placeholder="Enter age"></ion-input>
+              placeholder="Enter age"
+            ></ion-input>
           </ion-item>
-          <ion-text
-            *ngIf="age?.invalid && (age?.dirty || age?.touched)"
-            class="ion-padding-start"
-            color="danger">
+          <ion-text *ngIf="age?.invalid && (age?.dirty || age?.touched)" class="ion-padding-start" color="danger">
             <small>{{ ageError }}</small>
           </ion-text>
           <ion-item class="ion-no-padding">
@@ -45,18 +42,18 @@
               required="true"
               [value]="personalDetails.gender"
               formControlName="gender"
-              placeholder="Enter gender"></ion-input>
+              placeholder="Enter gender"
+            ></ion-input>
           </ion-item>
           <ion-text
             *ngIf="gender?.invalid && (gender?.dirty || gender?.touched)"
             class="ion-padding-start"
-            color="danger">
+            color="danger"
+          >
             <small>{{ genderError }}</small>
           </ion-text>
           <ion-item class="ion-no-padding">
-            <ion-label position="floating" class="required">
-              Ethnicity
-            </ion-label>
+            <ion-label position="floating" class="required"> Ethnicity </ion-label>
             <ion-input
               type="text"
               minlength="4"
@@ -64,21 +61,19 @@
               required="true"
               [value]="personalDetails.ethnicity"
               formControlName="ethnicity"
-              placeholder="Enter ethnicity"></ion-input>
+              placeholder="Enter ethnicity"
+            ></ion-input>
           </ion-item>
           <ion-text
-            *ngIf="
-              ethnicity?.invalid && (ethnicity?.dirty || ethnicity?.touched)
-            "
+            *ngIf="ethnicity?.invalid && (ethnicity?.dirty || ethnicity?.touched)"
             class="ion-padding-start"
-            color="danger">
+            color="danger"
+          >
             <small>{{ ethnicityError }}</small>
           </ion-text>
         </ion-list>
       </ion-card-content>
-      <ion-button fill="clear" class="ion-float-right" type="submit"
-        >Save</ion-button
-      >
+      <ion-button fill="clear" class="ion-float-right" type="submit">Save</ion-button>
     </ion-card>
   </form>
 </ng-container>
@@ -86,10 +81,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ngx-skeleton-loader
-          count="1"
-          [theme]="{ height: '150px' }"
-          appearance="line"></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="1" [theme]="{ height: '150px' }" appearance="line"></ngx-skeleton-loader>
       </ion-col>
     </ion-row>
   </ion-grid>

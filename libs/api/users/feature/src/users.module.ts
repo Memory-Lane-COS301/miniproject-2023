@@ -8,9 +8,7 @@ import { UsersService } from './users.service';
 import { GetUserHandler } from './query';
 export const CommandHandlers = [CreateUserHandler];
 export const EventHandlers = [UserCreatedHandler];
-export const QueryHandlers = [
-  GetUserHandler
-];
+export const QueryHandlers = [GetUserHandler];
 
 @Module({
   imports: [CqrsModule, UsersDataAccessModule],

@@ -1,5 +1,5 @@
 import { IMemory } from '../interfaces';
 
 export interface IGetFeedMemoriesResponse {
-	memories: IMemory[];
+  memories: IMemory[];
 }

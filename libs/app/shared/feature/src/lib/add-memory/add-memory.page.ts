@@ -16,9 +16,9 @@ export class AddMemoryPageComponent {
     imgUrl: '',
     title: '',
     description: '',
-    comments: [],  
+    comments: [],
     timePosted: '',
-    alive: false
+    alive: false,
   };
 
   currentDate: string;
@@ -26,7 +26,8 @@ export class AddMemoryPageComponent {
   constructor(public modalController: ModalController, private alertCtrl: AlertController) {
     this.currentDate = new Date().toISOString();
     this.memory.username = 'Your username';
-    this.memory.profileUrl = 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60';   
+    this.memory.profileUrl =
+      'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60';
   }
 
   async onFileSelected(event: any) {
@@ -98,9 +99,9 @@ export class AddMemoryPageComponent {
       imgUrl: this.memory.imgUrl,
       title: this.memory.title,
       description: this.memory.description,
-      comments: [],  
+      comments: [],
       timePosted: standardDate,
-      alive: true
+      alive: true,
     };
 
     if (!this.memory.title || !this.memory.description || !this.memory.imgUrl) {

@@ -12,7 +12,7 @@ export class CreateProfileHandler implements ICommandHandler<CreateProfileComman
 
     const request = command.request;
     const userId = request.user.userId;
-    const user=request.user;
+    const user = request.user;
     const displayName = request.user.username;
     const email = request.user.email;
     const photoURL = request.user.profileImgUrl;
@@ -21,7 +21,7 @@ export class CreateProfileHandler implements ICommandHandler<CreateProfileComman
     const data: IProfile = {
       userId,
       user,
-  
+
       accountDetails: {
         displayName,
         email,

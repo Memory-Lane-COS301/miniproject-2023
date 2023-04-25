@@ -2,31 +2,25 @@ import { Injectable } from '@angular/core';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import {
-    IProfile,
-    IUpdateAccountDetailsRequest,
-    IUpdateAccountDetailsResponse,
-    IUpdateAddressDetailsRequest,
-    IUpdateAddressDetailsResponse,
-    IUpdateContactDetailsRequest,
-    IUpdateContactDetailsResponse,
-    IUpdateOccupationDetailsRequest,
-    IUpdateOccupationDetailsResponse,
-    IUpdatePersonalDetailsRequest,
-    IUpdatePersonalDetailsResponse
+  IProfile,
+  IUpdateAccountDetailsRequest,
+  IUpdateAccountDetailsResponse,
+  IUpdateAddressDetailsRequest,
+  IUpdateAddressDetailsResponse,
+  IUpdateContactDetailsRequest,
+  IUpdateContactDetailsResponse,
+  IUpdateOccupationDetailsRequest,
+  IUpdateOccupationDetailsResponse,
+  IUpdatePersonalDetailsRequest,
+  IUpdatePersonalDetailsResponse,
 } from '@mp/api/profiles/util';
 
 @Injectable()
 export class ProfilesApi {
-  constructor(
-    private readonly firestore: Firestore,
-    private readonly functions: Functions
-  ) {}
+  constructor(private readonly firestore: Firestore, private readonly functions: Functions) {}
 
   profile$(id: string) {
-    const docRef = doc(
-      this.firestore,
-      `profiles/${id}`
-    ).withConverter<IProfile>({
+    const docRef = doc(this.firestore, `profiles/${id}`).withConverter<IProfile>({
       fromFirestore: (snapshot) => {
         return snapshot.data() as IProfile;
       },
@@ -36,52 +30,37 @@ export class ProfilesApi {
   }
 
   async updateAccountDetails(request: IUpdateAccountDetailsRequest) {
-    return await httpsCallable<
-      IUpdateAccountDetailsRequest,
-      IUpdateAccountDetailsResponse
-    >(
+    return await httpsCallable<IUpdateAccountDetailsRequest, IUpdateAccountDetailsResponse>(
       this.functions,
-      'updateAccountDetails'
+      'updateAccountDetails',
     )(request);
   }
 
   async updateContactDetails(request: IUpdateContactDetailsRequest) {
-    return await httpsCallable<
-      IUpdateContactDetailsRequest,
-      IUpdateContactDetailsResponse
-    >(
+    return await httpsCallable<IUpdateContactDetailsRequest, IUpdateContactDetailsResponse>(
       this.functions,
-      'updateContactDetails'
+      'updateContactDetails',
     )(request);
   }
 
   async updateAddressDetails(request: IUpdateAddressDetailsRequest) {
-    return await httpsCallable<
-      IUpdateAddressDetailsRequest,
-      IUpdateAddressDetailsResponse
-    >(
+    return await httpsCallable<IUpdateAddressDetailsRequest, IUpdateAddressDetailsResponse>(
       this.functions,
-      'updateAddressDetails'
+      'updateAddressDetails',
     )(request);
   }
 
   async updatePersonalDetails(request: IUpdatePersonalDetailsRequest) {
-    return await httpsCallable<
-      IUpdatePersonalDetailsRequest,
-      IUpdatePersonalDetailsResponse
-    >(
+    return await httpsCallable<IUpdatePersonalDetailsRequest, IUpdatePersonalDetailsResponse>(
       this.functions,
-      'updatePersonalDetails'
+      'updatePersonalDetails',
     )(request);
   }
 
   async updateOccupationDetails(request: IUpdateOccupationDetailsRequest) {
-    return await httpsCallable<
-      IUpdateOccupationDetailsRequest,
-      IUpdateOccupationDetailsResponse
-    >(
+    return await httpsCallable<IUpdateOccupationDetailsRequest, IUpdateOccupationDetailsResponse>(
       this.functions,
-      'updateOccupationDetails'
+      'updateOccupationDetails',
     )(request);
   }
 }

@@ -1,9 +1,9 @@
-import { IMemory } from "@mp/api/memories/util";
-import { IProfile } from "@mp/api/profiles/util";
+import { IMemory } from '@mp/api/memories/util';
+import { IProfile } from '@mp/api/profiles/util';
 
 export class CreateMemory {
-    static readonly type = '[AddMemory] Add Memory';
-    constructor(public memory: IMemory) {}
+  static readonly type = '[AddMemory] Add Memory';
+  constructor(public memory: IMemory) {}
 }
 
 // export class SetFeed {

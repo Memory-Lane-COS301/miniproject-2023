@@ -18,13 +18,13 @@ export class CoreShell implements OnInit, OnDestroy {
         this.updateToast();
       }
     }),
-    takeUntil(this.ngUnsubscribe)
+    takeUntil(this.ngUnsubscribe),
   );
 
   constructor(
     private readonly store: Store,
     private readonly swUpdate: SwUpdate,
-    private readonly toastController: ToastController
+    private readonly toastController: ToastController,
   ) {}
 
   ngOnInit(): void {

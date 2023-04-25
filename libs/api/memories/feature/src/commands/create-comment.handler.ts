@@ -10,7 +10,7 @@ import { Comment } from '../models';
 export class CreateCommentHandler implements ICommandHandler<CreateCommentCommand, ICreateCommentResponse> {
   constructor(
     private readonly publisher: EventPublisher,
-    private readonly memoriesRepository: MemoriesRepository, 
+    private readonly memoriesRepository: MemoriesRepository,
     private readonly usersRepository: UsersRepository,
   ) {}
 
@@ -25,14 +25,12 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
     const userDoc = await this.usersRepository.findUser(request.comment.userId);
     const userData = userDoc.data();
 
-    if (!userData)
-      throw new Error('User not found');
+    if (!userData) throw new Error('User not found');
 
     const memoryDoc = await this.memoriesRepository.findMemory(request.comment.memoryId);
     const memoryData = memoryDoc.data();
 
-    if (!memoryData)
-      throw new Error('Memory not found');
+    if (!memoryData) throw new Error('Memory not found');
 
     const data: IComment = {
       userId: userData.userId,
@@ -42,10 +40,10 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
       profileImgUrl: userData?.profileImgUrl,
       text: request.comment?.text,
       created: Timestamp.now(),
-    }
-    
+    };
+
     const comment = this.publisher.mergeObjectContext(Comment.fromData(data));
-    
+
     comment.create();
     comment.commit();
 

@@ -28,10 +28,14 @@ export class MemoriesService {
   }
 
   async getFeedMemories(request: IGetFeedMemoriesRequest): Promise<IGetFeedMemoriesResponse> {
-    return await this.queryBus.execute<GetFeedMemoriesQuery, IGetFeedMemoriesResponse>(new GetFeedMemoriesQuery(request));
+    return await this.queryBus.execute<GetFeedMemoriesQuery, IGetFeedMemoriesResponse>(
+      new GetFeedMemoriesQuery(request),
+    );
   }
 
   async createComment(request: ICreateCommentRequest): Promise<ICreateCommentResponse> {
-    return await this.commandBus.execute<CreateCommentCommand, ICreateCommentResponse>(new CreateCommentCommand(request));
+    return await this.commandBus.execute<CreateCommentCommand, ICreateCommentResponse>(
+      new CreateCommentCommand(request),
+    );
   }
 }

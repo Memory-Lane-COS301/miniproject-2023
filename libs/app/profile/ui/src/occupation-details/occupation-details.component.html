@@ -2,7 +2,8 @@
   <form
     [formGroup]="occupationDetailsForm"
     ngxsForm="profile.occupationDetailsForm"
-    (submit)="updateOccupationDetails()">
+    (submit)="updateOccupationDetails()"
+  >
     <ion-card *ngIf="profile.occupationDetails as occupationDetails">
       <ion-card-header>
         <ion-card-title class="ion-align-items-center">
@@ -10,19 +11,19 @@
           <ion-icon
             *ngIf="occupationDetails.status == 'Incomplete'"
             color="danger"
-            name="alert-circle-outline"></ion-icon>
+            name="alert-circle-outline"
+          ></ion-icon>
           <ion-icon
             *ngIf="occupationDetails.status == 'Complete'"
             color="success"
-            name="checkmark-circle-outline"></ion-icon>
+            name="checkmark-circle-outline"
+          ></ion-icon>
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-list>
           <ion-item class="ion-no-padding">
-            <ion-label position="floating" class="required">
-              Household Income
-            </ion-label>
+            <ion-label position="floating" class="required"> Household Income </ion-label>
             <ion-input
               type="text"
               minlength="4"
@@ -30,21 +31,18 @@
               required="true"
               [value]="occupationDetails.householdIncome"
               formControlName="householdIncome"
-              placeholder="Enter household income"></ion-input>
+              placeholder="Enter household income"
+            ></ion-input>
           </ion-item>
           <ion-text
-            *ngIf="
-              householdIncome?.invalid &&
-              (householdIncome?.dirty || householdIncome?.touched)
-            "
+            *ngIf="householdIncome?.invalid && (householdIncome?.dirty || householdIncome?.touched)"
             class="ion-padding-start"
-            color="danger">
+            color="danger"
+          >
             <small>{{ householdIncomeError }}</small>
           </ion-text>
           <ion-item class="ion-no-padding">
-            <ion-label position="floating" class="required">
-              Occupation
-            </ion-label>
+            <ion-label position="floating" class="required"> Occupation </ion-label>
             <ion-input
               type="text"
               minlength="4"
@@ -52,21 +50,19 @@
               required="true"
               [value]="occupationDetails.occupation"
               formControlName="occupation"
-              placeholder="Enter occupation"></ion-input>
+              placeholder="Enter occupation"
+            ></ion-input>
           </ion-item>
           <ion-text
-            *ngIf="
-              occupation?.invalid && (occupation?.dirty || occupation?.touched)
-            "
+            *ngIf="occupation?.invalid && (occupation?.dirty || occupation?.touched)"
             class="ion-padding-start"
-            color="danger">
+            color="danger"
+          >
             <small>{{ occupationError }}</small>
           </ion-text>
         </ion-list>
       </ion-card-content>
-      <ion-button fill="clear" class="ion-float-right" type="submit"
-        >Save</ion-button
-      >
+      <ion-button fill="clear" class="ion-float-right" type="submit">Save</ion-button>
     </ion-card>
   </form>
 </ng-container>
@@ -74,10 +70,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ngx-skeleton-loader
-          count="1"
-          [theme]="{ height: '150px' }"
-          appearance="line"></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="1" [theme]="{ height: '150px' }" appearance="line"></ngx-skeleton-loader>
       </ion-col>
     </ion-row>
   </ion-grid>

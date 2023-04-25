@@ -8,12 +8,9 @@ export class UpdateCommentHandler implements ICommandHandler<CommentUpdatedEvent
 
   //TODO implement
   async execute(command: CommentUpdatedEvent) {
-
     const comment: IUpdateCommentResponse = {
-      comment: {
-
-      }
-    }
+      comment: {},
+    };
 
     return comment;
   }

@@ -1,13 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '@angular/fire/auth';
-import {
-    ContinueWithGoogle,
-    Login,
-    Logout,
-    Register,
-    SetUser,
-    SubscribeToAuthState
-} from '@mp/app/auth/util';
+import { ContinueWithGoogle, Login, Logout, Register, SetUser, SubscribeToAuthState } from '@mp/app/auth/util';
 import { SetError } from '@mp/app/errors/util';
 import { Navigate } from '@ngxs/router-plugin';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
@@ -39,7 +32,7 @@ export class AuthState {
     return this.authApi.auth$().pipe(
       tap((user: User | null) => {
         ctx.dispatch(new SetUser(user));
-      })
+      }),
     );
   }
 
@@ -48,7 +41,7 @@ export class AuthState {
     ctx.setState(
       produce((draft) => {
         draft.user = user;
-      })
+      }),
     );
   }
 
@@ -63,10 +56,7 @@ export class AuthState {
   }
 
   @Action(Register)
-  async register(
-    ctx: StateContext<AuthStateModel>,
-    { email, password }: Register
-  ) {
+  async register(ctx: StateContext<AuthStateModel>, { email, password }: Register) {
     try {
       await this.authApi.register(email, password);
       return ctx.dispatch(new Navigate(['home']));

@@ -7,13 +7,7 @@ import { DashboardPage } from './dashboard.page';
 import { DashboardRouting } from './dashboard.routing';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    IonicModule,
-    DashboardRouting,
-    ProfileModule,
-    NgxSkeletonLoaderModule,
-  ],
+  imports: [CommonModule, IonicModule, DashboardRouting, ProfileModule, NgxSkeletonLoaderModule],
   declarations: [DashboardPage],
 })
 export class DashboardModule {}
