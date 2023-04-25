@@ -29,8 +29,8 @@ describe('Tesing Cloud Function: createMemory', () => {
       body: JSON.stringify(createMemoryRequest),
     });
     const createMemoryResponse = (await res.json()).result.memory;
-    console.debug("createMemoryResponse: ",createMemoryResponse);
-    expect(createMemoryResponse.username).toBe(mockData.username); 
+    console.debug('createMemoryResponse: ', createMemoryResponse);
+    expect(createMemoryResponse.username).toBe(mockData.username);
     expect(createMemoryResponse.alive).toBe(true);
     expect(createMemoryResponse.remainingTime).toBe(86400);
     expect(createMemoryResponse.commentsCount).toBe(0);
@@ -40,7 +40,7 @@ describe('Tesing Cloud Function: createMemory', () => {
       data: {
         memory: {
           username: mockData.username,
-          userId: "12437",
+          userId: '12437',
           title: mockData.title,
           description: mockData.description,
           imgUrl: mockData.imgUrl,
@@ -53,13 +53,13 @@ describe('Tesing Cloud Function: createMemory', () => {
       headers: new Headers({ 'content-type': 'application/json' }),
       body: JSON.stringify(createMemoryRequest),
     });
-    const createMemoryResponse = (await res.json());
+    const createMemoryResponse = await res.json();
     const errorResponse = {
       error: {
-      message: "User not found",
-      status: "NOT_FOUND"
-      }
-    }
+        message: 'User not found',
+        status: 'NOT_FOUND',
+      },
+    };
     console.debug(createMemoryResponse);
     expect(createMemoryResponse).toEqual(errorResponse);
   });
