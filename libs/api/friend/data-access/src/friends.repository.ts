@@ -21,6 +21,25 @@ export class FriendsRepository {
   async deleteFriendRequest(friendRequestId: string) {
     return await admin.firestore().collection('friendRequests').doc(friendRequestId).delete();
   }
+
+  async getPendingFriendIds(senderId: string) {
+    const friendsRef = await admin
+      .firestore()
+      .collection('friendRequests')
+      .where('senderId', '==', senderId)
+      .where('status', '==', 'pending')
+      .get();
+
+    const friendDocs = friendsRef.docs;
+
+    const friendIds = friendDocs.map((doc) => {
+      const friendData = doc.data() as IFriendRequest;
+      return friendData.receiverId;
+    });
+
+    return friendIds;
+  }
+
   async getCurrentFriendRequest(senderId: string, receiverId: string) {
     return await admin
       .firestore()

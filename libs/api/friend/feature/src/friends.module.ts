@@ -9,7 +9,7 @@ import {
   DeleteFriendRequestHandler,
   DeleteFriendHandler,
 } from './commands';
-import { GetFriendsHandler } from './queries';
+import { GetFriendsHandler, GetPendingFriendsHandler } from './queries';
 import {
   FriendRequestCreatedHandler,
   UpdateAcceptFriendRequestHandler,
@@ -27,7 +27,7 @@ export const CommandHandlers = [
   DeleteFriendRequestHandler,
   DeleteFriendHandler,
 ];
-export const QueryHandlers = [GetFriendsHandler];
+export const QueryHandlers = [GetFriendsHandler, GetPendingFriendsHandler];
 export const EventHandlers = [
   FriendRequestCreatedHandler,
   UpdateAcceptFriendRequestHandler,
