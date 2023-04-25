@@ -24,14 +24,14 @@ export class CreateFriendRequestHandler implements ICommandHandler<CreateFriendR
 
     const request = command.request;
 
-    if (!request.friendRequest.senderId || !request.friendRequest.receiverUsername)
+    if (!request.friendRequest.senderId || !request.friendRequest.receiverId)
       throw new Error('Missing required fields');
 
     const userDoc = await this.userRepository.findUser(request.friendRequest.senderId);
 
     if (!userDoc.data()) throw new Error('User not found');
 
-    const receiverUserSnapshot = await this.userRepository.findUserWithUsername(request.friendRequest.receiverUsername);
+    const receiverUserSnapshot = await this.userRepository.findUserByUserId(request.friendRequest.receiverId);
 
     if (receiverUserSnapshot.empty) throw new Error('Receiver not found');
 

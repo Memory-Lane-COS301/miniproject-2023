@@ -25,7 +25,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand, IUp
     const userData = userDoc.data();
     if (!userData) throw new Error('User not found');
 
-    const userSnapshot = await this.repository.findUserWithUsername(request.user.username);
+    const userSnapshot = await this.repository.findUserByUserId(request.user.username);
     userSnapshot.forEach(doc => {
         const data = doc.data(); 
         if (doc.id !== request.user.userId && data.username === request.user.username)  

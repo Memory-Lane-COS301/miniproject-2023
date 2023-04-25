@@ -30,11 +30,11 @@ export class UsersRepository {
       .get();
   }
 
-  async findUserWithUsername(username: string) {
+  async findUserByUserId(userId: string) {
     return await admin
       .firestore()
       .collection('users')
-      .where("username", "==", username)
+      .where("userId", "==", userId)
       .withConverter<IUser>({
         fromFirestore: (snapshot) => {
           return snapshot.data() as IUser;

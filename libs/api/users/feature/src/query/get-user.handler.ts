@@ -12,12 +12,12 @@ export class GetUserHandler
     console.log(`${GetUserHandler.name}`);
     
     const request = query.request as IGetUserRequest;
-    const username = request.user.username;
+    const userId = request.user.userId;
     console.debug(request);
-    if (!username) 
+    if (!userId) 
         throw new Error('Invalid Query: Missing username');
     try {
-      const userSnapShot = (await this.repository.findUserWithUsername(username));
+      const userSnapShot = (await this.repository.findUserByUserId(userId));
       if (userSnapShot.empty)
         throw new Error('User not found');
       const user = userSnapShot.docs[0].data();
