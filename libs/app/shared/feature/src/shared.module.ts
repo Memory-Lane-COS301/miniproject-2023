@@ -11,7 +11,7 @@ import {
 } from '@mp/app/shared/data-access';
 
 @NgModule({
-  imports: [CommonModule, IonicModule, FormsModule, ViewCommentsRouting, MemoryCardDataAccessModule, AddMemoryDataAccessModule],
+  imports: [CommonModule, IonicModule, FormsModule, MemoryCardDataAccessModule, AddMemoryDataAccessModule],
   declarations: [MemoryCardComponent, AddMemoryPageComponent],
   exports: [MemoryCardComponent],
 })
