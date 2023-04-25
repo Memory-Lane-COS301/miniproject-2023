@@ -53,20 +53,22 @@
       </ion-card-header>
       <ion-card-content scroll-y="false" [ngClass]="{ 'ion-card-content-expanded': showExpandedView }">
         <ion-card-title *ngIf="!showExpandedView" ngClass="memory-card-title">{{ memory.title }}</ion-card-title>
-        <ion-img *ngIf="showExpandedView" 
+        <ion-img
+          *ngIf="showExpandedView"
           style="background-image: url('{{memory.imgUrl}}'); 
                   width: 350px;
                   height: 233px;
                   background-position: center;
                   background-repeat: no-repeat;
-                  background-size: cover;">
+                  background-size: cover;"
+        >
         </ion-img>
         <p [ngClass]="{ 'memory-card-desc': !showExpandedView, 'memory-card-desc-expanded': showExpandedView }">
           {{ memory.description }}
         </p>
-        <ion-text *ngIf="!showExpandedView" class="ion-padding-top" ngClass="memory-date">{{
-          currentDate | date: 'dd MMMM yyyy'
-        }}</ion-text>
+        <ion-text *ngIf="!showExpandedView" class="ion-padding-top" ngClass="memory-date"
+          >{{ currentDate | date: 'dd MMMM yyyy' }}</ion-text
+        >
         <span [ngClass]="{'span-post-timer': !showExpandedView, 'span-post-timer-expanded':showExpandedView}">
           <ion-buttons slot="start">
             <ion-text color="light" ngClass="btn-add-time">+</ion-text>
@@ -77,7 +79,7 @@
           !showExpandedView ? 'Show More' : 'Show Less'
         }}</ion-text>
       </ion-card-content>
-    </ion-card> 
+    </ion-card>
   </ion-list>
   <ion-item ngClass="buttons" color="none">
     <ion-button slot="start" ngClass="button-cancel" (click)="cancel()">Cancel</ion-button>

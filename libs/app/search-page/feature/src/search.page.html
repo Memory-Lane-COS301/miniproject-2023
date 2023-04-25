@@ -35,7 +35,12 @@
     </ion-item>
   </ion-list>
   <ion-list *ngIf="searchValue" ngClass="search-list">
-    <ion-item color="none" *ngFor="let result of SearchResults" ngClass="search-item" (click)="openUserProfile(result.userId, result.username)">
+    <ion-item
+      color="none"
+      *ngFor="let result of SearchResults"
+      ngClass="search-item"
+      (click)="openUserProfile(result.userId, result.username)"
+    >
       <ion-avatar ngClass="result-avatar">
         <img src="{{ result.profileImgUrl }}" ngClass="result-profileImg" />
       </ion-avatar>

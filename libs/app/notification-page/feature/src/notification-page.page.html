@@ -1,0 +1,75 @@
+<ion-header color="none">
+    <ion-toolbar color="none" [ngClass]="'menu-toolbar'">
+      <ion-title ngClass="title">Memory Lane</ion-title>
+      <small slot="end" ngClass="account-time">22h:52m:11s</small>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content color="dark">
+    <ion-list color="none" ngClass="friend-requests-list" class="ion-padding"> <!-- Friend requests -->
+        <div ngClass="friend-request-list-title" (click)="toggleFriendRequestsList()">
+            <div>
+                <ion-text size="large" ngClass="list-title-text">Friend Requests</ion-text>
+                <ion-badge ngClass="list-title-count">{{ FriendRequests.length }}</ion-badge>
+            </div>
+            <ion-icon name="chevron-forward-circle-outline" [ngClass]="{'toggleIcon-requests': !friendRequestsListExpanded, 'toggleIcon-requests-90deg': friendRequestsListExpanded}"></ion-icon>
+        </div>
+        <div [ngClass]="{'friend-requests-shown': friendRequestsListExpanded, 'friend-requests-hidden': !friendRequestsListExpanded}">
+            <div *ngIf="friendRequestsListExpanded">
+                <div *ngFor="let request of FriendRequests" ngClass="request-avatar-username-fullname">
+                    <div  ngClass="request-profileImg-username">
+                        <ion-avatar>
+                            <img src="{{ request.profileImgUrl }}" ngClass="request-profileImg" />
+                        </ion-avatar>
+                        <div ngClass="request-username-and-fullname">
+                            <ion-text ngClass="request-username">@{{ request.username }}</ion-text>
+                            <ion-text ngClass="request-fullname">{{ request.name }} {{ request.surname }}</ion-text>
+                        </div>
+                    </div>
+                    <ion-buttons>
+                        <ion-badge color="success" ngClass="accept-decline-request-btns">
+                            <ion-icon name="checkmark"></ion-icon>
+                        </ion-badge>
+                        <ion-badge color="danger" ngClass="accept-decline-request-btns">
+                            <ion-icon name="close"></ion-icon>
+                        </ion-badge>
+                    </ion-buttons>
+                </div>
+            </div>
+            <div *ngIf="FriendRequests.length < 0">
+              <ion-item color="none">
+                <ion-text size="large">No Friend Requests</ion-text>
+              </ion-item>
+            </div>
+        </div>
+    </ion-list>
+    <hr>
+    <ion-list color="none" ngClass="comments-list" class="ion-padding"> <!-- Comments -->
+        <div ngClass="comments-list-title" (click)="toggleCommentsList()">
+            <div>
+                <ion-text size="large" ngClass="list-title-text">Comments</ion-text>
+                <ion-badge color="danger" ngClass="list-title-count">{{ Comments.length }}</ion-badge>
+            </div>
+            <ion-icon name="chevron-forward-circle-outline" [ngClass]="{'toggleIcon-comments': !commentsListExpanded, 'toggleIcon-comments-90deg': commentsListExpanded}"></ion-icon>
+        </div>
+        <div [ngClass]="{'comments-shown': commentsListExpanded, 'comments-hidden': !commentsListExpanded}">
+            <div *ngIf="commentsListExpanded">
+                <div *ngFor="let comment of Comments"  ngClass="comment-profileImg-username">
+                    <ion-avatar>
+                        <img src="{{ comment.profileImgUrl }}" ngClass="comment-profileImg" routerLink="/user-view" />
+                    </ion-avatar>
+                    <div ngClass="comment-username-and-text">
+                        <ion-text ngClass="comment-username" routerLink="/user-view">@{{ comment.username }}</ion-text>
+                        <ion-text ngClass="comment-text">This is an example comment made by me to test it oiidd jsdjsn jdn jskdj jjdjdjdc jdjd jdjc</ion-text>
+                    </div>
+                </div>
+                <div *ngIf="Comments.length < 0">
+                  <ion-item color="none">
+                    <ion-text size="large">No Comments</ion-text>
+                  </ion-item>
+                </div>
+            </div>
+        </div>
+    </ion-list>
+    <hr>
+</ion-content>

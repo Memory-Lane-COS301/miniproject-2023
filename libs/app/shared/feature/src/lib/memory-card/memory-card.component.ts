@@ -108,6 +108,33 @@ export class MemoryCardComponent implements OnInit {
 
     //   this.store.dispatch(new GetUserProfileRequest(request));
     // }
+
+    // let _userId: string | null | undefined = '';
+    // let _username: string | null | undefined = '';
+
+    // let request: IUser;
+
+    // //we either want to navigate to the user's profile (i.e. the person who posted the memory)
+    // if (!(i_userId && i_username)) {
+    //   this.memoryCard$.subscribe((user) => {
+    //     (_userId = user?.userId), (_username = user?.username);
+    //   });
+
+    //   request = {
+    //     userId: _userId,
+    //     username: _username,
+    //   };
+    // }
+    // //or we want to open a user's - who commented - profile
+    // else {
+    //   request = {
+    //     userId: i_userId,
+    //     username: i_username,
+    //   };
+    // }
+
+    // this.store.dispatch(new GetUserProfileRequest(request));
+
   }
 
   openViewedComments() {

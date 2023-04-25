@@ -1,5 +1,9 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { SetEditProfileImagePhoto, SetEditProfileImageState, SetEditProfileImageUserId } from "@mp/app/profile-view/util"
+import {
+  SetEditProfileImagePhoto,
+  SetEditProfileImageState,
+  SetEditProfileImageUserId,
+} from '@mp/app/profile-view/util';
 import { Injectable } from '@angular/core';
 import { AuthState } from '@mp/app/auth/data-access';
 import { SetError } from '@mp/app/errors/util';
@@ -13,69 +17,64 @@ import { IUser } from '@mp/api/users/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 
 export interface EditProfilePhotoModel {
-    user: IUser;
+  user: IUser;
 }
 
 @State<EditProfilePhotoModel>({
-    name: 'editProfilePhoto',
-    defaults: {
-        user: {
-            userId: '',
-            name: null,
-            surname: null,
-            username: null,
-            email: null,
-            profileImgUrl: null,
-            bio: null,
-            friendCount: null,
-            memoryCount: null,
-            accountTime: null,
-            lastOnline: null,
-            online: null, // requires clarification
-            created: null,
-        }
+  name: 'editProfilePhoto',
+  defaults: {
+    user: {
+      userId: '',
+      name: null,
+      surname: null,
+      username: null,
+      email: null,
+      profileImgUrl: null,
+      bio: null,
+      friendCount: null,
+      memoryCount: null,
+      accountTime: null,
+      lastOnline: null,
+      online: null, // requires clarification
+      created: null,
     },
+  },
 })
-
 @Injectable()
 export class EditProfilePhotoState {
-    constructor(
-        private readonly editProfilePhotoApi: EditProfilePhotoApi,
-        private readonly store: Store
-    ){}
+  constructor(private readonly editProfilePhotoApi: EditProfilePhotoApi, private readonly store: Store) {}
 
-    @Selector()
-    static editProfilePhoto(state: EditProfilePhotoModel) {
-        return state.user;
-    }
+  @Selector()
+  static editProfilePhoto(state: EditProfilePhotoModel) {
+    return state.user;
+  }
 
-   @Action(SetEditProfileImageUserId) 
-   setProfileImageUserId(ctx: StateContext<EditProfilePhotoModel>, { userId } : SetEditProfileImageUserId) {
+  @Action(SetEditProfileImageUserId)
+  setProfileImageUserId(ctx: StateContext<EditProfilePhotoModel>, { userId }: SetEditProfileImageUserId) {
     try {
-        const state = ctx.getState();
-        const response: IUser = {
-            ...state.user,
-            userId: userId
-        }
+      const state = ctx.getState();
+      const response: IUser = {
+        ...state.user,
+        userId: userId,
+      };
 
-        return this.store.dispatch(new SetEditProfileImageState(response));
+      return this.store.dispatch(new SetEditProfileImageState(response));
+    } catch (error) {
+      return this.store.dispatch(new SetError((error as Error).message));
     }
-    catch (error) {
-        return this.store.dispatch(new SetError((error as Error).message));
-    }
-   }
+  }
 
-   @Action(SetEditProfileImageState)
-   setEditProfileState(ctx: StateContext<EditProfilePhotoModel>, { user }: SetEditProfileImageState) {
+  @Action(SetEditProfileImageState)
+  setEditProfileState(ctx: StateContext<EditProfilePhotoModel>, { user }: SetEditProfileImageState) {
     return ctx.setState(
-        produce((draft) => {
-            draft.user = user;
-        })
+      produce((draft) => {
+        draft.user = user;
+      }),
     );
-   }
+  }
 
-   @Action(SetEditProfileImagePhoto)
-   setEditProfilePhoto(ctx: StateContext<EditProfilePhotoModel>, { imgUrl } : SetEditProfileImagePhoto) {
+  @Action(SetEditProfileImagePhoto)
+  setEditProfilePhoto(ctx: StateContext<EditProfilePhotoModel>, { imgUrl }: SetEditProfileImagePhoto) {
     try {
         const user = this.store.selectSnapshot(ProfileState.user);
 
@@ -97,10 +96,9 @@ export class EditProfilePhotoState {
             created: user.created,
         };
 
-        return this.store.dispatch(new SetEditProfileImageState(response));
+      return this.store.dispatch(new SetEditProfileImageState(response));
+    } catch (error) {
+      return this.store.dispatch(new SetError((error as Error).message));
     }
-    catch (error) {
-        return this.store.dispatch(new SetError((error as Error).message));
-    }
-   }
+  }
 }

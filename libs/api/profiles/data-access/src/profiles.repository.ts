@@ -21,13 +21,11 @@ export class ProfilesRepository {
   }
 
   async createProfile(profile: IProfile) {
-    // Remove password field if present
     delete profile.accountDetails?.password;
     return await admin.firestore().collection('profiles').doc().create(profile);
   }
 
   async updateProfile(profile: IProfile) {
-    // Remove password field if present
     delete profile.accountDetails?.password;
     return await admin.firestore().collection('profiles').doc().set(profile, { merge: true });
   }

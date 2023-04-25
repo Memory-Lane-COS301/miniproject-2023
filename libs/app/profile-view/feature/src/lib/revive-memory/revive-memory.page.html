@@ -8,33 +8,18 @@
     <ion-card *ngFor="let memory of deadMemories$ | async" ngClass="memory-card" color="none">
       <img ngClass="memory-img" style="background-image: url('{{ memory.imgUrl }}');" />
       <ion-card-header>
-        <div
-          ngClass="memory-avatar-username"
-        >
+        <div ngClass="memory-avatar-username">
           <ion-avatar slot="start">
-            <img
-              src="{{ memory.profileImgUrl }}"
-              ngClass="memory-card-profileImage"
-            />
+            <img src="{{ memory.profileImgUrl }}" ngClass="memory-card-profileImage" />
           </ion-avatar>
-          <ion-card-title
-            ngClass="memory-card-username"
-            >{{ memory.username }}</ion-card-title
-          >
-          <ion-text
-            ngClass="memory-card-time-ago"
-            >{{ calculateHowLongAgo(memory.created) }}</ion-text
-          >
+          <ion-card-title ngClass="memory-card-username">{{ memory.username }}</ion-card-title>
+          <ion-text ngClass="memory-card-time-ago">{{ calculateHowLongAgo(memory.created) }}</ion-text>
         </div>
       </ion-card-header>
       <ion-card-content scroll-y="false">
         <ion-card-title ngClass="memory-card-title">{{ memory.title }}</ion-card-title>
-        <p ngClass="memory-card-desc">
-          {{ memory.description }}
-        </p>
-        <ion-text class="ion-padding-top" ngClass="memory-date">{{
-          convertTimePostedToDate(memory.created)
-        }}</ion-text>
+        <p ngClass="memory-card-desc">{{ memory.description }}</p>
+        <ion-text class="ion-padding-top" ngClass="memory-date">{{ convertTimePostedToDate(memory.created) }}</ion-text>
         <span ngClass="span-post-timer">
           <ion-buttons slot="start">
             <ion-text color="light" ngClass="btn-add-time">+</ion-text>

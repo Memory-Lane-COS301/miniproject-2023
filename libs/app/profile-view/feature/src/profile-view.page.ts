@@ -5,7 +5,12 @@ import { AddMemoryPageComponent, ProfileImage } from '@mp/app/shared/feature';
 import { ReviveMemoryPageComponent } from './lib/revive-memory/revive-memory.page';
 import { MenubarService, ProfileImageService } from '@mp/app/services/feature';
 import { formatDate } from '@angular/common';
-import { GetCommentsRequest, GetProfileRequest, SetEditProfileImageUserId, SetReviveMemoryUserId } from '@mp/app/profile-view/util';
+import {
+  GetCommentsRequest,
+  GetProfileRequest,
+  SetEditProfileImageUserId,
+  SetReviveMemoryUserId,
+} from '@mp/app/profile-view/util';
 import { Select, Store } from '@ngxs/store';
 import { ProfileViewState } from '@mp/app/profile-view/data-access';
 import { ProfileState } from '@mp/app/profile/data-access';
@@ -27,22 +32,21 @@ export class ProfileViewPageComponent implements OnInit {
   showExpandedView = false;
   memories: IMemory[] | null | undefined;
   profileImage: ProfileImage;
-  first_comment_text : string | null | undefined = '';
-  first_comment_username : string | null | undefined = '';
+  first_comment_text: string | null | undefined = '';
+  first_comment_username: string | null | undefined = '';
   memory: IMemory | undefined;
-  
 
   constructor(
     private store: Store,
     public modalController: ModalController,
     private profileImageService: ProfileImageService,
     private menubarService: MenubarService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
   ) {
     this.profileImage = profileImageService.profileImage;
   }
 
-  data:any;
+  data: any;
 
   ngOnInit(): void {
     this.profileImage = this.profileImageService.profileImage;
@@ -62,8 +66,9 @@ export class ProfileViewPageComponent implements OnInit {
     const { data } = await modal.onDidDismiss();
 
     if (data) {
-      // this.profileView$.subscribe( (profileView) => {
-      //   profileView?.memories?.unshift(data)});
+      // this.profileView$.subscribe((profileView) => {
+      //   profileView?.memories?.unshift(data);
+      // });
     }
   }
 
@@ -174,7 +179,7 @@ export class ProfileViewPageComponent implements OnInit {
   }
 
   getFirstCommentText() {
-    if(!this.memories) return this.first_comment_text;
+    if (!this.memories) return this.first_comment_text;
 
     this.memory = this.memories[0];
 
@@ -186,7 +191,7 @@ export class ProfileViewPageComponent implements OnInit {
   }
 
   getFirstCommentUsername() {
-    if(!this.memories) return this.first_comment_username;
+    if (!this.memories) return this.first_comment_username;
 
     this.memory = this.memories[0];
 
@@ -198,7 +203,7 @@ export class ProfileViewPageComponent implements OnInit {
   }
 
   getCommentsLength() {
-    if(!this.memories) return 0;
+    if (!this.memories) return 0;
 
     this.memory = this.memories[0];
 
@@ -210,7 +215,7 @@ export class ProfileViewPageComponent implements OnInit {
   }
 
   getFirstCommentProfileImage() {
-    if(!this.memories) return '';
+    if (!this.memories) return '';
 
     this.memory = this.memories[0];
 

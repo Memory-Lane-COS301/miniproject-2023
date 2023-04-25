@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SetError } from '@mp/app/errors/util';
 import produce from 'immer';
@@ -9,22 +9,18 @@ import { AuthState } from '@mp/app/auth/data-access';
 import { IGetFeedMemoriesRequest } from "@mp/api/memories/util";
 
 export interface FeedStateModel {
-    memories: IMemory[];
+  memories: IMemory[];
 }
 
 @State<FeedStateModel>({
-    name: 'feed',
-    defaults: {
-        memories: []
-    },
+  name: 'feed',
+  defaults: {
+    memories: [],
+  },
 })
-
 @Injectable()
 export class FeedState {
-    constructor(
-        private readonly feedApi: FeedApi,
-        private readonly store: Store
-    ){}
+  constructor(private readonly feedApi: FeedApi, private readonly store: Store) {}
 
     @Selector()
     static memories(state: FeedStateModel) {
@@ -80,3 +76,4 @@ export class FeedState {
         }
     }
 }
+

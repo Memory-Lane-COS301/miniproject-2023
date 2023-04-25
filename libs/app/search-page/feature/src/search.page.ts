@@ -64,21 +64,21 @@ export class SearchPageComponent {
   }
 
   get RecentSearches() {
-    this.recentSearches$.subscribe((recentSearches) =>{
+    this.recentSearches$.subscribe((recentSearches) => {
       this.recentSearches = recentSearches;
-    })
+    });
 
     return this.recentSearches;
   }
 
   get SearchResults() {
-    this.memories$.subscribe((memories) =>{
+    this.memories$.subscribe((memories) => {
       memories?.filter((mem) => {
         if (mem.username?.toLocaleLowerCase().includes(this.searchValue.toLocaleLowerCase())) {
           this.searchResults?.push(mem);
         }
       });
-    })
+    });
 
     return this.searchResults;
   }
@@ -126,10 +126,10 @@ export class SearchPageComponent {
       const currentPosition = window.pageYOffset;
       this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
 
-      const request : IUser = {
+      const request: IUser = {
         userId: i_userId,
-        username: i_username
-      }
+        username: i_username,
+      };
 
       this.store.dispatch(new GetUserProfileRequest(request));
     }
