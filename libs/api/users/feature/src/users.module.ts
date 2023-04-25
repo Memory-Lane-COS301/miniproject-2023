@@ -4,6 +4,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { 
   CreateUserHandler,
   UpdateUserHandler,
+  IncrementUserMemoryCountHandler,
 } from './commands';
 import {
   UserCreatedHandler,
@@ -14,7 +15,8 @@ import { UsersService } from './users.service';
 import { GetUserHandler } from './query';
 export const CommandHandlers = [
   CreateUserHandler,
-  UpdateUserHandler
+  UpdateUserHandler,
+  IncrementUserMemoryCountHandler
 ];
 export const EventHandlers = [
   UserCreatedHandler,

@@ -24,10 +24,7 @@ export class SearchResultsPageComponent {
   currentFilter = 'Top Accounts';
   searchResults: IMemory[] | null | undefined;
 
-  constructor(
-    private navCtrl: NavController,
-    private store: Store
-  ) {}
+  constructor(private navCtrl: NavController, private store: Store) {}
 
   //filter search results
   setFilter(filter: string) {
@@ -70,10 +67,10 @@ export class SearchResultsPageComponent {
       const currentPosition = window.pageYOffset;
       this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
 
-      const request : IUser = {
+      const request: IUser = {
         userId: i_userId,
-        username: i_username
-      }
+        username: i_username,
+      };
 
       this.store.dispatch(new GetUserProfileRequest(request));
     }

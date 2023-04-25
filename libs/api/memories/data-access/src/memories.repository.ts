@@ -8,7 +8,7 @@ import * as admin from 'firebase-admin';
 @Injectable()
 export class MemoriesRepository {
   async createMemory(memory: IMemory): Promise<admin.firestore.WriteResult> {
-    console.debug(`${MemoriesRepository.name}`)
+    console.debug(`${MemoriesRepository.name}`);
     const newMemoryRef = admin.firestore().collection('memories').doc();
     memory.memoryId = newMemoryRef.id;
     return await newMemoryRef.set(memory);
@@ -42,18 +42,19 @@ export class MemoriesRepository {
       .get();
   }
 
-  async getComments(memoryId: string): Promise<IComment[]> {
-    const querySnapshot = await admin.firestore().collection(`memories/${memoryId}/comments`).get();
-
-    const comments: IComment[] = [];
-
-    querySnapshot.forEach((doc) => {
-      const comment = doc.data() as IComment;
-      delete comment.userId;
-      comments.push(comment);
-    });
-
-    return comments;
+  async getComments(memoryId: string) {
+    return await admin
+      .firestore()
+      .collection(`memories/${memoryId}/comments`)
+      .withConverter<IComment>({
+        fromFirestore: (doc) => {
+          const comment = doc.data() as IComment;
+          delete comment.userId;
+          return comment;
+        },
+        toFirestore: (it: IMemory) => it,
+      })
+      .get();
   }
 
   async getFeedMemories(userId: string) {
@@ -67,16 +68,16 @@ export class MemoriesRepository {
 
     const friendDocs = [...querySnapshot1.docs, ...querySnapshot2.docs];
 
-    const friendIds = friendDocs.map(doc => {
+    const friendIds = friendDocs.map((doc) => {
       const friendData = doc.data() as IFriend;
       return friendData.userId1 === userId ? friendData.userId2 : friendData.userId1;
     });
 
-    if (!friendIds)
-      throw new Error('Empty friends');
-    
+    if (!friendIds) throw new Error('Empty friends');
+
     const memoriesRef = db.collection('memories');
-    return memoriesRef.where('userId', 'in', friendIds)
+    return memoriesRef
+      .where('userId', 'in', friendIds)
       .where('alive', '==', true)
       .orderBy('created', 'desc')
       .withConverter<IMemory>({
@@ -91,18 +92,23 @@ export class MemoriesRepository {
   }
 
   async createComment(comment: IComment) {
-        if (!comment.commentId)
-          throw Error('Missing commentId');
+    if (!comment.commentId) throw Error('Missing commentId');
 
-        return await admin
-          .firestore()
-          .collection(`memories/${comment.memoryId}/comments`)
-          .doc(comment.commentId)
-          .set(comment);
+    return await admin
+      .firestore()
+      .collection(`memories/${comment.memoryId}/comments`)
+      .doc(comment.commentId)
+      .set(comment);
   }
-  
 
   async editComment(comment: IComment) {
     return null;
+  }
+
+  async reviveDeadMemory(memoryId: string, newTime: number) {
+    return await admin.firestore().collection('memories').doc(memoryId).update({
+      alive: true,
+      remainingTime: newTime,
+    });
   }
 }

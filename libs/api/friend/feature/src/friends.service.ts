@@ -8,13 +8,20 @@ import {
   IDeleteFriendResponse,
   IDeleteFriendRequest,
   DeleteFriendRequestCommand,
+  DeleteFriendCommand,
+  IGetFriendsRequest,
+  IGetFriendsResponse,
+  GetFriendsQuery,
+  IGetPendingFriendRequest,
+  IGetPendingFriendResponse,
+  GetPendingFriendsQuery,
 } from '@mp/api/friend/util';
 import { Injectable } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 @Injectable()
 export class FriendsService {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
   async createFriendRequest(request: ICreateFriendRequest): Promise<ICreateFriendResponse> {
     return await this.commandBus.execute<CreateFriendRequestCommand, ICreateFriendResponse>(
@@ -31,6 +38,20 @@ export class FriendsService {
   async deleteFriendRequest(request: IDeleteFriendRequest): Promise<IDeleteFriendResponse> {
     return await this.commandBus.execute<DeleteFriendRequestCommand, IDeleteFriendResponse>(
       new DeleteFriendRequestCommand(request),
+    );
+  }
+
+  async deleteFriend(request: IDeleteFriendRequest): Promise<IDeleteFriendResponse> {
+    return await this.commandBus.execute<DeleteFriendCommand, IDeleteFriendResponse>(new DeleteFriendCommand(request));
+  }
+
+  async getFriends(request: IGetFriendsRequest): Promise<IGetFriendsResponse> {
+    return await this.queryBus.execute<GetFriendsQuery, IGetFriendsResponse>(new GetFriendsQuery(request));
+  }
+
+  async getPendingFriends(request: IGetPendingFriendRequest): Promise<IGetPendingFriendResponse> {
+    return await this.queryBus.execute<GetPendingFriendsQuery, IGetPendingFriendResponse>(
+      new GetPendingFriendsQuery(request),
     );
   }
 }

@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { IUser } from '@mp/api/users/util';
 import { GetUserProfileRequest } from '@mp/app/user-view/util';
@@ -10,14 +10,18 @@ import { Observable } from 'rxjs';
 import { SetSearchResults } from '@mp/app/search-results/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Memory } from '@mp/app/shared/feature';
+import { GetSearchPageMemories } from '@mp/app/search-page/util';
+import { GetFeedMemories } from '@mp/app/feed/util';
+import { FeedState } from '@mp/app/feed/data-access';
+
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
 })
-export class SearchPageComponent {
-  @Select(SearchPageState.memories) memories$!: Observable<IMemory[] | null>;
+export class SearchPageComponent implements OnInit{
+  @Select(FeedState.memories) searchPageMemories$!: Observable<IMemory[] | null>;
   @Select(SearchPageState.recentSearches) recentSearches$!: Observable<string[] | null>;
 
   searchValue = '';
@@ -64,21 +68,21 @@ export class SearchPageComponent {
   }
 
   get RecentSearches() {
-    this.recentSearches$.subscribe((recentSearches) =>{
+    this.recentSearches$.subscribe((recentSearches) => {
       this.recentSearches = recentSearches;
-    })
+    });
 
     return this.recentSearches;
   }
 
   get SearchResults() {
-    this.memories$.subscribe((memories) =>{
-      memories?.filter((mem) => {
+    this.searchPageMemories$.subscribe((searchPageMemories) =>{
+      searchPageMemories?.filter((mem) => {
         if (mem.username?.toLocaleLowerCase().includes(this.searchValue.toLocaleLowerCase())) {
           this.searchResults?.push(mem);
         }
       });
-    })
+    });
 
     return this.searchResults;
   }
@@ -126,10 +130,10 @@ export class SearchPageComponent {
       const currentPosition = window.pageYOffset;
       this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
 
-      const request : IUser = {
+      const request: IUser = {
         userId: i_userId,
-        username: i_username
-      }
+        username: i_username,
+      };
 
       this.store.dispatch(new GetUserProfileRequest(request));
     }
@@ -160,4 +164,25 @@ export class SearchPageComponent {
   // get SearchResults() {
   //   return this.tempMem;
   // }
+
+  formatTime(seconds: number | null | undefined): string {
+    if (!seconds)
+      seconds = 0;
+
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
+  }
+
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      this.store.dispatch(new GetFeedMemories());
+      event.target.complete();
+    }, 2000);
+  }
+
+ ngOnInit(): void { 
+    this.store.dispatch(new GetFeedMemories());
+ }
 }

@@ -21,13 +21,11 @@ export class ProfilesRepository {
   }
 
   async createProfile(profile: IProfile) {
-    // Remove password field if present
     delete profile.accountDetails?.password;
     return await admin.firestore().collection('profiles').doc().create(profile);
   }
 
   async updateProfile(profile: IProfile) {
-    // Remove password field if present
     delete profile.accountDetails?.password;
     return await admin.firestore().collection('profiles').doc().set(profile, { merge: true });
   }
@@ -54,7 +52,7 @@ export class ProfilesRepository {
       .collection('memories')
       .where('userId', '==', profile.userId)
       .where('alive', '==', true)
-      .orderBy('created')
+      .orderBy('created', 'desc')
       .get();
 
     const memories: IMemory[] = [];
