@@ -13,6 +13,6 @@
   </ion-refresher>
 
   <ion-list ngClass="memory-list" *ngIf="feedMemories$ | async as memories">
-    <app-memory-card *ngFor="let memory of memories" [memory]="memory"></app-memory-card>
+    <app-memory-card *ngFor="let memory of memories" [memory]="memory" [onProfileView]="false"></app-memory-card>
   </ion-list>
 </ion-content>
