@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { IUser } from '@mp/api/users/util';
 import { GetUserProfileRequest } from '@mp/app/user-view/util';
@@ -20,7 +20,7 @@ import { FeedState } from '@mp/app/feed/data-access';
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
 })
-export class SearchPageComponent {
+export class SearchPageComponent implements OnInit{
   @Select(FeedState.memories) searchPageMemories$!: Observable<IMemory[] | null>;
   @Select(SearchPageState.recentSearches) recentSearches$!: Observable<string[] | null>;
 
