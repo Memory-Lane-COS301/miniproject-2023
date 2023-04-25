@@ -9,6 +9,7 @@ import {
   DeleteFriendRequestHandler,
   DeleteFriendHandler,
 } from './commands';
+import { GetFriendsHandler } from './queries';
 import {
   FriendRequestCreatedHandler,
   UpdateAcceptFriendRequestHandler,
@@ -26,6 +27,7 @@ export const CommandHandlers = [
   DeleteFriendRequestHandler,
   DeleteFriendHandler,
 ];
+export const QueryHandlers = [GetFriendsHandler];
 export const EventHandlers = [
   FriendRequestCreatedHandler,
   UpdateAcceptFriendRequestHandler,
@@ -37,7 +39,7 @@ export const EventHandlers = [
 
 @Module({
   imports: [CqrsModule, FriendsDataAccessModule, UsersDataAccessModule],
-  providers: [FriendsService, ...CommandHandlers, ...EventHandlers, FriendsSagas],
+  providers: [FriendsService, ...CommandHandlers, ...QueryHandlers, ...EventHandlers, FriendsSagas],
   exports: [FriendsService],
 })
 export class FriendsModule {}

@@ -9,13 +9,16 @@ import {
   IDeleteFriendRequest,
   DeleteFriendRequestCommand,
   DeleteFriendCommand,
+  IGetFriendsRequest,
+  IGetFriendsResponse,
+  GetFriendsQuery,
 } from '@mp/api/friend/util';
 import { Injectable } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 @Injectable()
 export class FriendsService {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
   async createFriendRequest(request: ICreateFriendRequest): Promise<ICreateFriendResponse> {
     return await this.commandBus.execute<CreateFriendRequestCommand, ICreateFriendResponse>(
@@ -37,5 +40,9 @@ export class FriendsService {
 
   async deleteFriend(request: IDeleteFriendRequest): Promise<IDeleteFriendResponse> {
     return await this.commandBus.execute<DeleteFriendCommand, IDeleteFriendResponse>(new DeleteFriendCommand(request));
+  }
+
+  async getFriends(request: IGetFriendsRequest): Promise<IGetFriendsResponse> {
+    return await this.queryBus.execute<GetFriendsQuery, IGetFriendsResponse>(new GetFriendsQuery(request));
   }
 }
