@@ -3,10 +3,6 @@
     <ion-back-button [text]="previousPageName" defaultHref="/profile-view" color="light" slot="start"></ion-back-button>
     <ion-title color="light" class="ion-align-items-center">
       Profile Settings
-      <ng-container *ngIf="(profile$ | async) as profile;">
-        <ion-icon *ngIf="profile.status == 'Incomplete'" color="danger" name="alert-circle-outline"></ion-icon>
-        <ion-icon *ngIf="profile.status == 'Complete'" color="success" name="checkmark-circle-outline"></ion-icon>
-      </ng-container>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -15,26 +11,18 @@
     <ion-toolbar color="dark">
       <ion-title color="light" size="large" class="ion-align-items-center">
         Profile Settings
-        <ng-container *ngIf="(profile$ | async) as profile;">
-          <ion-icon *ngIf="profile.status == 'Incomplete'" color="danger" name="alert-circle-outline"></ion-icon>
-          <ion-icon *ngIf="profile.status == 'Complete'" color="success" name="checkmark-circle-outline"></ion-icon>
-        </ng-container>
       </ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ng-container *ngIf="(profile$ | async) as profile; else noProfile">
-    <ms-profile-account-details-component></ms-profile-account-details-component>
-    <ms-profile-personal-details-component></ms-profile-personal-details-component>
-    <ms-profile-contact-details-component></ms-profile-contact-details-component>
-    <ms-profile-address-details-component></ms-profile-address-details-component>
-    <ms-profile-occupation-details-component></ms-profile-occupation-details-component>
+  <ng-container *ngIf="(user$ | async) as user; else noProfile">
+    <ms-profile-user-details-component></ms-profile-user-details-component>
   </ng-container>
   <ng-template #noProfile>
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ngx-skeleton-loader count="5" [theme]="{height: '150px'}" appearance="line"></ngx-skeleton-loader>
+          <ngx-skeleton-loader count="1" [theme]="{height: '150px'}" appearance="line"></ngx-skeleton-loader>
         </ion-col>
       </ion-row>
     </ion-grid>

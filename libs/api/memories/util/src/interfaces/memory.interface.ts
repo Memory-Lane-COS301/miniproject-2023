@@ -15,3 +15,9 @@ export interface IMemory {
   alive?: boolean | null | undefined;
   comments?: IComment[] | null | undefined;
 }
+
+export interface IReviveDeadMemory {
+  userId: string;
+  memoryId: string;
+  secondsToAdd: number;
+}

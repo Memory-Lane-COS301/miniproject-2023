@@ -1,4 +1,4 @@
-import { IUser, UserCreatedEvent } from '@mp/api/users/util';
+import { IUser, UserCreatedEvent, UserUpdatedEvent } from '@mp/api/users/util';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Timestamp } from 'firebase-admin/firestore';
 
@@ -42,6 +42,16 @@ export class User extends AggregateRoot implements IUser {
 
   create() {
     this.apply(new UserCreatedEvent(this.toJSON()));
+  }
+
+  updateUser(user: IUser) {
+    this.name = user.name ? user.name : this.name; 
+    this.surname = user.surname ? user.surname : this.surname; 
+    this.username = user.username ? user.username : this.username; 
+    this.email = user.email ? user.email : this.email; 
+    this.profileImgUrl = user.profileImgUrl ? user.profileImgUrl : this.profileImgUrl; 
+    this.bio = user.bio ? user.bio : this.bio; 
+    this.apply(new UserUpdatedEvent(this.toJSON()));
   }
 
   toJSON(): IUser {

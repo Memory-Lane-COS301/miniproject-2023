@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { IProfile } from '@mp/api/profiles/util';
+import { IUser } from '@mp/api/users/util';
 import { ProfileState } from '@mp/app/profile/data-access';
-import { SubscribeToProfile } from '@mp/app/profile/util';
+import { SubscribeToUser } from '@mp/app/profile/util';
 import { SubscribeToProfile as SubscribeToProfileView } from '@mp/app/profile-view/util';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -13,8 +13,6 @@ import { MenubarService } from '@mp/app/services/feature';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage {
-  @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
-
   menuShown: boolean;
 
   constructor(private store: Store, private menubarService: MenubarService) {
@@ -26,7 +24,7 @@ export class HomePage {
   }
 
   ionViewWillEnter() {
-    this.store.dispatch(new SubscribeToProfile());
+    this.store.dispatch(new SubscribeToUser());
     this.store.dispatch(new SubscribeToProfileView());
   }
 }
