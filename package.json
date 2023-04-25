@@ -63,6 +63,7 @@
     "@ngxs/router-plugin": "^3.7.6",
     "@ngxs/storage-plugin": "^3.7.6",
     "@ngxs/store": "^3.8.0",
+    "@nrwl/cli": "^15.9.2",
     "@nxtend/capacitor": "^13.0.0",
     "@nxtend/ionic-angular": "13.1.0",
     "axios": "^1.0.0",

@@ -22,4 +22,4 @@ jobs:
         run: yarn build:app:dev
 
       - name: Build API
-        run: yarn build:api:prod
+        run: yarn build:api:dev
