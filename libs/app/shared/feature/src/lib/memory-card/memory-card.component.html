@@ -69,13 +69,13 @@
             <img
               src="{{ memory.comments[0].profileImgUrl }}"
               ngClass="memory-comment-profileImg"
-              (click)="validateMemoryCardLocation(memory.comments[0].userId, memory.comments[0].username)"
+              (click)="openUserProfile(memory.comments[0].userId, memory.comments[0].username)"
             />
           </ion-avatar>
           <div ngClass="memory-username-and-comment">
             <ion-text
               ngClass="memory-comment-username"
-              (click)="validateMemoryCardLocation(memory.comments[0].userId, memory.comments[0].username)"
+              (click)="openUserProfile(memory.comments[0].userId, memory.comments[0].username)"
               >{{ getFirstCommentUsername() }}</ion-text
             >
             <ion-text ngClass="memory-comment-usercomment">{{ getFirstCommentText() }}</ion-text>
