@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
-import { GetUserProfileRequest } from '@mp/app/user-view/util';
+import { CreateFriendRequest, DeleteFriend, GetUserProfileRequest } from '@mp/app/user-view/util';
 import { IGetProfileRequest, IProfile } from '@mp/api/profiles/util';
 import { UserViewState, UserViewStateModel } from '@mp/app/user-view/data-access';
 import { Select, Store } from '@ngxs/store';
@@ -74,16 +74,43 @@ export class UserViewPageComponent {
 
   addedNewFriend() {
     this.added = true;
-    this.btn_text = 'Waiting for acceptance';
+    let _userId = '';
+    let _username : string | null | undefined = '';
+
+    this.userProfile$.subscribe((profile) => {
+      if (profile && profile.user) {
+        _userId = profile?.userId,
+        _username = profile?.user?.username
+      }
+    });
+
+    const request : IUser = {
+      userId: _userId,
+      username: _username
+    }
+
+    this.store.dispatch(new CreateFriendRequest(request));
   }
 
   removeFriend() {
     this.added = false;
-    this.btn_text = 'Send friend request';
 
-    // const status = FriendRequestStatus['REJECTED'];
+    let _userId = '';
+    let _username : string | null | undefined = '';
 
-    // this.store.dispatch(new UpdateFriendRequest(status));
+    this.userProfile$.subscribe((profile) => {
+      if (profile && profile.user) {
+        _userId = profile?.userId,
+        _username = profile?.user?.username
+      }
+    });
+
+    const request : IUser = {
+      userId: _userId,
+      username: _username
+    }
+
+    this.store.dispatch(new DeleteFriend(request));
   }
 
   changeMemoryView() {

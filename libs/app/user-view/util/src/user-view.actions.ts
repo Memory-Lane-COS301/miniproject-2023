@@ -14,10 +14,15 @@ export class SetUserView {
 
 export class CreateFriendRequest {
   static readonly type = '[UserView] CreateFriendRequest';
-  constructor(public readonly sender: IUser, receiver: IUser) {}
+  constructor(public readonly friend: IUser) {}
 }
 
-// export class UpdateFriendRequest {
-//     static readonly type = '[UserView] UpdateFriendRequest';
-//     constructor(public readonly status: string) {}
-// }
+export class DeleteFriendRequest {
+  static readonly type = '[UserView] DeleteFriendRequest';
+  constructor(public readonly friend: IUser) {}
+}
+
+export class DeleteFriend {
+  static readonly type = '[UserView] DeleteFriend';
+  constructor(public readonly friend: IUser) {}
+}

@@ -3,12 +3,15 @@ import { IProfile, IGetProfileRequest } from '@mp/api/profiles/util';
 import { Injectable } from '@angular/core';
 import { SetError } from '@mp/app/errors/util';
 import { UserViewApi } from './user-view.api';
-import { GetUserProfileRequest, SetUserView } from '@mp/app/user-view/util';
+import { CreateFriendRequest, DeleteFriend, DeleteFriendRequest, GetUserProfileRequest, SetUserView } from '@mp/app/user-view/util';
 import produce from 'immer';
 import { IMemory } from '@mp/api/memories/util';
+import { ProfileState } from '@mp/app/profile/data-access';
+import { IDeleteFriendRequest, IUpdateFriendRequest } from '@mp/api/friend/util';
 
 export interface UserViewStateModel {
   userProfile: IProfile;
+  friendRequest_btn_text: string;
 }
 
 @State<UserViewStateModel>({
@@ -27,6 +30,7 @@ export interface UserViewStateModel {
       status: null,
       created: null,
     },
+    friendRequest_btn_text: ''
   },
 })
 @Injectable()
@@ -67,12 +71,81 @@ export class UserViewState {
   );
   }
 
-  // @Action(CreateFriendRequest)
-  // async createFriendRequest(ctx: StateContext<UserViewStateModel>, ) // !!! How do we pass in the sender's ID??
+  @Action(CreateFriendRequest) 
+    async createFriendRequest(ctx: StateContext<UserViewStateModel>, { friend } : CreateFriendRequest) {
+        try{
+            const user = this.store.selectSnapshot(ProfileState.user);
 
-  // @Action(UpdateFriendRequest)
-  // async updateFriendRequest(ctx: StateContext<UserViewStateModel>, status: string)
-  // {
+            if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [Notification-page]'));
 
-  // }
+            const request : IUpdateFriendRequest = {
+                friendRequest: {
+                    senderId: user?.userId,
+                    receiverUsername: friend.username
+                }
+            }
+
+            const responseRef = this.userViewApi.createFriendRequest(request);
+
+            return ctx.setState(prevState => ({
+              ...prevState,
+              friendRequest_btn_text: 'Waiting for acceptance'
+          }));
+        }
+        catch (error) {
+            return ctx.dispatch(new SetError((error as Error).message));
+        }
+    }
+
+  @Action(DeleteFriendRequest) 
+    async DeleteFriendRequest(ctx: StateContext<UserViewStateModel>, { friend } : DeleteFriendRequest) {
+        try{
+            const user = this.store.selectSnapshot(ProfileState.user);
+
+            if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [UserView page]'));
+
+            const request : IDeleteFriendRequest = {
+                friendRequest: {
+                    senderId: user?.userId,
+                    receiverUsername: friend.username
+                }
+            }
+
+            const responseRef = this.userViewApi.deleteFriendRequest(request);
+
+            return ctx.setState(prevState => ({
+                ...prevState,
+                friendRequest_btn_text: 'Send friend request'
+            }));
+        }
+        catch (error) {
+            return ctx.dispatch(new SetError((error as Error).message));
+        }
+    }
+
+    @Action(DeleteFriend) 
+    async DeleteFriend(ctx: StateContext<UserViewStateModel>, { friend } : DeleteFriend) {
+        try{
+            const user = this.store.selectSnapshot(ProfileState.user);
+
+            if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [UserView page]'));
+
+            const request : IDeleteFriendRequest = {
+                friendRequest: {
+                    senderId: user?.userId,
+                    receiverUsername: friend.username
+                }
+            }
+
+            const responseRef = this.userViewApi.deleteFriend(request);
+
+            return ctx.setState(prevState => ({
+                ...prevState,
+                friendRequest_btn_text: 'Send friend request'
+            }));
+        }
+        catch (error) {
+            return ctx.dispatch(new SetError((error as Error).message));
+        }
+    }
 }
