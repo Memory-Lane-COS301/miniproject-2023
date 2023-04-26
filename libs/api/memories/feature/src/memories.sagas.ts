@@ -3,7 +3,7 @@ import { UserUpdatedEvent } from '@mp/api/users/util';
 import { Injectable } from '@nestjs/common';
 import { ICommand, ofType, Saga } from '@nestjs/cqrs';
 import { map, Observable } from 'rxjs';
-import { MemoriesRepository } from '../../data-access/src/memories.repository';
+import { MemoriesRepository } from '@mp/api/memories/data-access';
 
 @Injectable()
 export class MemoriesSagas {
