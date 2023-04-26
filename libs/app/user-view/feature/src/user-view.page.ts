@@ -74,7 +74,7 @@ export class UserViewPageComponent {
 
   addedNewFriend() {
     this.added = true;
-    this.btn_text = 'You are friends';
+    this.btn_text = 'Waiting for acceptance';
   }
 
   removeFriend() {
