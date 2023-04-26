@@ -93,7 +93,7 @@ export class UserViewState {
       try{
           const user = this.store.selectSnapshot(ProfileState.user);
 
-          if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [Notification-page]'));
+          if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [UserView]'));
 
           const request : IUpdateFriendRequest = {
               friendRequest: {

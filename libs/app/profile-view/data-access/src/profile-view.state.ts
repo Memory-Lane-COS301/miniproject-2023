@@ -120,8 +120,16 @@ export class ProfileViewState {
                 }
             })
 
+            const request2 : IGetFriendsRequest = {
+              user: {
+                senderId: user?.userId
+              }
+            }
 
-            return ctx.dispatch(new SetProfileView(response.profile));
+            const responseRef2 = await this.profileViewApi.getFriends(request2);
+            const response2 = responseRef2.data;
+
+            return ctx.dispatch(new SetProfileView(response.profile, response2.profiles));
         }
         catch(error){
             return ctx.dispatch(new SetError((error as Error).message));
@@ -129,10 +137,11 @@ export class ProfileViewState {
     }
 
   @Action(SetProfileView)
-  setProfile(ctx: StateContext<ProfileViewStateModel>, { _profile }: SetProfileView) {
+  setProfile(ctx: StateContext<ProfileViewStateModel>, { _profile, _friends }: SetProfileView) {
     return ctx.setState(
       produce((draft) => {
         draft.profile = _profile;
+        draft.friends = _friends;
       }),
     );
   }
@@ -152,7 +161,7 @@ export class ProfileViewState {
       const state = ctx.getState();
       state.profile.memories?.unshift(memory);
 
-      return this.store.dispatch(new SetProfileView(state.profile));
+      return this.store.dispatch(new SetProfileView(state.profile, state.friends));
     } catch (error) {
       return this.store.dispatch(new SetError('Unabled to add new memory to Profile View page.'));
     }
@@ -200,7 +209,7 @@ export class ProfileViewState {
         memories: state.profile.memories,
       };
 
-      return this.store.dispatch(new SetProfileView(response));
+      return this.store.dispatch(new SetProfileView(response, state.friends));
     } catch (error) {
       return this.store.dispatch(new SetError('Unabled to add new memory to Profile View page.'));
     }
@@ -298,7 +307,7 @@ export class ProfileViewState {
         return mem;
       });
 
-      return ctx.dispatch([new SetProfileView(state.profile), new SetViewedComments(response)]);
+      return ctx.dispatch([new SetProfileView(state.profile, state.friends), new SetViewedComments(response)]);
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
     }
@@ -339,7 +348,7 @@ export class ProfileViewState {
         return mem;
       });
 
-      return ctx.dispatch([new SetProfileView(state.profile), new SetViewedComments(response)]);
+      return ctx.dispatch([new SetProfileView(state.profile, state.friends), new SetViewedComments(response)]);
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
     }

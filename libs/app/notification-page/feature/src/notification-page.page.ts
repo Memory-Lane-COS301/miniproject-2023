@@ -110,6 +110,12 @@ export class NotificationPage implements OnInit {
             profileImgUrl: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/276.jpg",
             text: "Example comment jakbhbdcjhsjdcbsjdcb"
         },
+        {
+            userId: "2f58a3a9-a93a-4f2d-ab97-08a933088ddb",
+            username: "Peggie.Reynolds10",
+            profileImgUrl: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/887.jpg",
+            text: "Example comment jakbhbdcjhsjdcbsjdcb"
+        },
     ]
 
     toggleFriendRequestsList() {

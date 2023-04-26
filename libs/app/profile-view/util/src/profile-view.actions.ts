@@ -8,7 +8,7 @@ export class GetProfileRequest {
 
 export class SetProfileView {
   static readonly type = '[SetProfileView] SetProfileView';
-  constructor(public readonly _profile: IProfile) {}
+  constructor(public readonly _profile: IProfile, public readonly _friends: IProfile[]) {}
 }
 
 export class GetCommentsRequest {
