@@ -54,3 +54,7 @@ export class ChangeProfileViewImage {
   static readonly type = '[ProfileView] ChangeProfileViewImage';
   constructor(public readonly imageUrl: string | null | undefined, public readonly id: string) {}
 }
+
+export class GetFriends {
+  static readonly type = '[ProfileView] GetFriends';
+}

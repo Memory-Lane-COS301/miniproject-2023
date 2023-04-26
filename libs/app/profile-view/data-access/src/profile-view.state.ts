@@ -10,6 +10,7 @@ import {
   SetProfileView,
   SubscribeToProfile,
   UpdateCommentRequest,
+  GetFriends,
 } from '@mp/app/profile-view/util';
 import { Injectable } from '@angular/core';
 import { AuthState } from '@mp/app/auth/data-access';
@@ -34,9 +35,11 @@ import { SetUser } from '@mp/app/profile/util';
 import { IUser } from '@mp/api/users/util';
 import { ProfileState } from '@mp/app/profile/data-access'
 import { profile } from 'console';
+import { IGetFriendsRequest } from '@mp/api/friend/util';
 
 export interface ProfileViewStateModel {
   profile: IProfile;
+  friends: IProfile[];
 }
 
 @State<ProfileViewStateModel>({
@@ -55,6 +58,7 @@ export interface ProfileViewStateModel {
       status: null,
       created: null,
     },
+    friends: []
   },
 })
 @Injectable()
@@ -74,6 +78,11 @@ export class ProfileViewState {
     @Selector()
     static memories(state: ProfileViewStateModel) {
         return state.profile.memories;
+    }
+
+    @Selector()
+    static friends(state: ProfileViewStateModel) {
+      return state.friends;
     }
 
     @Action(GetProfileRequest)
@@ -336,39 +345,29 @@ export class ProfileViewState {
     }
   }
 
-  // @Action(CreateFriendRequest)
-  // async createFriendRequest(ctx: StateContext<ProfileViewStateModel>, action: CreateFriendRequest) {
-  //     try{
-  //         const state = ctx.getState();
+  @Action(GetFriends)
+  async getFriends(ctx: StateContext<ProfileViewStateModel>) {
+    try {
+      const user = this.store.selectSnapshot(ProfileState.profile);
 
-  //         const request : IUser = { //data needs to be added
-  //             userId: '',
-  //         }
+      if (!user) return this.store.dispatch(new SetError('User not set'));
+      
+      const request : IGetFriendsRequest = {
+        user: {
+          senderId: user?.userId
+        }
+      }
+      const responseRef = await this.profileViewApi.getFriends(request);
+      const response = responseRef.data;
 
-  //         const responseRef = this.profileViewApi.createFriendRequest(request);
-  //         const response = response.data;
-  //         return ctx.dispatch(new SetProfileView(response.profile));
-  //     }
-  //     catch (error) {
-  //         return ctx.dispatch(new SetError((error as Error).message));
-  //     }
-  // }
-
-  // @Action(UpdateFriendRequest)
-  // async updateFriendRequest(ctx: StateContext<ProfileViewStateModel>, action: UpdateFriendRequest) {
-  //     try{
-  //         const state = ctx.getState();
-
-  //         const request : IUser = { //data needs to be added
-  //             userId: '',
-  //         }
-
-    //         const responseRef = this.profileViewApi.updateFriendRequest(request);
-    //         const response = response.data;
-    //         return ctx.dispatch(new SetProfileView(response.profile));
-    //     }
-    //     catch (error) {
-    //         return ctx.dispatch(new SetError((error as Error).message));
-    //     }
-    // }
+      return ctx.setState(
+          produce((draft) => {
+              draft.friends = response.profiles;
+          })
+      );
+    }
+    catch (error) {
+      return ctx.dispatch(new SetError('Unable to fetch friends [ProfileView]'));
+    }
+  }
 }
