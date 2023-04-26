@@ -10,6 +10,8 @@ import {
     SetNotificationPage,
     UpdateFriendRequest 
 } from "@mp/app/notification-page/util";
+import { ProfileState } from "@mp/app/profile/data-access";
+import { GetUserProfileRequest } from "@mp/app/user-view/util";
 
 
 @Component({
@@ -97,8 +99,8 @@ export class NotificationPage implements OnInit {
             text: "Example comment jakbhbdcjhsjdcbsjdcb"
         },
         {
-            userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
-            username: "John_do3",
+            userId: "qk29zJ5i8y5omsE9uYXTWPdWOMbP",
+            username: "testing",
             profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
             text: "Example comment jakbhbdcjhsjdcbsjdcb"
         },
@@ -170,5 +172,22 @@ export class NotificationPage implements OnInit {
         })
 
         return size;
+    }
+
+    openUserProfile(uid: string | null | undefined, uname: string | null | undefined) {
+        const user = this.store.selectSnapshot(ProfileState.user);
+
+        if(!uid || !uname) return;
+
+        if (user && user.userId && user.username) {
+            if (uid != user.userId && uname != user.name) {
+                const request_user : IUser = {
+                    userId: uid,
+                    username: uname
+                }
+
+                this.store.dispatch(new GetUserProfileRequest(request_user));
+            }
+        }
     }
 }

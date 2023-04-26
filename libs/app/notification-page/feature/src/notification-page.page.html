@@ -56,10 +56,10 @@
             <div *ngIf="commentsListExpanded">
                 <div *ngFor="let comment of comments$ | async"  ngClass="comment-profileImg-username">
                     <ion-avatar>
-                        <img src="{{ comment.profileImgUrl }}" ngClass="comment-profileImg" routerLink="/user-view" />
+                        <img src="{{ comment.profileImgUrl }}" ngClass="comment-profileImg" (click) ="openUserProfile(comment.userId, comment.username)">
                     </ion-avatar>
                     <div ngClass="comment-username-and-text">
-                        <ion-text ngClass="comment-username" routerLink="/user-view">@{{ comment.username }}</ion-text>
+                        <ion-text ngClass="comment-username" (click) ="openUserProfile(comment.userId, comment.username)">@{{ comment.username }}</ion-text>
                         <ion-text ngClass="comment-text">This is an example comment made by me to test it oiidd jsdjsn jdn jskdj jjdjdjdc jdjd jdjc</ion-text>
                     </div>
                 </div>
