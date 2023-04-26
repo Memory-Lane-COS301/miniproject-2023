@@ -35,7 +35,7 @@
     "editorconfig": "editorconfig-checker",
     "lint": "eslint --fix",
     "test:api:watch": "jest libs/api --watch",
-    "test:api": "jest libs/api --watch"
+    "test:api": "jest libs/api"
   },
   "private": true,
   "dependencies": {
