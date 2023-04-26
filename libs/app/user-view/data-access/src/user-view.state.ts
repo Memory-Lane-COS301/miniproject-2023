@@ -3,15 +3,26 @@ import { IProfile, IGetProfileRequest } from '@mp/api/profiles/util';
 import { Injectable } from '@angular/core';
 import { SetError } from '@mp/app/errors/util';
 import { UserViewApi } from './user-view.api';
-import { CreateFriendRequest, DeleteFriend, DeleteFriendRequest, GetUserProfileRequest, SetUserView, CheckUserFriendStatus } from '@mp/app/user-view/util';
+import { 
+  CreateFriendRequest,
+  DeleteFriend,
+  DeleteFriendRequest,
+  GetUserProfileRequest,
+  SetUserView,
+  CheckUserFriendStatus,
+  GetFriends,
+  GetAllPendingFriendRequests
+} from '@mp/app/user-view/util';
 import produce from 'immer';
 import { IMemory } from '@mp/api/memories/util';
 import { ProfileState } from '@mp/app/profile/data-access';
-import { IDeleteFriendRequest, IUpdateFriendRequest } from '@mp/api/friend/util';
+import { IDeleteFriendRequest, IGetFriendsRequest, IUpdateFriendRequest } from '@mp/api/friend/util';
+import { ProfileViewState } from '@mp/app/profile-view/data-access';
 
 export interface UserViewStateModel {
   userProfile: IProfile;
   friendRequest_btn_text: string;
+  friends: IProfile[];
 }
 
 @State<UserViewStateModel>({
@@ -30,7 +41,8 @@ export interface UserViewStateModel {
       status: null,
       created: null,
     },
-    friendRequest_btn_text: 'Send friend request'
+    friendRequest_btn_text: 'Send friend request',
+    friends: []
   },
 })
 @Injectable()
@@ -77,95 +89,190 @@ export class UserViewState {
   }
 
   @Action(CreateFriendRequest) 
-    async createFriendRequest(ctx: StateContext<UserViewStateModel>, { friend } : CreateFriendRequest) {
-        try{
-            const user = this.store.selectSnapshot(ProfileState.user);
+  async createFriendRequest(ctx: StateContext<UserViewStateModel>, { friend } : CreateFriendRequest) {
+      try{
+          const user = this.store.selectSnapshot(ProfileState.user);
 
-            if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [Notification-page]'));
+          if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [Notification-page]'));
 
-            const request : IUpdateFriendRequest = {
-                friendRequest: {
-                    senderId: user?.userId,
-                    receiverUsername: friend.username
-                }
-            }
+          const request : IUpdateFriendRequest = {
+              friendRequest: {
+                  senderId: user?.userId,
+                  receiverUsername: friend.username
+              }
+          }
 
-            const responseRef = this.userViewApi.createFriendRequest(request);
+          const responseRef = this.userViewApi.createFriendRequest(request);
 
-            return ctx.setState(prevState => ({
+          return ctx.setState(prevState => ({
+            ...prevState,
+            friendRequest_btn_text: 'Waiting for acceptance'
+        }));
+      }
+      catch (error) {
+          return ctx.dispatch(new SetError((error as Error).message));
+      }
+  }
+
+  @Action(DeleteFriendRequest) 
+  async DeleteFriendRequest(ctx: StateContext<UserViewStateModel>, { friend } : DeleteFriendRequest) {
+      try{
+          const user = this.store.selectSnapshot(ProfileState.user);
+
+          if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [UserView page]'));
+
+          const request : IDeleteFriendRequest = {
+              friendRequest: {
+                  senderId: user?.userId,
+                  receiverUsername: friend.username
+              }
+          }
+
+          const responseRef = this.userViewApi.deleteFriendRequest(request);
+
+          return ctx.setState(prevState => ({
+              ...prevState,
+              friendRequest_btn_text: 'Send friend request'
+          }));
+      }
+      catch (error) {
+          return ctx.dispatch(new SetError((error as Error).message));
+      }
+  }
+
+  @Action(DeleteFriend) 
+  async DeleteFriend(ctx: StateContext<UserViewStateModel>, { friend } : DeleteFriend) {
+      try{
+          const user = this.store.selectSnapshot(ProfileState.user);
+
+          if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [UserView page]'));
+
+          const request : IDeleteFriendRequest = {
+              friendRequest: {
+                  senderId: user?.userId,
+                  receiverUsername: friend.username
+              }
+          }
+
+          const responseRef = this.userViewApi.deleteFriend(request);
+
+          return ctx.setState(prevState => ({
+              ...prevState,
+              friendRequest_btn_text: 'Send friend request'
+          }));
+      }
+      catch (error) {
+          return ctx.dispatch(new SetError((error as Error).message));
+      }
+  }
+
+  @Action(CheckUserFriendStatus)
+  async checkUserFriendStatus(ctx: StateContext<UserViewStateModel>, { user }: CheckUserFriendStatus) {
+    try {
+      //get friends and map through it to check for a match Id in OUR list of friends
+      const profileViewFriends = this.store.selectSnapshot(ProfileViewState.friends);
+      let calledSet = false;
+
+      if (!profileViewFriends) return this.store.dispatch(new SetError('profileViewFriends not set [UserView]'));
+
+      profileViewFriends.map((friend) => {
+        if (friend.userId === user.userId) {
+          ctx.setState(prevState => ({
+            ...prevState,
+            friendRequest_btn_text: 'You are friends'
+          }));
+        calledSet = true;
+        }
+      });
+
+      if (calledSet) {
+        return;
+      }
+      else {
+        //else map thorough this user's list of pending requests to check for a match of OUR userId
+        const request : IGetFriendsRequest = {
+          user: {
+            senderId: user?.userId
+          }
+        }
+        const responseRef = await this.userViewApi.getAllPendingFriendRequests(request);
+        const response = responseRef.data;
+
+        response.profiles.map((friend) => {
+          if (friend.userId === user.userId) {
+            ctx.setState(prevState => ({
               ...prevState,
               friendRequest_btn_text: 'Waiting for acceptance'
           }));
+          }
+        });
+
+        if (calledSet) {
+          return;
         }
-        catch (error) {
-            return ctx.dispatch(new SetError((error as Error).message));
+        else {
+          //else not friends
+          return ctx.setState(prevState => ({
+            ...prevState,
+            friendRequest_btn_text: 'Send friend request'
+          }));
         }
-    }
-
-  @Action(DeleteFriendRequest) 
-    async DeleteFriendRequest(ctx: StateContext<UserViewStateModel>, { friend } : DeleteFriendRequest) {
-        try{
-            const user = this.store.selectSnapshot(ProfileState.user);
-
-            if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [UserView page]'));
-
-            const request : IDeleteFriendRequest = {
-                friendRequest: {
-                    senderId: user?.userId,
-                    receiverUsername: friend.username
-                }
-            }
-
-            const responseRef = this.userViewApi.deleteFriendRequest(request);
-
-            return ctx.setState(prevState => ({
-                ...prevState,
-                friendRequest_btn_text: 'Send friend request'
-            }));
-        }
-        catch (error) {
-            return ctx.dispatch(new SetError((error as Error).message));
-        }
-    }
-
-    @Action(DeleteFriend) 
-    async DeleteFriend(ctx: StateContext<UserViewStateModel>, { friend } : DeleteFriend) {
-        try{
-            const user = this.store.selectSnapshot(ProfileState.user);
-
-            if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [UserView page]'));
-
-            const request : IDeleteFriendRequest = {
-                friendRequest: {
-                    senderId: user?.userId,
-                    receiverUsername: friend.username
-                }
-            }
-
-            const responseRef = this.userViewApi.deleteFriend(request);
-
-            return ctx.setState(prevState => ({
-                ...prevState,
-                friendRequest_btn_text: 'Send friend request'
-            }));
-        }
-        catch (error) {
-            return ctx.dispatch(new SetError((error as Error).message));
-        }
-    }
-
-    @Action(CheckUserFriendStatus)
-    async checkUserFriendStatus(ctx: StateContext<UserViewStateModel>, { user }: CheckUserFriendStatus) {
-      try {
-        //get friends and map through it to check for a match Id in OUR list of friends -- You are friends
-          // const friendsResponseRef = this.store.dispatch();
-
-        //else map thorough this user's list of pending requests to check for a match of OUR userId -- waiting for acceptance
-        //else we are not friends -- Send friend request
-        return;
-      }
-      catch (error) {
-        return this.store.dispatch(new SetError('Unable to get all friends [UserView].'));
       }
     }
+    catch (error) {
+      return this.store.dispatch(new SetError('Unable to get all friends [UserView].'));
+    }
+  }
+
+  @Action(GetFriends)
+  async getFriends(ctx: StateContext<UserViewStateModel>) {
+    try {
+      const user = this.store.selectSnapshot(ProfileState.profile);
+
+      if (!user) return this.store.dispatch(new SetError('User not set'));
+      
+      const request : IGetFriendsRequest = {
+        user: {
+          senderId: user?.userId
+        }
+      }
+      const responseRef = await this.userViewApi.getFriends(request);
+      const response = responseRef.data;
+
+      return ctx.setState(
+          produce((draft) => {
+              draft.friends = response.profiles;
+          })
+      );
+    }
+    catch (error) {
+      return ctx.dispatch(new SetError('Unable to fetch friends [ProfileView]'));
+    }
+  }
+
+  @Action(GetAllPendingFriendRequests)
+  async getAllPendingFriendRequests(ctx: StateContext<UserViewStateModel>) {
+    try {
+      const user = this.store.selectSnapshot(ProfileState.profile);
+
+      if (!user) return this.store.dispatch(new SetError('User not set'));
+      
+      const request : IGetFriendsRequest = {
+        user: {
+          senderId: user?.userId
+        }
+      }
+      const responseRef = await this.userViewApi.getAllPendingFriendRequests(request);
+      const response = responseRef.data;
+
+      return ctx.setState(
+          produce((draft) => {
+              draft.friends = response.profiles;
+          })
+      );
+    }
+    catch (error) {
+      return ctx.dispatch(new SetError('Unable to fetch friends [ProfileView]'));
+    }
+  }
 }

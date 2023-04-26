@@ -31,3 +31,11 @@ export class CheckUserFriendStatus {
   static readonly type = '[UserView] CheckUserFriendStatus';
   constructor(public readonly user: IUser) {};
 }
+
+export class GetFriends {
+  static readonly type = '[UserView] GetFriends';
+}
+
+export class GetAllPendingFriendRequests {
+  static readonly type = '[UserView] GetAllPendingFriendRequests';
+}

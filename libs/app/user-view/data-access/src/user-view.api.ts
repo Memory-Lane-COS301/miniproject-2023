@@ -3,7 +3,7 @@ import { Functions, httpsCallable } from '@angular/fire/functions';
 import { IUser } from "@mp/api/users/util";
 import { doc, docData, Firestore } from "@angular/fire/firestore";
 import { IGetProfileRequest, IGetProfileResponse } from "@mp/api/profiles/util";
-import { ICreateFriendRequest, ICreateFriendResponse, IDeleteFriendRequest, IDeleteFriendResponse } from "@mp/api/friend/util";
+import { ICreateFriendRequest, ICreateFriendResponse, IDeleteFriendRequest, IDeleteFriendResponse, IGetFriendsRequest, IGetFriendsResponse } from "@mp/api/friend/util";
 
 @Injectable()
 export class UserViewApi {
@@ -74,4 +74,12 @@ export class UserViewApi {
 //         'updateFriendRequest'
 //     )(request);
 //   }
+
+  async getFriends(request: IGetFriendsRequest) {
+    return await httpsCallable<IGetFriendsRequest, IGetFriendsResponse>(this.functions, 'getFriends')(request);
+  }
+
+  async getAllPendingFriendRequests(request: IGetFriendsRequest) {
+    return await httpsCallable<IGetFriendsRequest, IGetFriendsResponse>(this.functions, 'getAllPendingFriendRequests')(request);
+  }
 }
