@@ -14,6 +14,9 @@ import {
   IReviveDeadMemoryRequest,
   IReviveDeadMemoryResponse,
   ReviveDeadMemoryCommand,
+  IUpdateMemoryTimeRequest,
+  IUpdateMemoryTimeResponse,
+  UpdateMemoryTimeCommand,
 } from '@mp/api/memories/util';
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
@@ -45,6 +48,12 @@ export class MemoriesService {
   async reviveDeadMemory(request: IReviveDeadMemoryRequest): Promise<IReviveDeadMemoryResponse> {
     return await this.commandBus.execute<ReviveDeadMemoryCommand, IReviveDeadMemoryResponse>(
       new ReviveDeadMemoryCommand(request),
+    );
+  }
+
+  async addMemoryTime(request: IUpdateMemoryTimeRequest): Promise<IUpdateMemoryTimeResponse> {
+    return await this.commandBus.execute<UpdateMemoryTimeCommand, IUpdateMemoryTimeResponse>(
+      new UpdateMemoryTimeCommand(request),
     );
   }
 }

@@ -110,4 +110,10 @@ export class MemoriesRepository {
       remainingTime: newTime,
     });
   }
+
+  async IncreseMemoryTime(memoryId: string, newTime: number) {
+    return await admin.firestore().collection('memories').doc(memoryId).update({
+      remainingTime: newTime,
+    });
+  }
 }
