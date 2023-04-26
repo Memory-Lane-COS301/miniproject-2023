@@ -111,4 +111,23 @@ export class MemoriesRepository {
       remainingTime: newTime,
     });
   }
+
+  async updateMemories(user: IUser){ 
+        const updateInfo= { 
+          username:user.username,
+          profileImgUrl: user.profileImgUrl,
+        }
+
+        admin.firestore().collection('memories').where('userId', '==', user.userId).get().then(response => {
+        const batch = admin.firestore().batch()
+        response.docs.forEach((doc) => {
+            const docRef = admin.firestore().collection('memories').doc(doc.id)
+            batch.update(docRef, updateInfo)
+        })
+        batch.commit().then(() => {
+            console.log(`updated all documents`)
+        })
+    })
+
+  }
 }
