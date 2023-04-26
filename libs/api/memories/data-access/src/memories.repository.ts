@@ -120,7 +120,7 @@ export class MemoriesRepository {
 
     admin
       .firestore()
-      .collectionGroup('memories')
+      .collection('memories')
       .where('userId', '==', user.userId)
       .get()
       .then((response) => {
@@ -129,9 +129,30 @@ export class MemoriesRepository {
           const docRef = admin.firestore().collection('memories').doc(doc.id);
           batch.update(docRef, updateInfo);
         });
-        batch.commit().then(() => {
-          console.log(`updated all documents`);
+        batch.commit();
+      });
+    this.updateComment(user);
+  }
+
+  async updateComment(user: IUser) {
+    const updateInfo = {
+      username: user.username,
+      profileImgUrl: user.profileImgUrl,
+    };
+
+    admin
+      .firestore()
+      .collectionGroup('comments')
+      .where('userId', '==', user.userId)
+      .get()
+      .then((response) => {
+        const batch = admin.firestore().batch();
+        response.docs.forEach((doc) => {
+          const comment = doc.data as IComment;
+          const docref = admin.firestore().collection(`memories/${comment.memoryId}/comments`).doc(doc.id);
+          batch.update(docref, updateInfo);
         });
+        batch.commit();
       });
   }
 }
