@@ -13,7 +13,7 @@
       [(ngModel)]="searchValue"
       (ionFocus)="onSearchFocus()"
       (ionBlur)="onSearchBlur()"
-      (ionChange)="onInputChange()"
+      (ionChange)="onInputChange(searchValue)"
       show-cancel-button="focus"
       (keyup.enter)="onSearch(searchValue)"
     ></ion-searchbar>
