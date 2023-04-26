@@ -99,4 +99,18 @@ export class UserViewPageComponent {
 
     return this.memories;
   }
+
+  getProfileImgUrl() {
+    let imgUrl = '';
+    this.userProfile$.subscribe((profile) => {
+      if (profile?.user?.profileImgUrl) {
+        imgUrl = profile.user.profileImgUrl;
+      }
+      else {
+        imgUrl = '../../../../../assets/Design_icons/Design icons/Login page background and images/Big person.png';
+      }
+    })
+
+    return imgUrl;
+  }
 }
