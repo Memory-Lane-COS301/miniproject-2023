@@ -12,6 +12,9 @@ export class SetUser {
   static readonly type = '[Profile] SetUser';
   constructor(public readonly user: IUser | null) {}
 }
+export class DecrementUserTime {
+  static readonly type = '[Profile] DecrementUserTime';
+}
 export class SetUserDetailsForm {
   static readonly type = '[Profile] SetUserDetailsForm';
   constructor(public readonly user: IUser | null) {}
@@ -19,4 +22,9 @@ export class SetUserDetailsForm {
 
 export class UpdateUserDetails {
   static readonly type = '[Profile] UpdateUserDetails';
+}
+
+export class UpdateUser {
+  static readonly type = '[Profile] UpdateUser';
+  constructor(public readonly user: IUser | null) {}
 }

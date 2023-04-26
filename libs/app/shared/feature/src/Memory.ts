@@ -5,13 +5,12 @@ export interface Comment {
 }
 
 export interface Memory {
-  
   username?: string;
   profileUrl?: string;
   imgUrl: string;
   title: string;
   description: string;
-  comments: Comment[];  
+  comments: Comment[];
   timePosted: string;
   alive: boolean;
 }

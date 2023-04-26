@@ -49,7 +49,6 @@ export class MemoriesService {
     return await this.commandBus.execute<ReviveDeadMemoryCommand, IReviveDeadMemoryResponse>(
       new ReviveDeadMemoryCommand(request),
     );
-  }
 
   async addMemoryTime(request: IUpdateMemoryTimeRequest): Promise<IUpdateMemoryTimeResponse> {
     return await this.commandBus.execute<UpdateMemoryTimeCommand, IUpdateMemoryTimeResponse>(

@@ -22,6 +22,9 @@
   font-style: normal;
   font-weight: 700;
   font-size: 27px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .memory-avatar-username {
   display: flex;
@@ -46,9 +49,31 @@ ion-card-header {
   font-weight: 800;
   font-size: 15px;
   width: 100%;
-  height: 115px;
+  height: 110px;
+  max-height: 115px;
   margin-top: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
+
+.memory-card-desc-profileView {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 15px;
+  width: 100%;
+  max-width: 200px;
+  height: 110px;
+  max-height: 110px;
+  margin-top: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .memory-date {
   font-family: 'Lato';
   font-style: normal;
@@ -68,6 +93,7 @@ ion-card-header {
 .memory-show-more {
   position: fixed;
   right: 15px;
+  bottom: 17px;
   color: #fff;
   opacity: 0.7;
   border: 2px solid #fff;
@@ -129,11 +155,14 @@ ion-card-header {
   font-weight: 800;
   font-size: 13px;
   width: 100%;
-  height: 70px;
-  // height: auto;
+  max-height: 70px;
   margin: 5px 0 2px 0;
   padding: 0 3px 3px 3px;
   border-bottom: 1px solid #686868;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .memory-card-time-ago-expanded {
   position: fixed;
@@ -151,6 +180,7 @@ ion-card-header {
   border-radius: 5px;
   padding: 2px 5px;
   margin-top: 15px;
+  bottom: 15px;
 }
 .memory-comment-text {
   font-size: 16px;
@@ -209,6 +239,9 @@ ion-card-header {
 
 .add-new-comment {
   margin: 0 20px;
+  display: flex;
+  border: 1px solid #fff;
+  border-radius: 10px;
 }
 
 .cancel-new-comment {
@@ -230,17 +263,45 @@ ion-card-header {
 }
 
 .add-comment-input {
-  border: 1px solid #fff;
-  border-radius: 10px;
   height: 30px;
   margin: 5px 0;
   padding: 3px;
 }
 
 .add-comment-btn {
-  position: absolute;
-  right: 5px;
   height: 25px;
   font-size: 12px;
   background-color: transparent;
+  margin-top: 7px;
+  margin-right: 3px;
+}
+
+.memory-card-timer {
+  font-family: 'Lato';
+  color: #ff0000;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 5px 2px;
+  background-color: #dddddd;
+  border-radius: 5px;
+}
+.btn-add-time {
+  font-family: 'Lato';
+  color: #fff;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 25px;
+}
+.span-post-timer {
+  display: flex;
+  position: fixed;
+  bottom: 40%;
+  right: 10px;
+}
+.span-post-timer-expanded {
+  display: flex;
+  position: fixed;
+  bottom: 10px;
+  left: 20px;
 }

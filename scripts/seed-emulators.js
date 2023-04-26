@@ -20,9 +20,10 @@ firestore.settings({
 
 async function seedData() {
     faker.seed(123)
-    await seedUsers();
+    // await seedUsers();
     await generateMemories(3, 5);
     await seedFriends();
+    await generateFriendsFor('qk29zJ5i8y5omsE9uYXTWPdWOMbP', 5);
 }
 
 // ============================================================================
@@ -88,7 +89,7 @@ async function generateMemories(numMemories, numComments) {
                 username: user.username,
                 title: faker.lorem.words(3),
                 description: faker.lorem.paragraph(3),
-                imgUrl: faker.image.imageUrl(),
+                imgUrl: faker.image.image(640, 480, true),
                 profileImgUrl: user.profileImgUrl,
                 created: Timestamp.now(),
                 commentsCount: numComments,
@@ -114,6 +115,47 @@ async function generateMemories(numMemories, numComments) {
     };
 
     console.log('Memories seeded successfully.');
+}
+
+async function generateMemoriesFor(userId, numMemories, numComments) {
+    const usersSnapshot = await firestore.collection('users').get();
+    const userDoc = await firestore.collection('users').doc(userId).get();
+
+    const memories = [];
+    const user = userDoc.data();
+
+    for (let i = 0; i < numMemories; i++) {
+        const memory = {
+            userId: user.userId,
+            memoryId: faker.datatype.uuid(),
+            username: user.username,
+            title: faker.lorem.words(3),
+            description: faker.lorem.paragraph(3),
+            imgUrl: faker.image.image(640, 480, true),
+            profileImgUrl: user.profileImgUrl,
+            created: Timestamp.now(),
+            commentsCount: numComments,
+            remainingTime: 3600,
+            alive: true,
+            comments: await generateComments(numComments, pickRandomElements(usersSnapshot.docs, 20)),
+        };
+
+        memories.push(memory);
+    }
+
+    for (const memory of memories) {
+        const comments = memory.comments;
+        delete memory.comments;
+        const memoryRef = admin.firestore().collection('memories').doc(memory.memoryId);
+        await memoryRef.set(memory);
+
+        for (const comment of comments) {
+            const commentRef = admin.firestore().collection(`memories/${memory.memoryId}/comments`).doc(comment.commentId);
+            await commentRef.set(comment);
+        }
+    }
+
+    console.log(`Memories for ${user.username} seeded successfully.`);
 }
 
 async function generateComments(numComments, userDocs) {
@@ -160,6 +202,31 @@ async function seedFriends() {
     }
 
     console.log('Friends seeded successfully.');
+}
+
+async function generateFriendsFor(userId, numFriends) {
+    const usersSnapshot = await firestore.collection('users').get();
+    const userDoc = await firestore.collection('users').doc(userId).get();
+    const user = userDoc.data();
+
+    const randomUsers = pickRandomElements(usersSnapshot.docs, 6);
+    const randomUserIds = randomUsers.map(doc => doc.id)
+    const index = randomUserIds.indexOf(userDoc.id);
+
+    if (index !== -1)
+        randomUsers.splice(index, 1);
+    
+    for (let i = 0; i < numFriends; i++) {
+        const friend = {
+            userId1: userDoc.id,
+            userId2: randomUsers[i].id,
+            created: Timestamp.now()
+        };
+
+        await admin.firestore().collection('friends').doc(faker.datatype.uuid()).set(friend);
+    }
+
+    console.log(`Friends for ${user.username} seeded successfully.`);
 }
 
 // ============================================================================

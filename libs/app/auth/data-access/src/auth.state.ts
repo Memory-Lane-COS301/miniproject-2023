@@ -10,10 +10,11 @@ import {
 } from '@mp/app/auth/util';
 import { SetError } from '@mp/app/errors/util';
 import { Navigate } from '@ngxs/router-plugin';
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
 import { tap } from 'rxjs';
 import { AuthApi } from './auth.api';
+import { FirebaseError } from '@angular/fire/app';
 
 export interface AuthStateModel {
   user: User | null;
@@ -27,7 +28,10 @@ export interface AuthStateModel {
 })
 @Injectable()
 export class AuthState {
-  constructor(private readonly authApi: AuthApi) {}
+  constructor(
+    private readonly authApi: AuthApi,
+    private readonly store: Store
+  ) {}
 
   @Selector()
   static user(state: AuthStateModel) {
@@ -58,7 +62,10 @@ export class AuthState {
       await this.authApi.login(email, password);
       return ctx.dispatch(new Navigate(['home']));
     } catch (error) {
-      return ctx.dispatch(new SetError((error as Error).message));
+      if ((error as Error).message === 'Firebase: Error (auth/user-not-found).')
+          return ctx.dispatch(new SetError('Invalid username or password'))
+
+      return ctx.dispatch(new SetError('Oops. That wasn\'t supposed to happen'));
     }
   }
 
@@ -88,6 +95,7 @@ export class AuthState {
   @Action(Logout)
   async logout(ctx: StateContext<AuthStateModel>) {
     await this.authApi.logout();
+    // await this.store.reset({})
     return ctx.dispatch(new Navigate(['/']));
   }
 }

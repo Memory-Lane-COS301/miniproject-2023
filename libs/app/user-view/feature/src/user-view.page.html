@@ -61,6 +61,6 @@
   <!----------------------------------------------------------------------->
 
   <ion-list *ngIf="userProfile$ | async" ngClass="memory-list">
-      <app-memory-card *ngFor="let memory of Memories" [memory]="memory"></app-memory-card>
+    <app-memory-card *ngFor="let memory of Memories" [memory]="memory"></app-memory-card>
   </ion-list>
 </ion-content>

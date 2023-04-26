@@ -5,13 +5,20 @@ import { AddMemoryPageComponent, ProfileImage } from '@mp/app/shared/feature';
 import { ReviveMemoryPageComponent } from './lib/revive-memory/revive-memory.page';
 import { MenubarService, ProfileImageService } from '@mp/app/services/feature';
 import { formatDate } from '@angular/common';
-import { GetCommentsRequest, GetProfileRequest, SetEditProfileImageUserId, SetReviveMemoryUserId } from '@mp/app/profile-view/util';
+import {
+  GetCommentsRequest,
+  GetProfileRequest,
+  SetEditProfileImageUserId,
+  SetReviveMemoryUserId,
+} from '@mp/app/profile-view/util';
 import { Select, Store } from '@ngxs/store';
 import { ProfileViewState } from '@mp/app/profile-view/data-access';
+import { ProfileState } from '@mp/app/profile/data-access';
 import { Observable } from 'rxjs';
 import { IProfile } from '@mp/api/profiles/util';
 import { IMemory } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
+import { IUser } from '@mp/api/users/util';
 
 @Component({
   selector: 'app-profile-view',
@@ -19,26 +26,27 @@ import { Timestamp } from 'firebase-admin/firestore';
   styleUrls: ['./profile-view.page.scss'],
 })
 export class ProfileViewPageComponent implements OnInit {
-  @Select(ProfileViewState.profileView) profileView$!: Observable<IProfile | null>;
+  @Select(ProfileViewState.memories) memories$!: Observable<IMemory[] | null>;
+  @Select(ProfileState.user) user$!: Observable<IUser | null>;
+
   showExpandedView = false;
   memories: IMemory[] | null | undefined;
   profileImage: ProfileImage;
-  first_comment_text : string | null | undefined = '';
-  first_comment_username : string | null | undefined = '';
+  first_comment_text: string | null | undefined = '';
+  first_comment_username: string | null | undefined = '';
   memory: IMemory | undefined;
-  
 
   constructor(
     private store: Store,
     public modalController: ModalController,
     private profileImageService: ProfileImageService,
     private menubarService: MenubarService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
   ) {
     this.profileImage = profileImageService.profileImage;
   }
 
-  data:any;
+  data: any;
 
   ngOnInit(): void {
     this.profileImage = this.profileImageService.profileImage;
@@ -58,8 +66,9 @@ export class ProfileViewPageComponent implements OnInit {
     const { data } = await modal.onDidDismiss();
 
     if (data) {
-      this.profileView$.subscribe( (profileView) => {
-        profileView?.memories?.unshift(data)});
+      // this.profileView$.subscribe((profileView) => {
+      //   profileView?.memories?.unshift(data);
+      // });
     }
   }
 
@@ -69,9 +78,9 @@ export class ProfileViewPageComponent implements OnInit {
     });
 
     let id : string | null | undefined = '';
-    this.profileView$.subscribe((profileView) => {
-      id = profileView?.userId;
-    })
+    // this.profileView$.subscribe((profileView) => {
+    //   id = profileView?.userId;
+    // })
 
     this.store.dispatch(new SetEditProfileImageUserId(id));
 
@@ -86,9 +95,9 @@ export class ProfileViewPageComponent implements OnInit {
     });
 
     let id : string | null | undefined = '';
-    this.profileView$.subscribe((profileView) => {
-      id = profileView?.userId;
-    })
+    // this.profileView$.subscribe((profileView) => {
+    //   id = profileView?.userId;
+    // })
 
     this.store.dispatch(new SetReviveMemoryUserId(id));
 
@@ -97,46 +106,46 @@ export class ProfileViewPageComponent implements OnInit {
     const { data } = await modal.onDidDismiss();
   }
 
-  changeMemoryView(i_userId: string | null | undefined, i_memoryId: string | null | undefined) {
+  changeMemoryView(userId: string | null | undefined, memoryId: string | null | undefined) {
     this.showExpandedView = !this.showExpandedView;
 
     if(this.showExpandedView) {      
       const request : IMemory = {
-        userId: i_userId,
-        memoryId: i_memoryId
+        userId: userId,
+        memoryId: memoryId
       }
+
       this.store.dispatch(new GetCommentsRequest(request)); //we only request the comments if we want to display them
     }
   }
 
-  get Memories() : IMemory[] | null {
-    this.profileView$.subscribe((profileView) => {
-      this.memories = profileView?.memories;
-    });
+  // get Memories() : IMemory[] | null {
+  //   this.profileView$.subscribe((profileView) => {
+  //     this.memories = profileView?.memories;
+  //   });
 
-    if (!this.memories) return null;
+  //   if (!this.memories) return null;
 
-    this.memory = this.memories[0];
+  //   this.memory = this.memories[0];
 
-    return this.memories;
-  }
+  //   return this.memories;
+  // }
 
   //function to covert timePosted to dd MMMM yyyy
-  convertTimePostedToDate(timePosted: Timestamp | null | undefined): string {
+  convertTimePostedToDate(timePosted: any | null | undefined): string {
     if (!timePosted) return 'Invalid Date';
 
-    const date = new Date(timePosted.seconds);
+    const date = new Date(timePosted._seconds);
     return formatDate(date, 'dd MMMM yyyy', 'en-US');
   }
 
-  //function to use timePosted to calculate how long ago the memory was posted
-  calculateHowLongAgo(timePosted: Timestamp | null | undefined): string {
+  calculateHowLongAgo(timePosted: any | null | undefined): string {
     if (!timePosted) return 'Invalid Time';
 
-    const date = new Date(timePosted.seconds);
-    const timeDifference = Date.now() - date.getTime();
+    const now = new Date();
+    const date = new Date(timePosted._seconds);
+    const timeDifference = now.getTime() - date.getTime();
 
-    // Convert time difference to "time ago" string
     const seconds = Math.floor(timeDifference / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
@@ -170,7 +179,7 @@ export class ProfileViewPageComponent implements OnInit {
   }
 
   getFirstCommentText() {
-    if(!this.memories) return this.first_comment_text;
+    if (!this.memories) return this.first_comment_text;
 
     this.memory = this.memories[0];
 
@@ -182,7 +191,7 @@ export class ProfileViewPageComponent implements OnInit {
   }
 
   getFirstCommentUsername() {
-    if(!this.memories) return this.first_comment_username;
+    if (!this.memories) return this.first_comment_username;
 
     this.memory = this.memories[0];
 
@@ -194,7 +203,7 @@ export class ProfileViewPageComponent implements OnInit {
   }
 
   getCommentsLength() {
-    if(!this.memories) return 0;
+    if (!this.memories) return 0;
 
     this.memory = this.memories[0];
 
@@ -206,7 +215,7 @@ export class ProfileViewPageComponent implements OnInit {
   }
 
   getFirstCommentProfileImage() {
-    if(!this.memories) return '';
+    if (!this.memories) return '';
 
     this.memory = this.memories[0];
 
@@ -217,15 +226,27 @@ export class ProfileViewPageComponent implements OnInit {
     return '';
   }
 
-  getMemoriesLength() {
-    let size = 0;
+  formatTime(seconds: number | null | undefined): string {
+    if (!seconds)
+      seconds = 0;
 
-    this.profileView$.subscribe( (profile) => {
-      if (profile?.memories) {
-        size = profile.memories.length;
-      }
-    });
-
-    return size;
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
   }
+
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      this.store.dispatch(new GetProfileRequest());
+      event.target.complete();
+    }, 2000);
+  }
+
+  onPostClick(memory: any): void {
+    console.log("Hello World");
+    console.log(memory);
+    this.store.dispatch(new GetCommentsRequest(memory as IMemory)); //we only request the comments if we want to display them
+  }
+
 }

@@ -5,9 +5,11 @@ import { AddMemoryPageComponent, Memory } from '@mp/app/shared/feature';
 import { IComment, IMemory } from '@mp/api/memories/util';
 import { Select, Store } from '@ngxs/store';
 import { FeedState } from '@mp/app/feed/data-access';
+import { ProfileState } from '@mp/app/profile/data-access';
 import { Observable } from 'rxjs';
-import { GetFeedMemories } from '@mp/app/search-page/util';
+import { GetFeedMemories } from '@mp/app/feed/util';
 import { Timestamp } from 'firebase-admin/firestore';
+import { IUser } from '@mp/api/users/util';
 
 @Component({
   selector: 'app-feed',
@@ -16,6 +18,7 @@ import { Timestamp } from 'firebase-admin/firestore';
 })
 export class FeedPageComponent {
   @Select(FeedState.memories) feedMemories$!: Observable<IMemory[]>;
+  @Select(ProfileState.user) user$!: Observable<IUser>;
 
   showExpandedView = false;
 
@@ -31,8 +34,9 @@ export class FeedPageComponent {
     const { data } = await modal.onDidDismiss();
 
     if (data) {
-      this.feedMemories$.subscribe( (memories) => {
-        memories.unshift(data)});
+      this.feedMemories$.subscribe((memories) => {
+        memories.unshift(data);
+      });
     }
   }
 
@@ -53,7 +57,7 @@ export class FeedPageComponent {
   }
 
   //function to use timePosted to calculate how long ago the memory was posted
-  calculateHowLongAgo(timePosted: Timestamp | null | undefined ): string {
+  calculateHowLongAgo(timePosted: Timestamp | null | undefined): string {
     if (!timePosted) return 'Invalid Time';
 
     const date = new Date(timePosted?.seconds);
@@ -82,7 +86,24 @@ export class FeedPageComponent {
     }
   }
 
-  ionViewWillEnter() {
-    this.store.dispatch(new GetFeedMemories());
+  formatTime(seconds: number | null | undefined): string {
+    if (!seconds)
+      seconds = 0;
+
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
   }
+
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      this.store.dispatch(new GetFeedMemories());
+      event.target.complete();
+    }, 2000);
+  }
+
+ ngOnInit(): void { 
+    this.store.dispatch(new GetFeedMemories());
+ }
 }

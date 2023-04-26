@@ -3,10 +3,7 @@ import { Component } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
 import { GetUserProfileRequest } from '@mp/app/user-view/util';
 import { IGetProfileRequest, IProfile } from '@mp/api/profiles/util';
-import { 
-  UserViewState, 
-  UserViewStateModel 
-} from '@mp/app/user-view/data-access';
+import { UserViewState, UserViewStateModel } from '@mp/app/user-view/data-access';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { FriendRequestStatus } from '@mp/api/friend/util';
@@ -30,7 +27,7 @@ export class UserViewPageComponent {
   memories!: IMemory[] | null | undefined;
 
   constructor(
-    private alertController: AlertController, 
+    private alertController: AlertController,
     private toastController: ToastController,
     private readonly store: Store,
   ) {}
@@ -91,17 +88,17 @@ export class UserViewPageComponent {
 
   //called if a user clicks on the user's username or profile image either on the feed page or during a search
   openUserProfile(_username: string, _userId: string) {
-    const requestData : IProfile = {
+    const requestData: IProfile = {
       userId: _userId,
       user: {
         userId: _userId,
-        username: _username
-      }
+        username: _username,
+      },
     };
 
-    const request : IUser = {
+    const request: IUser = {
       userId: _userId,
-      username: _username
+      username: _username,
     };
 
     this.store.dispatch(new GetUserProfileRequest(request));
@@ -111,7 +108,7 @@ export class UserViewPageComponent {
     this.showExpandedView = !this.showExpandedView;
   }
 
-  get Memories() : IMemory[] | null {
+  get Memories(): IMemory[] | null {
     this.userProfile$.subscribe((userProfile) => {
       this.memories = userProfile?.memories;
     });

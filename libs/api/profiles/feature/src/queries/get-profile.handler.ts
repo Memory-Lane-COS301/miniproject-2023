@@ -1,9 +1,6 @@
 import { ProfilesRepository } from '@mp/api/profiles/data-access';
 import { IGetProfileResponse, GetProfileQuery, IProfile } from '@mp/api/profiles/util';
-//import { IUser } from '@mp/api/users/util';
 import { QueryHandler, EventPublisher, IQueryHandler } from '@nestjs/cqrs';
-//import { Profile } from '../models';
-import { IMemory } from '@mp/api/memories/util';
 
 @QueryHandler(GetProfileQuery)
 export class GetProfileHandler implements IQueryHandler<GetProfileQuery, IGetProfileResponse> {
@@ -16,8 +13,7 @@ export class GetProfileHandler implements IQueryHandler<GetProfileQuery, IGetPro
     const profileDetailsData = profileDetails.data();
 
     const profileMemories = await this.repository.getProfileMemories(request.user);
-    const CurrentMemories: IMemory[] = [];
-  
+
     const profile: IProfile = {
       userId: request.user.userId,
       memories: profileMemories,

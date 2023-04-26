@@ -1,7 +1,23 @@
-import { Component } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
-import { Memory } from '../../Memory';
-import { formatDate } from '@angular/common';
+import { Component, Inject } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { IMemory } from '@mp/api/memories/util';
+import { 
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  connectStorageEmulator,
+  StorageReference,
+  FirebaseStorage,
+  deleteObject
+} from "firebase/storage";
+import { ProfileState } from '@mp/app/profile/data-access';
+import { AuthState } from '@mp/app/auth/data-access';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { IUser } from '@mp/api/users/util';
+import { CreateNewMemory } from "@mp/app/profile-view/util"
+import { SetError } from '@mp/app/errors/util';
 
 @Component({
   selector: 'app-add-memory',
@@ -9,66 +25,57 @@ import { formatDate } from '@angular/common';
   styleUrls: ['./add-memory.page.scss'],
 })
 export class AddMemoryPageComponent {
-  showExpandedView = false;
-  memory: Memory = {
-    username: '',
-    profileUrl: '',
-    imgUrl: '',
+  @Select(ProfileState.user) user$!: Observable<IUser | null>;
+
+  memory: IMemory = {
     title: '',
     description: '',
-    comments: [],  
-    timePosted: '',
-    alive: false
+    imgUrl: '',
   };
 
+  storage: FirebaseStorage;
+  storageRef: StorageReference;
   currentDate: string;
+  showExpandedView = false;
+  fileSelected = false;
 
-  constructor(public modalController: ModalController, private alertCtrl: AlertController) {
+  constructor(
+    public modalController: ModalController,
+    private readonly store: Store,
+  ) {
     this.currentDate = new Date().toISOString();
-    this.memory.username = 'Your username';
-    this.memory.profileUrl = 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60';   
+    // Change in production!!!!!
+    this.storage = getStorage(undefined, 'gs://demo-project.appspot.com');
+    connectStorageEmulator(this.storage, 'localhost', 5006);
+    this.storageRef = ref(this.storage);
   }
 
   async onFileSelected(event: any) {
     const file: File = event.target.files[0];
-    if (!file || !file.type.match(/image\/*/)) {
-      const alert = await this.alertCtrl.create({
-        cssClass: 'file-select-alert',
-        header: 'Invalid file selected',
-        subHeader: 'Only images are allowed',
-        buttons: [
-          {
-            text: 'OK',
-            handler: () => {
-              console.log('Alert dismissed');
-            },
-          },
-        ],
-      });
 
+    if (!file) {
+      await this.deleteImageFromStorage()
+    } else if (!file.type.match(/image\/*/)) {
+      this.store.dispatch(new SetError('Only images are allowed'));
       event.target.value = null;
       this.memory.imgUrl = '';
-      await alert.present();
     } else {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        if (reader.result !== null) {
-          this.memory.imgUrl = reader.result.toString();
-        }
-      };
+      await this.deleteImageFromStorage()
+      this.storageRef = ref(this.storage, file.name);
+      const snapshot = await uploadBytes(this.storageRef, file);
+      this.memory.imgUrl = await getDownloadURL(snapshot.ref);
+      this.fileSelected = true;
     }
   }
 
   setTitleText() {
-    if (this.memory.title !== '') {
+    if (this.memory.title)
       this.memory.title = this.memory.title[0].toUpperCase() + this.memory.title.substring(1);
-    }
   }
+
   setDescriptionText() {
-    if (this.memory.description !== '') {
+    if (this.memory.description)
       this.memory.description = this.memory.description[0].toUpperCase() + this.memory.description.substring(1);
-    }
   }
 
   changeMemoryView() {
@@ -76,89 +83,32 @@ export class AddMemoryPageComponent {
   }
 
   async add() {
-    const dateObj = new Date();
-    const timezoneOffset = dateObj.getTimezoneOffset() * 60000;
-    const localDate = new Date(dateObj.getTime() - timezoneOffset);
-    const standardDate = localDate.toISOString().replace(/Z$/, '');
-
-    // // mulitply timezone offset with 60000 to get offset in milliseconds
-    // const timezoneOffset = dateObj.getTimezoneOffset() * 60000;
-
-    // // subtract it from original date to get the local date and time
-    // const localDate = new Date(dateObj.getTime() - timezoneOffset);
-    // const formattedDate = localDate.toLocaleDateString(navigator.language, {
-    //   day: 'numeric',
-    //   month: 'long',
-    //   year: 'numeric',
-    // });
-
-    const newMemory: Memory = {
-      username: this.memory.username,
-      profileUrl: this.memory.profileUrl,
-      imgUrl: this.memory.imgUrl,
-      title: this.memory.title,
-      description: this.memory.description,
-      comments: [],  
-      timePosted: standardDate,
-      alive: true
-    };
-
     if (!this.memory.title || !this.memory.description || !this.memory.imgUrl) {
-      const alert = await this.alertCtrl.create({
-        cssClass: 'add-memory-alert',
-        header: 'Invalid input received',
-        subHeader: 'Please fill in all fields.',
-        buttons: [
-          {
-            text: 'OK',
-            handler: () => {
-              console.log('Alert dismissed');
-            },
-          },
-        ],
-      });
-
-      await alert.present();
+      this.store.dispatch(new SetError('Some fields are missing'));
     } else {
-      this.modalController.dismiss(newMemory);
+      const user = this.store.selectSnapshot(AuthState.user);
+
+      if (!user) {
+        this.store.dispatch(new SetError('User not set'));
+      } else {
+        this.memory.userId = user.uid;
+        this.store.dispatch(new CreateNewMemory(this.memory))
+        await this.modalController.dismiss();
+      }
+    }
+  }
+
+  async deleteImageFromStorage() {
+    if (this.fileSelected) {
+      await deleteObject(this.storageRef)
+      this.fileSelected = false;
+      this.memory.imgUrl = '';
     }
   }
 
   cancel() {
+    this.deleteImageFromStorage();
     this.modalController.dismiss();
   }
 
-  //function to covert timePosted to dd MMMM yyyy
-  convertTimePostedToDate(timePosted: string): string {
-    const date = new Date(timePosted);
-    return formatDate(date, 'dd MMMM yyyy', 'en-US');
-  }
-
-  //function to use timePosted to calculate how long ago the memory was posted
-  calculateHowLongAgo(timePosted: string): string {
-    const date = new Date(timePosted);
-    const timeDifference = Date.now() - date.getTime();
-
-    // Convert time difference to "time ago" string
-    const seconds = Math.floor(timeDifference / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const weeks = Math.floor(days / 7);
-    const years = Math.floor(days / 365);
-
-    if (years > 0) {
-      return `${years} year${years > 1 ? 's' : ''} ago`;
-    } else if (weeks > 0) {
-      return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
-    } else if (days > 0) {
-      return `${days} day${days > 1 ? 's' : ''} ago`;
-    } else if (hours > 0) {
-      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    } else {
-      return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
-    }
-  }
 }

@@ -18,10 +18,19 @@
       (keyup.enter)="onSearch(searchValue)"
     ></ion-searchbar>
   </ion-toolbar>
+  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-list ngClass="memory-list" *ngIf="!searchFocus && !searchValue">
     <ion-text ngClass="popular-memories-text">Most Popular Memories</ion-text>
-    <app-memory-card *ngFor="let memory of Memories" [memory]="memory"></app-memory-card>
+    <div *ngIf="searchPageMemories$ | async as memories">
+      <app-memory-card *ngFor="let memory of memories" [memory]="memory"></app-memory-card>
+    </div>
   </ion-list>
+
+  <!-- <ion-list ngClass="memory-list" *ngIf="!searchFocus && !searchValue && searchPageMemories$ | async as memories">
+    <app-memory-card *ngFor="let memory of memories" [memory]="memory" [onProfileView]="false"></app-memory-card>
+  </ion-list> -->
   <!-- Show list of recent searches -->
   <ion-text *ngIf="searchFocus && !searchValue" size="medium"> Recent </ion-text>
   <ion-list *ngIf="searchFocus && !searchValue" ngClass="search-list">
@@ -35,7 +44,12 @@
     </ion-item>
   </ion-list>
   <ion-list *ngIf="searchValue" ngClass="search-list">
-    <ion-item color="none" *ngFor="let result of SearchResults" ngClass="search-item" (click)="openUserProfile(result.userId, result.username)">
+    <ion-item
+      color="none"
+      *ngFor="let result of SearchResults"
+      ngClass="search-item"
+      (click)="openUserProfile(result.userId, result.username)"
+    >
       <ion-avatar ngClass="result-avatar">
         <img src="{{ result.profileImgUrl }}" ngClass="result-profileImg" />
       </ion-avatar>
