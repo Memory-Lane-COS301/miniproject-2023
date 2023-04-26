@@ -59,7 +59,7 @@
                         <img src="{{ comment.profileImgUrl }}" ngClass="comment-profileImg" (click) ="openUserProfile(comment.userId, comment.username)">
                     </ion-avatar>
                     <div ngClass="comment-username-and-text">
-                        <ion-text ngClass="comment-username" (click) ="openUserProfile(comment.userId, comment.username)">@{{ comment.username }}</ion-text>
+                        <ion-text ngClass="comment-username" (click) ="openUserProfile(comment.userId, comment.username)">@{{ comment.username }} <b style="opacity: 0.5;">{{ checkForMyComment(comment.userId) }}</b></ion-text>
                         <ion-text ngClass="comment-text">This is an example comment made by me to test it oiidd jsdjsn jdn jskdj jjdjdjdc jdjd jdjc</ion-text>
                     </div>
                 </div>

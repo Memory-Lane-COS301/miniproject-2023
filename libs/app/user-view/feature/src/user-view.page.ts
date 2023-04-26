@@ -41,7 +41,6 @@ export class UserViewPageComponent implements OnInit {
     this.store.dispatch(new CheckUserFriendStatus(user)); //check to see if this user is a friend or not
 
     this.request_btn_text$.subscribe((value) => {
-      console.log(value);
       if (value == 'You are friends') {
         this.added = true;
       }

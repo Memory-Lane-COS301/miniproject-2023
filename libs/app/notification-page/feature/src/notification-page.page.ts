@@ -204,4 +204,16 @@ export class NotificationPage implements OnInit {
             }
         }
     }
+
+    checkForMyComment(uid: string | null | undefined) {
+        const user = this.store.selectSnapshot(ProfileState.user);
+
+        if(!uid) return;
+
+        if (uid === user?.userId) {
+            return "- You";
+        }
+
+        return '';
+    }
 }

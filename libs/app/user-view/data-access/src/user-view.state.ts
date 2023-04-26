@@ -41,7 +41,7 @@ export interface UserViewStateModel {
       status: null,
       created: null,
     },
-    friendRequest_btn_text: 'Send friend request',
+    friendRequest_btn_text: '',
     friends: []
   },
 })
