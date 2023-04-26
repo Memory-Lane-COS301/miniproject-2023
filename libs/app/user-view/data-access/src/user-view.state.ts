@@ -192,7 +192,7 @@ export class UserViewState {
         //else map thorough this user's list of pending requests to check for a match of OUR userId
         const request : IGetFriendsRequest = {
           user: {
-            senderId: user?.userId
+            senderId: user.userId
           }
         }
         const responseRef = await this.userViewApi.getAllPendingFriendRequests(request);
