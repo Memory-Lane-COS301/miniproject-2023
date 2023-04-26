@@ -10,6 +10,7 @@ import {
     SetNotificationPage,
     UpdateFriendRequest 
 } from "@mp/app/notification-page/util";
+import { ProfileState } from '@mp/app/profile/data-access';
 
 
 @Component({
@@ -20,6 +21,7 @@ import {
 export class NotificationPage implements OnInit {
     @Select(NotificationPageState.friendRequests) friendRequests$!: Observable<IUser[] | null>;
     @Select(NotificationPageState.comments) comments$!: Observable<IComment[] | null>;
+    @Select(ProfileState.time) time$!: Observable<IUser | null>;
 
     friendRequestsListExpanded = false;
     commentsListExpanded = false;

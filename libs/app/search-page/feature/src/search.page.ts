@@ -13,6 +13,7 @@ import { Memory } from '@mp/app/shared/feature';
 import { GetSearchPageMemories } from '@mp/app/search-page/util';
 import { GetFeedMemories } from '@mp/app/feed/util';
 import { FeedState } from '@mp/app/feed/data-access';
+import { ProfileState } from '@mp/app/profile/data-access';
 
 
 @Component({
@@ -23,6 +24,7 @@ import { FeedState } from '@mp/app/feed/data-access';
 export class SearchPageComponent implements OnInit{
   @Select(FeedState.memories) searchPageMemories$!: Observable<IMemory[] | null>;
   @Select(SearchPageState.recentSearches) recentSearches$!: Observable<string[] | null>;
+  @Select(ProfileState.time) time$!: Observable<IUser | null>;
 
   searchValue = '';
   searchFocus = false;

@@ -8,6 +8,7 @@ import { NavController } from '@ionic/angular';
 import { IUser } from '@mp/api/users/util';
 import { GetUserProfileRequest } from '@mp/app/user-view/util';
 import { Timestamp } from 'firebase-admin/firestore';
+import { ProfileState } from '@mp/app/profile/data-access';
 
 @Component({
   selector: 'app-search-results',
@@ -16,6 +17,7 @@ import { Timestamp } from 'firebase-admin/firestore';
 })
 export class SearchResultsPageComponent {
   @Select(SearchResultsState.searchResults) results$!: Observable<IMemory[] | null>;
+  @Select(ProfileState.time) time$!: Observable<IUser | null>;
 
   searchValue = '';
   searchFocus = false;

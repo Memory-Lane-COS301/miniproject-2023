@@ -20,10 +20,10 @@ firestore.settings({
 
 async function seedData() {
     faker.seed(123)
-    // await seedUsers();
+    await seedUsers();
     await generateMemories(3, 5);
     await seedFriends();
-    await generateFriendsFor('qk29zJ5i8y5omsE9uYXTWPdWOMbP', 5);
+    // await generateFriendsFor('qk29zJ5i8y5omsE9uYXTWPdWOMbP', 5);
 }
 
 // ============================================================================
@@ -50,6 +50,10 @@ async function seedUsers() {
 function generateUsers(numUsers) {
   const users = [];
 
+    const now = Timestamp.now();
+    const seconds = now.seconds + 24 * 60 * 60;
+    const nanoseconds = now.nanoseconds;
+
     for (let i = 0; i < numUsers; i++) {
         const name = faker.name.firstName();
         const surname = faker.name.lastName();
@@ -67,6 +71,7 @@ function generateUsers(numUsers) {
         lastOnline: Timestamp.now(),
         online: false,
         created: Timestamp.now(),
+        deathTime: new Timestamp(seconds, nanoseconds),
     };
 
     users.push(user);

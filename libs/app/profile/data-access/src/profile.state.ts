@@ -13,7 +13,8 @@ import {
     SubscribeToUser,
     UpdateUserDetails,
     DecrementUserTime,
-    UpdateUser
+    UpdateUser,
+    SetTime
 } from '@mp/app/profile/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
@@ -21,10 +22,12 @@ import { tap } from 'rxjs';
 import { ProfilesApi } from './profiles.api';
 import { IUser } from '@mp/api/users/util';
 import { IProfile } from '@mp/api/profiles/util';
+import { Timestamp } from '@angular/fire/firestore';
 
 export interface ProfileStateModel {
   profile: IProfile | null;
   user: IUser | null;
+  time: string;
   userDetailsForm: {
     model: {
       name: string | null | undefined;
@@ -44,6 +47,7 @@ export interface ProfileStateModel {
   defaults: {
     profile: null,
     user: null,
+    time: '',
     userDetailsForm: {
       model: {
         name: null,
@@ -79,6 +83,11 @@ export class ProfileState {
   @Selector()
   static user(state: ProfileStateModel) {
     return state.user;
+  }
+
+  @Selector()
+  static time(state: ProfileStateModel) {
+    return state.time;
   }
 
   @Action(Logout)
@@ -223,10 +232,35 @@ export class ProfileState {
     }
   }
 
+  @Action(SetTime)
+  setTime(ctx: StateContext<ProfileStateModel>) {
+    const deathTime = ctx.getState().user?.deathTime
+    let seconds = 0;
+
+    if (deathTime)
+      seconds = deathTime.seconds - Timestamp.now().seconds;
+
+    ctx.setState(
+      produce((draft) => {
+        draft.time = this.formatTime(seconds);
+      })
+    );
+  }
+
   startDecrement() {
     this.intervalId = setInterval(() => {
-      this.store.dispatch(new DecrementUserTime());
+      this.store.dispatch(new SetTime());
     }, 1000);
+  }
+
+  formatTime(seconds: number): string {
+    if (!seconds)
+      seconds = 0;
+
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
   }
 
 }

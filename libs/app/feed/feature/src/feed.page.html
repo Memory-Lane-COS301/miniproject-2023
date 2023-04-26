@@ -4,7 +4,7 @@
       <ion-icon name="add" color="light" ngClass="add-btn"></ion-icon>
     </ion-buttons>
     <ion-title ngClass="title">Memory Lane</ion-title>
-    <small slot="end" *ngIf="user$ | async as user" ngClass="account-time">{{ formatTime(user.accountTime) }}</small>
+    <small slot="end" ngClass="account-time" *ngIf="time$ | async as time">{{ time }}</small>
   </ion-toolbar>
 </ion-header>
 <ion-content color="dark">
