@@ -26,3 +26,8 @@ export class DeleteFriend {
   static readonly type = '[UserView] DeleteFriend';
   constructor(public readonly friend: IUser) {}
 }
+
+export class CheckUserFriendStatus {
+  static readonly type = '[UserView] CheckUserFriendStatus';
+  constructor(public readonly user: IUser) {};
+}

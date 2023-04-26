@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
-import { CreateFriendRequest, DeleteFriend, GetUserProfileRequest } from '@mp/app/user-view/util';
+import { CheckUserFriendStatus, CreateFriendRequest, DeleteFriend, DeleteFriendRequest, GetUserProfileRequest } from '@mp/app/user-view/util';
 import { IGetProfileRequest, IProfile } from '@mp/api/profiles/util';
 import { UserViewState, UserViewStateModel } from '@mp/app/user-view/data-access';
 import { Select, Store } from '@ngxs/store';
@@ -15,11 +15,14 @@ import { IUser } from '@mp/api/users/util';
   templateUrl: './user-view.page.html',
   styleUrls: ['./user-view.page.scss'],
 })
-export class UserViewPageComponent {
+export class UserViewPageComponent implements OnInit {
   @Select(UserViewState.userView) userProfile$!: Observable<IProfile | null>;
+  @Select(UserViewState.btn_text) request_btn_text$!: Observable<string | null>;
 
   added = false;
-  btn_text = 'Send friend request';
+  waiting = false;
+  notFriends = false;
+
   handlerMessage = '';
   roleMessage = '';
   showExpandedView = false;
@@ -31,6 +34,24 @@ export class UserViewPageComponent {
     private toastController: ToastController,
     private readonly store: Store,
   ) {}
+
+  ngOnInit(): void {
+    const user = this.store.selectSnapshot(UserViewState.userView);
+
+    this.store.dispatch(new CheckUserFriendStatus(user)); //check to see if this user is a friend or not
+
+    this.request_btn_text$.subscribe((value) => {
+      if (value == 'Send Friend Request') {
+        this.notFriends = true;
+      }
+      else if (value == 'Waiting for acceptance') {
+        this.waiting = true;
+      }
+      else if (value == 'You are friends') {
+        this.added = true;
+      }
+    })
+  }
 
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -73,7 +94,7 @@ export class UserViewPageComponent {
   }
 
   addedNewFriend() {
-    this.added = true;
+    this.waiting = true;
     let _userId = '';
     let _username : string | null | undefined = '';
 
@@ -94,6 +115,8 @@ export class UserViewPageComponent {
 
   removeFriend() {
     this.added = false;
+    this.waiting = false;
+    this.notFriends = true;
 
     let _userId = '';
     let _username : string | null | undefined = '';
@@ -111,6 +134,27 @@ export class UserViewPageComponent {
     }
 
     this.store.dispatch(new DeleteFriend(request));
+  }
+
+  cancelFriend() {
+    this.added = false;
+
+    let _userId = '';
+    let _username : string | null | undefined = '';
+
+    this.userProfile$.subscribe((profile) => {
+      if (profile && profile.user) {
+        _userId = profile?.userId,
+        _username = profile?.user?.username
+      }
+    });
+
+    const request : IUser = {
+      userId: _userId,
+      username: _username
+    }
+
+    this.store.dispatch(new DeleteFriendRequest(request));
   }
 
   changeMemoryView() {
@@ -139,5 +183,15 @@ export class UserViewPageComponent {
     })
 
     return imgUrl;
+  }
+
+  getRequestBtnText() {
+    let text :string | null = '';
+
+    this.request_btn_text$.subscribe((value) => {
+      text = value;
+    })
+
+    return text;
   }
 }

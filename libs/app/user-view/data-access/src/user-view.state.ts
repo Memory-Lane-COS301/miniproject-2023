@@ -3,7 +3,7 @@ import { IProfile, IGetProfileRequest } from '@mp/api/profiles/util';
 import { Injectable } from '@angular/core';
 import { SetError } from '@mp/app/errors/util';
 import { UserViewApi } from './user-view.api';
-import { CreateFriendRequest, DeleteFriend, DeleteFriendRequest, GetUserProfileRequest, SetUserView } from '@mp/app/user-view/util';
+import { CreateFriendRequest, DeleteFriend, DeleteFriendRequest, GetUserProfileRequest, SetUserView, CheckUserFriendStatus } from '@mp/app/user-view/util';
 import produce from 'immer';
 import { IMemory } from '@mp/api/memories/util';
 import { ProfileState } from '@mp/app/profile/data-access';
@@ -30,7 +30,7 @@ export interface UserViewStateModel {
       status: null,
       created: null,
     },
-    friendRequest_btn_text: ''
+    friendRequest_btn_text: 'Send friend request'
   },
 })
 @Injectable()
@@ -40,6 +40,11 @@ export class UserViewState {
   @Selector()
   static userView(state: UserViewStateModel) {
     return state.userProfile;
+  }
+
+  @Selector()
+  static btn_text(state: UserViewStateModel) {
+    return state.friendRequest_btn_text;
   }
 
   @Action(GetUserProfileRequest) //GetUserProfileRequest is the same as the GetProfileRequest
@@ -147,5 +152,20 @@ export class UserViewState {
         catch (error) {
             return ctx.dispatch(new SetError((error as Error).message));
         }
+    }
+
+    @Action(CheckUserFriendStatus)
+    async checkUserFriendStatus(ctx: StateContext<UserViewStateModel>, { user }: CheckUserFriendStatus) {
+      try {
+        //get friends and map through it to check for a match Id in OUR list of friends -- You are friends
+          // const friendsResponseRef = this.store.dispatch();
+
+        //else map thorough this user's list of pending requests to check for a match of OUR userId -- waiting for acceptance
+        //else we are not friends -- Send friend request
+        return;
+      }
+      catch (error) {
+        return this.store.dispatch(new SetError('Unable to get all friends [UserView].'));
+      }
     }
 }
