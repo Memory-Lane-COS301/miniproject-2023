@@ -58,6 +58,15 @@ export class UserViewState {
     }
   }
 
+  @Action(SetUserView)
+  setUserView(ctx: StateContext<UserViewStateModel>, { profile } : SetUserView) {
+    ctx.setState(
+      produce((draft) => {
+          draft.userProfile = profile;
+      })
+  );
+  }
+
   // @Action(CreateFriendRequest)
   // async createFriendRequest(ctx: StateContext<UserViewStateModel>, ) // !!! How do we pass in the sender's ID??
 

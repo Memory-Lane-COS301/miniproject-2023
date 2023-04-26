@@ -86,24 +86,6 @@ export class UserViewPageComponent {
     // this.store.dispatch(new UpdateFriendRequest(status));
   }
 
-  //called if a user clicks on the user's username or profile image either on the feed page or during a search
-  openUserProfile(_username: string, _userId: string) {
-    const requestData: IProfile = {
-      userId: _userId,
-      user: {
-        userId: _userId,
-        username: _username,
-      },
-    };
-
-    const request: IUser = {
-      userId: _userId,
-      username: _username,
-    };
-
-    this.store.dispatch(new GetUserProfileRequest(request));
-  }
-
   changeMemoryView() {
     this.showExpandedView = !this.showExpandedView;
   }

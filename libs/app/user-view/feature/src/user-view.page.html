@@ -17,9 +17,9 @@
   <!-- CODE BELOW WILL BE GENERATER BY ABOVE ELEMENT, REQUIRES ROUTING-->
   <ion-grid ngClass="heading-grid">
     <ion-row ngClass="heading-grid-row" class="ion-text-center">
-      <ion-col ngClass="heading-grid-row-col1">
+      <ion-col ngClass="heading-grid-row-col1" *ngIf="userProfile$ | async as userProfile">
         <ion-text ngClass="heading-grid-row-col1-title">Friends</ion-text><br />
-        <ion-text ngClass="friend-memories-count">100</ion-text>
+        <ion-text ngClass="friend-memories-count">{{ userProfile.user?.friendCount }}</ion-text>
       </ion-col>
       <ion-col ngClass="heading-grid-row-col2">
         <ion-avatar ngClass="user-profile-img">

@@ -93,9 +93,9 @@ export class NotificationPage implements OnInit {
     ];
     commentNotifications = [
         {
-            userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
-            username: "John_do3",
-            profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+            userId: "0b0a0318-b8eb-4f5f-87ae-038bd299248d",
+            username: "Maryjane.Maggio11",
+            profileImgUrl: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/448.jpg",
             text: "Example comment jakbhbdcjhsjdcbsjdcb"
         },
         {
@@ -105,9 +105,9 @@ export class NotificationPage implements OnInit {
             text: "Example comment jakbhbdcjhsjdcbsjdcb"
         },
         {
-            userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
-            username: "John_do3",
-            profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+            userId: "0cf0c171-a04e-464d-b9b8-4dfdd0262ea8",
+            username: "Bruce71",
+            profileImgUrl: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/276.jpg",
             text: "Example comment jakbhbdcjhsjdcbsjdcb"
         },
     ]
@@ -121,7 +121,8 @@ export class NotificationPage implements OnInit {
     }
 
     constructor(
-        private store: Store
+        private store: Store,
+        private navCtrl: NavController
     ) {}
 
     ngOnInit(): void {
@@ -187,6 +188,7 @@ export class NotificationPage implements OnInit {
                 }
 
                 this.store.dispatch(new GetUserProfileRequest(request_user));
+                this.navCtrl.navigateForward('/user-view');
             }
         }
     }
