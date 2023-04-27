@@ -148,7 +148,7 @@ export class MemoriesRepository {
       .then((response) => {
         const batch = admin.firestore().batch();
         response.docs.forEach((doc) => {
-          const comment = doc.data as IComment;
+          const comment :IComment = doc.data as IComment;
           const docref = admin.firestore().collection(`memories/${comment.memoryId}/comments`).doc(doc.id);
           batch.update(docref, updateInfo);
         });

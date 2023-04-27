@@ -3,7 +3,6 @@ import { UserUpdatedEvent } from '@mp/api/users/util';
 import { Injectable } from '@nestjs/common';
 import { ICommand, ofType, Saga } from '@nestjs/cqrs';
 import { map, Observable } from 'rxjs';
-import { MemoriesRepository } from '@mp/api/memories/data-access';
 
 @Injectable()
 export class MemoriesSagas {
@@ -17,10 +16,9 @@ export class MemoriesSagas {
 
   @Saga()
   onUserUpdatedEvent = (events$: Observable<any>): Observable<ICommand> => {
-    const repository=new MemoriesRepository();
     return events$.pipe(
       ofType(UserUpdatedEvent),
-      map((event: UserUpdatedEvent) => repository.updateMemories(event.user)),
+      map((event: UserUpdatedEvent) => new UpdateMemoryCommand({user:event.user})),
     );
   };
 }
