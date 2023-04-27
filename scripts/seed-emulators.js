@@ -23,6 +23,7 @@ async function seedData() {
     await seedUsers();
     await generateMemories(3, 5);
     await seedFriends();
+    await generateMemoriesFor('cpDFYwi6yVXktfuLooJWmM0p9z9r', 2, 2);
     // await generateFriendsFor('qk29zJ5i8y5omsE9uYXTWPdWOMbP', 5);
 }
 
@@ -81,7 +82,11 @@ function generateUsers(numUsers) {
 }
 
 async function generateMemories(numMemories, numComments) {
-  const usersSnapshot = await firestore.collection('users').get();
+    const usersSnapshot = await firestore.collection('users').get();
+
+    const now = Timestamp.now();
+    const seconds = now.seconds + 6 * 60 * 60;
+    const nanoseconds = now.nanoseconds;
 
     for (userDoc of usersSnapshot.docs) {
         const memories = [];
@@ -100,6 +105,7 @@ async function generateMemories(numMemories, numComments) {
                 commentsCount: numComments,
                 remainingTime: 3600,
                 alive: true,
+                deathTime: new Timestamp(seconds, nanoseconds),
                 comments: await generateComments(numComments, pickRandomElements(usersSnapshot.docs, 20)),
             };
 
@@ -129,6 +135,10 @@ async function generateMemoriesFor(userId, numMemories, numComments) {
     const memories = [];
     const user = userDoc.data();
 
+    const now = Timestamp.now();
+    const seconds = now.seconds + 6 * 60 * 60;
+    const nanoseconds = now.nanoseconds;
+
     for (let i = 0; i < numMemories; i++) {
         const memory = {
             userId: user.userId,
@@ -142,6 +152,7 @@ async function generateMemoriesFor(userId, numMemories, numComments) {
             commentsCount: numComments,
             remainingTime: 3600,
             alive: true,
+            deathTime: new Timestamp(seconds, nanoseconds),
             comments: await generateComments(numComments, pickRandomElements(usersSnapshot.docs, 20)),
         };
 

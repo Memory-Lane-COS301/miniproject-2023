@@ -95,6 +95,7 @@ export class SearchPageComponent implements OnInit{
     this.searchResults$.subscribe((results) => {
       console.log(results);
     })
+    
     return this.searchResults;
   }
 

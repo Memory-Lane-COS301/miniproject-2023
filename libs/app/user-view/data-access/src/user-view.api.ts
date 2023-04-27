@@ -3,6 +3,7 @@ import { Functions, httpsCallable } from '@angular/fire/functions';
 import { IUser } from "@mp/api/users/util";
 import { doc, docData, Firestore } from "@angular/fire/firestore";
 import { IGetProfileRequest, IGetProfileResponse } from "@mp/api/profiles/util";
+import { ICreateFriendRequest, ICreateFriendResponse, IDeleteFriendRequest, IDeleteFriendResponse, IGetFriendsRequest, IGetFriendsResponse } from "@mp/api/friend/util";
 
 @Injectable()
 export class UserViewApi {
@@ -34,15 +35,35 @@ export class UserViewApi {
     )(request);
   }
 
-//   async createFriendRequest(request: ICreateFriendRequest) {
-//     return await httpsCallable<
-//         ICreateFriendRequest,
-//         ICreateFriendResponse,
-//     >(
-//         this.functions,
-//         'createFriendRequest'
-//     )(request);
-//   }
+  async createFriendRequest(request: ICreateFriendRequest) {
+    return await httpsCallable<
+        ICreateFriendRequest,
+        ICreateFriendResponse
+    >(
+        this.functions,
+        'createFriendRequest'
+    )(request);
+  }
+
+  async deleteFriendRequest(request: IDeleteFriendRequest) {
+    return await httpsCallable<
+      IDeleteFriendRequest,
+      IDeleteFriendResponse
+    >(
+      this.functions,
+      'deleteFriendRequest'
+    )(request);
+  }
+
+  async deleteFriend(request: IDeleteFriendRequest) {
+    return await httpsCallable<
+      IDeleteFriendRequest,
+      IDeleteFriendResponse
+    >(
+      this.functions,
+      'deleteFriend'
+    )(request);
+  }
 
 //   async updateFriendRequest(request: IUpdateFriendRequest) {
 //     return await httpsCallable<
@@ -53,4 +74,12 @@ export class UserViewApi {
 //         'updateFriendRequest'
 //     )(request);
 //   }
+
+  async getFriends(request: IGetFriendsRequest) {
+    return await httpsCallable<IGetFriendsRequest, IGetFriendsResponse>(this.functions, 'getFriends')(request);
+  }
+
+  async getAllPendingFriendRequests(request: IGetFriendsRequest) {
+    return await httpsCallable<IGetFriendsRequest, IGetFriendsResponse>(this.functions, 'getAllPendingFriendRequests')(request);
+  }
 }
