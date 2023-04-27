@@ -13,9 +13,10 @@
       </svg>
     </ion-tab-button>
 
-    <ion-tab-button tab="notification-page" ngClass="tabs-background notification-bell">
+    <ion-tab-button tab="notification-page" ngClass="tabs-background notification-bell" (click)="viewNotifications()">
       <ion-icon name="notifications-outline"></ion-icon>
-      <div ngClass="notification-amount">10</div>
+      <div *ngIf="!navigated" ngClass="notification-amount">{{ getAllNotifications() }}</div>
+      <div *ngIf="navigated" ngClass="notification-amount">{{ totalNotifications }}</div>
     </ion-tab-button>
 
     <ion-tab-button tab="profile-view" ngClass="tabs-background">
