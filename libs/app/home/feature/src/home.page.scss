@@ -39,3 +39,18 @@ ion-tab-button {
   align-items: center;
   justify-content: center;
 }
+
+.notification-viewed {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  background-color: transparent;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

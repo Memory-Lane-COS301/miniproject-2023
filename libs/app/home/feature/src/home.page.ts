@@ -8,8 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MenubarService } from '@mp/app/services/feature';
 import { NotificationPageState } from '@mp/app/notification-page/data-access';
 import { IComment } from '@mp/api/memories/util';
-import { SetNotificationAmount, SetNotificationPage } from '@mp/app/notification-page/util';
-import { NotificationPage } from '@mp/app/notification-page/feature';
+import { SetNotificationPage } from '@mp/app/notification-page/util';
 
 @Component({
   selector: 'ms-home-page',
@@ -19,7 +18,6 @@ import { NotificationPage } from '@mp/app/notification-page/feature';
 export class HomePage implements OnInit {
   @Select(NotificationPageState.friendRequests) friendRequests$!: Observable<IUser[] | null>;
   @Select(NotificationPageState.comments) comments$!: Observable<IComment[] | null>;
-  @Select(NotificationPageState.notificationAmount) notificationAmount$!: Observable<number>;
 
   totalNotifications: number;
   totalComments: number;
@@ -149,20 +147,17 @@ commentNotifications = [
       }
     )
     
-    // this.store.dispatch(new SetNotificationAmount(this.totalNotifications));
-    return this.totalNotifications = this.totalComments + this.totalFriedRequests;
+    this.totalNotifications = this.totalComments + this.totalFriedRequests;
+    return this.totalNotifications;
   
   }
 
   ngOnInit() {
     this.store.dispatch(new SetNotificationPage(this.friendsRequests, this.commentNotifications));
-    // this.totalNotifications = 0;
   }
 
   viewNotifications() {
     this.navigated = true;
     this.totalNotifications = this.totalFriedRequests;
-    // this.store.dispatch(new SetNotificationAmount(this.totalNotifications));
-    // this.getAllNotifications(this.totalNotifications)
   }
 }

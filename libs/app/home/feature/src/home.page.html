@@ -16,7 +16,8 @@
     <ion-tab-button tab="notification-page" ngClass="tabs-background notification-bell" (click)="viewNotifications()">
       <ion-icon name="notifications-outline"></ion-icon>
       <div *ngIf="!navigated" ngClass="notification-amount">{{ getAllNotifications() }}</div>
-      <div *ngIf="navigated" ngClass="notification-amount">{{ totalNotifications }}</div>
+      <div *ngIf="navigated" ngClass="notification-viewed"></div>
+      <!-- <div *ngIf="navigated" ngClass="notification-amount">{{ notificationCount }}</div> -->
     </ion-tab-button>
 
     <ion-tab-button tab="profile-view" ngClass="tabs-background">
