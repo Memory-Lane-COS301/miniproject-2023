@@ -26,9 +26,15 @@ export class SearchPageApi {
 
   async getSearchResults(searchValue: string) {
     const usersRef = collection(this.firestore, 'users');
-    const q = query(usersRef, where('name', '>=', searchValue), where('name', '<=', searchValue+ '\uf8ff'));
+    const q = query(usersRef);
     const querySnapshot = await getDocs(q);
-    const users = querySnapshot.docs.map(doc => doc.data() as IUser);
+
+    const users: IUser[] = [];
+    querySnapshot.docs.map(doc => {
+      const data = doc.data() as IUser
+      if (data.username?.toLowerCase().includes(searchValue.toLowerCase()))
+        users.push(data);
+    });
     return users;
   }
 }
