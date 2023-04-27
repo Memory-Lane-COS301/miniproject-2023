@@ -7,7 +7,7 @@
 <ion-content color="dark">
   <ion-list ngClass="modal-list">
     <ion-item color="dark" ngClass="modal-list-item">
-      <ion-label>Title: </ion-label>
+      <ion-label>Title</ion-label>
       <ion-input
         maxlength="23"
         ngClass="modal-list-input"
@@ -17,7 +17,7 @@
       ></ion-input>
     </ion-item>
     <ion-item color="dark" ngClass="modal-list-item description">
-      <ion-label>Description: </ion-label>
+      <ion-label>Description</ion-label>
       <ion-textarea
         maxlength="80"
         placeholder="Type a description"
@@ -27,55 +27,10 @@
         (ionChange)="setDescriptionText()"
       ></ion-textarea>
     </ion-item>
-    <ion-item ngClass="date" lines="none" color="dark">
-      <ion-label>Date: </ion-label>
-      <ion-input
-        ngClass="date-display"
-        slot="end"
-        [readonly]="true"
-        [value]="currentDate | date: 'dd MMMM yyyy'"
-      ></ion-input>
-    </ion-item>
     <ion-item color="dark" ngClass="modal-list-item">
       <input id="fileInput" type="file" accept="image/*" (change)="onFileSelected($event)" />
     </ion-item>
-    <!-- <ion-item color="dark" ngClass="modal-list-item">
-            <ion-label for="fileInput" >No image to display</ion-label>
-            <ion-img [src]="memory.imageUrl" *ngIf="memory.imageUrl"></ion-img>
-        </ion-item> -->
-    <ion-item ngClass="preview" lines="none" color="dark">
-      <ion-label>Preview memory capsule: </ion-label>
-    </ion-item>
-    <!-- <ion-card ngClass="memory-card" color="none">
-      <div ngClass="memory-img">
-        <img
-          style="
-                    position: absolute;
-                    background-image: url('{{ memory.imageUrl }}');
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    background-size: cover;
-                    width: 100%;
-                    height: 100%;
-                    filter: blur(8px);
-                    -webkit-filter: blur(8px);"
-        />
-      </div>
-      <ion-card-header>
-        <ion-card-title ngClass="memory-card-title">{{ memory.title }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p ngClass="memory-card-desc">{{ memory.description }}</p>
-        <ion-buttons slot="start">
-          <ion-text color="light" ngClass="btn-add-time">+</ion-text>
-        </ion-buttons>
-        <p ngClass="memory-card-timer">0d:3h:0min</p>
-        <ion-text class="ion-padding-top" ngClass="memory-date" color="light"
-          >{{ currentDate | date:'dd MMMM yyyy' }}</ion-text
-        >
-      </ion-card-content>
-    </ion-card> -->
-    <ion-card [ngClass]="{ 'memory-card': !showExpandedView, 'memory-card-expanded': showExpandedView }" color="none">
+    <ion-card *ngIf="user$ | async as user" [ngClass]="{ 'memory-card': !showExpandedView, 'memory-card-expanded': showExpandedView }" color="none">
       <img *ngIf="!showExpandedView" ngClass="memory-img" style="background-image: url('{{ memory.imgUrl }}');" />
       <ion-card-header>
         <div
@@ -83,7 +38,7 @@
         >
           <ion-avatar slot="start">
             <img
-              src="{{ memory.profileUrl }}"
+              src="{{ user.profileImgUrl }}"
               [ngClass]="{
                 'memory-card-profileImage': !showExpandedView,
                 'memory-card-profileImage-expanded': showExpandedView
@@ -92,7 +47,7 @@
           </ion-avatar>
           <ion-card-title
             [ngClass]="{ 'memory-card-username': !showExpandedView, 'memory-card-username-expanded': showExpandedView }"
-            >{{ memory.username }}</ion-card-title
+            >{{ user.username }}</ion-card-title
           >
         </div>
       </ion-card-header>
@@ -120,28 +75,9 @@
           </ion-buttons>
           <p ngClass="memory-card-timer">0d:3h:0min</p>
         </span>
-        <div *ngIf="showExpandedView" class="commentIcon-viewAll">
-          <div class="memory-comment-and-icon">
-            <ion-icon ngClass="memory-comment-icon" name="chatbox-outline"></ion-icon>
-            <ion-label ngClass="memory-comment-text">Comment</ion-label>
-          </div>
-          <ion-text ngClass="comment-viewAll">View all comments <b>1</b></ion-text>
-        </div>
-        <div *ngIf="showExpandedView" ngClass="comment-profileImg-username">
-          <ion-avatar ngClass="memory-avatar-expanded">
-            <img
-              src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60"
-              ngClass="memory-comment-profileImg"
-            />
-          </ion-avatar>
-          <div ngClass="memory-username-and-comment">
-            <ion-text ngClass="memory-comment-username">@example_username</ion-text>
-            <ion-text ngClass="memory-comment-usercomment">Example comment</ion-text>
-          </div>
-        </div>
-        <ion-text (click)="changeMemoryView()" ngClass="memory-show-more"
-          >{{ !showExpandedView ? 'Show More' : 'Show Less' }}</ion-text
-        >
+        <ion-text (click)="changeMemoryView()" ngClass="memory-show-more">{{
+          !showExpandedView ? 'Show More' : 'Show Less'
+        }}</ion-text>
       </ion-card-content>
     </ion-card>
   </ion-list>

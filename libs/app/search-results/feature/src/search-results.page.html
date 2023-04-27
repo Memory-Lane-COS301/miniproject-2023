@@ -1,19 +1,22 @@
 <ion-header color="none">
   <ion-toolbar color="none" [ngClass]="'menu-toolbar'">
     <ion-title ngClass="title">Memory Lane</ion-title>
-    <small slot="end" ngClass="account-time">22h:52m:11s</small>
+    <small slot="end" ngClass="account-time" *ngIf="time$ | async as time">{{ time }}</small>
   </ion-toolbar>
   <ion-toolbar color="dark" lines="none" class="ion-padding-top">
     <ion-buttons slot="start">
       <ion-back-button ngClass="back-btn" defaultHref="/search-page" text=""></ion-back-button>
     </ion-buttons>
-    <ion-searchbar color="medium" ngClass="searchbar" [(ngModel)]="searchValue" disabled="true"></ion-searchbar>
+    <ion-searchbar color="medium" ngClass="searchbar" disabled="true" placeholder="{{ValueSearched}}"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content color="dark">
-  <ion-list ngClass="memory-list" *ngIf="currentFilter==='Memories' || currentFilter==='Date'">
-    <app-memory-card *ngFor="let memory of results$ | async" [memory]="memory"></app-memory-card>
+  <ion-list ngClass="memory-list" *ngIf="currentFilter==='Memories'">
+    <app-memory-card *ngFor="let memory of memoriesResults" [memory]="memory"></app-memory-card>
+  </ion-list>
+  <ion-list ngClass="memory-list" *ngIf="currentFilter==='Date'">
+    <app-memory-card *ngFor="let memory of searchResults" [memory]="memory"></app-memory-card>
   </ion-list>
   <!-- Show filters when searched i.e. pressed Enter -->
   <ion-tabs color="none" ngClass="filter-tabs">
@@ -37,12 +40,7 @@
     *ngIf="currentFilter==='Top Accounts' && searchValue"
     [ngClass]="{'search-list-searched': showFilters, 'search-list': !showFilters}"
   >
-    <ion-item
-      color="none"
-      *ngFor="let result of results$ | async"
-      ngClass="search-item"
-      (click)="openUserProfile(result.userId, result.username)"
-    >
+    <ion-item color="none" *ngFor="let result of results$ | async" ngClass="search-item" (click)="openUserProfile(result.userId, result.username)">
       <ion-avatar ngClass="result-avatar">
         <img src="{{ result.profileImgUrl }}" ngClass="result-profileImg" />
       </ion-avatar>

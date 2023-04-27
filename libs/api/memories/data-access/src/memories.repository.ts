@@ -42,18 +42,19 @@ export class MemoriesRepository {
       .get();
   }
 
-  async getComments(memoryId: string): Promise<IComment[]> {
-    const querySnapshot = await admin.firestore().collection(`memories/${memoryId}/comments`).get();
-
-    const comments: IComment[] = [];
-
-    querySnapshot.forEach((doc) => {
-      const comment = doc.data() as IComment;
-      delete comment.userId;
-      comments.push(comment);
-    });
-
-    return comments;
+  async getComments(memoryId: string) {
+    return await admin
+      .firestore()
+      .collection(`memories/${memoryId}/comments`)
+      .withConverter<IComment>({
+        fromFirestore: (doc) => {
+          const comment = doc.data() as IComment;
+          delete comment.userId;
+          return comment;
+        },
+        toFirestore: (it: IMemory) => it,
+      })
+      .get();
   }
 
   async getFeedMemories(userId: string) {
@@ -109,5 +110,49 @@ export class MemoriesRepository {
       alive: true,
       remainingTime: newTime,
     });
+  }
+
+  async updateMemories(user: IUser) {
+    const updateInfo = {
+      username: user.username,
+      profileImgUrl: user.profileImgUrl,
+    };
+
+    admin
+      .firestore()
+      .collection('memories')
+      .where('userId', '==', user.userId)
+      .get()
+      .then((response) => {
+        const batch = admin.firestore().batch();
+        response.docs.forEach((doc) => {
+          const docRef = admin.firestore().collection('memories').doc(doc.id);
+          batch.update(docRef, updateInfo);
+        });
+        batch.commit();
+      });
+    this.updateComment(user);
+  }
+
+  async updateComment(user: IUser) {
+    const updateInfo = {
+      username: user.username,
+      profileImgUrl: user.profileImgUrl,
+    };
+
+    admin
+      .firestore()
+      .collectionGroup('comments')
+      .where('userId', '==', user.userId)
+      .get()
+      .then((response) => {
+        const batch = admin.firestore().batch();
+        response.docs.forEach((doc) => {
+          const comment :IComment = doc.data as IComment;
+          const docref = admin.firestore().collection(`memories/${comment.memoryId}/comments`).doc(doc.id);
+          batch.update(docref, updateInfo);
+        });
+        batch.commit();
+      });
   }
 }

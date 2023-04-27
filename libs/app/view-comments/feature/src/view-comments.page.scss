@@ -1,37 +1,41 @@
 .memory-comment-text {
-  font-size: 16px;
-}
-.memory-comment-icon {
-  height: 20px;
-  width: 20px;
-  margin-right: 5px;
-}
-.memory-comment-and-icon {
-  padding: 0 5px 5px 5px;
-}
-.memory-comment-username {
-  font-size: 18px;
-  position: absolute;
-  top: 5px;
-  left: 50px;
-  opacity: 0.5;
-}
-.memory-comment-usercomment {
-  font-size: 16px;
-  position: absolute;
-  bottom: 15px;
-  left: 50px;
-  height: auto;
-  max-width: 320px;
-}
-.memory-avatar-expanded {
-  width: 45px;
-  height: 45px;
-  margin-right: 25px;
-  position: absolute;
-  bottom: 25px;
-  left: 5px;
-}
+    font-size: 16px;
+  }
+  .memory-comment-icon {
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+  }
+  .memory-comment-and-icon {
+    padding: 0 5px 5px 5px;
+  }
+  .memory-comment-username {
+    font-size: 18px;
+    position: absolute;
+    top: 5px;
+    left: 50px;
+    opacity: 0.5;
+  }
+  .memory-comment-usercomment {
+    font-size: 12px;
+    position: absolute;
+    top: 30px;
+    left: 60px;
+    max-height: 80px;
+    max-width: 320px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .memory-avatar-expanded {
+    width: 45px;
+    height: 45px;
+    margin-right: 25px;
+    position: absolute;
+    bottom: 25px;
+    left: 5px;
+  }
 
 .memory-username-and-comment {
   margin-left: 20px;
@@ -51,17 +55,16 @@
 .add-new-comment {
   border: 2px solid #fff;
   border-radius: 10px;
-  background-color: #0a0062;
   width: 380px;
-  margin-top: 2px 0 0 2px;
+  margin-top:2px 0 0 2px;
 }
 
 .add-comment-btn {
-  position: absolute;
-  right: 5px;
   height: 25px;
   font-size: 12px;
   background-color: transparent;
+  margin-top: 7px;
+  margin-right: 3px;
 }
 
 ion-content {

@@ -5,6 +5,11 @@ export class SetSearchResults {
   constructor(public readonly results: IMemory[] | null | undefined) {}
 }
 
+export class SetSearchValue {
+  static readonly type = '[SearchResults] SetSearchValue';
+  constructor(public readonly searchValue: string) {}
+}
+
 export class ClearSearchResults {
   static readonly type = '[SearchResults] ClearSearchResults';
 }

@@ -5,9 +5,10 @@ import { SearchResultsPageRouting } from './search-results.routing';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '@mp/app/shared/feature';
+import { SearchResultsModule as SearchResultsDataAccessModule } from '@mp/app/search-results/data-access';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, SharedModule, SearchResultsPageRouting, IonicModule],
+  imports: [CommonModule, FormsModule, SharedModule, SearchResultsPageRouting, IonicModule, SearchResultsDataAccessModule],
   declarations: [SearchResultsPageComponent],
 })
 export class SearchResultsPageModule {}

@@ -13,15 +13,11 @@ export class GetCommentsHandler
 
     const request = query.request;
 
-    delete request.memory.memoryId;
-    if (!request.memory.memoryId) throw new Error('Memory not found');
+    if (!request.memory.memoryId)
+      throw new Error('Memory not found');
 
-    try {
-      const comments = await this.repository.getComments(request.memory.memoryId);
-      const response: IGetCommentsResponse = { comments: comments };
-      return response;
-    } catch (e) {
-      throw new Error('Could not retrieve comments');
-    }
+    const querySnapshot = await this.repository.getComments(request.memory.memoryId);
+    const response: IGetCommentsResponse = { comments: querySnapshot.docs.map(doc => doc.data()) };
+    return response;
   }
 }

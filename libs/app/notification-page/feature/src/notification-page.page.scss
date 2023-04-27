@@ -133,6 +133,8 @@ hr {
     height: 310px;
     max-height: 310px;
     transition: 0.5s;
+    overflow-y: scroll;
+    position: relative;
 }
 
 .friend-requests-hidden,
@@ -159,4 +161,10 @@ hr {
 .friend-request-list-title {
     display: flex;
     justify-content: space-between;
+}
+
+.no-data {
+    position: absolute;
+    top: 100px;
+    left: 90px;
 }

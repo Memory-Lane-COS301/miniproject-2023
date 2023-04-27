@@ -12,8 +12,8 @@ export class DeductAccountTimeEventHandler implements IEventHandler<DeductAccoun
 
     const currentUserSnapshot = await this.usersRepository.findUserById(event.request.userId);
     const currentUserData = currentUserSnapshot.data();
-    if (currentUserData != undefined) {
-      const resultUserTime = currentUserData['accountTime'] - event.request.secondsToAdd;
+    if (currentUserData && currentUserData.accountTime) {
+      const resultUserTime = currentUserData.accountTime - event.request.secondsToAdd;
       this.usersRepository.setUserTime(event.request.userId, resultUserTime);
       return { status: ReviveStatus.SUCCESS };
     } else {

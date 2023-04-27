@@ -1,15 +1,19 @@
 import { formatDate } from '@angular/common';
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Select, Store } from '@ngxs/store';
 import { IMemory } from '@mp/api/memories/util';
-import { Timestamp } from 'firebase-admin/firestore';
 import { MemoryCardState } from '@mp/app/shared/data-access';
 import { Observable } from 'rxjs';
-import { GetCommentsRequest, SetMemoryCard } from '@mp/app/shared/util';
+import { CreateCommentRequest, GetCommentsRequest, SetMemoryCard } from '@mp/app/shared/util';
 import { GetUserProfileRequest } from '@mp/app/user-view/util';
 import { IUser } from '@mp/api/users/util';
 import { IGetProfileRequest } from '@mp/api/profiles/util';
+import { on } from 'stream';
+import { ProfileState } from '@mp/app/profile/data-access';
+import { UserViewState } from '@mp/app/user-view/data-access';
+import { Timestamp } from '@angular/fire/firestore';
+
 
 @Component({
   selector: 'app-memory-card',
@@ -17,22 +21,30 @@ import { IGetProfileRequest } from '@mp/api/profiles/util';
   styleUrls: ['./memory-card.component.scss'],
 })
 export class MemoryCardComponent implements OnInit {
-  @Select(MemoryCardState.memoryCard) memoryCard$!: Observable<IMemory | null>;
-
   @Input() memory!: IMemory;
-  @Input() onUserProfile: boolean | undefined; //we use this to determine whether the memory card is displayed on the user's page or on the feed/search pages
+  @Input() onProfileView!: boolean;
+  @Output() postClick = new EventEmitter<IMemory>();
+
 
   showExpandedView = false;
   previousPageName = '';
   addingNewComment = false;
   new_comment: string = '';
-  first_comment_text: string | null | undefined = '';
-  first_comment_username: string | null | undefined = '';
-
-  constructor(private navCtrl: NavController, private store: Store) {}
+  first_comment_text : string | null | undefined = '';
+  first_comment_username : string | null | undefined = '';
+  intervalId: any;
+  remainingTime: string = '';
+  
+  constructor(
+    private navCtrl: NavController,
+    private store: Store,
+    private state: MemoryCardState
+  ) { 
+      this.startDecrement();
+  }
 
   ngOnInit(): void {
-    this.store.dispatch(new SetMemoryCard(this.memory));
+      // this.store.dispatch(new SetMemoryCard(this.memory)); 
   }
 
   setAddingNewComment() {
@@ -46,27 +58,27 @@ export class MemoryCardComponent implements OnInit {
   changeMemoryView() {
     this.showExpandedView = !this.showExpandedView;
 
-    if (this.showExpandedView) {
-      this.store.dispatch(new GetCommentsRequest(this.memory)); //we only request the comments if we want to display them
+    if(this.showExpandedView) {      
+      // this.store.dispatch(new GetCommentsRequest(this.memory)); //we only request the comments if we want to display them
+      this.onPostClick();
     }
   }
 
   //function to covert timePosted to dd MMMM yyyy
-  convertTimePostedToDate(timePosted: Timestamp | null | undefined): string {
+  convertTimePostedToDate(timePosted: any | null | undefined): string {
     if (!timePosted) return 'Invalid Date';
 
-    const date = new Date(timePosted.seconds);
+    const date = new Date(timePosted._seconds * 1000);
     return formatDate(date, 'dd MMMM yyyy', 'en-US');
   }
 
-  //function to use timePosted to calculate how long ago the memory was posted
-  calculateHowLongAgo(timePosted: Timestamp | null | undefined): string {
+  calculateHowLongAgo(timePosted: any | null | undefined): string {
     if (!timePosted) return 'Invalid Time';
 
-    const date = new Date(timePosted.seconds);
-    const timeDifference = Date.now() - date.getTime();
+    const now = new Date();
+    const date = new Date(timePosted._seconds * 1000);
+    const timeDifference = now.getTime() - date.getTime();
 
-    // Convert time difference to "time ago" string
     const seconds = Math.floor(timeDifference / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
@@ -89,43 +101,44 @@ export class MemoryCardComponent implements OnInit {
     }
   }
 
-  openUserProfile(i_userId: string | null | undefined, i_username: string | null | undefined) {
-    const currentPosition = window.pageYOffset;
-    this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
+  openUserProfile(uid: string | null | undefined, uname: string | null | undefined) {
+    const user = this.store.selectSnapshot(ProfileState.user);
+    const viewedUser = this.store.selectSnapshot(UserViewState.userView).user;
 
-    let _userId: string | null | undefined = '';
-    let _username: string | null | undefined = '';
+    if(!uid || !uname) return;
 
-    let request: IUser;
+    if (user && user.userId && user.username) { //check if this memory is on our profile, if so then we do not want to open our profile again
+        if (uid != user.userId && uname != user.name) {
+            const request_user : IUser = {
+                userId: uid,
+                username: uname
+            }
 
-    //we either want to navigate to the user's profile (i.e. the person who posted the memory)
-    if (!(i_userId && i_username)) {
-      this.memoryCard$.subscribe((user) => {
-        (_userId = user?.userId), (_username = user?.username);
-      });
+            this.store.dispatch(new GetUserProfileRequest(request_user));
+            this.navCtrl.navigateForward('/user-view');
+        }
+    }    
+    else if (viewedUser && viewedUser.userId && viewedUser.username) { //check if this memory is on viewed user's profile, if so then we do not want to open the profile again
+      if (uid != viewedUser.userId && uname != viewedUser.name) {
+          const request_user : IUser = {
+              userId: uid,
+              username: uname
+          }
 
-      request = {
-        userId: _userId,
-        username: _username,
-      };
+          this.store.dispatch(new GetUserProfileRequest(request_user));
+          this.navCtrl.navigateForward('/user-view');
+      }
     }
-    //or we want to open a user's - who commented - profile
     else {
-      request = {
-        userId: i_userId,
-        username: i_username,
-      };
-    }
+      const request_user : IUser = {
+        userId: uid,
+        username: uname
+      }
 
-    this.store.dispatch(new GetUserProfileRequest(request));
-  }
-
-  //we do not want to open the user profile again by tapping the profile image or username of a post, if we are already on their profile
-  validateMemoryCardLocation(uid: string | null | undefined, uname: string | null | undefined) {
-    if (this.onUserProfile) {
-      this.openUserProfile(uid, uname);
+      this.store.dispatch(new GetUserProfileRequest(request_user));
+      this.navCtrl.navigateForward('/user-view');
     }
-  }
+}
 
   openViewedComments() {
     const currentPosition = window.pageYOffset;
@@ -155,4 +168,35 @@ export class MemoryCardComponent implements OnInit {
 
     return 0;
   }
+
+  formatTime(seconds: number | null | undefined): string {
+    if (!seconds)
+      seconds = 0;
+
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
+  }
+
+  addNewComment() {
+    this.store.dispatch(new CreateCommentRequest(this.new_comment));
+  }
+
+  onPostClick(): void {
+    this.postClick.emit(this.memory);
+  }
+
+  startDecrement() {
+    this.intervalId = setInterval(() => {
+      const deathTime: any = this.memory.deathTime;
+      let seconds = 0;
+
+      if (deathTime)
+        seconds = deathTime._seconds - Timestamp.now().seconds;
+     
+      this.remainingTime = this.formatTime(seconds);
+    }, 1000);
+  }
+
 }

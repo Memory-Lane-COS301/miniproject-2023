@@ -11,6 +11,6 @@ export class CreateCommentRequest {
 }
 
 export class UpdateCommentRequest {
-  static readonly type = '[ViewComments] UpdateCommentRequest';
-  constructor(public readonly comment: IComment) {}
+    static readonly type = '[ViewComments] UpdateCommentRequest';
+    constructor(public readonly text: string) {}
 }

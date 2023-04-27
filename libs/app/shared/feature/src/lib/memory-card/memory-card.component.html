@@ -1,4 +1,4 @@
-<div *ngIf="memoryCard$ | async as memory">
+<div>
   <ion-card
     #targetCard
     [ngClass]="{
@@ -20,12 +20,12 @@
               'memory-card-profileImage': !showExpandedView,
               'memory-card-profileImage-expanded': showExpandedView
             }"
-            (click)="validateMemoryCardLocation(null, null)"
+            (click)="openUserProfile(memory.userId, memory.username)"
           />
         </ion-avatar>
         <ion-card-title
           [ngClass]="{ 'memory-card-username': !showExpandedView, 'memory-card-username-expanded': showExpandedView }"
-          (click)="validateMemoryCardLocation(null, null)"
+          (click)="openUserProfile(memory.userId, memory.username)"
           >{{ memory.username }}</ion-card-title
         >
         <ion-text
@@ -40,15 +40,20 @@
       }}</ion-card-title>
       <ion-img *ngIf="showExpandedView" ngClass="memory-img-expanded" src="{{ memory.imgUrl }}"></ion-img>
       <h4 *ngIf="showExpandedView" ngClass="memory-card-title-expanded">{{ memory.title }}</h4>
-      <p
-        [ngClass]="{ 'memory-card-desc': !showExpandedView, 'memory-card-desc-expanded': showExpandedView }"
-        (click)="changeMemoryView()"
-      >
+      <p [ngClass]="{ 'memory-card-desc': !showExpandedView && !onProfileView, 'memory-card-desc-expanded': showExpandedView, 'memory-card-desc-profileView': !showExpandedView && onProfileView }"
+         (click)="changeMemoryView()"
+        >
         {{ memory.description }}
       </p>
       <ion-text *ngIf="!showExpandedView" class="ion-padding-top" ngClass="memory-date">{{
         convertTimePostedToDate(memory.created)
       }}</ion-text>
+      <span *ngIf="!addingNewComment && onProfileView" [ngClass]="{'span-post-timer': !showExpandedView, 'span-post-timer-expanded':showExpandedView}">
+        <ion-buttons slot="start">
+          <ion-text color="light" ngClass="btn-add-time">+</ion-text>
+        </ion-buttons>
+        <p ngClass="memory-card-timer">{{ remainingTime }}</p>
+      </span>
       <div *ngIf="showExpandedView" class="commentIcon-viewAll">
         <div class="memory-comment-and-icon">
           <ion-icon ngClass="memory-comment-icon" name="chatbox-outline"></ion-icon>
@@ -59,18 +64,18 @@
         >
       </div>
       <div *ngIf="showExpandedView" ngClass="comment-profileImg-username">
-        <div *ngIf="memory.comments">
+        <div *ngIf="memory.comments && memory.comments.length > 0">
           <ion-avatar ngClass="memory-avatar-expanded">
             <img
               src="{{ memory.comments[0].profileImgUrl }}"
               ngClass="memory-comment-profileImg"
-              (click)="validateMemoryCardLocation(memory.comments[0].userId, memory.comments[0].username)"
+              (click)="openUserProfile(memory.comments[0].userId, memory.comments[0].username)"
             />
           </ion-avatar>
           <div ngClass="memory-username-and-comment">
             <ion-text
               ngClass="memory-comment-username"
-              (click)="validateMemoryCardLocation(memory.comments[0].userId, memory.comments[0].username)"
+              (click)="openUserProfile(memory.comments[0].userId, memory.comments[0].username)"
               >{{ getFirstCommentUsername() }}</ion-text
             >
             <ion-text ngClass="memory-comment-usercomment">{{ getFirstCommentText() }}</ion-text>
@@ -78,20 +83,18 @@
         </div>
       </div>
       <div *ngIf="showExpandedView && addingNewComment" ngClass="add-new-comment">
-        <form ngClass="add-comment-form" action="addNewComment()" #formcontrol="ngForm">
-          <ion-input
-            ngClass="add-comment-input"
-            type="text"
-            placeholder="Add a comment..."
-            [(ngModel)]="new_comment"
+          <ion-input 
+            ngClass="add-comment-input" 
+            type="text" 
+            placeholder="Add a comment..." 
+            [(ngModel)]="new_comment" 
             name="new_comment"
             autofocus
-          >
-            <ion-button [disabled]="!new_comment" type="submit" ngClass="add-comment-btn" color="none">
-              <ion-icon size="small" name="send" ngClass="add-comment-icon"></ion-icon>
-            </ion-button>
+            >
           </ion-input>
-        </form>
+          <ion-button [disabled]="!new_comment" (click)="addNewComment()" ngClass="add-comment-btn" color="none">
+            <ion-icon size="small" name="send" ngClass="add-comment-icon"></ion-icon>
+          </ion-button>
       </div>
       <div ngClass="show-btn-cancel-comment-btn">
         <ion-button
