@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { collection, collectionChanges, collectionData, doc, docData, Firestore } from '@angular/fire/firestore';
+import { collection, collectionChanges, collectionData, doc, docData, Firestore, orderBy, query } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import {
   IComment,
   ICreateCommentRequest,
   ICreateCommentResponse,
+  IGetCommentsRequest,
   IMemory,
   IUpdateCommentRequest,
   IUpdateCommentResponse,
@@ -13,7 +14,10 @@ import { from, map, Observable } from 'rxjs';
 
 @Injectable()
 export class ViewedCommentsApi {
-  constructor(private readonly firestore: Firestore, private readonly functions: Functions) {}
+  constructor(
+    private readonly firestore: Firestore,
+    private readonly functions: Functions,
+    ) {}
 
   viewedComments$(id: string) {
     const docRef = doc(this.firestore, `memories/${id}`).withConverter<IMemory>({
@@ -25,14 +29,12 @@ export class ViewedCommentsApi {
     return docData(docRef, { idField: 'id' });
   }
 
-  comments$(memoryId: string): Observable<IComment[]> {
+  comments$(memoryId: string, userId: string): Observable<IComment[]> {
     const collectionRef = collection(this.firestore, `memories/${memoryId}/comments`)
-      .withConverter<IComment>({
-        fromFirestore: snapshot => snapshot.data() as IComment,
-        toFirestore: it => it,
-      });
-    
-    return from(collectionData(collectionRef));
+    return collectionData(collectionRef)
+      .pipe(
+        map((data) => data as IComment[])
+      )
   }
 
   async createComment(request: ICreateCommentRequest) {

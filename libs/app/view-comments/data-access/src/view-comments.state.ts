@@ -71,8 +71,9 @@ export class ViewedCommentsState {
           }
 
           const responseRef = await this.viewedCommentsApi.createComment(request);
-          return ctx.patchState({ viewedComments: [...state.viewedComments, responseRef.data.comment] })
+          // return ctx.patchState({ viewedComments: [...state.viewedComments, responseRef.data.comment] })
 
+          return;
           // state.memory?.comments?.push(responseRef.data.comment);
 
           // const response : IMemory = {
@@ -121,9 +122,17 @@ export class ViewedCommentsState {
   @Action(SubscribeToMemoryComments) 
   async subscribeToMemoryComments(ctx: StateContext<ViewedCommentsStateModel>, { memoryId }: SubscribeToMemoryComments) {
       try{
+        const authState = this.store.selectSnapshot(AuthState);
         ctx.patchState({ memoryId: memoryId });
-        return this.viewedCommentsApi.comments$(memoryId)
-        .pipe(tap((comments: IComment[]) => ctx.patchState({viewedComments: comments})));
+        return this.viewedCommentsApi.comments$(memoryId, authState.user.userId)
+        .pipe(tap((comments: IComment[]) =>  { 
+          ctx.patchState(
+          {viewedComments: comments.sort((a, b) => {
+            if (!a.created?.seconds || !b.created?.seconds)
+              return 0;
+            
+            return a.created.seconds - b.created.seconds;
+          })})}));
       } catch (error) {
           return ctx.dispatch(new SetError("Could not retrieve comments"));
       }

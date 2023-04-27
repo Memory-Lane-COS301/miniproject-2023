@@ -122,7 +122,7 @@ export class MemoriesRepository {
       const memory = memoryDoc.data() as IMemory;
       delete memory.userId;
 
-      const commentsSnapshot = await memoryDoc.ref.collection('comments').get();
+      const commentsSnapshot = await memoryDoc.ref.collection('comments').orderBy('created', 'desc').get();
       memory.comments = [];
 
       for (const commentDoc of commentsSnapshot.docs) {

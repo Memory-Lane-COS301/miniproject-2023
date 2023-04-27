@@ -5,6 +5,7 @@ import { ViewCommentsPageComponent } from './view-comments.page';
 import { FormsModule } from '@angular/forms';
 import { ViewCommentsRouting } from './view-comments.routing';
 import { ViewCommentsModule as ViewCommentsDataAccessModule } from '@mp/app/view-comments/data-access';
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { ViewCommentsModule as ViewCommentsDataAccessModule } from '@mp/app/view
     ViewCommentsDataAccessModule
   ],
   declarations: [ViewCommentsPageComponent],
-  exports: [ViewCommentsPageComponent]
+  exports: [ViewCommentsPageComponent],
+  providers: [AngularFireFunctions]
 })
 export class ViewCommentsModule {}
