@@ -48,7 +48,7 @@
         <div ngClass="comments-list-title" (click)="toggleCommentsList()">
             <div>
                 <ion-text size="large" ngClass="list-title-text">Comments</ion-text>
-                <ion-badge color="danger" ngClass="list-title-count">{{ getCommentsLength() }}</ion-badge>
+                <ion-badge *ngIf="!commentsExpandedBadge" color="danger" ngClass="list-title-count">{{ getCommentsLength() }}</ion-badge>
             </div>
             <ion-icon name="chevron-forward-circle-outline" [ngClass]="{'toggleIcon-comments': !commentsListExpanded, 'toggleIcon-comments-90deg': commentsListExpanded}"></ion-icon>
         </div>

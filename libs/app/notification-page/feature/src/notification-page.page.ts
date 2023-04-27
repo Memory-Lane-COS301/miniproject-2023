@@ -24,13 +24,18 @@ export class NotificationPage {
 
     friendRequestsListExpanded = false;
     commentsListExpanded = false;
+    commentsExpandedBadge = false;
+    commentsCount = 0;
+    friendRequestsCount = 0;
 
     toggleFriendRequestsList() {
         this.friendRequestsListExpanded = !this.friendRequestsListExpanded;
     }
 
     toggleCommentsList() {
+        this.commentsCount = 0;
         this.commentsListExpanded = !this.commentsListExpanded;
+        this.commentsExpandedBadge = true;
     }
 
     constructor(
@@ -45,6 +50,8 @@ export class NotificationPage {
             username: uname
         }
 
+
+        this.friendRequestsCount -= 1;
         this.store.dispatch(new UpdateFriendRequest(friend));
     }
 
@@ -56,30 +63,31 @@ export class NotificationPage {
             username: uname
         }
 
+        this.friendRequestsCount -= 1;
         this.store.dispatch(new DeleteFriendRequest(friend))
     }
 
     getCommentsLength() {
-        let size = 0;
+        this.commentsCount = 0;
 
         this.comments$.subscribe((comments) => {
             if (!comments) return;
 
-            size = comments.length;
+            this.commentsCount = comments.length;
         })
 
-        return size;
+        return this.commentsCount;
     }
 
     getFriendRequestsLength(){
-        let size = 0;
+        this.friendRequestsCount = 0;
 
         this.friendRequests$.subscribe((friendRequests$) => {
             if (!friendRequests$) return;
 
-            size = friendRequests$.length;
+            this.friendRequestsCount = friendRequests$.length;
         })
 
-        return size;
+        return this.friendRequestsCount;
     }
 }
