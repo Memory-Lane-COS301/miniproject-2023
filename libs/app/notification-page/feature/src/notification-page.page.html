@@ -10,7 +10,7 @@
         <div ngClass="friend-request-list-title" (click)="toggleFriendRequestsList()">
             <div>
                 <ion-text size="large" ngClass="list-title-text">Friend Requests</ion-text>
-                <ion-badge ngClass="list-title-count">{{ getFriendRequestsLength() }}</ion-badge>
+                <ion-badge *ngIf="friendRequestsCount > 0" ngClass="list-title-count">{{ getFriendRequestsLength() }}</ion-badge>
             </div>
             <ion-icon name="chevron-forward-circle-outline" [ngClass]="{'toggleIcon-requests': !friendRequestsListExpanded, 'toggleIcon-requests-90deg': friendRequestsListExpanded}"></ion-icon>
         </div>
@@ -48,7 +48,7 @@
         <div ngClass="comments-list-title" (click)="toggleCommentsList()">
             <div>
                 <ion-text size="large" ngClass="list-title-text">Comments</ion-text>
-                <ion-badge *ngIf="!commentsExpandedBadge" color="danger" ngClass="list-title-count">{{ getCommentsLength() }}</ion-badge>
+                <ion-badge *ngIf="!commentsExpandedBadge && commentNotificationCount > 0" color="danger" ngClass="list-title-count">{{ getCommentsLength() }}</ion-badge>
             </div>
             <ion-icon name="chevron-forward-circle-outline" [ngClass]="{'toggleIcon-comments': !commentsListExpanded, 'toggleIcon-comments-90deg': commentsListExpanded}"></ion-icon>
         </div>

@@ -8,7 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MenubarService } from '@mp/app/services/feature';
 import { NotificationPageState } from '@mp/app/notification-page/data-access';
 import { IComment } from '@mp/api/memories/util';
-import { SetNotificationPage } from '@mp/app/notification-page/util';
+import { SetCommentsNotificationAmount, SetNotificationPage } from '@mp/app/notification-page/util';
 
 @Component({
   selector: 'ms-home-page',
@@ -18,6 +18,8 @@ import { SetNotificationPage } from '@mp/app/notification-page/util';
 export class HomePage implements OnInit {
   @Select(NotificationPageState.friendRequests) friendRequests$!: Observable<IUser[] | null>;
   @Select(NotificationPageState.comments) comments$!: Observable<IComment[] | null>;
+  @Select(NotificationPageState.notificationAmount) notificationAmount$!: Observable<number>;
+  @Select(NotificationPageState.commentsAmount) commentsAmount$!: Observable<number>;
 
   totalNotifications: number;
   totalComments: number;
@@ -25,6 +27,7 @@ export class HomePage implements OnInit {
   subscription: Subscription;
   menuShown: boolean;
   navigated: boolean;
+  noNotifications: boolean;
 
   constructor(private store: Store, private menubarService: MenubarService) {
     this.menuShown = this.menubarService.menuStatus;
@@ -33,6 +36,7 @@ export class HomePage implements OnInit {
     this.totalFriedRequests = 0;
     this.subscription = new Subscription();
     this.navigated = false;
+    this.noNotifications = false;
   }
 
   friendsRequests = [
@@ -146,18 +150,43 @@ commentNotifications = [
         }
       }
     )
+
+    this.notificationAmount$.subscribe(
+      (value) => {
+        this.totalNotifications = value;
+      }
+    )
+
+    this.commentsAmount$.subscribe((value) => {
+      this.totalComments = value;
+    })
     
     this.totalNotifications = this.totalComments + this.totalFriedRequests;
+
+    if (this.totalNotifications === 0) {
+      this.noNotifications = true;
+    }
     return this.totalNotifications;
   
   }
 
   ngOnInit() {
     this.store.dispatch(new SetNotificationPage(this.friendsRequests, this.commentNotifications));
+    this.comments$.subscribe((value) => {
+      if (value) this.totalComments = value?.length;
+    })
+    this.store.dispatch(new SetCommentsNotificationAmount(this.totalComments))
+    this.notificationAmount$.subscribe((value) => {
+      this.totalNotifications = value;
+    })
   }
 
+  //prevents memory leaks
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
   viewNotifications() {
     this.navigated = true;
-    this.totalNotifications = this.totalFriedRequests;
+    // this.totalNotifications = this.totalFriedRequests;
   }
 }
