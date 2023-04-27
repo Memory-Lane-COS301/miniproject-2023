@@ -19,7 +19,6 @@ import { IUser } from '@mp/api/users/util';
 import { CreateNewMemory } from "@mp/app/profile-view/util"
 import { SetError } from '@mp/app/errors/util';
 
-
 @Component({
   selector: 'app-add-memory',
   templateUrl: './add-memory.page.html',
