@@ -11,7 +11,7 @@ import {
     UpdateFriendRequest,
     AddNewComment,
     DeleteFriendRequest,
-    GetAllPendingFriendRequests
+    GetAllPendingFriendRequests,
     SetNotificationAmount,
     SetCommentsNotificationAmount
 } from '@mp/app/notification-page/util';

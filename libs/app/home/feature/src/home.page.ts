@@ -40,11 +40,11 @@ export class HomePage implements OnInit {
     this.noNotifications = false;
   }
 
-  ngOnInit(): void {
+  // ngOnInit(): void {
     // setInterval(() => {
     //   this.store.dispatch(new GetAllPendingFriendRequests())
     // },5000);
-  }
+  // }
   friendsRequests = [
     {
         userId: "1",
