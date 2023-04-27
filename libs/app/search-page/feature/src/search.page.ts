@@ -10,8 +10,7 @@ import { Observable } from 'rxjs';
 import { SetSearchResults, SetSearchValue } from '@mp/app/search-results/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Memory } from '@mp/app/shared/feature';
-import { GetSearchPageMemories, GetSearchResults } from '@mp/app/search-page/util';
-import { GetFeedMemories } from '@mp/app/feed/util';
+import { GetSearchPageMemories, GetSearchResults, GetFeedMemories } from '@mp/app/search-page/util';
 import { FeedState } from '@mp/app/feed/data-access';
 import { ProfileState } from '@mp/app/profile/data-access';
 
@@ -93,6 +92,9 @@ export class SearchPageComponent implements OnInit{
 
     this.store.dispatch(new GetSearchResults(this.searchValue));
     // this.store.dispatch(new SetSearchResults(this.searchResults))
+    this.searchResults$.subscribe((results) => {
+      console.log(results);
+    })
     return this.searchResults;
   }
 
@@ -170,5 +172,6 @@ export class SearchPageComponent implements OnInit{
 
  ngOnInit(): void { 
     this.store.dispatch(new GetFeedMemories());
+    this.store.dispatch(new GetSearchResults(this.searchValue));
  }
 }
