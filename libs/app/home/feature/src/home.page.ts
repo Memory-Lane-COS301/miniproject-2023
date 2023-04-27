@@ -185,8 +185,4 @@ commentNotifications = [
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-  viewNotifications() {
-    this.navigated = true;
-    // this.totalNotifications = this.totalFriedRequests;
-  }
 }
