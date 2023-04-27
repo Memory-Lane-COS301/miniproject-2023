@@ -12,27 +12,27 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="dark">
+<ion-content color="dark" *ngIf="userProfile$ | async as userProfile">
   <!-- <app-user-info></app-user-info> -->
   <!-- CODE BELOW WILL BE GENERATER BY ABOVE ELEMENT, REQUIRES ROUTING-->
   <ion-grid ngClass="heading-grid">
     <ion-row ngClass="heading-grid-row" class="ion-text-center">
       <ion-col ngClass="heading-grid-row-col1">
         <ion-text ngClass="heading-grid-row-col1-title">Friends</ion-text><br />
-        <ion-text ngClass="friend-memories-count">100</ion-text>
+        <ion-text ngClass="friend-memories-count">{{ userProfile.user?.friendCount }}</ion-text>
       </ion-col>
       <ion-col ngClass="heading-grid-row-col2">
         <ion-avatar ngClass="user-profile-img">
           <ion-img
-            src="../../../../../assets/Design_icons/Design icons/Login page background and images/Big person.png"
+            src="{{getProfileImgUrl()}}"
           ></ion-img
           ><br />
         </ion-avatar>
-        <ion-text ngClass="username">@username</ion-text>
+        <ion-text ngClass="username">@{{ userProfile.user?.username }}</ion-text>
       </ion-col>
       <ion-col ngClass="heading-grid-row-col3">
         <ion-text ngClass="heading-grid-row-col3-title">Memories</ion-text><br />
-        <ion-text ngClass="friend-memories-count">100</ion-text>
+        <ion-text ngClass="friend-memories-count">{{ userProfile.user?.memoryCount }}</ion-text>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -40,19 +40,30 @@
 
   <ion-buttons class="ion-justify-content-center">
     <ion-button
-      [ngClass]="{'friend-req-btn-added': added , 'friend-req-btn-not-added': !added}"
+      *ngIf="isNotFriends()"
+      ngClass="friend-req-btn-not-added"
       (click)="addedNewFriend()"
     >
-      <ion-icon *ngIf="!added" slot="end" name="add"></ion-icon>
-      <div *ngIf="added" class="wrapper" slot="end">
-        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-          <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-          <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-        </svg>
-      </div>
-      {{ btn_text }}
+      <ion-icon slot="end" name="add"></ion-icon>
+      Send friend request
     </ion-button>
-    <ion-button *ngIf="added" ngClass="unfriend-btn" (click)="presentAlert()">
+    <ion-button
+      *ngIf="isWaitingRequest()"
+      ngClass="friend-req-btn-not-added"
+    >
+      Waiting for acceptance
+    </ion-button>
+    <ion-button *ngIf="isWaitingRequest()" ngClass="unfriend-btn" (click)="cancelFriend()">
+      <ion-icon ngClass="unfriend-icon" color="dark" name="close-circle-outline" slot="end"></ion-icon>
+      Cancel
+    </ion-button>
+    <ion-button
+      *ngIf="isFriends()"
+      ngClass="friend-req-btn-added"
+    >
+      You are friends
+    </ion-button>
+    <ion-button *ngIf="isFriends()" ngClass="unfriend-btn" (click)="presentAlert()">
       <ion-icon ngClass="unfriend-icon" color="dark" name="close-circle-outline" slot="end"></ion-icon>
       Unfriend
     </ion-button>

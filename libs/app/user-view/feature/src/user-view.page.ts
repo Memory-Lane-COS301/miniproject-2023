@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
-import { GetUserProfileRequest } from '@mp/app/user-view/util';
+import { CheckUserFriendStatus, CreateFriendRequest, DeleteFriend, DeleteFriendRequest, GetUserProfileRequest } from '@mp/app/user-view/util';
 import { IGetProfileRequest, IProfile } from '@mp/api/profiles/util';
 import { UserViewState, UserViewStateModel } from '@mp/app/user-view/data-access';
 import { Select, Store } from '@ngxs/store';
@@ -17,9 +17,10 @@ import { IUser } from '@mp/api/users/util';
 })
 export class UserViewPageComponent {
   @Select(UserViewState.userView) userProfile$!: Observable<IProfile | null>;
+  @Select(UserViewState.isFriends) isFriends$!: Observable<boolean | null>;
+  @Select(UserViewState.isWaitingRequest) isWaitingRequest$!: Observable<boolean | null>;
+  @Select(UserViewState.isNotFriends) isNotFriends$!: Observable<boolean | null>;
 
-  added = false;
-  btn_text = 'Send friend request';
   handlerMessage = '';
   roleMessage = '';
   showExpandedView = false;
@@ -33,8 +34,9 @@ export class UserViewPageComponent {
   ) {}
 
   async presentAlert() {
+    const user = this.store.selectSnapshot(UserViewState.userView).user;
     const alert = await this.alertController.create({
-      header: 'Are you sure you want to unfriend <user name>?',
+      header: `Are you sure you want to unfriend ${user?.username}?`,
       buttons: [
         {
           text: 'Cancel',
@@ -47,7 +49,7 @@ export class UserViewPageComponent {
           text: 'Confirm',
           role: 'confirm',
           handler: () => {
-            this.handlerMessage = 'Unfriened <user name>';
+            this.handlerMessage = `Unfriended ${user?.username}`;
             this.presentToast('top');
             this.removeFriend();
           },
@@ -73,35 +75,60 @@ export class UserViewPageComponent {
   }
 
   addedNewFriend() {
-    this.added = true;
-    this.btn_text = 'You are friends';
+    let _userId = '';
+    let _username : string | null | undefined = '';
+
+    this.userProfile$.subscribe((profile) => {
+      if (profile && profile.user) {
+        _userId = profile?.userId,
+        _username = profile?.user?.username
+      }
+    });
+
+    const request : IUser = {
+      userId: _userId,
+      username: _username
+    }
+
+    this.store.dispatch(new CreateFriendRequest(request));
   }
 
   removeFriend() {
-    this.added = false;
-    this.btn_text = 'Send friend request';
+    let _userId = '';
+    let _username : string | null | undefined = '';
 
-    // const status = FriendRequestStatus['REJECTED'];
+    this.userProfile$.subscribe((profile) => {
+      if (profile && profile.user) {
+        _userId = profile?.userId,
+        _username = profile?.user?.username
+      }
+    });
 
-    // this.store.dispatch(new UpdateFriendRequest(status));
+    const request : IUser = {
+      userId: _userId,
+      username: _username
+    }
+
+    this.store.dispatch(new DeleteFriend(request));
   }
 
-  //called if a user clicks on the user's username or profile image either on the feed page or during a search
-  openUserProfile(_username: string, _userId: string) {
-    const requestData: IProfile = {
-      userId: _userId,
-      user: {
-        userId: _userId,
-        username: _username,
-      },
-    };
+  cancelFriend() {
+    let _userId = '';
+    let _username : string | null | undefined = '';
 
-    const request: IUser = {
-      userId: _userId,
-      username: _username,
-    };
+    this.userProfile$.subscribe((profile) => {
+      if (profile && profile.user) {
+        _userId = profile?.userId,
+        _username = profile?.user?.username
+      }
+    });
 
-    this.store.dispatch(new GetUserProfileRequest(request));
+    const request : IUser = {
+      userId: _userId,
+      username: _username
+    }
+
+    this.store.dispatch(new DeleteFriendRequest(request));
   }
 
   changeMemoryView() {
@@ -116,5 +143,46 @@ export class UserViewPageComponent {
     if (!this.memories) return null;
 
     return this.memories;
+  }
+
+  getProfileImgUrl() {
+    let imgUrl = '';
+    this.userProfile$.subscribe((profile) => {
+      if (profile?.user?.profileImgUrl) {
+        imgUrl = profile.user.profileImgUrl;
+      }
+      else {
+        imgUrl = '../../../../../assets/Design_icons/Design icons/Login page background and images/Big person.png';
+      }
+    })
+
+    return imgUrl;
+  }
+
+  isNotFriends() {
+    let isNotFriends: boolean | null = false;
+    this.isNotFriends$.subscribe((_value) => {
+      isNotFriends = _value; 
+    });
+
+    return isNotFriends;
+  }
+
+  isWaitingRequest() {
+    let isWaitingRequest: boolean | null = false;
+    this.isWaitingRequest$.subscribe((_value) => {
+      isWaitingRequest = _value; 
+    });
+
+    return isWaitingRequest;
+  }
+
+  isFriends() {
+    let isFriends: boolean | null = false;
+    this.isFriends$.subscribe((_value) => {
+      isFriends = _value; 
+    });
+
+    return isFriends;
   }
 }

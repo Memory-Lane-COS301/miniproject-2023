@@ -77,63 +77,77 @@ export class MemoryCardState {
     }
   }
 
-  @Action(CreateCommentRequest)
-  async createCommentRequest(ctx: StateContext<MemoryCardStateModel>, action: CreateCommentRequest) {
-    try {
-      const state = ctx.getState();
-      const _userId = state.memoryCard.userId;
-      const _memoryId = state.memoryCard.memoryId;
-      const _text = action.comment.text;
+    @Action(CreateCommentRequest) 
+    async createCommentRequest(ctx: StateContext<MemoryCardStateModel>, { text }: CreateCommentRequest) {
+        try{
+            const card = this.store.selectSnapshot(MemoryCardState.memoryCard);
 
-      const request: ICreateCommentRequest = {
-        comment: {
-          userId: _userId,
-          memoryId: _memoryId,
-          text: _text,
-        },
-      };
+            if (!card) {
+                return ctx.dispatch(new SetError('Memory Card not set'));
+            }
+            else if (!card.userId) {
+                return ctx.dispatch(new SetError('Card userId not set'));
+            }
+            else if (!card.username) {
+                return ctx.dispatch(new SetError('Card username not set'));
+            }
 
-      const responseRef = await this.memoryCardApi.createComment(request);
-      state.memoryCard.comments?.push(responseRef.data.comment);
+            const _userId = card.userId;
+            const _memoryId = card.memoryId;
+            const _text = text;
 
-      const response: IMemory = {
-        ...state.memoryCard,
-        comments: state.memoryCard.comments,
-      };
+            const request : ICreateCommentRequest = {
+                comment: {
+                    userId: _userId,
+                    memoryId: _memoryId,
+                    text: _text
+                }
+            }
 
-      return ctx.dispatch(new SetMemoryCard(response));
-    } catch (error) {
-      return ctx.dispatch(new SetError((error as Error).message));
+            const responseRef = await this.memoryCardApi.createComment(request);
+            card.comments?.push(responseRef.data.comment);
+
+            const response : IMemory = {
+                ...card,
+                comments: card.comments
+            };
+            
+            return ctx.dispatch(new SetMemoryCard(response));
+        }
+        catch (error) {
+            return ctx.dispatch(new SetError((error as Error).message));
+        }
     }
-  }
 
-  @Action(UpdateCommentRequest)
-  async updateCommentRequest(ctx: StateContext<MemoryCardStateModel>, action: UpdateCommentRequest) {
-    try {
-      const state = ctx.getState();
-      const _userId = state.memoryCard.userId;
-      const _memoryId = state.memoryCard.memoryId;
-      const _text = action.comment.text;
+    @Action(UpdateCommentRequest) 
+    async updateCommentRequest(ctx: StateContext<MemoryCardStateModel>, { text }: UpdateCommentRequest) {
+        try{
+            const state = ctx.getState();
+            const _userId = state.memoryCard.userId;
+            const _memoryId = state.memoryCard.memoryId;
+            const _text = text;
 
-      const request: IUpdateCommentRequest = {
-        comment: {
-          userId: _userId,
-          memoryId: _memoryId,
-          text: _text,
-        },
-      };
+            const request : IUpdateCommentRequest = {
+                comment: {
+                    userId: _userId,
+                    memoryId: _memoryId,
+                    text: _text
+                }
+            }
 
-      const responseRef = await this.memoryCardApi.updateComment(request);
-      state.memoryCard.comments?.push(responseRef.data.comment);
+            const responseRef = await this.memoryCardApi.updateComment(request);
+            state.memoryCard.comments?.push(responseRef.data.comment);
 
-      const response: IMemory = {
-        ...state.memoryCard,
-        comments: state.memoryCard.comments,
-      };
-
-      return ctx.dispatch(new SetMemoryCard(response));
-    } catch (error) {
-      return ctx.dispatch(new SetError((error as Error).message));
+            const response : IMemory = {
+                ...state.memoryCard,
+                comments: state.memoryCard.comments
+            };
+            
+            return ctx.dispatch(new SetMemoryCard(response));
+        }
+        catch (error) {
+            return ctx.dispatch(new SetError((error as Error).message));
+        }
     }
-  }
+
 }

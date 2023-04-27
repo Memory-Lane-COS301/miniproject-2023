@@ -1,79 +1,40 @@
 import { Injectable } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 import {
-    AgeGroup,
-    Ethnicity,
-    Gender,
-    HouseholdIncome,
-    IProfile,
-    IUpdateAccountDetailsRequest,
-    IUpdateAddressDetailsRequest,
-    IUpdateContactDetailsRequest,
-    IUpdateOccupationDetailsRequest,
-    IUpdatePersonalDetailsRequest
-} from '@mp/api/profiles/util';
+  IUpdateUserRequest 
+} from '@mp/api/users/util'
 import { AuthState } from '@mp/app/auth/data-access';
 import { Logout as AuthLogout } from '@mp/app/auth/util';
 import { SetError } from '@mp/app/errors/util';
 import {
     Logout,
-    SetProfile,
-    SubscribeToProfile,
-    UpdateAccountDetails,
-    UpdateAddressDetails,
-    UpdateContactDetails,
-    UpdateOccupationDetails,
-    UpdatePersonalDetails
+    SetUser,
+    SetUserDetailsForm,
+    SubscribeToUser,
+    UpdateUserDetails,
+    DecrementUserTime,
+    UpdateUser,
+    SetTime
 } from '@mp/app/profile/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
 import { tap } from 'rxjs';
 import { ProfilesApi } from './profiles.api';
+import { IUser } from '@mp/api/users/util';
+import { IProfile } from '@mp/api/profiles/util';
+import { Timestamp } from '@angular/fire/firestore';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ProfileStateModel {
   profile: IProfile | null;
-  accountDetailsForm: {
+  user: IUser | null;
+  time: string;
+  userDetailsForm: {
     model: {
-      displayName: string | null;
-      email: string | null;
-      photoURL: string | null;
-      password: string | null;
-    };
-    dirty: false;
-    status: string;
-    errors: object;
-  };
-  addressDetailsForm: {
-    model: {
-      residentialArea: string | null;
-      workArea: string | null;
-    };
-    dirty: false;
-    status: string;
-    errors: object;
-  };
-  contactDetailsForm: {
-    model: {
-      cellphone: string | null;
-    };
-    dirty: false;
-    status: string;
-    errors: object;
-  };
-  personalDetailsForm: {
-    model: {
-      age: AgeGroup | null;
-      gender: Gender | null;
-      ethnicity: Ethnicity | null;
-    };
-    dirty: false;
-    status: string;
-    errors: object;
-  };
-  occupationDetailsForm: {
-    model: {
-      householdIncome: HouseholdIncome | null;
-      occupation: string | null;
+      name: string | null | undefined;
+      surname: string | null | undefined;
+      username: string | null | undefined;
+      email: string | null | undefined;
+      bio: string | null | undefined;
     };
     dirty: false;
     status: string;
@@ -85,48 +46,15 @@ export interface ProfileStateModel {
   name: 'profile',
   defaults: {
     profile: null,
-    accountDetailsForm: {
+    user: null,
+    time: '',
+    userDetailsForm: {
       model: {
-        displayName: null,
+        name: null,
+        surname: null,
+        username: null,
         email: null,
-        photoURL: null,
-        password: null,
-      },
-      dirty: false,
-      status: '',
-      errors: {},
-    },
-    addressDetailsForm: {
-      model: {
-        residentialArea: null,
-        workArea: null,
-      },
-      dirty: false,
-      status: '',
-      errors: {},
-    },
-    contactDetailsForm: {
-      model: {
-        cellphone: null,
-      },
-      dirty: false,
-      status: '',
-      errors: {},
-    },
-    personalDetailsForm: {
-      model: {
-        age: null,
-        gender: null,
-        ethnicity: null,
-      },
-      dirty: false,
-      status: '',
-      errors: {},
-    },
-    occupationDetailsForm: {
-      model: {
-        householdIncome: null,
-        occupation: null,
+        bio: null
       },
       dirty: false,
       status: '',
@@ -134,16 +62,32 @@ export interface ProfileStateModel {
     },
   },
 })
+
 @Injectable()
 export class ProfileState {
+  private intervalId: any;
+
   constructor(
     private readonly profileApi: ProfilesApi,
-    private readonly store: Store
-  ) {}
+    private readonly store: Store,
+    private readonly toastController: ToastController
+  ) {
+    // this.startDecrement();
+  }
 
   @Selector()
   static profile(state: ProfileStateModel) {
     return state.profile;
+  }
+
+  @Selector()
+  static user(state: ProfileStateModel) {
+    return state.user;
+  }
+
+  @Selector()
+  static time(state: ProfileStateModel) {
+    return state.time;
   }
 
   @Action(Logout)
@@ -151,177 +95,172 @@ export class ProfileState {
     return ctx.dispatch(new AuthLogout());
   }
 
-  @Action(SubscribeToProfile)
-  subscribeToProfile(ctx: StateContext<ProfileStateModel>) {
+  @Action(SubscribeToUser)
+  subscribeToUser(ctx: StateContext<ProfileStateModel>) {
     const user = this.store.selectSnapshot(AuthState.user);
     if (!user) return ctx.dispatch(new SetError('User not set'));
 
     return this.profileApi
-      .profile$(user.uid)
-      .pipe(tap((profile: IProfile) => ctx.dispatch(new SetProfile(profile))));
+      .user$(user.uid)
+      .pipe(tap((user: IUser) => ctx.dispatch(new SetUser(user))));
   }
 
-  @Action(SetProfile)
-  setProfile(ctx: StateContext<ProfileStateModel>, { profile }: SetProfile) {
-    return ctx.setState(
+  @Action(SetUser)
+  setUser(ctx: StateContext<ProfileStateModel>, { user }: SetUser) {
+    ctx.setState(
       produce((draft) => {
-        draft.profile = profile;
+        draft.user = user;
+      })
+    );
+
+    return ctx.dispatch(new SetUserDetailsForm(user));
+  }
+
+  @Action(DecrementUserTime)
+  decrementUserTime(ctx: StateContext<ProfileStateModel>) {
+    ctx.setState(
+      produce((draft) => {
+        if (draft.user?.accountTime)
+          draft.user.accountTime--;
       })
     );
   }
 
-  @Action(UpdateAccountDetails)
-  async updateAccountDetails(ctx: StateContext<ProfileStateModel>) {
+  @Action(SetUserDetailsForm)
+  setUserDetailsForm(ctx: StateContext<ProfileStateModel>, { user }: SetUserDetailsForm) {
+    return ctx.setState(
+      produce((draft) => {
+        draft.userDetailsForm.model.name = user?.name;
+        draft.userDetailsForm.model.surname = user?.surname;
+        draft.userDetailsForm.model.username = user?.username;
+        draft.userDetailsForm.model.email = user?.email;
+        draft.userDetailsForm.model.bio = user?.bio;
+      })
+    );
+  }
+
+  @Action(UpdateUserDetails)
+  async updateUserDetails(ctx: StateContext<ProfileStateModel>) {
     try {
       const state = ctx.getState();
-      const userId = state.profile?.userId;
-      const displayName = state.accountDetailsForm.model.displayName;
-      const email = state.accountDetailsForm.model.email;
-      // const photoURL = state.accountDetailsForm.model.photoURL;
-      const password = state.accountDetailsForm.model.password;
+      const authState = this.store.selectSnapshot(AuthState.user);
+      const userId = authState?.uid;
+      const name = state.userDetailsForm.model.name;
+      const surname = state.userDetailsForm.model.surname;
+      const username = state.userDetailsForm.model.username;
+      const email = state.userDetailsForm.model.email;
+      const bio = state.userDetailsForm.model.bio;
 
-      if (!userId || !displayName || !email || !password)
+      if (!userId)
         return ctx.dispatch(
           new SetError(
-            'UserId or display name or email or photo URL or password not set'
+            'User not set'
           )
         );
 
-      const request: IUpdateAccountDetailsRequest = {
-        profile: {
-          userId,
-          accountDetails: {
-            displayName,
-            email,
-            password,
-          },
-        },
-      };
-      const responseRef = await this.profileApi.updateAccountDetails(request);
-      const response = responseRef.data;
-      return ctx.dispatch(new SetProfile(response.profile));
-    } catch (error) {
-      return ctx.dispatch(new SetError((error as Error).message));
-    }
-  }
-
-  @Action(UpdateContactDetails)
-  async updateContactDetails(ctx: StateContext<ProfileStateModel>) {
-    try {
-      const state = ctx.getState();
-      const userId = state.profile?.userId;
-      const cellphone = state.contactDetailsForm.model.cellphone;
-
-      if (!userId || !cellphone)
-        return ctx.dispatch(new SetError('UserId or cellphone not set'));
-
-      const request: IUpdateContactDetailsRequest = {
-        profile: {
-          userId,
-          contactDetails: {
-            cellphone,
-          },
-        },
-      };
-      const responseRef = await this.profileApi.updateContactDetails(request);
-      const response = responseRef.data;
-      return ctx.dispatch(new SetProfile(response.profile));
-    } catch (error) {
-      return ctx.dispatch(new SetError((error as Error).message));
-    }
-  }
-
-  @Action(UpdateAddressDetails)
-  async updateAddressDetails(ctx: StateContext<ProfileStateModel>) {
-    try {
-      const state = ctx.getState();
-      const userId = state.profile?.userId;
-      const residentialArea = state.addressDetailsForm.model.residentialArea;
-      const workArea = state.addressDetailsForm.model.workArea;
-
-      if (!userId || !residentialArea || !workArea)
+      if (!username || !email)
         return ctx.dispatch(
-          new SetError('UserId or residential area or work area not set')
+          new SetError(
+            'Username, or email not set'
+          )
         );
 
-      const request: IUpdateAddressDetailsRequest = {
-        profile: {
-          userId,
-          addressDetails: {
-            residentialArea,
-            workArea,
-          },
-        },
+      const request: IUpdateUserRequest = {
+        user: {
+          userId: userId,
+          name: name,
+          surname: surname,
+          username: username,
+          email: email,
+          bio: bio,
+        } 
       };
-      const responseRef = await this.profileApi.updateAddressDetails(request);
+      const responseRef = await this.profileApi.updateUserDetails(request);
       const response = responseRef.data;
-      return ctx.dispatch(new SetProfile(response.profile));
+
+      const toast = await this.toastController.create({
+        message: "Updated user details",
+        color: 'success',
+        duration: 1500,
+        position: 'bottom',
+      });
+  
+      toast.present();
+
+      return ctx.dispatch(new SetUser(response.user));
     } catch (error) {
+      ctx.dispatch(new SetUserDetailsForm(ctx.getState().user));
       return ctx.dispatch(new SetError((error as Error).message));
     }
   }
 
-  @Action(UpdatePersonalDetails)
-  async updatePersonalDetails(ctx: StateContext<ProfileStateModel>) {
+  @Action(UpdateUser)
+  async updateUser(ctx: StateContext<ProfileStateModel>, { user }: UpdateUser) {
     try {
       const state = ctx.getState();
-      const userId = state.profile?.userId;
-      const age = state.personalDetailsForm.model.age;
-      const gender = state.personalDetailsForm.model.gender;
-      const ethnicity = state.personalDetailsForm.model.ethnicity;
+      const authState = this.store.selectSnapshot(AuthState.user);
+      const userId = authState?.uid;
+      const name = user?.name ? user.name : state.user?.name;
+      const surname = user?.surname ? user.surname : state.user?.surname;
+      const username = user?.username ? user.username : state.user?.username;
+      const email = user?.email ? user.email : state.user?.email;
+      const profileImgUrl = user?.profileImgUrl ? user.profileImgUrl : state.user?.profileImgUrl;
+      const bio = user?.bio ? user.bio : state.user?.bio;
 
-      if (!userId || !age || !gender || !ethnicity)
-        return ctx.dispatch(
-          new SetError('UserId or age or gender or ethnicity not set')
-        );
+      if (!userId)
+        return ctx.dispatch(new SetError('User not set'));
 
-      const request: IUpdatePersonalDetailsRequest = {
-        profile: {
-          userId,
-          personalDetails: {
-            age,
-            gender,
-            ethnicity,
-          },
-        },
+      const request: IUpdateUserRequest = {
+        user: {
+          userId: userId,
+          name: name,
+          surname: surname,
+          username: username,
+          email: email,
+          profileImgUrl: profileImgUrl,
+          bio: bio,
+        } 
       };
-      const responseRef = await this.profileApi.updatePersonalDetails(request);
+
+      const responseRef = await this.profileApi.updateUserDetails(request);
       const response = responseRef.data;
-      return ctx.dispatch(new SetProfile(response.profile));
+
+
+      return ctx.dispatch(new SetUser(response.user));
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
     }
   }
 
-  @Action(UpdateOccupationDetails)
-  async updateOccupationDetails(ctx: StateContext<ProfileStateModel>) {
-    try {
-      const state = ctx.getState();
-      const userId = state.profile?.userId;
-      const householdIncome = state.occupationDetailsForm.model.householdIncome;
-      const occupation = state.occupationDetailsForm.model.occupation;
+  @Action(SetTime)
+  setTime(ctx: StateContext<ProfileStateModel>) {
+    const deathTime = ctx.getState().user?.deathTime
+    let seconds = 0;
 
-      if (!userId || !householdIncome || !occupation)
-        return ctx.dispatch(
-          new SetError('UserId or householdIncome or occupation not set')
-        );
+    if (deathTime)
+      seconds = deathTime.seconds - Timestamp.now().seconds;
 
-      const request: IUpdateOccupationDetailsRequest = {
-        profile: {
-          userId,
-          occupationDetails: {
-            householdIncome,
-            occupation,
-          },
-        },
-      };
-      const responseRef = await this.profileApi.updateOccupationDetails(
-        request
-      );
-      const response = responseRef.data;
-      return ctx.dispatch(new SetProfile(response.profile));
-    } catch (error) {
-      return ctx.dispatch(new SetError((error as Error).message));
-    }
+    ctx.setState(
+      produce((draft) => {
+        draft.time = this.formatTime(seconds);
+      })
+    );
   }
+
+  startDecrement() {
+    this.intervalId = setInterval(() => {
+      this.store.dispatch(new SetTime());
+    }, 1000);
+  }
+
+  formatTime(seconds: number): string {
+    if (!seconds)
+      seconds = 0;
+
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
+  }
+
 }

@@ -7,7 +7,7 @@
 
 <ion-content [fullscreen]="true" color="dark">
   <ng-container *ngIf="(profile$ | async) as profile; else noProfile">
-    <ms-profile-status-component></ms-profile-status-component>
+    <!-- <ms-profile-status-component></ms-profile-status-component> -->
   </ng-container>
   <ng-template #noProfile>
     <ion-grid>

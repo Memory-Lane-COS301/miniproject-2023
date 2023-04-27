@@ -1,9 +1,8 @@
 import { IMemory } from '@mp/api/memories/util';
 import { IUser } from '@mp/api/users/util';
 
-export class GetFeedMemoriesRequest {
-  static readonly type = '[Feed] GetFeedMemoriesRequest';
-  constructor(public readonly user: IUser) {}
+export class GetFeedMemories {
+    static readonly type = '[Feed] GetFeedMemories';
 }
 
 export class SetFeed {

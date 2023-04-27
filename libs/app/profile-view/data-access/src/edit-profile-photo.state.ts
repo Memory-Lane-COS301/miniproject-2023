@@ -14,6 +14,7 @@ import { IComment } from '@mp/api/memories/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { EditProfilePhotoApi } from './edit-profile-photo.api';
 import { IUser } from '@mp/api/users/util';
+import { ProfileState } from '@mp/app/profile/data-access';
 
 export interface EditProfilePhotoModel {
   user: IUser;
@@ -75,11 +76,25 @@ export class EditProfilePhotoState {
   @Action(SetEditProfileImagePhoto)
   setEditProfilePhoto(ctx: StateContext<EditProfilePhotoModel>, { imgUrl }: SetEditProfileImagePhoto) {
     try {
-      const state = ctx.getState();
-      const response: IUser = {
-        ...state.user,
-        profileImgUrl: imgUrl,
-      };
+        const user = this.store.selectSnapshot(ProfileState.user);
+
+        if(!user || !user.userId) return this.store.dispatch(new SetError('User not set'));
+
+        const response : IUser = {
+            userId: user?.userId,
+            name: user.name,
+            surname: user.surname,
+            username: user.username,
+            email: user.email,
+            profileImgUrl: imgUrl,
+            bio: user.bio,
+            friendCount: user.friendCount,
+            memoryCount: user.memoryCount,
+            accountTime: user.accountTime,
+            lastOnline: user.lastOnline,
+            online: user.online, // requires clarification
+            created: user.created,
+        };
 
       return this.store.dispatch(new SetEditProfileImageState(response));
     } catch (error) {

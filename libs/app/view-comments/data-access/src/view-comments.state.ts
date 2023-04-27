@@ -37,63 +37,65 @@ export class ViewedCommentsState {
     );
   }
 
-  @Action(CreateCommentRequest)
+  @Action(CreateCommentRequest) 
   async createCommentRequest(ctx: StateContext<ViewedCommentsStateModel>, { text }: CreateCommentRequest) {
-    try {
-      const state = ctx.getState();
-      const _userId = state.memory?.userId;
-      const _memoryId = state.memory?.memoryId;
-      const _text = text;
+      try{
+          const state = ctx.getState();
+          const _userId = state.memory?.userId;
+          const _memoryId = state.memory?.memoryId;
+          const _text = text;
 
-      const request: ICreateCommentRequest = {
-        comment: {
-          userId: _userId,
-          memoryId: _memoryId,
-          text: _text,
-        },
-      };
+          const request : ICreateCommentRequest = {
+              comment: {
+                  userId: _userId,
+                  memoryId: _memoryId,
+                  text: _text
+              }
+          }
 
-      const responseRef = await this.viewedCommentsApi.createComment(request);
-      state.memory?.comments?.push(responseRef.data.comment);
+          const responseRef = await this.viewedCommentsApi.createComment(request);
+          state.memory?.comments?.push(responseRef.data.comment);
 
-      const response: IMemory = {
-        ...state.memory,
-        comments: state.memory?.comments,
-      };
-
-      return ctx.dispatch([new SetViewedComments(response), new SetMemoryCard(response)]);
-    } catch (error) {
-      return ctx.dispatch(new SetError((error as Error).message));
-    }
+          const response : IMemory = {
+              ...state.memory,
+              comments: state.memory?.comments
+          };
+          
+          return ctx.dispatch([new SetViewedComments(response) ,new SetMemoryCard(response)]);
+      }
+      catch (error) {
+          return ctx.dispatch(new SetError((error as Error).message));
+      }
   }
 
-  @Action(UpdateCommentRequest)
-  async updateCommentRequest(ctx: StateContext<ViewedCommentsStateModel>, action: UpdateCommentRequest) {
-    try {
-      const state = ctx.getState();
-      const _userId = state.memory?.userId;
-      const _memoryId = state.memory?.memoryId;
-      const _text = action.comment.text;
+  @Action(UpdateCommentRequest) 
+  async updateCommentRequest(ctx: StateContext<ViewedCommentsStateModel>, { text }: UpdateCommentRequest) {
+      try{
+          const state = ctx.getState();
+          const _userId = state.memory?.userId;
+          const _memoryId = state.memory?.memoryId;
+          const _text = text;
 
-      const request: IUpdateCommentRequest = {
-        comment: {
-          userId: _userId,
-          memoryId: _memoryId,
-          text: _text,
-        },
-      };
+          const request : IUpdateCommentRequest = {
+              comment: {
+                  userId: _userId,
+                  memoryId: _memoryId,
+                  text: _text
+              }
+          }
 
-      const responseRef = await this.viewedCommentsApi.updateComment(request);
-      state.memory?.comments?.push(responseRef.data.comment);
+          const responseRef = await this.viewedCommentsApi.updateComment(request);
+          state.memory?.comments?.push(responseRef.data.comment);
 
-      const response: IMemory = {
-        ...state.memory,
-        comments: state.memory?.comments,
-      };
-
-      return ctx.dispatch([new SetViewedComments(response), new SetMemoryCard(response)]);
-    } catch (error) {
-      return ctx.dispatch(new SetError((error as Error).message));
-    }
+          const response : IMemory = {
+              ...state.memory,
+              comments: state.memory?.comments
+          };
+          
+          return ctx.dispatch([new SetViewedComments(response) ,new SetMemoryCard(response)]);
+      }
+      catch (error) {
+          return ctx.dispatch(new SetError((error as Error).message));
+      }
   }
 }
