@@ -18,6 +18,7 @@ import { IMemory } from '@mp/api/memories/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { IDeleteFriendRequest, IGetFriendsRequest, IUpdateFriendRequest } from '@mp/api/friend/util';
 import { ProfileViewState } from '@mp/app/profile-view/data-access';
+import { AuthState } from '@mp/app/auth/data-access';
 
 export interface UserViewStateModel {
   userProfile: IProfile;
@@ -202,6 +203,7 @@ export class UserViewState {
     try {
       //get friends and map through it to check for a match Id in OUR list of friends
       const profileViewFriends = this.store.selectSnapshot(ProfileViewState.friends);
+      const authState = this.store.selectSnapshot(AuthState);
       let calledSet = false;
 
       if (!profileViewFriends) return this.store.dispatch(new SetError('profileViewFriends not set [UserView]'));
@@ -225,9 +227,11 @@ export class UserViewState {
       }
       else {
         //else map thorough this user's list of pending requests to check for a match of OUR userId
+        console.log(`UserId: ${user.userId}`)
         const request : IGetFriendsRequest = {
           user: {
-            senderId: user.userId
+            // senderId: user.userId
+            senderId: authState.user.uid
           }
         }
         const responseRef = await this.userViewApi.getAllPendingFriendRequests(request);
@@ -238,6 +242,7 @@ export class UserViewState {
 
         response.profiles.map((friend) => {
           if (friend.userId === user.userId) {
+            calledSet = true;
             console.log('inside waiting');
             console.log('friendId: ' + friend.userId);
             console.log('userId: ' + user.userId);
