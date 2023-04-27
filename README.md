@@ -36,21 +36,4 @@ The Memory Lane App focuses on a mobile viewpoint. The app includes features suc
 
 Overall, the development process for the Memory Lane App was successful. The team delivered a high-quality application that met the project's goals and objectives.
 
-## Development Methodology
-### Agile Process
 
-Agile development methodology was used in the development of the Memory Lane App to deliver the application in iterations. The Agile approach allowed the team to quickly respond to changes in the project's requirements and allowed them to continuously deliver working software.
-
-The development process began with the creation of a product backlog, which included all the features and functionalities that were required for the application. The backlog was prioritized based on the project's goals and objectives and was constantly updated throughout the development process.
-
-The development process was broken down into sprints, with each sprint lasting for a week. At the beginning of each sprint, the team held a sprint planning meeting to review the backlog and identify the tasks that needed to be completed during the sprint.
-
-During the sprint, the team used daily stand-up meetings to keep track of progress and to identify any roadblocks that needed to be addressed. At the end of the sprint, the team held a sprint review meeting to review the work that was completed and to receive feedback from stakeholders.
-
-The Agile approach allowed the team to continuously deliver working software throughout the development process. Almost every sprint included a "demo" where the team would demonstrate the new features and functionalities that were added to the application. These demos were held with the project manager and the different sub-teams (i.e. back-end team, front-end team, documentation team).
-
-The team also used Agile practices, such as continuous integration and continuous deployment, to automate the build and deployment processes. This allowed the team to quickly deliver new features and bug fixes.
-
-The Agile approach allowed the team to be flexible and to quickly respond to changes in the project's requirements. The team was able to prioritize the backlog based on feedback and adjust the scope of the project based on the project's goals and objectives.
-
-Overall, the Agile approach was a key factor in the success of the Memory Lane App development process. It allowed the team to deliver a high-quality application that met the project's goals and objectives.
