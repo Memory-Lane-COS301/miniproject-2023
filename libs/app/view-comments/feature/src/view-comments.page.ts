@@ -23,6 +23,8 @@ export class ViewCommentsPageComponent {
   }
 
   addNewComment() {
-    this.store.dispatch(new CreateCommentRequest(this.new_comment));
+    const comment = this.new_comment;
+    this.new_comment = '';
+    this.store.dispatch(new CreateCommentRequest(comment));
   }
 }

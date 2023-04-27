@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { doc, docData, Firestore } from '@angular/fire/firestore';
+import { collection, collectionChanges, collectionData, doc, docData, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import {
+  IComment,
   ICreateCommentRequest,
   ICreateCommentResponse,
   IMemory,
   IUpdateCommentRequest,
   IUpdateCommentResponse,
 } from '@mp/api/memories/util';
+import { from, map, Observable } from 'rxjs';
 
 @Injectable()
 export class ViewedCommentsApi {
@@ -21,6 +23,16 @@ export class ViewedCommentsApi {
       toFirestore: (it: IMemory) => it,
     });
     return docData(docRef, { idField: 'id' });
+  }
+
+  comments$(memoryId: string): Observable<IComment[]> {
+    const collectionRef = collection(this.firestore, `memories/${memoryId}/comments`)
+      .withConverter<IComment>({
+        fromFirestore: snapshot => snapshot.data() as IComment,
+        toFirestore: it => it,
+      });
+    
+    return from(collectionData(collectionRef));
   }
 
   async createComment(request: ICreateCommentRequest) {

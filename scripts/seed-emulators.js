@@ -20,10 +20,11 @@ firestore.settings({
 
 async function seedData() {
     faker.seed(123)
-    await seedUsers();
-    await generateMemories(3, 5);
-    await seedFriends();
+    // await seedUsers();
+    // await generateMemories(3, 5);
+    // await seedFriends();
     // await generateFriendsFor('qk29zJ5i8y5omsE9uYXTWPdWOMbP', 5);
+    await generateCommentsFor('9e03f66e-18f9-4c6a-8b35-b6f5ae92735d', 5);
 }
 
 // ============================================================================
@@ -161,6 +162,17 @@ async function generateMemoriesFor(userId, numMemories, numComments) {
     }
 
     console.log(`Memories for ${user.username} seeded successfully.`);
+}
+
+async function generateCommentsFor(memoryId, numComments) {
+    const usersSnapshot = await firestore.collection('users').get();
+
+    const comments = await generateComments(numComments, pickRandomElements(usersSnapshot.docs, 20));
+
+    for (const comment of comments) {
+        const commentRef = admin.firestore().collection(`memories/${memoryId}/comments`).doc(comment.commentId);
+        await commentRef.set(comment);
+    }
 }
 
 async function generateComments(numComments, userDocs) {
