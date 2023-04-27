@@ -33,7 +33,9 @@
     "test":  "jest",
     "prepare": "husky install",
     "editorconfig": "editorconfig-checker",
-    "lint": "eslint --fix"
+    "lint": "eslint --fix",
+    "test:api:watch": "jest libs/api --watch",
+    "test:api": "jest libs/api"
   },
   "private": true,
   "dependencies": {
