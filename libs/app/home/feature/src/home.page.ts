@@ -21,9 +21,9 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
-    setInterval(() => {
-      this.store.dispatch(new GetAllPendingFriendRequests())
-    },5000);
+    // setInterval(() => {
+    //   this.store.dispatch(new GetAllPendingFriendRequests())
+    // },5000);
   }
 
   getMenuStatus() {

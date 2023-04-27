@@ -159,28 +159,6 @@ export class UserViewPageComponent {
     return imgUrl;
   }
 
-  getRequestBtnText() {
-    const user = this.store.selectSnapshot(UserViewState.userView);
-
-    this.store.dispatch(new CheckUserFriendStatus(user)); //check to see if this user is a friend or not
-    let text :string | null = '';
-
-    
-
-    this.isWaitingRequest$.subscribe((value) => {
-      text = value ? 'Waiting for acceptance' : ''; 
-    });
-
-    this.isNotFriends$.subscribe((value) => {
-      text = value ? 'Send friend request' : ''; 
-    });
-
-    console.log('getBtnRequest');
-    console.log(text);
-
-    return text;
-  }
-
   isNotFriends() {
     let isNotFriends: boolean | null = false;
     this.isNotFriends$.subscribe((_value) => {

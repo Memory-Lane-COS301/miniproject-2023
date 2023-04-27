@@ -11,7 +11,7 @@ import {
     UpdateFriendRequest 
 } from "@mp/app/notification-page/util";
 import { ProfileState } from "@mp/app/profile/data-access";
-import { CheckUserFriendStatus, GetUserProfileRequest, SetUserViewBooleans } from "@mp/app/user-view/util";
+import { CheckUserFriendStatus, GetUserProfileRequest } from "@mp/app/user-view/util";
 
 
 @Component({
@@ -19,7 +19,7 @@ import { CheckUserFriendStatus, GetUserProfileRequest, SetUserViewBooleans } fro
     templateUrl: './notification-page.page.html',
     styleUrls: ['./notification-page.page.scss'],
 })
-export class NotificationPage implements OnInit {
+export class NotificationPage {
     @Select(NotificationPageState.friendRequests) friendRequests$!: Observable<IUser[] | null>;
     @Select(NotificationPageState.comments) comments$!: Observable<IComment[] | null>;
 
@@ -89,7 +89,13 @@ export class NotificationPage implements OnInit {
             name: "John",
             surname: "Doe",
             profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-        }
+        },
+        {
+            userId: "1b8c732d-67dc-4c32-92f8-a8c6b53876c0",
+            username: "Bobbie.Feest0",
+            profileImgUrl: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/433.jpg",
+            text: "Example comment jakbhbdcjhsjdcbsjdcb"
+        },
     ];
     commentNotifications = [
         {

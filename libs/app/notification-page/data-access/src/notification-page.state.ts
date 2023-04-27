@@ -41,8 +41,6 @@ export class NotificationPageState {
 
     @Selector()
     static friendRequests(state: NotificationPageStateModel) {
-        console.log('Inside friendRequests() in state');
-        console.log(state.friendsRequests);
         return state.friendsRequests;
     }
 
@@ -98,50 +96,31 @@ export class NotificationPageState {
                     status: FriendRequestStatus.ACCEPTED
                 }
             }
-
-            // const responseRef = await this.notificationPageApi.updateFriendRequest(request);
-            // const response = responseRef.data;
-
-            // if (response.status === 'success') {
-            //     const toast = await this.toastController.create({
-            //         message: friend.username + " is now your friend",
-            //         color: 'success',
-            //         duration: 1500,
-            //         position: 'bottom',
-            //     });
+            
+            const responseRef = await this.notificationPageApi.updateFriendRequest(request);
+            const response = responseRef.data;
+            
+            if (response.status === 'success') {
+                const toast = await this.toastController.create({
+                    message: friend.username + " is now your friend",
+                    color: 'success',
+                    duration: 1500,
+                    position: 'bottom',
+                });
               
-            //     toast.present();
+                toast.present();
 
-            //     //remove friend request
-            //     state.friendsRequests = state.friendsRequests?.filter((old_friend) => {
-            //         return old_friend.userId != friend.userId;
-            //     });
-
-            //     return this.store.dispatch(new SetNotificationPage(state.friendsRequests, state.commentNotifications));
-            // }  
-            // else {
-            //     return this.store.dispatch(new SetError('Unable to accept friend request'));
-            // }
-
-            const toast = await this.toastController.create({
-                message: friend.username + " is now your friend",
-                color: 'success',
-                duration: 1500,
-                position: 'bottom',
-            });
-          
-            toast.present();
-
-            //remove friend request
-            ctx.setState(prevState => ({
-                ...prevState,
-                friendsRequests: prevState.friendsRequests?.filter((old_friend) => {
-                  return old_friend.userId !== friend.userId;
-                })
-            }));
-            const state = ctx.getState();
-
-            return this.store.dispatch(new SetNotificationPage(state.friendsRequests, state.commentNotifications));
+                //remove friend request
+                return ctx.setState(prevState => ({
+                    ...prevState,
+                    friendsRequests: prevState.friendsRequests?.filter((old_friend) => {
+                    return old_friend.userId !== friend.userId;
+                    })
+                }));
+            }  
+            else {
+                return this.store.dispatch(new SetError('Unable to accept friend request'));
+            }
         }
         catch (error) {
             return ctx.dispatch(new SetError((error as Error).message));

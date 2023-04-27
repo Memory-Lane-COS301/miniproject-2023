@@ -233,6 +233,9 @@ export class UserViewState {
         const responseRef = await this.userViewApi.getAllPendingFriendRequests(request);
         const response = responseRef.data;
 
+        console.log('Inside checkStatus');
+        console.log(response.profiles);
+
         response.profiles.map((friend) => {
           if (friend.userId === user.userId) {
             console.log('inside waiting');
