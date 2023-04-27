@@ -14,4 +14,11 @@ export interface IMemory {
   remainingTime?: number | null | undefined;
   alive?: boolean | null | undefined;
   comments?: IComment[] | null | undefined;
+  deathTime?: Timestamp | null | undefined;
+}
+
+export interface IReviveDeadMemory {
+  userId: string;
+  memoryId: string;
+  secondsToAdd: number;
 }
