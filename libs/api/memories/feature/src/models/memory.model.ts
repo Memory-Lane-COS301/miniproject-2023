@@ -18,6 +18,7 @@ export class Memory extends AggregateRoot implements IMemory {
     public remainingTime?: number | null | undefined,
     public alive?: boolean | null | undefined,
     public comments?: IComment[] | null | undefined,
+    public deathTime?: Timestamp | null | undefined
   ) {
     super();
   }
@@ -38,6 +39,7 @@ export class Memory extends AggregateRoot implements IMemory {
       memory.remainingTime,
       memory.alive,
       memory.comments,
+      memory.deathTime
     );
 
     return instance;
@@ -56,6 +58,7 @@ export class Memory extends AggregateRoot implements IMemory {
       remainingTime: this.remainingTime,
       alive: this.alive,
       comments: this.comments,
+      deathTime: this.deathTime
     };
   }
 }

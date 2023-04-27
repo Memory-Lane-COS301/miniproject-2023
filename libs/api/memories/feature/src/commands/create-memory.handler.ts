@@ -25,6 +25,8 @@ export class CreateMemoryHandler implements ICommandHandler<CreateMemoryCommand,
     if(!userData)
       throw new Error('User not found');
 
+    const now = Timestamp.now();
+
     const data: IMemory = {
       userId: userData.userId,
       username: userData.username,
@@ -32,10 +34,11 @@ export class CreateMemoryHandler implements ICommandHandler<CreateMemoryCommand,
       description: request.memory.description,
       imgUrl: request.memory.imgUrl,
       profileImgUrl: userData.profileImgUrl,
-      created: Timestamp.now(),
+      created: now,
       commentsCount: 0,
       remainingTime: memoryInitialDuration,
       alive: true,
+      deathTime: new Timestamp(now.seconds + 12 * 60 * 60, now.nanoseconds)
     };
 
     const memory = this.publisher.mergeObjectContext(Memory.fromData(data));
