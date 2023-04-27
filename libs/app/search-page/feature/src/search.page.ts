@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { SetSearchResults, SetSearchValue } from '@mp/app/search-results/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Memory } from '@mp/app/shared/feature';
-import { GetSearchPageMemories } from '@mp/app/search-page/util';
+import { GetSearchPageMemories, GetSearchResults } from '@mp/app/search-page/util';
 import { GetFeedMemories } from '@mp/app/feed/util';
 import { FeedState } from '@mp/app/feed/data-access';
 import { ProfileState } from '@mp/app/profile/data-access';
@@ -25,6 +25,7 @@ export class SearchPageComponent implements OnInit{
   @Select(FeedState.memories) searchPageMemories$!: Observable<IMemory[] | null>;
   @Select(SearchPageState.recentSearches) recentSearches$!: Observable<string[] | null>;
   @Select(ProfileState.time) time$!: Observable<IUser | null>;
+  @Select(SearchPageState.searchResults) searchResults$!: Observable<IUser[]>;
 
   searchValue = '';
   searchFocus = false;
@@ -90,7 +91,8 @@ export class SearchPageComponent implements OnInit{
       });
     });
 
-    this.store.dispatch(new SetSearchResults(this.searchResults))
+    this.store.dispatch(new GetSearchResults(this.searchValue));
+    // this.store.dispatch(new SetSearchResults(this.searchResults))
     return this.searchResults;
   }
 

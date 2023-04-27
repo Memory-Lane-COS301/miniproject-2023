@@ -18,3 +18,8 @@ export class AddNewSearchValue {
   static readonly type = '[SearchPage] AddNewSearchValue';
   constructor(public readonly searchValue: string) {}
 }
+
+export class GetSearchResults {
+  static readonly type = '[SearchPage] GetSearchResults';
+  constructor(public readonly searchValue: string) {}
+}

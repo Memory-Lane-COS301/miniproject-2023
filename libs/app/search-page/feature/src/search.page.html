@@ -46,7 +46,7 @@
   <ion-list *ngIf="searchValue" ngClass="search-list">
     <ion-item
       color="none"
-      *ngFor="let result of SearchResults"
+      *ngFor="let result of searchResults$ | async"
       ngClass="search-item"
       (click)="openUserProfile(result.userId, result.username)"
     >

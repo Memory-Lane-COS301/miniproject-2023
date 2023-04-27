@@ -7,16 +7,18 @@ import { IGetUserRequest, IUser } from "@mp/api/users/util";
 import { IGetFeedMemoriesRequest, IMemory } from "@mp/api/memories/util";
 import { SearchPageApi } from "./search-page.api";
 import { tap } from "rxjs";
-import { GetSearchPageMemories, SearchMemories, SetSearchPage } from "@mp/app/search-page/util";
+import { GetSearchPageMemories, SearchMemories, SetSearchPage, GetSearchResults } from "@mp/app/search-page/util";
 import { state } from "@angular/animations";
 import { FeedApi, FeedStateModel } from "@mp/app/feed/data-access";
 import { AuthState } from "@mp/app/auth/data-access";
+import { serialize } from 'v8';
 
 
 export interface SearchPageStateModel {
   // users: IUser[];
   memories: IMemory[];
   recentSearches: string[];
+  searchResults: IUser[]
 }
 
 @State<SearchPageStateModel>({
@@ -24,6 +26,7 @@ export interface SearchPageStateModel {
   defaults: {
     memories: [],
     recentSearches: [],
+    searchResults: []
   },
 })
 @Injectable()
@@ -43,6 +46,11 @@ export class SearchPageState {
   @Selector()
   static recentSearches(state: SearchPageStateModel) {
     return state.recentSearches;
+  }
+
+  @Selector()
+  static searchResults(state: SearchPageStateModel) {
+    return state.searchResults;
   }
 
   // @Action(GetFeedMemories)
@@ -83,6 +91,21 @@ export class SearchPageState {
             return ctx.dispatch(new SetError((error as Error).message));
         }
     }
+
+    @Action(GetSearchResults)
+    async getSearchResults(ctx: StateContext<SearchPageStateModel>, { searchValue }: GetSearchResults) {
+      try {
+          console.log('Hellooalkjdf;lhjf')
+          const response = await this.searchPageApi.getSearchResults(searchValue);
+          console.log('Response')
+          console.log(response)
+          return ctx.patchState({ searchResults: response });
+
+      } catch(error){
+          return ctx.dispatch(new SetError((error as Error).message));
+      }
+    }
+
 
     // @Action(GetSearchPageMemories)
     // async getFeedMemories(ctx: StateContext<SearchPageStateModel>) {
