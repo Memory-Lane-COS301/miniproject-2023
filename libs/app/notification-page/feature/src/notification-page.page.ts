@@ -1,12 +1,18 @@
 import { Component } from "@angular/core";
 import { NavController } from "@ionic/angular";
 import { Select, Store } from "@ngxs/store";
-import { ViewedCommentsState } from "@mp/app/view-comments/data-access";
 import { Observable } from "rxjs";
 import { IComment } from "@mp/api/memories/util";
-import { CreateCommentRequest } from "@mp/app/view-comments/util";
 import { NotificationPageState } from "@mp/app/notification-page/data-access";
 import { IUser } from "@mp/api/users/util";
+import {
+    DeleteFriendRequest,
+    SetCommentsNotificationAmount,
+    SetNotificationAmount,
+    UpdateFriendRequest 
+} from "@mp/app/notification-page/util";
+import { ProfileState } from "@mp/app/profile/data-access";
+import { CheckUserFriendStatus, GetUserProfileRequest } from "@mp/app/user-view/util";
 
 
 @Component({
@@ -17,73 +23,128 @@ import { IUser } from "@mp/api/users/util";
 export class NotificationPage {
     @Select(NotificationPageState.friendRequests) friendRequests$!: Observable<IUser[] | null>;
     @Select(NotificationPageState.comments) comments$!: Observable<IComment[] | null>;
-
-    //Mock data for testing html
-    mock_requests : IUser[] = [
-        {
-            userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
-            username: "John_do3",
-            name: "John",
-            surname: "Doe",
-            profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-        },
-        {
-            userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
-            username: "John_do3",
-            name: "John",
-            surname: "Doe",
-            profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-        },
-        {
-            userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
-            username: "John_do3",
-            name: "John",
-            surname: "Doe",
-            profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-        }
-    ];
-
-    mock_comments : IComment[] = [
-        {
-            userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
-            username: "John_do3",
-            profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-            text: "Example comment jakbhbdcjhsjdcbsjdcb"
-        },
-        {
-            userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
-            username: "John_do3",
-            profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-            text: "Example comment jakbhbdcjhsjdcbsjdcb"
-        },
-        {
-            userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
-            username: "John_do3",
-            profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-            text: "Example comment jakbhbdcjhsjdcbsjdcb"
-        },
-    ];
+    @Select(NotificationPageState.notificationAmount) notificationAmount$!: Observable<number>;
+    @Select(NotificationPageState.commentsAmount) commentsAmount$!: Observable<number>;
+    @Select(ProfileState.time) time$!: Observable<IUser | null>;
 
     friendRequestsListExpanded = false;
     commentsListExpanded = false;
+    commentsExpandedBadge = false;
+    commentsCount = 0;
+    commentNotificationCount = 0;
+    friendRequestsCount = 0;
+    notificationCount = 0;
 
     toggleFriendRequestsList() {
         this.friendRequestsListExpanded = !this.friendRequestsListExpanded;
     }
 
     toggleCommentsList() {
+        this.commentsCount = 0;
         this.commentsListExpanded = !this.commentsListExpanded;
+        this.commentsExpandedBadge = true;
+        this.commentsCount = 0;
+        this.notificationCount = this.friendRequestsCount + this.commentsCount;
+
+        this.store.dispatch(new SetCommentsNotificationAmount(this.commentsCount))
+        this.store.dispatch(new SetNotificationAmount(this.notificationCount));
     }
 
     constructor(
-        private store: Store
-    ) {}
+        private store: Store,
+        private navCtrl: NavController
+    ) {
+        this.notificationAmount$.subscribe((value) => {
+            this.notificationCount = value;
+        })
 
-    get FriendRequests() {
-        return this.mock_requests;
+        this.commentsAmount$.subscribe((value) => {
+            this.commentNotificationCount = value;
+        })
+    }
+    acceptFriendRequest(uid: string | null | undefined, uname: string | null | undefined) {
+        if (!uid || !uname) return;
+
+        const friend : IUser = {
+            userId: uid,
+            username: uname
+        }
+
+
+        this.friendRequestsCount -= 1;
+
+        this.notificationCount = this.friendRequestsCount + this.commentNotificationCount;
+        this.store.dispatch(new SetNotificationAmount(this.notificationCount));
+        this.store.dispatch(new UpdateFriendRequest(friend));
     }
 
-    get Comments() {
-        return this.mock_comments;
+    declineFriendRequest(uid: string | null | undefined, uname: string | null | undefined) {
+        if (!uid || !uname) return;
+
+        const friend : IUser = {
+            userId: uid,
+            username: uname
+        }
+
+        this.friendRequestsCount -= 1;
+
+        this.notificationCount = this.friendRequestsCount + this.commentNotificationCount;
+        this.store.dispatch(new SetNotificationAmount(this.notificationCount));
+
+        this.store.dispatch(new DeleteFriendRequest(friend))
+    }
+
+    getCommentsLength() {
+        this.commentsCount = 0;
+
+        this.comments$.subscribe((comments) => {
+            if (!comments) return;
+
+            this.commentsCount = comments.length;
+        })
+
+        return this.commentsCount;
+    }
+
+    getFriendRequestsLength(){
+        this.friendRequestsCount = 0;
+
+        this.friendRequests$.subscribe((friendRequests$) => {
+            if (!friendRequests$) return;
+
+            this.friendRequestsCount = friendRequests$.length;
+        })
+
+        return this.friendRequestsCount;
+    }
+
+    openUserProfile(uid: string | null | undefined, uname: string | null | undefined) {
+        const user = this.store.selectSnapshot(ProfileState.user);
+
+        if(!uid || !uname) return;
+
+        if (user && user.userId && user.username) {
+            if (uid != user.userId && uname != user.name) {
+                const request_user : IUser = {
+                    userId: uid,
+                    username: uname
+                }
+                this.store.dispatch(new CheckUserFriendStatus(request_user));
+                this.store.dispatch(new GetUserProfileRequest(request_user));
+                this.navCtrl.navigateForward('/user-view');
+            }
+        }
+    }
+
+    checkForMyComment(uid: string | null | undefined) {
+        const user = this.store.selectSnapshot(ProfileState.user);
+
+        if(!uid) return;
+
+        if (uid === user?.userId) {
+            return "- You";
+        }
+
+        return '';
     }
 }

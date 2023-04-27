@@ -1,6 +1,8 @@
 import { IUser } from '@mp/api/users/util';
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
+import { AndroidApp } from 'firebase-admin/lib/project-management/android-app';
 
 @Injectable()
 export class UsersRepository {
@@ -8,14 +10,17 @@ export class UsersRepository {
     return await admin.firestore().collection('users').doc(user.userId).create(user);
   }
 
-  async updateUser(user: IUser) {
-    return await admin
-      .firestore()
-      .collection('users')
-      .doc(user.userId)
-      .set(user, { merge: true });
+  async setUserTime(userId: string, newTime: number) {
+    return await admin.firestore().collection('users').doc(userId).update({
+      accountTime: newTime,
+    });
   }
-  
+
+  async updateUser(user: IUser) {
+    return await admin.firestore().collection('users').doc(user.userId).set(user, { merge: true });
+  }
+
+
   async findUser(userId: string) {
     return await admin
       .firestore()
@@ -30,11 +35,21 @@ export class UsersRepository {
       .get();
   }
 
-  async findUserByUserId(userId: string) {
+  async findUserById(userId: string) {
+    return await admin.firestore().collection('users').doc(userId).get();
+  }
+
+  async updateFriendCount(userId1: string, newTime: number) {
+    return await admin.firestore().collection('users').doc(userId1).update({
+      friendCount: newTime,
+    });
+  }
+
+  async findUserWithUsername(username: string) {
     return await admin
       .firestore()
       .collection('users')
-      .where("userId", "==", userId)
+      .where('username', '==', username)
       .withConverter<IUser>({
         fromFirestore: (snapshot) => {
           return snapshot.data() as IUser;
@@ -43,5 +58,25 @@ export class UsersRepository {
       })
       .limit(1)
       .get();
+  }
+
+  async incrementMemoryCount(userId: string) {
+    await admin
+      .firestore()
+      .collection('users')
+      .doc(userId)
+      .update({ 
+        memoryCount: FieldValue.increment(1) 
+      });
+  }
+
+  async decrementMemoryCount(userId: string) {
+    await admin
+      .firestore()
+      .collection('users')
+      .doc(userId)
+      .update({ 
+        memoryCount: FieldValue.increment(-1) 
+      });
   }
 }

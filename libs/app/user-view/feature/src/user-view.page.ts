@@ -1,12 +1,9 @@
 import { formatDate } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
-import { GetUserProfileRequest } from '@mp/app/user-view/util';
+import { CheckUserFriendStatus, CreateFriendRequest, DeleteFriend, DeleteFriendRequest, GetUserProfileRequest } from '@mp/app/user-view/util';
 import { IGetProfileRequest, IProfile } from '@mp/api/profiles/util';
-import { 
-  UserViewState, 
-  UserViewStateModel 
-} from '@mp/app/user-view/data-access';
+import { UserViewState, UserViewStateModel } from '@mp/app/user-view/data-access';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { FriendRequestStatus } from '@mp/api/friend/util';
@@ -20,9 +17,10 @@ import { IUser } from '@mp/api/users/util';
 })
 export class UserViewPageComponent {
   @Select(UserViewState.userView) userProfile$!: Observable<IProfile | null>;
+  @Select(UserViewState.isFriends) isFriends$!: Observable<boolean | null>;
+  @Select(UserViewState.isWaitingRequest) isWaitingRequest$!: Observable<boolean | null>;
+  @Select(UserViewState.isNotFriends) isNotFriends$!: Observable<boolean | null>;
 
-  added = false;
-  btn_text = 'Send friend request';
   handlerMessage = '';
   roleMessage = '';
   showExpandedView = false;
@@ -30,14 +28,15 @@ export class UserViewPageComponent {
   memories!: IMemory[] | null | undefined;
 
   constructor(
-    private alertController: AlertController, 
+    private alertController: AlertController,
     private toastController: ToastController,
     private readonly store: Store,
   ) {}
 
   async presentAlert() {
+    const user = this.store.selectSnapshot(UserViewState.userView).user;
     const alert = await this.alertController.create({
-      header: 'Are you sure you want to unfriend <user name>?',
+      header: `Are you sure you want to unfriend ${user?.username}?`,
       buttons: [
         {
           text: 'Cancel',
@@ -50,7 +49,7 @@ export class UserViewPageComponent {
           text: 'Confirm',
           role: 'confirm',
           handler: () => {
-            this.handlerMessage = 'Unfriened <user name>';
+            this.handlerMessage = `Unfriended ${user?.username}`;
             this.presentToast('top');
             this.removeFriend();
           },
@@ -76,42 +75,67 @@ export class UserViewPageComponent {
   }
 
   addedNewFriend() {
-    this.added = true;
-    this.btn_text = 'You are friends';
-  }
+    let _userId = '';
+    let _username : string | null | undefined = '';
 
-  removeFriend() {
-    this.added = false;
-    this.btn_text = 'Send friend request';
-
-    // const status = FriendRequestStatus['REJECTED'];
-
-    // this.store.dispatch(new UpdateFriendRequest(status));
-  }
-
-  //called if a user clicks on the user's username or profile image either on the feed page or during a search
-  openUserProfile(_username: string, _userId: string) {
-    const requestData : IProfile = {
-      userId: _userId,
-      user: {
-        userId: _userId,
-        username: _username
+    this.userProfile$.subscribe((profile) => {
+      if (profile && profile.user) {
+        _userId = profile?.userId,
+        _username = profile?.user?.username
       }
-    };
+    });
 
     const request : IUser = {
       userId: _userId,
       username: _username
-    };
+    }
 
-    this.store.dispatch(new GetUserProfileRequest(request));
+    this.store.dispatch(new CreateFriendRequest(request));
+  }
+
+  removeFriend() {
+    let _userId = '';
+    let _username : string | null | undefined = '';
+
+    this.userProfile$.subscribe((profile) => {
+      if (profile && profile.user) {
+        _userId = profile?.userId,
+        _username = profile?.user?.username
+      }
+    });
+
+    const request : IUser = {
+      userId: _userId,
+      username: _username
+    }
+
+    this.store.dispatch(new DeleteFriend(request));
+  }
+
+  cancelFriend() {
+    let _userId = '';
+    let _username : string | null | undefined = '';
+
+    this.userProfile$.subscribe((profile) => {
+      if (profile && profile.user) {
+        _userId = profile?.userId,
+        _username = profile?.user?.username
+      }
+    });
+
+    const request : IUser = {
+      userId: _userId,
+      username: _username
+    }
+
+    this.store.dispatch(new DeleteFriendRequest(request));
   }
 
   changeMemoryView() {
     this.showExpandedView = !this.showExpandedView;
   }
 
-  get Memories() : IMemory[] | null {
+  get Memories(): IMemory[] | null {
     this.userProfile$.subscribe((userProfile) => {
       this.memories = userProfile?.memories;
     });
@@ -119,5 +143,46 @@ export class UserViewPageComponent {
     if (!this.memories) return null;
 
     return this.memories;
+  }
+
+  getProfileImgUrl() {
+    let imgUrl = '';
+    this.userProfile$.subscribe((profile) => {
+      if (profile?.user?.profileImgUrl) {
+        imgUrl = profile.user.profileImgUrl;
+      }
+      else {
+        imgUrl = '../../../../../assets/Design_icons/Design icons/Login page background and images/Big person.png';
+      }
+    })
+
+    return imgUrl;
+  }
+
+  isNotFriends() {
+    let isNotFriends: boolean | null = false;
+    this.isNotFriends$.subscribe((_value) => {
+      isNotFriends = _value; 
+    });
+
+    return isNotFriends;
+  }
+
+  isWaitingRequest() {
+    let isWaitingRequest: boolean | null = false;
+    this.isWaitingRequest$.subscribe((_value) => {
+      isWaitingRequest = _value; 
+    });
+
+    return isWaitingRequest;
+  }
+
+  isFriends() {
+    let isFriends: boolean | null = false;
+    this.isFriends$.subscribe((_value) => {
+      isFriends = _value; 
+    });
+
+    return isFriends;
   }
 }

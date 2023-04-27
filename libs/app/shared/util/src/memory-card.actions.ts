@@ -7,12 +7,12 @@ export class GetCommentsRequest {
 
 export class CreateCommentRequest {
     static readonly type = '[MemoryCard] CreateCommentRequest';
-    constructor(public readonly comment: IComment) {}
+    constructor(public readonly text: string) {}
 }
 
 export class UpdateCommentRequest {
     static readonly type = '[MemoryCard] UpdateCommentRequest';
-    constructor(public readonly comment: IComment) {}
+    constructor(public readonly text: string) {}
 }
 
 export class SetMemoryCard {

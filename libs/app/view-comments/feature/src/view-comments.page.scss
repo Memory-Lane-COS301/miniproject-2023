@@ -17,12 +17,16 @@
     opacity: 0.5;
   }
   .memory-comment-usercomment {
-    font-size: 16px;
+    font-size: 12px;
     position: absolute;
-    bottom: 15px;
-    left: 50px;
-    height: auto;
+    top: 30px;
+    left: 60px;
+    max-height: 80px;
     max-width: 320px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .memory-avatar-expanded {
     width: 45px;
@@ -33,48 +37,47 @@
     left: 5px;
   }
 
-  .memory-username-and-comment {
-    margin-left: 20px;
-  }
-  .comment-profileImg-username {
-    display: flex;
-    height: 100px;
-    position: relative;
-    border-bottom: 1px solid #787878;
-  }
+.memory-username-and-comment {
+  margin-left: 20px;
+}
+.comment-profileImg-username {
+  display: flex;
+  height: 100px;
+  position: relative;
+  border-bottom: 1px solid #787878;
+}
 
-  .add-comment-input {
-    height: auto;
-    width: 350px;
-  }
+.add-comment-input {
+  height: auto;
+  width: 350px;
+}
 
-  .add-new-comment {
-    border: 2px solid #fff;
-    border-radius: 10px;
-    background-color: #0a0062;
-    width: 380px;
-    margin-top:2px 0 0 2px;
-  }
-  
-  .add-comment-btn {
-    position: absolute;
-    right: 5px;
-    height: 25px;
-    font-size: 12px;
-    background-color: transparent;
-  }
+.add-new-comment {
+  border: 2px solid #fff;
+  border-radius: 10px;
+  width: 380px;
+  margin-top:2px 0 0 2px;
+}
 
-  ion-content {
-    position: relative;
-    padding: 5px 10px;
-  }
+.add-comment-btn {
+  height: 25px;
+  font-size: 12px;
+  background-color: transparent;
+  margin-top: 7px;
+  margin-right: 3px;
+}
 
-  .back-btn {
-    left: 10px;
-    position: absolute;
-    font-size: 20px;
-  }
-  .back-icon {
-    width: 30px;
-    height: 30px;
-  }
+ion-content {
+  position: relative;
+  padding: 5px 10px;
+}
+
+.back-btn {
+  left: 10px;
+  position: absolute;
+  font-size: 20px;
+}
+.back-icon {
+  width: 30px;
+  height: 30px;
+}

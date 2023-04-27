@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { IUser } from '@mp/api/users/util';
 import { GetUserProfileRequest } from '@mp/app/user-view/util';
@@ -7,18 +7,24 @@ import { Select, Store } from '@ngxs/store';
 import { SearchPageState } from '@mp/app/search-page/data-access';
 import { IMemory } from '@mp/api/memories/util';
 import { Observable } from 'rxjs';
-import { SetSearchResults } from '@mp/app/search-results/util';
+import { SetSearchResults, SetSearchValue } from '@mp/app/search-results/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Memory } from '@mp/app/shared/feature';
+import { GetSearchPageMemories, GetSearchResults, GetFeedMemories } from '@mp/app/search-page/util';
+import { FeedState } from '@mp/app/feed/data-access';
+import { ProfileState } from '@mp/app/profile/data-access';
+
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
 })
-export class SearchPageComponent {
-  @Select(SearchPageState.memories) memories$!: Observable<IMemory[] | null>;
+export class SearchPageComponent implements OnInit{
+  @Select(FeedState.memories) searchPageMemories$!: Observable<IMemory[] | null>;
   @Select(SearchPageState.recentSearches) recentSearches$!: Observable<string[] | null>;
+  @Select(ProfileState.time) time$!: Observable<IUser | null>;
+  @Select(SearchPageState.searchResults) searchResults$!: Observable<IUser[]>;
 
   searchValue = '';
   searchFocus = false;
@@ -38,7 +44,8 @@ export class SearchPageComponent {
   onSearchBlur() {
     this.searchFocus = false;
   }
-  onInputChange() {
+  onInputChange(searchValue: string) {
+    this.searchValue = searchValue;
     this.onSearchFocus();
     this.tempSearchResults = this.SearchResults;
   }
@@ -49,8 +56,9 @@ export class SearchPageComponent {
         recentSearches?.unshift(searchTerm);
       });
 
+      this.store.dispatch(new SetSearchValue(searchTerm));
+      this.store.dispatch(new SetSearchResults(this.SearchResults)); 
       this.navCtrl.navigateForward('/search-results');
-      this.store.dispatch(new SetSearchResults(this.searchResults));
     }
     //fetch user accounts based on search value and populate searchUsers array
   }
@@ -64,22 +72,30 @@ export class SearchPageComponent {
   }
 
   get RecentSearches() {
-    this.recentSearches$.subscribe((recentSearches) =>{
+    this.recentSearches$.subscribe((recentSearches) => {
       this.recentSearches = recentSearches;
-    })
+    });
 
     return this.recentSearches;
   }
 
   get SearchResults() {
-    this.memories$.subscribe((memories) =>{
-      memories?.filter((mem) => {
+    this.searchResults = [];
+
+    this.searchPageMemories$.subscribe((searchPageMemories) =>{
+      searchPageMemories?.filter((mem) => {
         if (mem.username?.toLocaleLowerCase().includes(this.searchValue.toLocaleLowerCase())) {
           this.searchResults?.push(mem);
         }
       });
-    })
+    });
 
+    this.store.dispatch(new GetSearchResults(this.searchValue));
+    // this.store.dispatch(new SetSearchResults(this.searchResults))
+    this.searchResults$.subscribe((results) => {
+      console.log(results);
+    })
+    
     return this.searchResults;
   }
 
@@ -121,43 +137,42 @@ export class SearchPageComponent {
     }
   }
 
-  openUserProfile(i_userId: string | null | undefined, i_username: string | null | undefined) {
-    if (i_userId != null && i_username) {
-      const currentPosition = window.pageYOffset;
-      this.navCtrl.navigateForward('/user-view', { state: { scrollPosition: currentPosition } });
+  openUserProfile(uid: string | null | undefined, uname: string | null | undefined) {
+    const user = this.store.selectSnapshot(ProfileState.user);
 
-      const request : IUser = {
-        userId: i_userId,
-        username: i_username
-      }
+    if(!uid || !uname) return;
 
-      this.store.dispatch(new GetUserProfileRequest(request));
+    if (user && user.userId && user.username) {
+        if (uid != user.userId && uname != user.name) {
+            const request_user : IUser = {
+                userId: uid,
+                username: uname
+            }
+
+            this.store.dispatch(new GetUserProfileRequest(request_user));
+        }
     }
+}
+
+  formatTime(seconds: number | null | undefined): string {
+    if (!seconds)
+      seconds = 0;
+
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
   }
 
-  // tempMem : Memory[] = [
-  //   {
-  //     userId: '18298782739172',
-  //     username: '@username',
-  //     profileImgUrl:
-  //       'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-  //     imgUrl:
-  //       'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80',
-  //     title: 'Last day of Highschool',
-  //     description: 'Example of a description for the memory',
-  //     comments: [
-  //       {
-  //         username: '@commentedUsername',
-  //         profileImgUrl:
-  //           'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-  //         text:
-  //           'This is an example comment. The idea of this comment is to show you what a comment on a memory looks like. And that it can overflow.',
-  //       },
-  //     ],
-  //     created: new Timestamp(1605371400, 0),
-  //   },
-  // ]
-  // get SearchResults() {
-  //   return this.tempMem;
-  // }
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      this.store.dispatch(new GetFeedMemories());
+      event.target.complete();
+    }, 2000);
+  }
+
+ ngOnInit(): void { 
+    this.store.dispatch(new GetFeedMemories());
+    this.store.dispatch(new GetSearchResults(this.searchValue));
+ }
 }
