@@ -31,11 +31,9 @@ export class CreateFriendRequestHandler implements ICommandHandler<CreateFriendR
 
     if (!userDoc.data()) throw new Error('User not found');
 
-    const receiverUserSnapshot = await this.userRepository.findUserByUserId(request.friendRequest.receiverId);
+    const receiverUserDoc = await this.userRepository.findUserById(request.friendRequest.receiverId);
 
-    if (receiverUserSnapshot.empty) throw new Error('Receiver not found');
-
-    const receiverUserDoc = receiverUserSnapshot.docs[0];
+    if (!receiverUserDoc.data()) throw new Error('Receiver not found');
 
     //check that friend request not already sent by other user
     const possibleFriendRequestsSnapshot = await this.friendsRepository.getCurrentFriendRequest(

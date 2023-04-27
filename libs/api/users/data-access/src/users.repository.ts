@@ -36,7 +36,17 @@ export class UsersRepository {
   }
 
   async findUserById(userId: string) {
-    return await admin.firestore().collection('users').doc(userId).get();
+    return await admin
+      .firestore()
+      .collection('users')
+      .withConverter<IUser>({
+        fromFirestore: (snapshot) => {
+          return snapshot.data() as IUser;
+        },
+        toFirestore: (it: IUser) => it,
+      })
+      .doc(userId)
+      .get();
   }
 
   async updateFriendCount(userId1: string, newTime: number) {

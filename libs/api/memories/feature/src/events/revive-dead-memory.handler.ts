@@ -18,7 +18,7 @@ export class ReviveDeadMemoryEventHandler implements IEventHandler<ReviveDeadMem
     if (memorySnapshot != undefined) {
       const currentUserSnapshot = await this.usersRepository.findUserById(event.reviveMemory.userId);
       const currentUserData = currentUserSnapshot.data();
-      if (currentUserData != undefined && currentUserData['accountTime'] >= event.reviveMemory.secondsToAdd) {
+      if (currentUserData && currentUserData.accountTime && currentUserData.accountTime >= event.reviveMemory.secondsToAdd) {
         this.memoryRepository.reviveDeadMemory(event.reviveMemory.memoryId, event.reviveMemory.secondsToAdd);
         return { status: ReviveStatus.SUCCESS };
       } else {
