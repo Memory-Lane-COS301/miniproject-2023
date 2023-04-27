@@ -6,6 +6,8 @@ import {
   ICreateFriendResponse,
   IDeleteFriendRequest,
   IDeleteFriendResponse,
+  IGetFriendsRequest,
+  IGetFriendsResponse,
   IUpdateFriendRequest,
   IUpdateFriendResponse 
 } from "@mp/api/friend/util";
@@ -45,5 +47,9 @@ export class NotificationPageApi {
       this.functions,
       'deleteFriendRequest'
     )(request);
+  }
+
+  async getAllPendingFriendRequests(request: IGetFriendsRequest) {
+    return await httpsCallable<IGetFriendsRequest, IGetFriendsResponse>(this.functions, 'getAllPendingFriendRequests')(request);
   }
 }

@@ -28,3 +28,7 @@ export class AddNewComment {
     static readonly type = '[NotificationPage] AddNewComment';
     constructor(public readonly comment: IComment) {}
 }
+
+export class GetAllPendingFriendRequests {
+    static readonly type = '[MotificationPage] GetAllPendingFriendRequests';
+}

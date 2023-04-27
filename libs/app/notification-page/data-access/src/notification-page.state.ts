@@ -10,9 +10,10 @@ import {
     AddNewFriendRequest,
     UpdateFriendRequest,
     AddNewComment,
-    DeleteFriendRequest
+    DeleteFriendRequest,
+    GetAllPendingFriendRequests
 } from '@mp/app/notification-page/util';
-import { FriendRequestStatus, IDeleteFriendRequest, IUpdateFriendRequest } from '@mp/api/friend/util';
+import { FriendRequestStatus, IDeleteFriendRequest, IGetPendingFriendRequest, IUpdateFriendRequest } from '@mp/api/friend/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { ToastController } from '@ionic/angular';
 
@@ -192,4 +193,31 @@ export class NotificationPageState {
     //         return ctx.dispatch(new SetError((error as Error).message));
     //     }
     // }
+
+    @Action(GetAllPendingFriendRequests)
+    async getAllPendingFriendRequests(ctx: StateContext<NotificationPageStateModel>) {
+        try{
+            const profile = this.store.selectSnapshot(ProfileState.user);
+
+            if(!profile) return this.store.dispatch(new SetError('Profile not set'));
+
+            const request : IGetPendingFriendRequest = {
+                user: {
+                    senderId: profile?.userId
+                }
+            }
+
+            const responseRef = await this.notificationPageApi.getAllPendingFriendRequests(request);
+            const response = responseRef.data;
+
+            return ctx.setState(
+                produce((draft) => {
+                    draft.friendsRequests = response.profiles;
+                })
+            )
+        }
+        catch (error) {
+            return this.store.dispatch(new SetError('Failed to get all pending requests'));
+        }
+    }
 }

@@ -11,7 +11,6 @@ import {
   SetUserView,
   CheckUserFriendStatus,
   GetFriends,
-  GetAllPendingFriendRequests,
   SetUserViewBooleans
 } from '@mp/app/user-view/util';
 import produce from 'immer';
@@ -282,32 +281,6 @@ export class UserViewState {
         }
       }
       const responseRef = await this.userViewApi.getFriends(request);
-      const response = responseRef.data;
-
-      return ctx.setState(
-          produce((draft) => {
-              draft.friends = response.profiles;
-          })
-      );
-    }
-    catch (error) {
-      return ctx.dispatch(new SetError('Unable to fetch friends [ProfileView]'));
-    }
-  }
-
-  @Action(GetAllPendingFriendRequests)
-  async getAllPendingFriendRequests(ctx: StateContext<UserViewStateModel>) {
-    try {
-      const user = this.store.selectSnapshot(ProfileState.profile);
-
-      if (!user) return this.store.dispatch(new SetError('User not set'));
-      
-      const request : IGetFriendsRequest = {
-        user: {
-          senderId: user?.userId
-        }
-      }
-      const responseRef = await this.userViewApi.getAllPendingFriendRequests(request);
       const response = responseRef.data;
 
       return ctx.setState(
