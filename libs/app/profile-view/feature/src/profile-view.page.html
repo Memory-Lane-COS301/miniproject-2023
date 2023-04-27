@@ -70,7 +70,7 @@
     </ion-row>
   
     <ion-row ngClass="account-time">
-      <ion-text ngClass="account-time-text">{{ formatTime(user.accountTime) }}</ion-text>
+      <ion-text ngClass="account-time-text" *ngIf="time$ | async as time">{{ time }}</ion-text>
     </ion-row>
   </ion-grid>
   <ion-list ngClass="memory-list" *ngIf="memories$ | async as memories">

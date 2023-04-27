@@ -20,3 +20,37 @@ ion-tab-button {
 .nav-bar {
   --background: #000000;
 }
+
+.notification-bell {
+  position: relative;
+}
+
+.notification-amount {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-empty {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  background-color: transparent;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

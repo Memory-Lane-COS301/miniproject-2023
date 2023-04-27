@@ -3,7 +3,6 @@ import { Component, ElementRef, Input, Output, OnInit, EventEmitter } from '@ang
 import { NavController } from '@ionic/angular';
 import { Select, Store } from '@ngxs/store';
 import { IMemory } from '@mp/api/memories/util';
-import { Timestamp } from 'firebase-admin/firestore';
 import { MemoryCardState } from '@mp/app/shared/data-access';
 import { Observable } from 'rxjs';
 import { CreateCommentRequest, GetCommentsRequest, SetMemoryCard } from '@mp/app/shared/util';
@@ -13,6 +12,8 @@ import { IGetProfileRequest } from '@mp/api/profiles/util';
 import { on } from 'stream';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { UserViewState } from '@mp/app/user-view/data-access';
+import { Timestamp } from '@angular/fire/firestore';
+
 
 @Component({
   selector: 'app-memory-card',
@@ -31,12 +32,16 @@ export class MemoryCardComponent implements OnInit {
   new_comment: string = '';
   first_comment_text : string | null | undefined = '';
   first_comment_username : string | null | undefined = '';
+  intervalId: any;
+  remainingTime: string = '';
   
   constructor(
     private navCtrl: NavController,
     private store: Store,
     private state: MemoryCardState
-  ) { }
+  ) { 
+      this.startDecrement();
+  }
 
   ngOnInit(): void {
       // this.store.dispatch(new SetMemoryCard(this.memory)); 
@@ -180,6 +185,18 @@ export class MemoryCardComponent implements OnInit {
 
   onPostClick(): void {
     this.postClick.emit(this.memory);
+  }
+
+  startDecrement() {
+    this.intervalId = setInterval(() => {
+      const deathTime: any = this.memory.deathTime;
+      let seconds = 0;
+
+      if (deathTime)
+        seconds = deathTime._seconds - Timestamp.now().seconds;
+     
+      this.remainingTime = this.formatTime(seconds);
+    }, 1000);
   }
 
 }

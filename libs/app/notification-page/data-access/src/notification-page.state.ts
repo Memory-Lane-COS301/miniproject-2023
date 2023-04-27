@@ -12,6 +12,8 @@ import {
     AddNewComment,
     DeleteFriendRequest,
     GetAllPendingFriendRequests
+    SetNotificationAmount,
+    SetCommentsNotificationAmount
 } from '@mp/app/notification-page/util';
 import { FriendRequestStatus, IDeleteFriendRequest, IGetPendingFriendRequest, IUpdateFriendRequest } from '@mp/api/friend/util';
 import { ProfileState } from '@mp/app/profile/data-access';
@@ -20,13 +22,17 @@ import { ToastController } from '@ionic/angular';
 export interface NotificationPageStateModel {
     friendsRequests: IUser[] | null | undefined;
     commentNotifications: IComment[] | null | undefined,
+    notificationAmount: number,
+    commentsAmount: number
 }
 
 @State<NotificationPageStateModel>({
     name: 'NotificationPage',
     defaults: {
         friendsRequests: [],
-        commentNotifications: []
+        commentNotifications: [],
+        notificationAmount: 0,
+        commentsAmount: 0
     }
 })
 
@@ -49,12 +55,40 @@ export class NotificationPageState {
         return state.commentNotifications;
     }
 
+    @Selector()
+    static notificationAmount(state: NotificationPageStateModel) {
+        return state.notificationAmount;
+    }
+
+    @Selector()
+    static commentsAmount(state: NotificationPageStateModel) {
+        return state.commentsAmount;
+    }
+
     @Action(SetNotificationPage)
     setNotificationPage(ctx: StateContext<NotificationPageStateModel>, { friendRequests, comments }: SetNotificationPage) {
         return ctx.setState(
             produce((draft) => {
                 draft.friendsRequests = friendRequests,
                 draft.commentNotifications = comments
+            })
+        );
+    }
+
+    @Action(SetNotificationAmount)
+    setNotificationAmount(ctx: StateContext<NotificationPageStateModel>, { newAmount }: SetNotificationAmount) {
+        return ctx.setState(
+            produce((draft) => {
+                draft.notificationAmount = newAmount
+            })
+        );
+    }
+
+    @Action(SetCommentsNotificationAmount)
+    setCommentsNotificationAmount(ctx: StateContext<NotificationPageStateModel>, { newAmount }: SetCommentsNotificationAmount) {
+        return ctx.setState(
+            produce((draft) => {
+                draft.commentsAmount = newAmount
             })
         );
     }

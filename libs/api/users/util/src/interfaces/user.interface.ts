@@ -14,4 +14,5 @@ export interface IUser {
   lastOnline?: Timestamp | null | undefined;
   online?: boolean | null | undefined;
   created?: Timestamp | null | undefined;
+  deathTime?: Timestamp | null | undefined;
 }
