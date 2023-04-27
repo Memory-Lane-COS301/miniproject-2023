@@ -11,7 +11,8 @@ import {
   SetUserView,
   CheckUserFriendStatus,
   GetFriends,
-  GetAllPendingFriendRequests
+  GetAllPendingFriendRequests,
+  SetUserViewBooleans
 } from '@mp/app/user-view/util';
 import produce from 'immer';
 import { IMemory } from '@mp/api/memories/util';
@@ -21,7 +22,9 @@ import { ProfileViewState } from '@mp/app/profile-view/data-access';
 
 export interface UserViewStateModel {
   userProfile: IProfile;
-  friendRequest_btn_text: string;
+  isFriends: boolean;
+  isWaitingRequest: boolean;
+  isNotFriends: boolean;
   friends: IProfile[];
 }
 
@@ -41,7 +44,9 @@ export interface UserViewStateModel {
       status: null,
       created: null,
     },
-    friendRequest_btn_text: '',
+    isFriends: false,
+    isWaitingRequest: false,
+    isNotFriends: false,
     friends: []
   },
 })
@@ -55,8 +60,18 @@ export class UserViewState {
   }
 
   @Selector()
-  static btn_text(state: UserViewStateModel) {
-    return state.friendRequest_btn_text;
+  static isFriends(state: UserViewStateModel) {
+    return state.isFriends;
+  }
+
+  @Selector()
+  static isWaitingRequest(state: UserViewStateModel) {
+    return state.isWaitingRequest;
+  }
+
+  @Selector()
+  static isNotFriends(state: UserViewStateModel) {
+    return state.isNotFriends;
   }
 
   @Action(GetUserProfileRequest) //GetUserProfileRequest is the same as the GetProfileRequest
@@ -85,7 +100,18 @@ export class UserViewState {
       produce((draft) => {
           draft.userProfile = profile;
       })
-  );
+    );
+  }
+
+  @Action(SetUserViewBooleans)
+  setUserViewBooleans(ctx: StateContext<UserViewStateModel>, { _isFriends, _isWaitingRequest, _isNotFriends } : SetUserViewBooleans) {
+    ctx.setState(
+      produce((draft) => {
+          draft.isFriends = _isFriends;
+          draft.isWaitingRequest = _isWaitingRequest;
+          draft.isNotFriends = _isNotFriends;
+      })
+    );
   }
 
   @Action(CreateFriendRequest) 
@@ -106,7 +132,9 @@ export class UserViewState {
 
           return ctx.setState(prevState => ({
             ...prevState,
-            friendRequest_btn_text: 'Waiting for acceptance'
+            isFriends: false,
+            isWaitingRequest: true,
+            isNotFriends: false
         }));
       }
       catch (error) {
@@ -132,7 +160,9 @@ export class UserViewState {
 
           return ctx.setState(prevState => ({
               ...prevState,
-              friendRequest_btn_text: 'Send friend request'
+              isFriends: false,
+              isWaitingRequest: false,
+              isNotFriends: true
           }));
       }
       catch (error) {
@@ -158,7 +188,9 @@ export class UserViewState {
 
           return ctx.setState(prevState => ({
               ...prevState,
-              friendRequest_btn_text: 'Send friend request'
+              isFriends: false,
+              isWaitingRequest: false,
+              isNotFriends: true
           }));
       }
       catch (error) {
@@ -177,9 +209,13 @@ export class UserViewState {
 
       profileViewFriends.map((friend) => {
         if (friend.userId === user.userId) {
+          console.log('inside isFriends');
+          console.log('friendId: ' + friend.userId);
           ctx.setState(prevState => ({
             ...prevState,
-            friendRequest_btn_text: 'You are friends'
+            isFriends: true,
+            isWaitingRequest: false,
+            isNotFriends: false,
           }));
         calledSet = true;
         }
@@ -200,9 +236,14 @@ export class UserViewState {
 
         response.profiles.map((friend) => {
           if (friend.userId === user.userId) {
+            console.log('inside waiting');
+            console.log('friendId: ' + friend.userId);
+            console.log('userId: ' + user.userId);
             ctx.setState(prevState => ({
               ...prevState,
-              friendRequest_btn_text: 'Waiting for acceptance'
+              isFriends: false,
+              isWaitingRequest: true,
+              isNotFriends: false,
           }));
           }
         });
@@ -212,9 +253,13 @@ export class UserViewState {
         }
         else {
           //else not friends
+            console.log('inside not friends');
+            console.log('userId: ' + user.userId);
           return ctx.setState(prevState => ({
             ...prevState,
-            friendRequest_btn_text: 'Send friend request'
+            isFriends: false,
+            isWaitingRequest: false,
+            isNotFriends: true,
           }));
         }
       }

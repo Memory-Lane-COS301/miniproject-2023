@@ -94,7 +94,7 @@ export class NotificationPageState {
                 friendRequest: {
                     senderId: user?.userId,
                     receiverUsername: friend.username,
-                    status: FriendRequestStatus['ACCEPTED']
+                    status: FriendRequestStatus.ACCEPTED
                 }
             }
 
@@ -161,7 +161,7 @@ export class NotificationPageState {
                 }
             }
 
-            // const responseRef = this.notificationPageApi.deleteFriendRequest(request);
+            const responseRef = this.notificationPageApi.deleteFriendRequest(request);
 
             ctx.setState(prevState => ({
                 ...prevState,

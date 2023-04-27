@@ -39,3 +39,8 @@ export class GetFriends {
 export class GetAllPendingFriendRequests {
   static readonly type = '[UserView] GetAllPendingFriendRequests';
 }
+
+export class SetUserViewBooleans {
+  static readonly type = '[UserView] SetUserViewBooleans';
+  constructor(public readonly _isFriends: boolean, public readonly _isWaitingRequest: boolean,public readonly _isNotFriends: boolean ) {}
+}

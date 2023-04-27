@@ -11,7 +11,7 @@ import {
     UpdateFriendRequest 
 } from "@mp/app/notification-page/util";
 import { ProfileState } from "@mp/app/profile/data-access";
-import { GetUserProfileRequest } from "@mp/app/user-view/util";
+import { CheckUserFriendStatus, GetUserProfileRequest, SetUserViewBooleans } from "@mp/app/user-view/util";
 
 
 @Component({
@@ -122,6 +122,12 @@ export class NotificationPage implements OnInit {
             profileImgUrl: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/433.jpg",
             text: "Example comment jakbhbdcjhsjdcbsjdcb"
         },
+        {
+            userId: "bjhjbjhbjhhjhjhbj",
+            username: "Melyna.Kozey",
+            profileImgUrl: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/867.jpg",
+            text: "sduchiscudhsuc"
+        }
     ]
 
     toggleFriendRequestsList() {
@@ -198,7 +204,7 @@ export class NotificationPage implements OnInit {
                     userId: uid,
                     username: uname
                 }
-
+                this.store.dispatch(new CheckUserFriendStatus(request_user));
                 this.store.dispatch(new GetUserProfileRequest(request_user));
                 this.navCtrl.navigateForward('/user-view');
             }

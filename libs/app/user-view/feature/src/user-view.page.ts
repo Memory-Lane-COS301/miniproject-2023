@@ -15,9 +15,11 @@ import { IUser } from '@mp/api/users/util';
   templateUrl: './user-view.page.html',
   styleUrls: ['./user-view.page.scss'],
 })
-export class UserViewPageComponent implements OnInit {
+export class UserViewPageComponent {
   @Select(UserViewState.userView) userProfile$!: Observable<IProfile | null>;
-  @Select(UserViewState.btn_text) request_btn_text$!: Observable<string | null>;
+  @Select(UserViewState.isFriends) isFriends$!: Observable<boolean | null>;
+  @Select(UserViewState.isWaitingRequest) isWaitingRequest$!: Observable<boolean | null>;
+  @Select(UserViewState.isNotFriends) isNotFriends$!: Observable<boolean | null>;
 
   added = false;
   waiting = false;
@@ -34,24 +36,6 @@ export class UserViewPageComponent implements OnInit {
     private toastController: ToastController,
     private readonly store: Store,
   ) {}
-
-  ngOnInit(): void {
-    const user = this.store.selectSnapshot(UserViewState.userView);
-
-    this.store.dispatch(new CheckUserFriendStatus(user)); //check to see if this user is a friend or not
-
-    this.request_btn_text$.subscribe((value) => {
-      if (value == 'You are friends') {
-        this.added = true;
-      }
-      else if (value == 'Waiting for acceptance') {
-        this.waiting = true;
-      }
-      else if (value == 'Send Friend Request') {
-        this.notFriends = true;
-      }
-    })
-  }
 
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -186,12 +170,51 @@ export class UserViewPageComponent implements OnInit {
   }
 
   getRequestBtnText() {
+    const user = this.store.selectSnapshot(UserViewState.userView);
+
+    this.store.dispatch(new CheckUserFriendStatus(user)); //check to see if this user is a friend or not
     let text :string | null = '';
 
-    this.request_btn_text$.subscribe((value) => {
-      text = value;
-    })
+    
+
+    this.isWaitingRequest$.subscribe((value) => {
+      text = value ? 'Waiting for acceptance' : ''; 
+    });
+
+    this.isNotFriends$.subscribe((value) => {
+      text = value ? 'Send friend request' : ''; 
+    });
+
+    console.log('getBtnRequest');
+    console.log(text);
 
     return text;
+  }
+
+  isNotFriends() {
+    let isNotFriends: boolean | null = false;
+    this.isNotFriends$.subscribe((_value) => {
+      isNotFriends = _value; 
+    });
+
+    return isNotFriends;
+  }
+
+  isWaitingRequest() {
+    let isWaitingRequest: boolean | null = false;
+    this.isWaitingRequest$.subscribe((_value) => {
+      isWaitingRequest = _value; 
+    });
+
+    return isWaitingRequest;
+  }
+
+  isFriends() {
+    let isFriends: boolean | null = false;
+    this.isFriends$.subscribe((_value) => {
+      isFriends = _value; 
+    });
+
+    return isFriends;
   }
 }

@@ -40,19 +40,26 @@
 
   <ion-buttons class="ion-justify-content-center">
     <ion-button
-      [ngClass]="{'friend-req-btn-added': added , 'friend-req-btn-not-added': !added}"
+      *ngIf="isNotFriends()"
+      ngClass="friend-req-btn-not-added"
       (click)="addedNewFriend()"
     >
-      <ion-icon *ngIf="!added" slot="end" name="add"></ion-icon>
-      <div *ngIf="added" class="wrapper" slot="end">
-        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-          <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-          <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-        </svg>
-      </div>
-      {{ getRequestBtnText() }}
+      <ion-icon slot="end" name="add"></ion-icon>
+      Send friend request
     </ion-button>
-    <ion-button *ngIf="added" ngClass="unfriend-btn" (click)="presentAlert()">
+    <ion-button
+      *ngIf="isWaitingRequest()"
+      ngClass="friend-req-btn-not-added"
+    >
+      Waiting for acceptance
+    </ion-button>
+    <ion-button
+      *ngIf="isFriends()"
+      ngClass="friend-req-btn-added"
+    >
+      You are friends
+    </ion-button>
+    <ion-button *ngIf="isFriends()" ngClass="unfriend-btn" (click)="presentAlert()">
       <ion-icon ngClass="unfriend-icon" color="dark" name="close-circle-outline" slot="end"></ion-icon>
       Unfriend
     </ion-button>
