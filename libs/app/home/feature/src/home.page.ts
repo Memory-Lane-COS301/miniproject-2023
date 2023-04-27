@@ -150,7 +150,6 @@ commentNotifications = [
         }
       }
     )
-
     this.notificationAmount$.subscribe(
       (value) => {
         this.totalNotifications = value;

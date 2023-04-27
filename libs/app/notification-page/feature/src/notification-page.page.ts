@@ -39,9 +39,9 @@ export class NotificationPage {
     }
 
     toggleCommentsList() {
+        this.commentsCount = 0;
         this.commentsListExpanded = !this.commentsListExpanded;
         this.commentsExpandedBadge = true;
-
         this.commentsCount = 0;
         this.notificationCount = this.friendRequestsCount + this.commentsCount;
 
@@ -60,7 +60,6 @@ export class NotificationPage {
             this.commentNotificationCount = value;
         })
     }
-
     acceptFriendRequest(uid: string | null | undefined, uname: string | null | undefined) {
         if (!uid || !uname) return;
 
@@ -71,6 +70,7 @@ export class NotificationPage {
 
 
         this.friendRequestsCount -= 1;
+
         this.notificationCount = this.friendRequestsCount + this.commentNotificationCount;
         this.store.dispatch(new SetNotificationAmount(this.notificationCount));
         this.store.dispatch(new UpdateFriendRequest(friend));
@@ -85,8 +85,10 @@ export class NotificationPage {
         }
 
         this.friendRequestsCount -= 1;
+
         this.notificationCount = this.friendRequestsCount + this.commentNotificationCount;
         this.store.dispatch(new SetNotificationAmount(this.notificationCount));
+
         this.store.dispatch(new DeleteFriendRequest(friend))
     }
 
