@@ -21,10 +21,6 @@ export class UserViewPageComponent {
   @Select(UserViewState.isWaitingRequest) isWaitingRequest$!: Observable<boolean | null>;
   @Select(UserViewState.isNotFriends) isNotFriends$!: Observable<boolean | null>;
 
-  added = false;
-  waiting = false;
-  notFriends = false;
-
   handlerMessage = '';
   roleMessage = '';
   showExpandedView = false;
@@ -38,8 +34,9 @@ export class UserViewPageComponent {
   ) {}
 
   async presentAlert() {
+    const user = this.store.selectSnapshot(UserViewState.userView).user;
     const alert = await this.alertController.create({
-      header: 'Are you sure you want to unfriend <user name>?',
+      header: `Are you sure you want to unfriend ${user?.username}?`,
       buttons: [
         {
           text: 'Cancel',
@@ -52,7 +49,7 @@ export class UserViewPageComponent {
           text: 'Confirm',
           role: 'confirm',
           handler: () => {
-            this.handlerMessage = 'Unfriened <user name>';
+            this.handlerMessage = `Unfriended ${user?.username}`;
             this.presentToast('top');
             this.removeFriend();
           },
@@ -78,7 +75,6 @@ export class UserViewPageComponent {
   }
 
   addedNewFriend() {
-    this.waiting = true;
     let _userId = '';
     let _username : string | null | undefined = '';
 
@@ -98,10 +94,6 @@ export class UserViewPageComponent {
   }
 
   removeFriend() {
-    this.added = false;
-    this.waiting = false;
-    this.notFriends = true;
-
     let _userId = '';
     let _username : string | null | undefined = '';
 
@@ -121,8 +113,6 @@ export class UserViewPageComponent {
   }
 
   cancelFriend() {
-    this.added = false;
-
     let _userId = '';
     let _username : string | null | undefined = '';
 

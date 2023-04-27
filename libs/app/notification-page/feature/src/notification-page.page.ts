@@ -123,8 +123,8 @@ export class NotificationPage implements OnInit {
             text: "Example comment jakbhbdcjhsjdcbsjdcb"
         },
         {
-            userId: "bjhjbjhbjhhjhjhbj",
-            username: "Melyna.Kozey",
+            userId: "Xrbeb3ptkD4y76MtHIzzX49l9gqc",
+            username: "testing1",
             profileImgUrl: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/867.jpg",
             text: "sduchiscudhsuc"
         }

@@ -53,6 +53,10 @@
     >
       Waiting for acceptance
     </ion-button>
+    <ion-button *ngIf="isWaitingRequest()" ngClass="unfriend-btn" (click)="cancelFriend()">
+      <ion-icon ngClass="unfriend-icon" color="dark" name="close-circle-outline" slot="end"></ion-icon>
+      Cancel
+    </ion-button>
     <ion-button
       *ngIf="isFriends()"
       ngClass="friend-req-btn-added"
