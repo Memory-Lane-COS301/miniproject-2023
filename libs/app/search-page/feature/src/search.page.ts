@@ -24,6 +24,7 @@ import { ProfileState } from '@mp/app/profile/data-access';
 export class SearchPageComponent implements OnInit{
   @Select(FeedState.memories) searchPageMemories$!: Observable<IMemory[] | null>;
   @Select(SearchPageState.recentSearches) recentSearches$!: Observable<string[] | null>;
+  @Select(ProfileState.time) time$!: Observable<IUser | null>;
 
   searchValue = '';
   searchFocus = false;

@@ -18,7 +18,7 @@ import { IUser } from '@mp/api/users/util';
 })
 export class FeedPageComponent {
   @Select(FeedState.memories) feedMemories$!: Observable<IMemory[]>;
-  @Select(ProfileState.user) user$!: Observable<IUser>;
+  @Select(ProfileState.time) time$!: Observable<IUser | null>;
 
   showExpandedView = false;
 

@@ -1,7 +1,7 @@
 <ion-header color="none">
     <ion-toolbar color="none" [ngClass]="'menu-toolbar'">
       <ion-title ngClass="title">Memory Lane</ion-title>
-      <small slot="end" ngClass="account-time">22h:52m:11s</small>
+      <small slot="end" ngClass="account-time" *ngIf="time$ | async as time">{{ time }}</small>
     </ion-toolbar>
 </ion-header>
 
