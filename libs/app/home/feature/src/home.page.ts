@@ -45,71 +45,6 @@ export class HomePage implements OnInit {
     //   this.store.dispatch(new GetAllPendingFriendRequests())
     // },5000);
   // }
-  friendsRequests = [
-    {
-        userId: "1",
-        username: "John_do3",
-        name: "John",
-        surname: "Doe",
-        profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-    },
-    {
-        userId: "2",
-        username: "John_do3",
-        name: "John",
-        surname: "Doe",
-        profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-    },
-    {
-        userId: "3",
-        username: "John_do3",
-        name: "John",
-        surname: "Doe",
-        profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-    },        
-    {
-        userId: "4",
-        username: "John_do3",
-        name: "John",
-        surname: "Doe",
-        profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-    },        
-    {
-        userId: "5",
-        username: "John_do3",
-        name: "John",
-        surname: "Doe",
-        profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-    },        
-    {
-        userId: "6",
-        username: "John_do3",
-        name: "John",
-        surname: "Doe",
-        profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-    },        
-    {
-        userId: "7",
-        username: "John_do3",
-        name: "John",
-        surname: "Doe",
-        profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-    },        
-    {
-        userId: "8",
-        username: "John_do3",
-        name: "John",
-        surname: "Doe",
-        profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-    },        
-    {
-        userId: "9",
-        username: "John_do3",
-        name: "John",
-        surname: "Doe",
-        profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-    }
-];
 commentNotifications = [
     {
         userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
@@ -136,8 +71,8 @@ commentNotifications = [
   }
 
   ionViewWillEnter() {
-    this.store.dispatch(new SubscribeToUser());
     this.store.dispatch(new SubscribeToProfileView());
+    this.store.dispatch(new SubscribeToUser());
   }
 
   getAllNotifications(): number{
@@ -176,7 +111,6 @@ commentNotifications = [
   }
 
   ngOnInit() {
-    this.store.dispatch(new SetNotificationPage(this.friendsRequests, this.commentNotifications));
     this.comments$.subscribe((value) => {
       if (value) this.totalComments = value?.length;
     })

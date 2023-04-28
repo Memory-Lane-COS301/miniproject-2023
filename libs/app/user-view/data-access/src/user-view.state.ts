@@ -88,7 +88,8 @@ export class UserViewState {
       };
       const responseRef = await this.userViewApi.getUserProfile(request);
       const response = responseRef.data;
-      return ctx.dispatch(new SetUserView(response.profile));
+      ctx.dispatch(new SetUserView(response.profile));
+      return ctx.dispatch(new CheckUserFriendStatus(user));
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
     }

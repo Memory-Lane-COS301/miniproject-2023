@@ -150,6 +150,7 @@ export class SearchPageComponent implements OnInit{
             }
 
             this.store.dispatch(new GetUserProfileRequest(request_user));
+            this.navCtrl.navigateForward('/user-view');
         }
     }
 }

@@ -24,7 +24,7 @@ export class SearchPageApi {
     )(request);
   }
 
-  async getSearchResults(searchValue: string) {
+  async getSearchResults(searchValue: string, currentUsername: string) {
     const usersRef = collection(this.firestore, 'users');
     const q = query(usersRef);
     const querySnapshot = await getDocs(q);
@@ -32,7 +32,7 @@ export class SearchPageApi {
     const users: IUser[] = [];
     querySnapshot.docs.map(doc => {
       const data = doc.data() as IUser
-      if (data.username?.toLowerCase().includes(searchValue.toLowerCase()))
+      if (data.username?.toLowerCase().includes(searchValue.toLowerCase()) && data.username.toLowerCase() !== currentUsername)
         users.push(data);
     });
     return users;

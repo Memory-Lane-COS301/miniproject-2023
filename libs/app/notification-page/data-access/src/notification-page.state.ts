@@ -225,7 +225,7 @@ export class NotificationPageState {
 
             return ctx.setState(
                 produce((draft) => {
-                    draft.friendsRequests = response.profiles;
+                    draft.friendsRequests = response.profiles.map(profile => profile.user as IUser);
                 })
             )
         }
