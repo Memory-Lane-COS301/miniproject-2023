@@ -18,16 +18,19 @@ export class UpdateFriendRequestHandler implements ICommandHandler<UpdateFriendR
 
     const request = command.request;
 
-    if (!request.friendRequest.senderId || !request.friendRequest.receiverId)
+    if (!request.friendRequest.senderId || !request.friendRequest.receiverUsername)
       throw new Error('Missing required fields');
 
     const userDoc = await this.userRepository.findUser(request.friendRequest.senderId);
 
     if (!userDoc.data()) throw new Error('User not found');
 
-    const receiverUserDoc = await this.userRepository.findUserById(request.friendRequest.receiverId);
+    const receiverSnapshot = await this.userRepository.findUserWithUsername(request.friendRequest.receiverUsername);
 
-    if (!receiverUserDoc.data()) throw new Error('Receiver not found');
+    if (!receiverSnapshot) throw new Error('Receiver not found');
+
+    const receiverUserDoc = receiverSnapshot.docs[0];
+
 
     //new status
     const newStatus = request.friendRequest.status;
@@ -36,6 +39,8 @@ export class UpdateFriendRequestHandler implements ICommandHandler<UpdateFriendR
     const receiverId = request.friendRequest.senderId;
     const senderId = receiverUserDoc.id;
 
+    console.log(senderId);
+    console.log(receiverId);
     //get current friendRequestsId
     const currentFriendRequestsSnapshot = await this.friendsRepository.getCurrentFriendRequest(senderId, receiverId);
     const currentFriendRequestsDoc = currentFriendRequestsSnapshot.docs[0];
@@ -48,6 +53,8 @@ export class UpdateFriendRequestHandler implements ICommandHandler<UpdateFriendR
       lastUpdated: Timestamp.now(),
       created: currentFriendRequestsDoc.data()['created'],
     };
+
+    console.log(friendData);
 
     const updatedFriendRequest = this.publisher.mergeObjectContext(FriendRequest.fromData(friendData));
 

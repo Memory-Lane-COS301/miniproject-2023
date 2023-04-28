@@ -27,6 +27,9 @@ export class GetPendingFriendRequestsForHandler implements IQueryHandler<GetPend
       const profileDetails = await this.profileRepository.getProfileDetails(user);
       const profileDetailsData = profileDetails.data();
 
+      if (profileDetailsData)
+        profileDetailsData.userId = friendIds[i];
+
       const profile: IProfile = {
         userId: friendIds[i] || ' ',
         user: profileDetailsData,

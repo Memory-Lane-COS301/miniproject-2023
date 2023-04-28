@@ -89,6 +89,7 @@ export class UserViewState {
       const responseRef = await this.userViewApi.getUserProfile(request);
       const response = responseRef.data;
       ctx.dispatch(new SetUserView(response.profile));
+      ctx.dispatch(new GetFriends());
       return ctx.dispatch(new CheckUserFriendStatus(user));
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
@@ -280,7 +281,7 @@ export class UserViewState {
   @Action(GetFriends)
   async getFriends(ctx: StateContext<UserViewStateModel>) {
     try {
-      const user = this.store.selectSnapshot(ProfileState.profile);
+      const user = this.store.selectSnapshot(UserViewState.userView);
 
       if (!user) return this.store.dispatch(new SetError('User not set'));
       

@@ -62,12 +62,14 @@ export class NotificationPage {
             this.commentNotificationCount = value;
         })
     }
-    acceptFriendRequest(uid: string | null | undefined, uname: string | null | undefined) {
-        if (!uid || !uname) return;
+    acceptFriendRequest(senderUsername: string | null | undefined) {
+        const userState = this.store.selectSnapshot(ProfileState.user);
+
+        if (!senderUsername || !userState?.username) return;
 
         const friend : IUser = {
-            userId: uid,
-            username: uname
+            userId: '',
+            username: senderUsername
         }
 
 

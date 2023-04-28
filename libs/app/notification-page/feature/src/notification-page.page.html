@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <ion-buttons>
-                        <ion-badge color="success" ngClass="accept-decline-request-btns" (click)="acceptFriendRequest(request.userId, request.username)">
+                        <ion-badge color="success" ngClass="accept-decline-request-btns" (click)="acceptFriendRequest(request.username)">
                             <ion-icon name="checkmark"></ion-icon>
                         </ion-badge>
                         <ion-badge color="danger" ngClass="accept-decline-request-btns" (click)="declineFriendRequest(request.userId, request.username)">
@@ -43,33 +43,4 @@
             </div>
         </div>
     </ion-list>
-    <hr>
-    <ion-list color="none" ngClass="comments-list" class="ion-padding"> <!-- Comments -->
-        <div ngClass="comments-list-title" (click)="toggleCommentsList()">
-            <div>
-                <ion-text size="large" ngClass="list-title-text">Comments</ion-text>
-                <ion-badge *ngIf="!commentsExpandedBadge && commentNotificationCount > 0" color="danger" ngClass="list-title-count">{{ getCommentsLength() }}</ion-badge>
-            </div>
-            <ion-icon name="chevron-forward-circle-outline" [ngClass]="{'toggleIcon-comments': !commentsListExpanded, 'toggleIcon-comments-90deg': commentsListExpanded}"></ion-icon>
-        </div>
-        <div [ngClass]="{'comments-shown': commentsListExpanded, 'comments-hidden': !commentsListExpanded}">
-            <div *ngIf="commentsListExpanded">
-                <div *ngFor="let comment of comments$ | async"  ngClass="comment-profileImg-username">
-                    <ion-avatar>
-                        <img src="{{ comment.profileImgUrl }}" ngClass="comment-profileImg" (click) ="openUserProfile(comment.userId, comment.username)">
-                    </ion-avatar>
-                    <div ngClass="comment-username-and-text">
-                        <ion-text ngClass="comment-username" (click) ="openUserProfile(comment.userId, comment.username)">@{{ comment.username }} <b style="opacity: 0.5;">{{ checkForMyComment(comment.userId) }}</b></ion-text>
-                        <ion-text ngClass="comment-text">This is an example comment made by me to test it oiidd jsdjsn jdn jskdj jjdjdjdc jdjd jdjc</ion-text>
-                    </div>
-                </div>
-                <div *ngIf="getCommentsLength() <= 0 && commentsListExpanded">
-                  <ion-item color="none">
-                    <ion-text size="large">No Comments</ion-text>
-                  </ion-item>
-                </div>
-            </div>
-        </div>
-    </ion-list>
-    <hr>
 </ion-content>

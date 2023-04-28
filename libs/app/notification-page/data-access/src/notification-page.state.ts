@@ -18,6 +18,7 @@ import {
 import { FriendRequestStatus, IDeleteFriendRequest, IGetPendingFriendRequest, IUpdateFriendRequest } from '@mp/api/friend/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { ToastController } from '@ionic/angular';
+import { freemem } from 'os';
 
 export interface NotificationPageStateModel {
     friendsRequests: IUser[] | null | undefined;
@@ -123,9 +124,17 @@ export class NotificationPageState {
 
             if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [Notification-page]'));
 
+            // const request : IUpdateFriendRequest = {
+            //     friendRequest: {
+            //         senderId: user?.userId,
+            //         receiverUsername: friend.username,
+            //         status: FriendRequestStatus.ACCEPTED
+            //     }
+            // }
+
             const request : IUpdateFriendRequest = {
                 friendRequest: {
-                    senderId: user?.userId,
+                    senderId: user.userId,
                     receiverUsername: friend.username,
                     status: FriendRequestStatus.ACCEPTED
                 }
