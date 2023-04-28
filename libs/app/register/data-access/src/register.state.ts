@@ -44,7 +44,7 @@ export class RegisterState {
       const email = state.registerForm.model.email;
       const password = state.registerForm.model.password;
 
-      if (email && password) {
+      if (email && password ) {
         return ctx.dispatch(new AuthRegister(email, password));
       }
       return ctx.dispatch(new SetError('Email or password not set'));
