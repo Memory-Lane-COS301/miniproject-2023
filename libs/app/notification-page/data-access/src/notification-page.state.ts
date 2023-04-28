@@ -216,11 +216,12 @@ export class NotificationPageState {
 
             const request : IGetPendingFriendRequest = {
                 user: {
-                    senderId: profile?.userId
+                    senderId: '',
+                    receiverId: profile?.userId
                 }
             }
 
-            const responseRef = await this.notificationPageApi.getAllPendingFriendRequests(request);
+            const responseRef = await this.notificationPageApi.getAllPendingFriendRequestsFor(request);
             const response = responseRef.data;
 
             return ctx.setState(

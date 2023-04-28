@@ -54,4 +54,9 @@ export class NotificationPageApi {
   async getAllPendingFriendRequests(request: IGetFriendsRequest) {
     return await httpsCallable<IGetFriendsRequest, IGetFriendsResponse>(this.functions, 'getAllPendingFriendRequests')(request);
   }
+
+  async getAllPendingFriendRequestsFor(request: IGetFriendsRequest) {
+    return await httpsCallable<IGetFriendsRequest, IGetFriendsResponse>(this.functions, 'getAllPendingFriendRequestsFor')(request);
+  }
+
 }

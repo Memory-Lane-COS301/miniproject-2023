@@ -15,6 +15,7 @@ import {
   IGetPendingFriendRequest,
   IGetPendingFriendResponse,
   GetPendingFriendsQuery,
+  GetPendingFriendRequestsForQuery
 } from '@mp/api/friend/util';
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
@@ -52,6 +53,12 @@ export class FriendsService {
   async getPendingFriends(request: IGetPendingFriendRequest): Promise<IGetPendingFriendResponse> {
     return await this.queryBus.execute<GetPendingFriendsQuery, IGetPendingFriendResponse>(
       new GetPendingFriendsQuery(request),
+    );
+  }
+
+  async getPendingFriendRequestsFor(request: IGetPendingFriendRequest): Promise<IGetPendingFriendResponse> {
+    return await this.queryBus.execute<GetPendingFriendRequestsForQuery, IGetPendingFriendResponse>(
+      new GetPendingFriendRequestsForQuery(request),
     );
   }
 }
