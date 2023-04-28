@@ -18,7 +18,7 @@ export class IncreseMemoryTimeEventHandler implements IEventHandler<IncreseMemor
     if (memorySnapshot != undefined) {
       const currentUserSnapshot = await this.usersRepository.findUserById(event.reviveMemory.userId);
       const currentUserData = currentUserSnapshot.data();
-      if (currentUserData != undefined && currentUserData['accountTime'] >= event.reviveMemory.secondsToAdd) {
+      if (currentUserData != undefined && currentUserData['accountTime'] != undefined && currentUserData['accountTime'] >= event.reviveMemory.secondsToAdd) {
         let newAccountTime: any = 0;
         if (memorySnapshot.data() != undefined) {
           newAccountTime = memorySnapshot.data()?.remainingTime;

@@ -116,6 +116,8 @@ export class MemoriesRepository {
   async IncreseMemoryTime(memoryId: string, newTime: number) {
     return await admin.firestore().collection('memories').doc(memoryId).update({
       remainingTime: newTime,
+    })
+  }
 
   async updateMemories(user: IUser) {
     const updateInfo = {
