@@ -10,10 +10,10 @@ import { GetUserProfileRequest } from '@mp/app/user-view/util';
 import { IUser } from '@mp/api/users/util';
 import { IGetProfileRequest } from '@mp/api/profiles/util';
 import { on } from 'stream';
+import { SubscribeToMemoryComments } from '@mp/app/view-comments/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { UserViewState } from '@mp/app/user-view/data-access';
 import { Timestamp } from '@angular/fire/firestore';
-
 
 @Component({
   selector: 'app-memory-card',
@@ -59,8 +59,7 @@ export class MemoryCardComponent implements OnInit {
     this.showExpandedView = !this.showExpandedView;
 
     if(this.showExpandedView) {      
-      // this.store.dispatch(new GetCommentsRequest(this.memory)); //we only request the comments if we want to display them
-      this.onPostClick();
+      this.store.dispatch(new SubscribeToMemoryComments(this.memory.memoryId || ' '))
     }
   }
 
@@ -141,6 +140,7 @@ export class MemoryCardComponent implements OnInit {
 }
 
   openViewedComments() {
+    
     const currentPosition = window.pageYOffset;
     this.navCtrl.navigateForward('/view-comments', { state: { scrollPosition: currentPosition } });
   }

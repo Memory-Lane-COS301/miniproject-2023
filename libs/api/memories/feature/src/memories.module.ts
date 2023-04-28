@@ -10,6 +10,7 @@ import {
   UpdateCommentHandler,
   ReviveDeadMemoryCommandHandler,
   DeductAccountTimeHandler,
+  UpdateMemoryTimeHandler,
 } from './commands';
 import { GetCommentsHandler, GetFeedMemoriesHandler } from './queries';
 import {
@@ -18,6 +19,7 @@ import {
   CommentUpdatedHandler,
   ReviveDeadMemoryEventHandler,
   DeductAccountTimeEventHandler,
+  IncreseMemoryTimeEventHandler,
 } from './events';
 import { MemoriesSagas } from './memories.sagas';
 import { MemoriesService } from './memories.service';
@@ -28,6 +30,7 @@ export const CommandHandlers = [
   UpdateCommentHandler,
   ReviveDeadMemoryCommandHandler,
   DeductAccountTimeHandler,
+  UpdateMemoryTimeHandler,
 ];
 export const QueryHandlers = [GetCommentsHandler, GetFeedMemoriesHandler];
 export const EventHandlers = [
@@ -36,6 +39,7 @@ export const EventHandlers = [
   CommentUpdatedHandler,
   ReviveDeadMemoryEventHandler,
   DeductAccountTimeEventHandler,
+  IncreseMemoryTimeEventHandler,
 ];
 
 @Module({

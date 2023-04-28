@@ -1,4 +1,4 @@
-import { DeductAccountTimeCommand, ReviveDeadMemoryEvent, UpdateMemoryCommand } from '@mp/api/memories/util';
+import { DeductAccountTimeCommand, ReviveDeadMemoryEvent, IncreseMemoryTimeEvent, UpdateMemoryCommand } from '@mp/api/memories/util';
 import { UserUpdatedEvent } from '@mp/api/users/util';
 import { Injectable } from '@nestjs/common';
 import { ICommand, ofType, Saga } from '@nestjs/cqrs';
@@ -14,6 +14,14 @@ export class MemoriesSagas {
     );
   };
 
+  @Saga()
+  onIncreseMemoryTime = (events$: Observable<any>): Observable<ICommand> => {
+    return events$.pipe(
+      ofType(IncreseMemoryTimeEvent),
+      map((event: IncreseMemoryTimeEvent) => new DeductAccountTimeCommand(event.reviveMemory)),
+    );
+  };
+  
   @Saga()
   onUserUpdatedEvent = (events$: Observable<any>): Observable<ICommand> => {
     return events$.pipe(

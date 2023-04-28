@@ -18,5 +18,8 @@ service cloud.firestore {
       allow read: if true;
     }
 
+    match /memories {
+      allow read: if request.auth != null;
+    }
   }
 }

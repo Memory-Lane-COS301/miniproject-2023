@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { SetSearchResults, SetSearchValue } from '@mp/app/search-results/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Memory } from '@mp/app/shared/feature';
-import { GetSearchPageMemories, GetSearchResults, GetFeedMemories } from '@mp/app/search-page/util';
+import { GetSearchPageMemories, GetSearchResults, GetFeedMemories, GetSearchMemories } from '@mp/app/search-page/util';
 import { FeedState } from '@mp/app/feed/data-access';
 import { ProfileState } from '@mp/app/profile/data-access';
 
@@ -30,6 +30,7 @@ export class SearchPageComponent implements OnInit{
   searchFocus = false;
   currentFilter = 'Top';
   showExpandedView = false;
+  searchSize = 0;
 
   memoriesArray: IMemory[] | null | undefined;
   recentSearches: string[] | null | undefined; //only the first 10 will show
@@ -48,24 +49,31 @@ export class SearchPageComponent implements OnInit{
     this.searchValue = searchValue;
     this.onSearchFocus();
     this.tempSearchResults = this.SearchResults;
-  }
-  onSearch(searchTerm: string) {
-    // Add search term to the beginning of the array
-    if (searchTerm != '') {
-      this.recentSearches$.subscribe((recentSearches) => {
-        recentSearches?.unshift(searchTerm);
-      });
-
-      this.store.dispatch(new SetSearchValue(searchTerm));
-      this.store.dispatch(new SetSearchResults(this.SearchResults)); 
-      this.navCtrl.navigateForward('/search-results');
+    if (this.tempSearchResults) {
+      this.searchSize = this.tempSearchResults.length;
     }
-    //fetch user accounts based on search value and populate searchUsers array
+    else {
+      this.searchSize = 0;
+    }
   }
+  // onSearch(searchTerm: string) {
+  //   // Add search term to the beginning of the array
+  //   if (searchTerm != '') {
+  //     this.recentSearches$.subscribe((recentSearches) => {
+  //       recentSearches?.unshift(searchTerm);
+  //     });
+
+  //     this.store.dispatch(new SetSearchValue(searchTerm));
+  //     // this.searchResults$.subscribe((results) => {
+  //       this.store.dispatch(new SetSearchResults(this.SearchResults));
+  //     // }) 
+  //     this.navCtrl.navigateForward('/search-results');
+  //   }
+  //   //fetch user accounts based on search value and populate searchUsers array
+  // }
   chosenRecentSearch(event: MouseEvent, search: string) {
     event.stopPropagation();
     this.searchValue = search;
-    alert(event);
   }
   changeMemoryView() {
     this.showExpandedView = !this.showExpandedView;
@@ -90,11 +98,9 @@ export class SearchPageComponent implements OnInit{
       });
     });
 
-    this.store.dispatch(new GetSearchResults(this.searchValue));
+    // this.store.dispatch(new GetSearchResults(this.searchValue));
+    this.store.dispatch(new GetSearchMemories(this.searchValue));
     // this.store.dispatch(new SetSearchResults(this.searchResults))
-    this.searchResults$.subscribe((results) => {
-      console.log(results);
-    })
     
     return this.searchResults;
   }
@@ -171,8 +177,14 @@ export class SearchPageComponent implements OnInit{
     }, 2000);
   }
 
- ngOnInit(): void { 
+ ngOnInit(): void {
     this.store.dispatch(new GetFeedMemories());
+    // this.store.dispatch(new GetSearchPageMemories());
     this.store.dispatch(new GetSearchResults(this.searchValue));
+ }
+
+ getSearchResultsLength() {
+  console.log("SIZE: " + this.searchSize);
+  return this.searchSize;
  }
 }

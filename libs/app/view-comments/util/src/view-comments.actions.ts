@@ -14,3 +14,8 @@ export class UpdateCommentRequest {
     static readonly type = '[ViewComments] UpdateCommentRequest';
     constructor(public readonly text: string) {}
 }
+
+export class SubscribeToMemoryComments {
+    static readonly type = '[ViewComments] SubscribeToMemoryComments';
+    constructor(public readonly memoryId: string) {}
+}

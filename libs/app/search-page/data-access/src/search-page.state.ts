@@ -6,7 +6,7 @@ import { IGetUserRequest, IUser } from "@mp/api/users/util";
 import { IGetFeedMemoriesRequest, IMemory } from "@mp/api/memories/util";
 import { SearchPageApi } from "./search-page.api";
 import { tap } from "rxjs";
-import { GetSearchPageMemories, SearchMemories, SetSearchPage, GetSearchResults, GetFeedMemories } from "@mp/app/search-page/util";
+import { GetSearchPageMemories, SearchMemories, SetSearchPage, GetSearchResults, GetFeedMemories, GetSearchMemories } from "@mp/app/search-page/util";
 import { state } from "@angular/animations";
 import { FeedApi, FeedStateModel } from "@mp/app/feed/data-access";
 import { AuthState } from "@mp/app/auth/data-access";
@@ -17,7 +17,7 @@ export interface SearchPageStateModel {
   // users: IUser[];
   memories: IMemory[];
   recentSearches: string[];
-  searchResults: IUser[]
+  searchResults: IMemory[]
 }
 
 @State<SearchPageStateModel>({
@@ -88,6 +88,18 @@ export class SearchPageState {
         }
     }
 
+    @Action(GetSearchMemories)
+    async getSearchMemories(ctx: StateContext<SearchPageStateModel>, { searchValue }: GetSearchMemories) {
+      try {
+        const response = await this.searchPageApi.getSearchResults(searchValue);
+        
+        return ctx.patchState({ searchResults: response });
+    } 
+    catch(error){
+        return ctx.dispatch(new SetError((error as Error).message));
+    }
+    }
+
     @Action(GetSearchResults)
     async getSearchResults(ctx: StateContext<SearchPageStateModel>, { searchValue }: GetSearchResults) {
       try {
@@ -100,6 +112,19 @@ export class SearchPageState {
           return ctx.dispatch(new SetError((error as Error).message));
       }
     }
+
+    // @Action(GetSearchPageMemories)
+    // async getSearchMemories(ctx: StateContext<SearchPageStateModel>) {
+    //   try {
+    //       const response = await this.searchPageApi.getSearchMemories();
+    //       console.log('Response')
+    //       console.log(response)
+    //       return ctx.patchState({ memories: response });
+    //   } 
+    //   catch(error){
+    //       return ctx.dispatch(new SetError((error as Error).message));
+    //   }
+    // }
 
 
     // @Action(GetSearchPageMemories)

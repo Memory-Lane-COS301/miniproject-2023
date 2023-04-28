@@ -25,8 +25,8 @@ export class GetFeedMemoriesHandler
       throw new Error('User not found');
 
     try {
-      const memoriesSnapshot = await this.memoriesRepository.getFeedMemories(request.user.userId);
-      return { memories: memoriesSnapshot.docs.map(doc => doc.data()) };
+      const memories = await this.memoriesRepository.getFeedMemoriesWithComments(request.user.userId);
+      return { memories };
     } catch (error) {
       if (error instanceof Error)
         return  { memories: [] };

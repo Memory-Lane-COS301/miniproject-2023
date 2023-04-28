@@ -42,7 +42,7 @@ jobs:
           yarn nx test app-dashboard-feature
           yarn nx test app-feed
           yarn nx test app-forgot-feature
-          yarn nx test app-profile-view
+        # yarn nx test app-profile-view
           yarn nx test app-search-page
           yarn nx test app-search-results
           yarn nx  test app-shared

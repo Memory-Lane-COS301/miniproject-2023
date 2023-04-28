@@ -10,10 +10,12 @@ import {
   IGetFeedMemoriesResponse,
   IReviveDeadMemoryRequest,
   IReviveDeadMemoryResponse,
+  IComment,
 } from '@mp/api/memories/util';
 import { NestFactory } from '@nestjs/core';
 import * as functions from 'firebase-functions';
 import { CoreModule } from '../core.module';
+import { ICommand } from '@nestjs/cqrs';
 
 export const createMemory = functions.https.onCall(
   async (request: ICreateMemoryRequest): Promise<ICreateMemoryResponse> => {
@@ -56,6 +58,29 @@ export const getComments = functions.https.onCall(
   },
 );
 
+export const getCommentsList = functions.https.onCall(
+  async (request: IGetCommentsRequest) => {
+    const app = await NestFactory.createApplicationContext(CoreModule);
+    const service = app.get(MemoriesService);
+    try {
+      const response = await service.getComments(request);
+      const comments = response.comments;
+      return { comments };
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message.includes('not found')) throw new functions.https.HttpsError('not-found', error.message);
+
+        if (error.message.includes('Missing required fields'))
+          throw new functions.https.HttpsError('invalid-argument', error.message);
+
+        throw new functions.https.HttpsError('internal', error.message);
+      }
+
+      throw new functions.https.HttpsError('unknown', 'An unknown error occurred.');
+    }
+  },
+);
+
 export const getFeedMemories = functions.https.onCall(
   async (request: IGetFeedMemoriesRequest): Promise<IGetFeedMemoriesResponse> => {
     const app = await NestFactory.createApplicationContext(CoreModule);
@@ -66,6 +91,26 @@ export const getFeedMemories = functions.https.onCall(
       if (error instanceof Error) {
         if (error.message.includes('not found')) throw new functions.https.HttpsError('not-found', error.message);
 
+        if (error.message.includes('Missing required'))
+          throw new functions.https.HttpsError('invalid-argument', error.message);
+
+        throw new functions.https.HttpsError('internal', error.message);
+      }
+
+      throw new functions.https.HttpsError('unknown', 'An unknown error occurred.');
+    }
+  },
+);
+
+export const createComment = functions.https.onCall(
+  async (request: ICreateCommentRequest): Promise<ICreateCommentResponse> => {
+    const app = await NestFactory.createApplicationContext(CoreModule);
+    const service = app.get(MemoriesService);
+    try {
+      return await service.createComment(request);
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message.includes('not found')) throw new functions.https.HttpsError('not-found', error.message);
         if (error.message.includes('Missing required'))
           throw new functions.https.HttpsError('invalid-argument', error.message);
 
@@ -98,15 +143,17 @@ export const reviveDeadMemory = functions.https.onCall(
   },
 );
 
-export const createComment = functions.https.onCall(
-  async (request: ICreateCommentRequest): Promise<ICreateCommentResponse> => {
+export const updateMemoryTime = functions.https.onCall(
+  async (request: IReviveDeadMemoryRequest): Promise<IReviveDeadMemoryResponse> => {
     const app = await NestFactory.createApplicationContext(CoreModule);
     const service = app.get(MemoriesService);
     try {
-      return await service.createComment(request);
+      return await service.addMemoryTime(request);
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.includes('not found')) throw new functions.https.HttpsError('not-found', error.message);
+
+        if (error.message.includes('Missing required'))
 
         if (error.message.includes('Missing required fields'))
           throw new functions.https.HttpsError('invalid-argument', error.message);

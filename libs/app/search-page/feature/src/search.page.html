@@ -15,8 +15,8 @@
       (ionBlur)="onSearchBlur()"
       (ionChange)="onInputChange(searchValue)"
       show-cancel-button="focus"
-      (keyup.enter)="onSearch(searchValue)"
     ></ion-searchbar>
+    <!--(keyup.enter)="onSearch(searchValue)"-->
   </ion-toolbar>
   <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -36,7 +36,7 @@
   <ion-list *ngIf="searchFocus && !searchValue" ngClass="search-list">
     <ion-item
       color="none"
-      *ngFor="let search of RecentSearches"
+      *ngFor="let search of RecentSearches |slice: 10"
       ngClass="search-item"
       (click)="chosenRecentSearch($event, search)"
     >
@@ -44,9 +44,10 @@
     </ion-item>
   </ion-list>
   <ion-list *ngIf="searchValue" ngClass="search-list">
-    <ion-item
+    <div *ngIf="searchResults$ | async as results">
+      <ion-item
       color="none"
-      *ngFor="let result of searchResults$ | async"
+      *ngFor="let result of results"
       ngClass="search-item"
       (click)="openUserProfile(result.userId, result.username)"
     >
@@ -55,9 +56,10 @@
       </ion-avatar>
       <ion-text ngClass="result-username">{{ result.username }}</ion-text>
     </ion-item>
-    <ion-item color="none" ngClass="no-results" *ngIf="!tempSearchResults?.length" lines="none">
+    <ion-item color="none" ngClass="no-results" *ngIf="results.length <= 0 || !results" lines="none">
       <ion-icon class="ion-padding-right" color="danger" slot="start" name="alert-circle-outline"></ion-icon>
       <ion-text color="medium">No Results</ion-text>
     </ion-item>
+    </div>
   </ion-list>
 </ion-content>
