@@ -48,7 +48,8 @@ export class MemoryCardComponent implements OnInit {
   }
 
   setAddingNewComment() {
-    this.addingNewComment = true;
+    // this.addingNewComment = true;
+    this.openViewedComments();
   }
 
   unsetAddingNewComment() {
