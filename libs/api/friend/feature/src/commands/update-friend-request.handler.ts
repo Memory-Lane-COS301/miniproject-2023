@@ -18,18 +18,16 @@ export class UpdateFriendRequestHandler implements ICommandHandler<UpdateFriendR
 
     const request = command.request;
 
-    if (!request.friendRequest.senderId || !request.friendRequest.receiverUsername)
+    if (!request.friendRequest.senderId || !request.friendRequest.receiverId)
       throw new Error('Missing required fields');
 
     const userDoc = await this.userRepository.findUser(request.friendRequest.senderId);
 
     if (!userDoc.data()) throw new Error('User not found');
 
-    const receiverUserSnapshot = await this.userRepository.findUserWithUsername(request.friendRequest.receiverUsername);
+    const receiverUserDoc = await this.userRepository.findUserById(request.friendRequest.receiverId);
 
-    if (receiverUserSnapshot.empty) throw new Error('Receiver not found');
-
-    const receiverUserDoc = receiverUserSnapshot.docs[0];
+    if (!receiverUserDoc.data()) throw new Error('Receiver not found');
 
     //new status
     const newStatus = request.friendRequest.status;

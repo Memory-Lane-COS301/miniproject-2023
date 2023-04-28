@@ -1,3 +1,3 @@
-export * from './lib/forgot.page';
-export * from './lib/forgot.module';
-export * from './lib/forgot.routing';
+export * from './forgot.page';
+export * from './forgot.module';
+export * from './forgot.routing';

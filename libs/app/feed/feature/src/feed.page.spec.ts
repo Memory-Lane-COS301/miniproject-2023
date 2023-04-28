@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AngularDelegate, ModalController } from '@ionic/angular';
 import { AddMemoryPageComponent } from '@mp/app/shared/feature';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FeedPageComponent } from './feed.page';
 
 describe('FeedPageComponent', () => {
@@ -13,6 +13,7 @@ describe('FeedPageComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [FeedPageComponent, AddMemoryPageComponent],
       providers: [ModalController, AngularDelegate],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     }).compileComponents();
 
     fixture1 = TestBed.createComponent(FeedPageComponent);

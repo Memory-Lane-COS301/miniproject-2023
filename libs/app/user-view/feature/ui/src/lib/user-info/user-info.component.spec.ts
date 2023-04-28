@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UserInfoComponent } from './user-info.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('UserInfoComponent', () => {
   let component: UserInfoComponent;
@@ -9,6 +9,7 @@ describe('UserInfoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UserInfoComponent],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserInfoComponent);

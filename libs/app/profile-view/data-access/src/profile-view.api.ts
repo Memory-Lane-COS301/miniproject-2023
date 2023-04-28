@@ -13,6 +13,7 @@ import {
   IUpdateCommentRequest,
   IUpdateCommentResponse,
 } from '@mp/api/memories/util';
+import { IGetFriendsRequest, IGetFriendsResponse } from '@mp/api/friend/util';
 
 @Injectable()
 export class ProfileViewApi {
@@ -64,23 +65,7 @@ export class ProfileViewApi {
     return await httpsCallable<IUpdateCommentRequest, IUpdateCommentResponse>(this.functions, 'updateComment')(request);
   }
 
-  // async createFriendRequest(request: ICreateFriendRequestRequest) {
-  //   return await httpsCallable<
-  //     ICreateFriendRequestRequest,
-  //     ICreateFriendRequestResponse
-  //   >(
-  //     this.functions,
-  //     'createFriendRequest'
-  //   )(request);
-  // }
-
-  // async updateFriendRequest(request: IUpdateFriendRequestRequest) {
-  //   return await httpsCallable<
-  //     IUpdateFriendRequestRequest,
-  //     IUpdateFriendRequestResponse
-  //   >(
-  //     this.functions,
-  //     'updateFriendRequest'
-  //   )(request);
-  // }
+  async getFriends(request: IGetFriendsRequest) {
+    return await httpsCallable<IGetFriendsRequest, IGetFriendsResponse>(this.functions, 'getFriends')(request);
+  }
 }

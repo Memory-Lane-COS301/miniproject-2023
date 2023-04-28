@@ -1,5 +1,5 @@
-import { IReviveDeadMemory, ReviveDeadMemoryEvent } from '@mp/api/memories/util';
-import { DeductAccountTimeEvent } from '@mp/api/memories/util';
+import { IReviveDeadMemory, ReviveDeadMemoryEvent, DeductAccountTimeEvent } from '@mp/api/memories/util';
+import { IncreseMemoryTimeEvent } from '@mp/api/memories/util';
 import { AggregateRoot } from '@nestjs/cqrs';
 
 export class ReviveDeadMemory extends AggregateRoot implements IReviveDeadMemory {
@@ -19,6 +19,10 @@ export class ReviveDeadMemory extends AggregateRoot implements IReviveDeadMemory
 
   deductAccountTime() {
     this.apply(new DeductAccountTimeEvent(this.toJSON()));
+  }
+
+  IncreseMemoryTime() {
+    this.apply(new IncreseMemoryTimeEvent(this.toJSON()));
   }
 
   toJSON(): IReviveDeadMemory {
