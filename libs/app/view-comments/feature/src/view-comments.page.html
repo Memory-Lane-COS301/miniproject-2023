@@ -13,10 +13,10 @@
 <ion-content color="dark">
   <div *ngFor="let comment of viewedComments$ | async" ngClass="comment-profileImg-username">
     <ion-avatar ngClass="memory-avatar-expanded">
-      <img src="{{ comment.profileImgUrl }}" ngClass="memory-comment-profileImg" routerLink="/user-view" />
+      <img src="{{ comment.profileImgUrl }}" ngClass="memory-comment-profileImg" (click) ="openUserProfile(comment.userId, comment.username)" />
     </ion-avatar>
     <div ngClass="memory-username-and-comment">
-      <ion-text ngClass="memory-comment-username" routerLink="/user-view">{{ comment.username }}</ion-text>
+      <ion-text ngClass="memory-comment-username" (click) ="openUserProfile(comment.userId, comment.username)">{{ comment.username }}</ion-text>
       <ion-text ngClass="memory-comment-usercomment">{{ comment.text }}</ion-text>
     </div>
   </div>
