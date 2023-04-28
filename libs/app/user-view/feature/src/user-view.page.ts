@@ -10,8 +10,6 @@ import { FriendRequestStatus } from '@mp/api/friend/util';
 import { Memory } from '@mp/app/shared/feature';
 import { IMemory } from '@mp/api/memories/util';
 import { IUser } from '@mp/api/users/util';
-// import { StoreModule} from '@ngrx/store';
-
 
 @Component({
   selector: 'app-user-view',
