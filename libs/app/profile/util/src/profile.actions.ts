@@ -28,3 +28,7 @@ export class UpdateUser {
   static readonly type = '[Profile] UpdateUser';
   constructor(public readonly user: IUser | null) {}
 }
+
+export class SetTime {
+  static readonly type = '[Profile] SetTime';
+}

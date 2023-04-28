@@ -17,7 +17,6 @@ import { ProfileState } from '@mp/app/profile/data-access';
 import { Observable } from 'rxjs';
 import { IProfile } from '@mp/api/profiles/util';
 import { IMemory } from '@mp/api/memories/util';
-import { Timestamp } from 'firebase-admin/firestore';
 import { IUser } from '@mp/api/users/util';
 
 @Component({
@@ -28,6 +27,7 @@ import { IUser } from '@mp/api/users/util';
 export class ProfileViewPageComponent implements OnInit {
   @Select(ProfileViewState.memories) memories$!: Observable<IMemory[] | null>;
   @Select(ProfileState.user) user$!: Observable<IUser | null>;
+  @Select(ProfileState.time) time$!: Observable<IUser | null>;
 
   showExpandedView = false;
   memories: IMemory[] | null | undefined;
@@ -224,16 +224,6 @@ export class ProfileViewPageComponent implements OnInit {
     }
 
     return '';
-  }
-
-  formatTime(seconds: number | null | undefined): string {
-    if (!seconds)
-      seconds = 0;
-
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = Math.floor(seconds % 60);
-    return `${h.toString().padStart(2, '0')}h:${m.toString().padStart(2, '0')}m:${s.toString().padStart(2, '0')}s`;
   }
 
   handleRefresh(event: any) {

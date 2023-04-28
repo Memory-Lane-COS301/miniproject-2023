@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { CopyrightModule } from '@mp/app/copyright/ui';
@@ -18,6 +18,7 @@ import { ForgotPasswordRouting } from './forgot.routing';
     ForgotPasswordRouting,
     CopyrightModule,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [ForgotPasswordPage],
 })
 export class ForgotPasswordModule {}

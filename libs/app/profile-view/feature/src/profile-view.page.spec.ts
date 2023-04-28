@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AngularDelegate, ModalController } from '@ionic/angular';
 import { AddMemoryPageComponent } from '@mp/app/shared/feature';
 import { ProfileViewPageComponent } from './profile-view.page';
+import { Select, Store, NgxsModule } from '@ngxs/store';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ProfileViewPage', () => {
   let component1: ProfileViewPageComponent;
@@ -11,7 +13,9 @@ describe('ProfileViewPage', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ProfileViewPageComponent, AddMemoryPageComponent],
-      providers: [ModalController, AngularDelegate],
+      imports: [NgxsModule.forRoot([])],
+      providers: [ModalController, AngularDelegate, Store],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
 
     fixture1 = TestBed.createComponent(ProfileViewPageComponent);

@@ -116,6 +116,48 @@ export class MemoriesRepository {
   async IncreseMemoryTime(memoryId: string, newTime: number) {
     return await admin.firestore().collection('memories').doc(memoryId).update({
       remainingTime: newTime,
-    });
+
+  async updateMemories(user: IUser) {
+    const updateInfo = {
+      username: user.username,
+      profileImgUrl: user.profileImgUrl,
+    };
+
+    admin
+      .firestore()
+      .collection('memories')
+      .where('userId', '==', user.userId)
+      .get()
+      .then((response) => {
+        const batch = admin.firestore().batch();
+        response.docs.forEach((doc) => {
+          const docRef = admin.firestore().collection('memories').doc(doc.id);
+          batch.update(docRef, updateInfo);
+        });
+        batch.commit();
+      });
+    this.updateComment(user);
+  }
+
+  async updateComment(user: IUser) {
+    const updateInfo = {
+      username: user.username,
+      profileImgUrl: user.profileImgUrl,
+    };
+
+    admin
+      .firestore()
+      .collectionGroup('comments')
+      .where('userId', '==', user.userId)
+      .get()
+      .then((response) => {
+        const batch = admin.firestore().batch();
+        response.docs.forEach((doc) => {
+          const comment :IComment = doc.data as IComment;
+          const docref = admin.firestore().collection(`memories/${comment.memoryId}/comments`).doc(doc.id);
+          batch.update(docref, updateInfo);
+        });
+        batch.commit();
+      });
   }
 }

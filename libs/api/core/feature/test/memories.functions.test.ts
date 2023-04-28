@@ -3,7 +3,7 @@ import { describe, test } from '@jest/globals';
 const mockData = {
   //change according to seeded data
   userId: '0104fa66-5a7b-429c-aedd-acab833be72e',
-  username: 'Dessie.Lebsack@yahoo.com',
+  username: 'Dena52',
   title: 'Summer Holiday',
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
   imgUrl: 'https://bit.ly/3MCrcnB',
@@ -29,8 +29,8 @@ describe('Tesing Cloud Function: createMemory', () => {
       body: JSON.stringify(createMemoryRequest),
     });
     const createMemoryResponse = (await res.json()).result.memory;
-    console.debug("createMemoryResponse: ",createMemoryResponse);
-    expect(createMemoryResponse.userId).toBe(mockData.userId); 
+    console.debug('createMemoryResponse: ', createMemoryResponse);
+    expect(createMemoryResponse.username).toBe(mockData.username);
     expect(createMemoryResponse.alive).toBe(true);
     expect(createMemoryResponse.remainingTime).toBe(86400);
     expect(createMemoryResponse.commentsCount).toBe(0);
@@ -40,7 +40,7 @@ describe('Tesing Cloud Function: createMemory', () => {
       data: {
         memory: {
           username: mockData.username,
-          userId: "12437",
+          userId: '12437',
           title: mockData.title,
           description: mockData.description,
           imgUrl: mockData.imgUrl,
@@ -53,13 +53,13 @@ describe('Tesing Cloud Function: createMemory', () => {
       headers: new Headers({ 'content-type': 'application/json' }),
       body: JSON.stringify(createMemoryRequest),
     });
-    const createMemoryResponse = (await res.json());
+    const createMemoryResponse = await res.json();
     const errorResponse = {
       error: {
-      message: "User not found",
-      status: "NOT_FOUND"
-      }
-    }
+        message: 'User not found',
+        status: 'NOT_FOUND',
+      },
+    };
     console.debug(createMemoryResponse);
     expect(createMemoryResponse).toEqual(errorResponse);
   });

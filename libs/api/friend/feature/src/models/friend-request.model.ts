@@ -6,6 +6,8 @@ import {
   UpdateRejectFriendRequestEvent,
   DeleteFriendRequestEvent,
   DeleteFriendEvent,
+  IncreaseFriendCountEvent,
+  ReduceFriendCountEvent,
 } from '@mp/api/friend/util';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Timestamp } from 'firebase-admin/firestore';
@@ -50,6 +52,14 @@ export class FriendRequest extends AggregateRoot implements IFriendRequest {
 
   rejectFriendRequest() {
     this.apply(new UpdateRejectFriendRequestEvent(this.toJSON()));
+  }
+
+  increaseFriendCount() {
+    this.apply(new IncreaseFriendCountEvent(this.toJSON()));
+  }
+
+  reduceFriendCount() {
+    this.apply(new ReduceFriendCountEvent(this.toJSON()));
   }
 
   toJSON(): IFriendRequest {
