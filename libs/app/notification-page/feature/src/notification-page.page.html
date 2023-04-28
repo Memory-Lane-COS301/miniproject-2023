@@ -19,10 +19,10 @@
                 <div *ngFor="let request of friendRequests$ | async" ngClass="request-avatar-username-fullname">
                     <div  ngClass="request-profileImg-username">
                         <ion-avatar>
-                            <img src="{{ request.profileImgUrl }}" ngClass="request-profileImg" />
+                            <img src="{{ request.profileImgUrl }}" ngClass="request-profileImg" (click) ="openUserProfile(request.userId, request.username)"/>
                         </ion-avatar>
                         <div ngClass="request-username-and-fullname">
-                            <ion-text ngClass="request-username">@{{ request.username }}</ion-text>
+                            <ion-text ngClass="request-username" (click) ="openUserProfile(request.userId, request.username)">@{{ request.username }}</ion-text>
                             <ion-text ngClass="request-fullname">{{ request.name }} {{ request.surname }}</ion-text>
                         </div>
                     </div>

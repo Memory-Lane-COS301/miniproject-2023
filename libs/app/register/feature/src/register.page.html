@@ -37,20 +37,6 @@
         <ion-item
           color="medium"
           [ngClass]="{
-            'valid-input': username?.value && username?.touched,
-            'invalid-input': username?.invalid && username?.touched
-          }">
-          <ion-label position="floating" class="required">Username</ion-label>
-          <ion-input
-            type="text"
-            placeholder="Enter username"
-            required="true"
-            formControlName="username"
-            ></ion-input>
-        </ion-item>
-        <ion-item
-          color="medium"
-          [ngClass]="{
             'valid-input': email?.value && !(email?.invalid && (email?.dirty || email?.touched)),
             'invalid-input': email?.invalid && (email?.dirty || email?.touched)
           }"

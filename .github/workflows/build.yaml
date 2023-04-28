@@ -1,8 +1,8 @@
-name: Deploy to Firebase on push
+name: Test Build
 on: [push, pull_request]
 jobs:
   build:
-    name: Build and Deploy
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -16,7 +16,8 @@ jobs:
           key: cache-node-modules-${{ hashFiles('yarn.lock') }}
 
       - name: Install dependencies
-        run: yarn install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
 
       - name: Build App
         run: yarn build:app:dev

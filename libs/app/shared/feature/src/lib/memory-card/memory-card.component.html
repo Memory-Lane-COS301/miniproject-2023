@@ -48,10 +48,10 @@
       <ion-text *ngIf="!showExpandedView" class="ion-padding-top" ngClass="memory-date">{{
         convertTimePostedToDate(memory.created)
       }}</ion-text>
-      <span *ngIf="!addingNewComment && onProfileView" [ngClass]="{'span-post-timer': !showExpandedView, 'span-post-timer-expanded':showExpandedView}">
-        <ion-buttons slot="start">
+      <span *ngIf="!addingNewComment && onProfileView && remainingTime" [ngClass]="{'span-post-timer': !showExpandedView, 'span-post-timer-expanded':showExpandedView}">
+        <!-- <ion-buttons slot="start">
           <ion-text color="light" ngClass="btn-add-time">+</ion-text>
-        </ion-buttons>
+        </ion-buttons> -->
         <p ngClass="memory-card-timer">{{ remainingTime }}</p>
       </span>
       <div *ngIf="showExpandedView" class="commentIcon-viewAll">
