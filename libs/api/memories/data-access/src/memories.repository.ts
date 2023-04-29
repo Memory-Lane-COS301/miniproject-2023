@@ -4,6 +4,7 @@ import { IFriend } from '@mp/api/friend/util';
 import { IComment } from '@mp/api/memories/util';
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
+import { Timestamp } from 'firebase-admin/firestore';
 
 @Injectable()
 export class MemoriesRepository {
@@ -109,13 +110,13 @@ export class MemoriesRepository {
 
     if (!friendIds) throw new Error('Empty friends');
 
-    const memoriesSnapshot= await db
+    const memoriesSnapshot = await db
       .collection('memories')
       .where('userId', 'in', friendIds)
       .where('alive', '==', true)
       .orderBy('created', 'desc')
       .get();
-    
+
     const memories: IMemory[] = [];
 
     for (const memoryDoc of memoriesSnapshot.docs) {
@@ -152,17 +153,49 @@ export class MemoriesRepository {
   }
 
   async reviveDeadMemory(memoryId: string, newTime: number) {
-    return await admin.firestore().collection('memories').doc(memoryId).update({
-      alive: true,
-      remainingTime: newTime,
-    });
+    const dateString = new Date(newTime * 1000).toISOString();
+    const deathDate = new Date();
+    const h = Number(deathDate.getHours()) + Number(dateString.slice(11, 13));
+    const m = Number(deathDate.getMinutes()) + Number(dateString.slice(14, 16));
+    const s = Number(deathDate.getSeconds()) + Number(dateString.slice(17, 19));
+    deathDate.setDate(deathDate.getDate() - 1);
+    deathDate.setHours(h);
+    deathDate.setMinutes(m);
+    deathDate.setSeconds(s);
+
+    return await admin
+      .firestore()
+      .collection('memories')
+      .doc(memoryId)
+      .update({
+        alive: true,
+        remainingTime: newTime,
+        deathTime: Timestamp.fromDate(deathDate),
+      });
   }
 
+  async IncreseMemoryTime(memoryId: string, newTime: number, secondToAdd: number, currentDeathTime: Timestamp) {
+    const dateCurrentDeathTime = currentDeathTime.toDate();
+    const dateString = new Date(secondToAdd * 1000).toISOString();
+    const h = Number(dateCurrentDeathTime.getHours()) + Number(dateString.slice(11, 13));
+    const m = Number(dateCurrentDeathTime.getMinutes()) + Number(dateString.slice(14, 16));
+    const s = Number(dateCurrentDeathTime.getSeconds()) + Number(dateString.slice(17, 19));
+    dateCurrentDeathTime.setHours(h);
+    dateCurrentDeathTime.setMinutes(m);
+    dateCurrentDeathTime.setSeconds(s);
 
-  async IncreseMemoryTime(memoryId: string, newTime: number) {
-    return await admin.firestore().collection('memories').doc(memoryId).update({
-      remainingTime: newTime,
-    })
+    if (dateCurrentDeathTime.getHours() + Number(dateString.slice(11, 13)) > 24) {
+      dateCurrentDeathTime.setDate(dateCurrentDeathTime.getDate() + 1);
+    }
+
+    return await admin
+      .firestore()
+      .collection('memories')
+      .doc(memoryId)
+      .update({
+        remainingTime: newTime,
+        deathTime: Timestamp.fromDate(dateCurrentDeathTime),
+      });
   }
 
   async updateMemories(user: IUser) {
@@ -201,7 +234,7 @@ export class MemoriesRepository {
       .then((response) => {
         const batch = admin.firestore().batch();
         response.docs.forEach((doc) => {
-          const comment :IComment = doc.data as IComment;
+          const comment: IComment = doc.data as IComment;
           const docref = admin.firestore().collection(`memories/${comment.memoryId}/comments`).doc(doc.id);
           batch.update(docref, updateInfo);
         });
