@@ -20,12 +20,12 @@ firestore.settings({
 
 async function seedData() {
     faker.seed(123)
-    await seedUsers();
-    await generateMemories(3, 5);
-    await seedFriends();
-    await generateMemoriesFor('cpDFYwi6yVXktfuLooJWmM0p9z9r', 2, 2);
-    // await generateFriendsFor('qk29zJ5i8y5omsE9uYXTWPdWOMbP', 5);
-    await generateCommentsFor('9e03f66e-18f9-4c6a-8b35-b6f5ae92735d', 5);
+    // await seedUsers();
+    // await generateMemories(3, 5);
+    // await seedFriends();
+    await generateMemoriesFor('IZu5sqEfMGMsC6uQdbVswsI9Kqm0', 2, 2);
+    await generateFriendsFor('IZu5sqEfMGMsC6uQdbVswsI9Kqm0', 5);
+    // await generateCommentsFor('9e03f66e-18f9-4c6a-8b35-b6f5ae92735d', 5);
 }
 
 // ============================================================================

@@ -13,6 +13,7 @@ import { ViewedCommentsApi } from './view-comments.api';
 import { SetMemoryCard } from '@mp/app/shared/util';
 import { tap } from 'rxjs';
 import { AuthState } from '@mp/app/auth/data-access';
+import { GetFeedMemories } from '@mp/app/feed/util';
 
 export interface ViewedCommentsStateModel {
   viewedComments: IComment[];
@@ -73,6 +74,7 @@ export class ViewedCommentsState {
           const responseRef = await this.viewedCommentsApi.createComment(request);
           // return ctx.patchState({ viewedComments: [...state.viewedComments, responseRef.data.comment] })
 
+          ctx.dispatch(new GetFeedMemories())
           return;
           // state.memory?.comments?.push(responseRef.data.comment);
 

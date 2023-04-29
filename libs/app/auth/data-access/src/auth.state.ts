@@ -15,6 +15,7 @@ import produce from 'immer';
 import { tap } from 'rxjs';
 import { AuthApi } from './auth.api';
 import { FirebaseError } from '@angular/fire/app';
+import { SetFeed } from '@mp/app/feed/util'
 
 export interface AuthStateModel {
   user: User | null;
@@ -99,6 +100,7 @@ export class AuthState {
   async logout(ctx: StateContext<AuthStateModel>) {
     await this.authApi.logout();
     // await this.store.reset({})
+    ctx.dispatch(new SetFeed([]));
     return ctx.dispatch(new Navigate(['/']));
   }
 }

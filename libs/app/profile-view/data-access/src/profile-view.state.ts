@@ -112,7 +112,7 @@ export class ProfileViewState {
             const response = responseRef.data;
 
             response.profile.memories = response.profile.memories?.map((mem) => {
-                mem.comments = [];
+                mem.comments = mem.comments?.reverse();
                 return {
                     ...mem,
                     userId: user.userId,

@@ -192,9 +192,21 @@ export class UserViewPageComponent {
   }
 
   ionViewWillEnter() {
-    const state = this.store.selectSnapshot(UserViewState.userView);
+    const state = this.store.selectSnapshot(UserViewState);
+    const userProfile = state.userProfile;
 
     this.store.dispatch(new GetFriends());
-    this.store.dispatch(new GetUserProfileRequest({ userId: state.userId, username: state.user?.username}));
+
+    if (userProfile && userProfile.user )
+      this.store.dispatch(new GetUserProfileRequest({ userId: userProfile.userId, username: userProfile.user.username}));
+  }
+
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      const state = this.store.selectSnapshot(UserViewState);
+      const userProfile = state.userProfile;
+      this.store.dispatch(new GetUserProfileRequest({ userId: userProfile.userId, username: userProfile.user.username}));
+      event.target.complete();
+    }, 2000);
   }
 }

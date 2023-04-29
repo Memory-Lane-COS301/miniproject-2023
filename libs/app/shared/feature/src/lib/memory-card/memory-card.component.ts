@@ -105,12 +105,14 @@ export class MemoryCardComponent implements OnInit {
     const user = this.store.selectSnapshot(ProfileState.user);
     const viewedUser = this.store.selectSnapshot(UserViewState.userView).user;
 
-    if(!uid || !uname) return;
+    console.error(uid,  uname)
+
+    if(!user?.userId || !uname) return;
 
     if (user && user.userId && user.username) { //check if this memory is on our profile, if so then we do not want to open our profile again
         if (uid != user.userId && uname != user.name) {
             const request_user : IUser = {
-                userId: uid,
+                userId: user?.userId,
                 username: uname
             }
 
@@ -121,7 +123,7 @@ export class MemoryCardComponent implements OnInit {
     else if (viewedUser && viewedUser.userId && viewedUser.username) { //check if this memory is on viewed user's profile, if so then we do not want to open the profile again
       if (uid != viewedUser.userId && uname != viewedUser.name) {
           const request_user : IUser = {
-              userId: uid,
+              userId: user?.userId,
               username: uname
           }
 
@@ -131,7 +133,7 @@ export class MemoryCardComponent implements OnInit {
     }
     else {
       const request_user : IUser = {
-        userId: uid,
+        userId: user?.userId,
         username: uname
       }
 
