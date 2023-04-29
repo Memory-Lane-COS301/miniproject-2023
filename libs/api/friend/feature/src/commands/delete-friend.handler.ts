@@ -30,6 +30,30 @@ export class DeleteFriendHandler implements ICommandHandler<DeleteFriendCommand,
 
     const receiverUserDoc = receiverUserSnapshot.docs[0];
 
+
+
+
+    const possibleFriendRequestsSnapshot = await this.friendsRepository.getCurrentFriendRequest(
+      receiverUserDoc.id,
+      request.friendRequest.senderId,
+    );
+
+    if (!possibleFriendRequestsSnapshot.empty) {
+      await this.friendsRepository.deleteFriendRequest(possibleFriendRequestsSnapshot.docs[0].id)
+    }
+
+    const currentFriendRequestsSnapshot = await this.friendsRepository.getCurrentFriendRequest(
+      request.friendRequest.senderId,
+      receiverUserDoc.id,
+    );
+
+    if (!currentFriendRequestsSnapshot.empty) {
+      await this.friendsRepository.deleteFriendRequest(currentFriendRequestsSnapshot.docs[0].id)
+    }
+
+
+
+
     //check senderId = request.friendRequest.senderId and receiverId= receiverUserDoc.id
     const possibleFriendRequestsSnapshot1 = await this.friendsRepository.getCurrentFriend(
       request.friendRequest.senderId,

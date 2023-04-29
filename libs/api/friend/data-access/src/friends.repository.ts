@@ -40,6 +40,22 @@ export class FriendsRepository {
     return friendIds;
   }
 
+  async getPendingRequestsIdsFor(receiverId: string) {
+    const friendsRef = await admin
+      .firestore()
+      .collection('friendRequests')
+      .where('receiverId', '==', receiverId)
+      .where('status', '==', 'pending')
+      .get();
+
+    const friendDocs = friendsRef.docs;
+
+    return friendDocs.map((doc) => {
+      const friendData = doc.data() as IFriendRequest;
+      return friendData.senderId;
+    });
+  }
+
   async getCurrentFriendRequest(senderId: string, receiverId: string) {
     return await admin
       .firestore()

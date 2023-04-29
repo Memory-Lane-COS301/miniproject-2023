@@ -11,6 +11,7 @@ import {
   ReviveDeadMemoryCommandHandler,
   DeductAccountTimeHandler,
   UpdateMemoryTimeHandler,
+  UpdateMemoryHandler
 } from './commands';
 import { GetCommentsHandler, GetFeedMemoriesHandler } from './queries';
 import {
@@ -31,6 +32,7 @@ export const CommandHandlers = [
   ReviveDeadMemoryCommandHandler,
   DeductAccountTimeHandler,
   UpdateMemoryTimeHandler,
+  UpdateMemoryHandler
 ];
 export const QueryHandlers = [GetCommentsHandler, GetFeedMemoriesHandler];
 export const EventHandlers = [

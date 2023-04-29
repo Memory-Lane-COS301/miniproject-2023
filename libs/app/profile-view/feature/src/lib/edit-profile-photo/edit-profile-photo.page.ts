@@ -19,6 +19,7 @@ import {
 import { SetError } from '@mp/app/errors/util';
 import { UpdateUser } from '@mp/app/profile/util';
 import { ToastController } from '@ionic/angular';
+import { GetProfileRequest } from '@mp/app/profile-view/util';
 
 @Component({
   selector: 'app-edit-profile-photo',
@@ -101,7 +102,7 @@ export class EditProfilePhotoPageComponent {
           duration: 1500,
           position: 'bottom',
         });
-  
+ 
         toast.present();
         await this.modalController.dismiss();
       }

@@ -2,7 +2,8 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
-
+import { Store, NgxsModule } from '@ngxs/store';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SearchPageComponent } from './search.page';
 
 describe('SearchPageComponent', () => {
@@ -30,7 +31,9 @@ describe('SearchPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SearchPageComponent],
-      imports: [IonicModule.forRoot()],
+      imports: [IonicModule.forRoot(), NgxsModule.forRoot([])],
+      providers: [Store],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SearchPageComponent);

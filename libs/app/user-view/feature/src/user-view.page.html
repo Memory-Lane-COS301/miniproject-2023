@@ -13,6 +13,9 @@
 </ion-header>
 
 <ion-content color="dark" *ngIf="userProfile$ | async as userProfile">
+  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content ngClass="refresher"></ion-refresher-content>
+  </ion-refresher>
   <!-- <app-user-info></app-user-info> -->
   <!-- CODE BELOW WILL BE GENERATER BY ABOVE ELEMENT, REQUIRES ROUTING-->
   <ion-grid ngClass="heading-grid">

@@ -15,6 +15,7 @@ import produce from 'immer';
 import { tap } from 'rxjs';
 import { AuthApi } from './auth.api';
 import { FirebaseError } from '@angular/fire/app';
+import { SetFeed } from '@mp/app/feed/util'
 
 export interface AuthStateModel {
   user: User | null;
@@ -63,7 +64,10 @@ export class AuthState {
       return ctx.dispatch(new Navigate(['home']));
     } catch (error) {
       if ((error as Error).message === 'Firebase: Error (auth/user-not-found).')
-          return ctx.dispatch(new SetError('Invalid username or password'))
+          return ctx.dispatch(new SetError('Invalid username'))
+
+      if ((error as Error).message === 'Firebase: Error (auth/wrong-password).')
+          return ctx.dispatch(new SetError('Invalid password'))
 
       return ctx.dispatch(new SetError('Oops. That wasn\'t supposed to happen'));
     }
@@ -96,6 +100,7 @@ export class AuthState {
   async logout(ctx: StateContext<AuthStateModel>) {
     await this.authApi.logout();
     // await this.store.reset({})
+    ctx.dispatch(new SetFeed([]));
     return ctx.dispatch(new Navigate(['/']));
   }
 }

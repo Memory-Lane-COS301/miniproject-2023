@@ -27,3 +27,9 @@ export class GetSearchResults {
 export class GetFeedMemories {
   static readonly type = '[SearchPage] GetFeedMemories';
 }
+
+export class GetSearchMemories {
+  static readonly type = '[SearchPage] GetSearchMemories';
+  
+  constructor(public readonly searchValue: string) {}
+}

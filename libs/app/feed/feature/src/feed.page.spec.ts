@@ -3,6 +3,7 @@ import { AngularDelegate, ModalController } from '@ionic/angular';
 import { AddMemoryPageComponent } from '@mp/app/shared/feature';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FeedPageComponent } from './feed.page';
+import { Store, NgxsModule } from '@ngxs/store';
 
 describe('FeedPageComponent', () => {
   let component1: FeedPageComponent;
@@ -12,7 +13,8 @@ describe('FeedPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FeedPageComponent, AddMemoryPageComponent],
-      providers: [ModalController, AngularDelegate],
+      imports: [NgxsModule.forRoot([])],
+      providers: [ModalController, AngularDelegate, Store],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     }).compileComponents();
 

@@ -112,7 +112,7 @@ export class ProfileViewState {
             const response = responseRef.data;
 
             response.profile.memories = response.profile.memories?.map((mem) => {
-                mem.comments = [];
+                mem.comments = mem.comments?.reverse();
                 return {
                     ...mem,
                     userId: user.userId,
@@ -357,7 +357,7 @@ export class ProfileViewState {
   @Action(GetFriends)
   async getFriends(ctx: StateContext<ProfileViewStateModel>) {
     try {
-      const user = this.store.selectSnapshot(ProfileState.profile);
+      const user = this.store.selectSnapshot(ProfileState.user);
 
       if (!user) return this.store.dispatch(new SetError('User not set'));
       

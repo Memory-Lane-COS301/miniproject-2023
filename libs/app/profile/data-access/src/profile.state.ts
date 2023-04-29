@@ -23,6 +23,8 @@ import { ProfilesApi } from './profiles.api';
 import { IUser } from '@mp/api/users/util';
 import { IProfile } from '@mp/api/profiles/util';
 import { Timestamp } from '@angular/fire/firestore';
+import { GetAllPendingFriendRequests } from '@mp/app/notification-page/util'
+import {  Subscription } from 'rxjs';
 
 export interface ProfileStateModel {
   profile: IProfile | null;
@@ -66,6 +68,7 @@ export interface ProfileStateModel {
 @Injectable()
 export class ProfileState {
   private intervalId: any;
+  private userSubscription!: Subscription;
 
   constructor(
     private readonly profileApi: ProfilesApi,
@@ -112,7 +115,8 @@ export class ProfileState {
         draft.user = user;
       })
     );
-
+    
+    ctx.dispatch(new GetAllPendingFriendRequests());
     return ctx.dispatch(new SetUserDetailsForm(user));
   }
 

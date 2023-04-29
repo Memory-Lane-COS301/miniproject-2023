@@ -11,7 +11,7 @@ import {
   IncreaseFriendCountHandler,
   ReduceFriendCountHandler,
 } from './commands';
-import { GetFriendsHandler, GetPendingFriendsHandler } from './queries';
+import { GetFriendsHandler, GetPendingFriendsHandler, GetPendingFriendRequestsForHandler } from './queries';
 import {
   FriendRequestCreatedHandler,
   UpdateAcceptFriendRequestHandler,
@@ -33,7 +33,7 @@ export const CommandHandlers = [
   IncreaseFriendCountHandler,
   ReduceFriendCountHandler,
 ];
-export const QueryHandlers = [GetFriendsHandler, GetPendingFriendsHandler];
+export const QueryHandlers = [GetFriendsHandler, GetPendingFriendsHandler, GetPendingFriendRequestsForHandler];
 export const EventHandlers = [
   FriendRequestCreatedHandler,
   UpdateAcceptFriendRequestHandler,

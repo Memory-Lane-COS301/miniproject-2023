@@ -18,6 +18,9 @@ import {
 import { FriendRequestStatus, IDeleteFriendRequest, IGetPendingFriendRequest, IUpdateFriendRequest } from '@mp/api/friend/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { ToastController } from '@ionic/angular';
+import { freemem } from 'os';
+import { Auth } from 'firebase-admin/auth';
+import { AuthState } from '@mp/app/auth/data-access';
 
 export interface NotificationPageStateModel {
     friendsRequests: IUser[] | null | undefined;
@@ -123,9 +126,17 @@ export class NotificationPageState {
 
             if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [Notification-page]'));
 
+            // const request : IUpdateFriendRequest = {
+            //     friendRequest: {
+            //         senderId: user?.userId,
+            //         receiverUsername: friend.username,
+            //         status: FriendRequestStatus.ACCEPTED
+            //     }
+            // }
+
             const request : IUpdateFriendRequest = {
                 friendRequest: {
-                    senderId: user?.userId,
+                    senderId: user.userId,
                     receiverUsername: friend.username,
                     status: FriendRequestStatus.ACCEPTED
                 }
@@ -210,22 +221,23 @@ export class NotificationPageState {
     @Action(GetAllPendingFriendRequests)
     async getAllPendingFriendRequests(ctx: StateContext<NotificationPageStateModel>) {
         try{
-            const profile = this.store.selectSnapshot(ProfileState.user);
+            const profile = this.store.selectSnapshot(AuthState.user);
 
             if(!profile) return this.store.dispatch(new SetError('Profile not set'));
 
             const request : IGetPendingFriendRequest = {
                 user: {
-                    senderId: profile?.userId
+                    senderId: '',
+                    receiverId: profile.uid
                 }
             }
 
-            const responseRef = await this.notificationPageApi.getAllPendingFriendRequests(request);
+            const responseRef = await this.notificationPageApi.getAllPendingFriendRequestsFor(request);
             const response = responseRef.data;
 
             return ctx.setState(
                 produce((draft) => {
-                    draft.friendsRequests = response.profiles;
+                    draft.friendsRequests = response.profiles.map(profile => profile.user as IUser);
                 })
             )
         }

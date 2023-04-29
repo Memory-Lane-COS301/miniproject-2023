@@ -6,18 +6,19 @@ import { IGetUserRequest, IUser } from "@mp/api/users/util";
 import { IGetFeedMemoriesRequest, IMemory } from "@mp/api/memories/util";
 import { SearchPageApi } from "./search-page.api";
 import { tap } from "rxjs";
-import { GetSearchPageMemories, SearchMemories, SetSearchPage, GetSearchResults, GetFeedMemories } from "@mp/app/search-page/util";
+import { GetSearchPageMemories, SearchMemories, SetSearchPage, GetSearchResults, GetFeedMemories, GetSearchMemories } from "@mp/app/search-page/util";
 import { state } from "@angular/animations";
 import { FeedApi, FeedStateModel } from "@mp/app/feed/data-access";
 import { AuthState } from "@mp/app/auth/data-access";
 import { serialize } from 'v8';
+import { ProfileState } from '@mp/app/profile/data-access'
 
 
 export interface SearchPageStateModel {
   // users: IUser[];
   memories: IMemory[];
   recentSearches: string[];
-  searchResults: IUser[]
+  searchResults: IMemory[]
 }
 
 @State<SearchPageStateModel>({
@@ -88,18 +89,46 @@ export class SearchPageState {
         }
     }
 
+    @Action(GetSearchMemories)
+    async getSearchMemories(ctx: StateContext<SearchPageStateModel>, { searchValue }: GetSearchMemories) {
+      try {
+        const state = this.store.selectSnapshot(ProfileState)
+        const response = await this.searchPageApi.getSearchResults(searchValue, state.user.username);
+        
+        return ctx.patchState({ searchResults: response });
+    } 
+    catch(error){
+        return ctx.dispatch(new SetError((error as Error).message));
+    }
+    }
+
     @Action(GetSearchResults)
     async getSearchResults(ctx: StateContext<SearchPageStateModel>, { searchValue }: GetSearchResults) {
       try {
-          const response = await this.searchPageApi.getSearchResults(searchValue);
-          console.log('Response')
-          console.log(response)
+          if (!searchValue)
+            return;
+
+          const profileState = this.store.selectSnapshot(ProfileState);
+          const response = await this.searchPageApi.getSearchResults(searchValue, profileState.user.username);
           return ctx.patchState({ searchResults: response });
       } 
       catch(error){
           return ctx.dispatch(new SetError((error as Error).message));
       }
     }
+
+    // @Action(GetSearchPageMemories)
+    // async getSearchMemories(ctx: StateContext<SearchPageStateModel>) {
+    //   try {
+    //       const response = await this.searchPageApi.getSearchMemories();
+    //       console.log('Response')
+    //       console.log(response)
+    //       return ctx.patchState({ memories: response });
+    //   } 
+    //   catch(error){
+    //       return ctx.dispatch(new SetError((error as Error).message));
+    //   }
+    // }
 
 
     // @Action(GetSearchPageMemories)

@@ -10,6 +10,8 @@ import { FriendRequestStatus } from '@mp/api/friend/util';
 import { Memory } from '@mp/app/shared/feature';
 import { IMemory } from '@mp/api/memories/util';
 import { IUser } from '@mp/api/users/util';
+import { stat } from 'fs';
+import { GetFriends } from '@mp/app/profile-view/util';
 
 @Component({
   selector: 'app-user-view',
@@ -187,5 +189,24 @@ export class UserViewPageComponent {
     });
 
     return isFriends;
+  }
+
+  ionViewWillEnter() {
+    const state = this.store.selectSnapshot(UserViewState);
+    const userProfile = state.userProfile;
+
+    this.store.dispatch(new GetFriends());
+
+    if (userProfile && userProfile.user )
+      this.store.dispatch(new GetUserProfileRequest({ userId: userProfile.userId, username: userProfile.user.username}));
+  }
+
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      const state = this.store.selectSnapshot(UserViewState);
+      const userProfile = state.userProfile;
+      this.store.dispatch(new GetUserProfileRequest({ userId: userProfile.userId, username: userProfile.user.username}));
+      event.target.complete();
+    }, 2000);
   }
 }

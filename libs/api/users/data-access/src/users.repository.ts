@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { AndroidApp } from 'firebase-admin/lib/project-management/android-app';
+import { TimeInterval } from 'rxjs/internal/operators/timeInterval';
 
 @Injectable()
 export class UsersRepository {
@@ -89,4 +90,17 @@ export class UsersRepository {
         memoryCount: FieldValue.increment(-1),
       });
   }
+
+
+  async updateFriendRequestNotification(userId: string) {
+    return await admin
+      .firestore()
+      .collection('users')
+      .doc(userId)
+      .set(
+        {friendRequestNotification: Timestamp.now()}, 
+        { merge: true }
+      );
+  }
+
 }

@@ -19,6 +19,7 @@ import { ProfileState } from '@mp/app/profile/data-access';
 import { IDeleteFriendRequest, IGetFriendsRequest, IUpdateFriendRequest } from '@mp/api/friend/util';
 import { ProfileViewState } from '@mp/app/profile-view/data-access';
 import { AuthState } from '@mp/app/auth/data-access';
+import { GetProfileRequest } from '@mp/app/profile-view/util';
 
 export interface UserViewStateModel {
   userProfile: IProfile;
@@ -88,7 +89,8 @@ export class UserViewState {
       };
       const responseRef = await this.userViewApi.getUserProfile(request);
       const response = responseRef.data;
-      return ctx.dispatch(new SetUserView(response.profile));
+      ctx.dispatch(new SetUserView(response.profile));
+      return ctx.dispatch(new GetFriends());
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
     }
@@ -173,7 +175,7 @@ export class UserViewState {
   @Action(DeleteFriend) 
   async DeleteFriend(ctx: StateContext<UserViewStateModel>, { friend } : DeleteFriend) {
       try{
-          const user = this.store.selectSnapshot(ProfileState.user);
+          let user = this.store.selectSnapshot(ProfileState.user);
 
           if (!user || !user.userId) return this.store.dispatch(new SetError('User not set [UserView page]'));
 
@@ -186,12 +188,17 @@ export class UserViewState {
 
           const responseRef = this.userViewApi.deleteFriend(request);
 
-          return ctx.setState(prevState => ({
+          ctx.setState(prevState => ({
               ...prevState,
               isFriends: false,
               isWaitingRequest: false,
               isNotFriends: true
           }));
+
+          const userViewState = ctx.getState()
+          user = userViewState.userProfile;
+          ctx.dispatch(new GetProfileRequest())
+          return ctx.dispatch(new GetUserProfileRequest({ userId: user.userId, username: user.username }));
       }
       catch (error) {
           return ctx.dispatch(new SetError((error as Error).message));
@@ -202,14 +209,14 @@ export class UserViewState {
   async checkUserFriendStatus(ctx: StateContext<UserViewStateModel>, { user }: CheckUserFriendStatus) {
     try {
       //get friends and map through it to check for a match Id in OUR list of friends
-      const profileViewFriends = this.store.selectSnapshot(ProfileViewState.friends);
+      const friends = ctx.getState().friends;
       const authState = this.store.selectSnapshot(AuthState);
       let calledSet = false;
 
-      if (!profileViewFriends) return this.store.dispatch(new SetError('profileViewFriends not set [UserView]'));
+      // if (!friends) return this.store.dispatch(new SetError('User friends not'));
 
-      profileViewFriends.map((friend) => {
-        if (friend.userId === user.userId) {
+      friends.map((friend) => {
+        if (friend.userId === authState.user.uid) {
           console.log('inside isFriends');
           console.log('friendId: ' + friend.userId);
           ctx.setState(prevState => ({
@@ -279,7 +286,7 @@ export class UserViewState {
   @Action(GetFriends)
   async getFriends(ctx: StateContext<UserViewStateModel>) {
     try {
-      const user = this.store.selectSnapshot(ProfileState.profile);
+      const user = this.store.selectSnapshot(UserViewState.userView);
 
       if (!user) return this.store.dispatch(new SetError('User not set'));
       
@@ -291,11 +298,13 @@ export class UserViewState {
       const responseRef = await this.userViewApi.getFriends(request);
       const response = responseRef.data;
 
-      return ctx.setState(
+     ctx.setState(
           produce((draft) => {
               draft.friends = response.profiles;
           })
       );
+
+      return ctx.dispatch(new CheckUserFriendStatus(user));
     }
     catch (error) {
       return ctx.dispatch(new SetError('Unable to fetch friends [ProfileView]'));
