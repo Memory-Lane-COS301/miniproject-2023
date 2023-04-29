@@ -63,7 +63,10 @@ export class AuthState {
       return ctx.dispatch(new Navigate(['home']));
     } catch (error) {
       if ((error as Error).message === 'Firebase: Error (auth/user-not-found).')
-          return ctx.dispatch(new SetError('Invalid username or password'))
+          return ctx.dispatch(new SetError('Invalid username'))
+
+      if ((error as Error).message === 'Firebase: Error (auth/wrong-password).')
+          return ctx.dispatch(new SetError('Invalid password'))
 
       return ctx.dispatch(new SetError('Oops. That wasn\'t supposed to happen'));
     }

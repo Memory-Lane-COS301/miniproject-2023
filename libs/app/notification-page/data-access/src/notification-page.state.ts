@@ -19,6 +19,8 @@ import { FriendRequestStatus, IDeleteFriendRequest, IGetPendingFriendRequest, IU
 import { ProfileState } from '@mp/app/profile/data-access';
 import { ToastController } from '@ionic/angular';
 import { freemem } from 'os';
+import { Auth } from 'firebase-admin/auth';
+import { AuthState } from '@mp/app/auth/data-access';
 
 export interface NotificationPageStateModel {
     friendsRequests: IUser[] | null | undefined;
@@ -219,14 +221,14 @@ export class NotificationPageState {
     @Action(GetAllPendingFriendRequests)
     async getAllPendingFriendRequests(ctx: StateContext<NotificationPageStateModel>) {
         try{
-            const profile = this.store.selectSnapshot(ProfileState.user);
+            const profile = this.store.selectSnapshot(AuthState.user);
 
             if(!profile) return this.store.dispatch(new SetError('Profile not set'));
 
             const request : IGetPendingFriendRequest = {
                 user: {
                     senderId: '',
-                    receiverId: profile?.userId
+                    receiverId: profile.uid
                 }
             }
 

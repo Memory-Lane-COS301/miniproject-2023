@@ -45,26 +45,6 @@ export class HomePage implements OnInit {
     //   this.store.dispatch(new GetAllPendingFriendRequests())
     // },5000);
   // }
-commentNotifications = [
-    {
-        userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
-        username: "John_do3",
-        profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-        text: "Example comment jakbhbdcjhsjdcbsjdcb"
-    },
-    {
-        userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
-        username: "John_do3",
-        profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-        text: "Example comment jakbhbdcjhsjdcbsjdcb"
-    },
-    {
-        userId: "jsdjbsdbjhdsbcjshbdcjbsdchs",
-        username: "John_do3",
-        profileImgUrl: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-        text: "Example comment jakbhbdcjhsjdcbsjdcb"
-    },
-]
 
   getMenuStatus() {
     return this.menubarService.menuStatus;

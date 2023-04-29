@@ -105,6 +105,9 @@ export class SearchPageState {
     @Action(GetSearchResults)
     async getSearchResults(ctx: StateContext<SearchPageStateModel>, { searchValue }: GetSearchResults) {
       try {
+          if (!searchValue)
+            return;
+
           const profileState = this.store.selectSnapshot(ProfileState);
           const response = await this.searchPageApi.getSearchResults(searchValue, profileState.user.username);
           return ctx.patchState({ searchResults: response });
