@@ -76,5 +76,9 @@
 
   <ion-list *ngIf="userProfile$ | async" ngClass="memory-list">
     <app-memory-card *ngFor="let memory of Memories" [memory]="memory"></app-memory-card>
+    <div class="empty-feed" *ngIf="!Memories || Memories.length <= 0">
+      <ion-icon name="file-tray-outline"></ion-icon> <br /><br /><br />
+      Looks like there are no posts here.
+    </div>
   </ion-list>
 </ion-content>

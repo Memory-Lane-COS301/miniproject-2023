@@ -25,6 +25,7 @@ import { IProfile } from '@mp/api/profiles/util';
 import { Timestamp } from '@angular/fire/firestore';
 import { GetAllPendingFriendRequests } from '@mp/app/notification-page/util'
 import {  Subscription } from 'rxjs';
+import { setDefaultResultOrder } from 'dns';
 
 export interface ProfileStateModel {
   profile: IProfile | null;
@@ -75,7 +76,7 @@ export class ProfileState {
     private readonly store: Store,
     private readonly toastController: ToastController
   ) {
-    this.startDecrement();
+    // this.startDecrement();
   }
 
   @Selector()
@@ -243,6 +244,9 @@ export class ProfileState {
 
     if (deathTime)
       seconds = deathTime.seconds - Timestamp.now().seconds;
+
+    if (seconds <= 0)
+      seconds = 0;
 
     ctx.setState(
       produce((draft) => {

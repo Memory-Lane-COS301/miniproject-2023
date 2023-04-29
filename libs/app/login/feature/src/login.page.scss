@@ -9,7 +9,7 @@
 }
 
 form {
-  margin-top: 250px;
+  margin-top: 190px;
 }
 
 form ion-item {
@@ -77,4 +77,9 @@ ion-list {
 }
 .invalid-input {
   border: 2px solid #ff0000;
+}
+
+ion-footer {
+  position: fixed;
+  bottom: 10px;
 }

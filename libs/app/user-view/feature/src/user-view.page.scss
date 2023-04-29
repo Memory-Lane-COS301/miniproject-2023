@@ -150,3 +150,40 @@
     box-shadow: inset 0px 0px 0px 30px #000000;
   }
 }
+
+ion-refresher {
+  background-color: #222428;
+  color: white;
+  padding-bottom: 200px;
+}
+
+
+ion-refresher-content {
+  background-color: #222428; 
+  .refresher-pulling {
+    position: fixed;
+    top: 300px;
+  }
+  .refresher-pulling-icon { 
+    color: white; 
+  }
+  padding-top: 50px;
+  color: white;
+}
+
+.empty-feed {
+  margin-top: 7vh;
+  padding-top: 7vh;
+  width: 100%;
+  text-align: center;
+
+  background: radial-gradient(ellipse, #293445c0 0%, #2a344340 40%, #42577500 60%);
+
+  color: #858585;
+}
+
+.empty-feed ion-icon {
+  font-size: 10em;
+
+  color: #858585;
+}

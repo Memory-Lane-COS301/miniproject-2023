@@ -16,23 +16,23 @@
   height: 100%;
 }
 .page-btns {
-  background-color: #0011ff;
-  opacity: 0.75;
+  background-color: #6b7280;
+  opacity: 1;
   border-radius: 10px;
-  font-family: 'Inter';
-  font-style: normal;
+  font-style: bold;
   font-weight: 700;
   font-size: 20px;
+  height: 45px;
 }
 .google-btn {
-  background-color: #00ff66;
-  opacity: 0.75;
+  background-color: #22c55e;
+  opacity: 1; 
   border-radius: 10px;
   color: #000;
-  font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
+  height: 45px;
 }
 
 // @media (prefers-color-scheme: light) {
@@ -54,3 +54,8 @@
 //     display: block;
 //   }
 // }
+
+ion-footer {
+  position: fixed;
+  bottom: 10px;
+}

@@ -305,3 +305,42 @@ ion-card-header {
   bottom: 10px;
   left: 20px;
 }
+
+
+.add-comment-btn {
+  height: 25px;
+  font-size: 12px;
+  background-color: transparent;
+  margin-top: 7px;
+  margin-right: 3px;
+}
+
+.memory-card-timer {
+  font-family: 'Lato';
+  color: #ff0000;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 5px 2px;
+  background-color: #dddddd;
+  border-radius: 5px;
+}
+.btn-add-time {
+  font-family: 'Lato';
+  color: #fff;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 25px;
+}
+.span-post-timer {
+  display: flex;
+  position: fixed;
+  bottom: 40%;
+  right: 10px;
+}
+.span-post-timer-expanded {
+  display: flex;
+  position: fixed;
+  bottom: 10px;
+  left: 20px;
+}

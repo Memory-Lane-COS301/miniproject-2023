@@ -16,12 +16,12 @@
           <ion-text ngClass="menu-list-item-text">Profile Settings</ion-text>
         </ion-item>
       </ion-nav-link>
-      <ion-item ngClass="menu-list-item" lines="none">
+      <!-- <ion-item ngClass="menu-list-item" lines="none">
         <svg width="34" height="34" class="menu-icon" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 14C4.75 15.7949 6.20507 17.25 8 17.25H16C17.7949 17.25 19.25 15.7949 19.25 14C19.25 12.2869 17.9246 10.8834 16.2433 10.759C16.1183 8.5239 14.2663 6.75 12 6.75C9.73368 6.75 7.88168 8.5239 7.75672 10.759C6.07542 10.8834 4.75 12.2869 4.75 14Z"></path>
         </svg>
         <ion-text (click)="revive()" ngClass="menu-list-item-text">Revive Memory</ion-text>
-      </ion-item>
+      </ion-item> -->
       <ion-item ngClass="menu-list-item" lines="none">
         <svg width="30" height="30" class="menu-icon-special" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 19.25L9 18.25L18.2929 8.95711C18.6834 8.56658 18.6834 7.93342 18.2929 7.54289L16.4571 5.70711C16.0666 5.31658 15.4334 5.31658 15.0429 5.70711L5.75 15L4.75 19.25Z"></path>
@@ -80,5 +80,10 @@
       [onProfileView]="true"
       (postClick)="onPostClick($event)"
     ></app-memory-card>
+    <div class="empty-feed" *ngIf="memories.length <= 0">
+      <ion-icon name="file-tray-outline"></ion-icon> <br /><br /><br />
+      Looks like you have no posts here. <br /><br />
+      Go make some memories!
+    </div>
   </ion-list>
 </ion-content>

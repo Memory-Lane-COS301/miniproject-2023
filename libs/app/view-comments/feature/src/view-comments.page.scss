@@ -81,3 +81,20 @@ ion-content {
   width: 30px;
   height: 30px;
 }
+
+.empty-comments {
+  margin-top: 10vh;
+  padding-top: 10vh;
+  width: 100%;
+  text-align: center;
+
+  background: radial-gradient(ellipse, #293445c0 0%, #2a344340 40%, #42577500 60%);
+
+  color: #858585;
+}
+
+.empty-comments ion-icon {
+  font-size: 10em;
+
+  color: #858585;
+}

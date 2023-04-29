@@ -44,9 +44,6 @@
             formControlName="email"
           ></ion-input>
         </ion-item>
-        <ion-text *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="ion-padding-start" color="danger">
-          <small class="error-text">{{ emailError }}</small>
-        </ion-text>
         <ion-item
           lines="none"
           [ngClass]="{
@@ -71,13 +68,6 @@
             (click)="toggleShowPassword()"
           ></ion-icon>
         </ion-item>
-        <ion-text
-          *ngIf="password?.invalid && (password?.dirty || password?.touched)"
-          class="ion-padding-start"
-          color="danger"
-        >
-          <small class="error-text">{{ passwordError }}</small>
-        </ion-text>
       </ion-list>
 
       <ion-grid>
@@ -96,24 +86,16 @@
           </ion-col>
         </ion-row>
         <ion-row class="ion-padding-top">
-          <ion-col class="ion-text-center">
-            <ion-text color="light">Having trouble? </ion-text>
-            <ion-nav-link routerLink="/forgot">
-              <ion-text color="warning"> <u>Forgot Password</u></ion-text>
-            </ion-nav-link>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="ion-text-center ion-padding-top">
-            <ion-text color="light">Don't have an account? </ion-text>
-            <ion-nav-link routerLink="/register">
-              <ion-text color="warning"> <u>Register</u></ion-text>
-            </ion-nav-link>
-          </ion-col>
         </ion-row>
       </ion-grid>
     </form>
     <ion-footer collapse="condense" class="ion-padding ion-text-center">
+      <ion-text color="light">Don't have an account? </ion-text>
+      <ion-nav-link routerLink="/register">
+        <ion-text color="warning"> <u>Register</u></ion-text>
+      </ion-nav-link>
+      <br>
+      <br>
       <ms-copyright-component></ms-copyright-component>
     </ion-footer>
     </ion-content>

@@ -21,9 +21,10 @@
     </div>
   </div>
   <div *ngIf="viewedComments$ | async as comments">
-    <ion-item *ngIf="comments.length == 0" color="none">
-      <ion-text size="large" color="danger">No Comments</ion-text>
-    </ion-item>
+    <div class="empty-comments" *ngIf="comments.length <= 0">
+      <ion-icon name="chatbox-outline"></ion-icon> <br /><br /><br />
+      Looks like there are no comments here.
+    </div>
   </div>
 </ion-content>
 
