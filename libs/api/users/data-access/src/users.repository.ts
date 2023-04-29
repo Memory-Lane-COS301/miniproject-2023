@@ -11,16 +11,16 @@ export class UsersRepository {
     return await admin.firestore().collection('users').doc(user.userId).create(user);
   }
 
-  async setUserTime(userId: string, newTime: number) {
+  async setUserTime(userId: string, newTime: number, newDeathTime: Timestamp) {
     return await admin.firestore().collection('users').doc(userId).update({
       accountTime: newTime,
+      deathTime: newDeathTime,
     });
   }
 
   async updateUser(user: IUser) {
     return await admin.firestore().collection('users').doc(user.userId).set(user, { merge: true });
   }
-
 
   async findUser(userId: string) {
     return await admin
@@ -76,8 +76,8 @@ export class UsersRepository {
       .firestore()
       .collection('users')
       .doc(userId)
-      .update({ 
-        memoryCount: FieldValue.increment(1) 
+      .update({
+        memoryCount: FieldValue.increment(1),
       });
   }
 
@@ -86,10 +86,11 @@ export class UsersRepository {
       .firestore()
       .collection('users')
       .doc(userId)
-      .update({ 
-        memoryCount: FieldValue.increment(-1) 
+      .update({
+        memoryCount: FieldValue.increment(-1),
       });
   }
+
 
   async updateFriendRequestNotification(userId: string) {
     return await admin
