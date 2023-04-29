@@ -185,7 +185,6 @@ export class SearchPageComponent implements OnInit{
  }
 
  getSearchResultsLength() {
-  console.log("SIZE: " + this.searchSize);
   return this.searchSize;
  }
 }

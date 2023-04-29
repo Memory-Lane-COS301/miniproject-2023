@@ -217,8 +217,6 @@ export class UserViewState {
 
       friends.map((friend) => {
         if (friend.userId === authState.user.uid) {
-          console.log('inside isFriends');
-          console.log('friendId: ' + friend.userId);
           ctx.setState(prevState => ({
             ...prevState,
             isFriends: true,
@@ -234,7 +232,6 @@ export class UserViewState {
       }
       else {
         //else map thorough this user's list of pending requests to check for a match of OUR userId
-        console.log(`UserId: ${user.userId}`)
         const request : IGetFriendsRequest = {
           user: {
             // senderId: user.userId
@@ -244,15 +241,9 @@ export class UserViewState {
         const responseRef = await this.userViewApi.getAllPendingFriendRequests(request);
         const response = responseRef.data;
 
-        console.log('Inside checkStatus');
-        console.log(response.profiles);
-
         response.profiles.map((friend) => {
           if (friend.userId === user.userId) {
             calledSet = true;
-            console.log('inside waiting');
-            console.log('friendId: ' + friend.userId);
-            console.log('userId: ' + user.userId);
             ctx.setState(prevState => ({
               ...prevState,
               isFriends: false,
@@ -267,8 +258,6 @@ export class UserViewState {
         }
         else {
           //else not friends
-            console.log('inside not friends');
-            console.log('userId: ' + user.userId);
           return ctx.setState(prevState => ({
             ...prevState,
             isFriends: false,

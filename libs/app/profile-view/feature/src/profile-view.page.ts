@@ -234,8 +234,6 @@ export class ProfileViewPageComponent implements OnInit {
   }
 
   onPostClick(memory: any): void {
-    console.log("Hello World");
-    console.log(memory);
     this.store.dispatch(new GetCommentsRequest(memory as IMemory)); //we only request the comments if we want to display them
   }
 

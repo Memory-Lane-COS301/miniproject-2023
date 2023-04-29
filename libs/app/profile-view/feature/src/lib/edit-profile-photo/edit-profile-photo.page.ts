@@ -41,8 +41,9 @@ export class EditProfilePhotoPageComponent {
     private readonly toastController: ToastController
   ) {
     // Change in production!!!!!
-    this.storage = getStorage(undefined, 'gs://demo-project.appspot.com');
-    connectStorageEmulator(this.storage, 'localhost', 5006);
+    this.storage = getStorage();
+    // this.storage = getStorage(undefined, 'gs://demo-project.appspot.com');
+    // connectStorageEmulator(this.storage, 'localhost', 5006);
     this.storageRef = ref(this.storage);
 
     const user = this.store.selectSnapshot(ProfileState.user);

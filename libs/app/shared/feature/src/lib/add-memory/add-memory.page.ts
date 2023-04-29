@@ -45,8 +45,9 @@ export class AddMemoryPageComponent {
   ) {
     this.currentDate = new Date().toISOString();
     // Change in production!!!!!
-    this.storage = getStorage(undefined, 'gs://demo-project.appspot.com');
-    connectStorageEmulator(this.storage, 'localhost', 5006);
+    this.storage = getStorage();
+    // this.storage = getStorage(undefined, 'gs://demo-project.appspot.com');
+    // connectStorageEmulator(this.storage, 'localhost', 5006);
     this.storageRef = ref(this.storage);
   }
 

@@ -58,8 +58,6 @@ export class ViewedCommentsState {
           if (!text)
             return this.store.dispatch(new SetError('No comment to send'));
 
-          console.log(userId)
-          console.log(memoryId)
           if (!userId || !memoryId)
             return this.store.dispatch(new SetError('Oops, something went wrong'));
 

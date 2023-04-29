@@ -218,8 +218,6 @@ export class ProfileViewState {
     @Action(GetCommentsRequest)
     async getCommentsRequest(ctx: StateContext<ProfileViewStateModel>, { memory }: GetCommentsRequest) {
         try {
-            console.log("Hello World");
-            console.log(memory)
             const state = ctx.getState();
 
             const authState = this.store.selectSnapshot(AuthState);
@@ -240,9 +238,6 @@ export class ProfileViewState {
                 comments: responseRef.data.comments
             };
 
-            console.log("Response");
-            console.log(responseRef.data.comments);
-
             //we need to update the profile state's comments
             const newMemories = state.profile.memories?.map((mem) => {
                 if (mem.memoryId === memory.memoryId) {
@@ -253,9 +248,6 @@ export class ProfileViewState {
                 }
                 return mem;
             });
-
-            console.log("New memories")
-            console.log(newMemories);
 
             // return ctx.setState(
             //     produce((draft) => {
