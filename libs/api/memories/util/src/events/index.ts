@@ -4,3 +4,4 @@ export * from './comment-updated.event';
 export * from './revive-dead-memory.event';
 export * from './deduct-account-time.event';
 export * from './Increse-memory-time.event';
+export * from './only-increse-memory-time.event';

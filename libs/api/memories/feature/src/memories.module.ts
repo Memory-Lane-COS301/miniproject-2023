@@ -11,7 +11,8 @@ import {
   ReviveDeadMemoryCommandHandler,
   DeductAccountTimeHandler,
   UpdateMemoryTimeHandler,
-  UpdateMemoryHandler
+  UpdateMemoryHandler,
+  OnlyIncreseMemoryTimeCommandHandler,
 } from './commands';
 import { GetCommentsHandler, GetFeedMemoriesHandler } from './queries';
 import {
@@ -21,6 +22,7 @@ import {
   ReviveDeadMemoryEventHandler,
   DeductAccountTimeEventHandler,
   IncreseMemoryTimeEventHandler,
+  OnlyIncreseMemoryTimeEventHandler,
 } from './events';
 import { MemoriesSagas } from './memories.sagas';
 import { MemoriesService } from './memories.service';
@@ -32,7 +34,8 @@ export const CommandHandlers = [
   ReviveDeadMemoryCommandHandler,
   DeductAccountTimeHandler,
   UpdateMemoryTimeHandler,
-  UpdateMemoryHandler
+  UpdateMemoryHandler,
+  OnlyIncreseMemoryTimeCommandHandler,
 ];
 export const QueryHandlers = [GetCommentsHandler, GetFeedMemoriesHandler];
 export const EventHandlers = [
@@ -42,6 +45,7 @@ export const EventHandlers = [
   ReviveDeadMemoryEventHandler,
   DeductAccountTimeEventHandler,
   IncreseMemoryTimeEventHandler,
+  OnlyIncreseMemoryTimeEventHandler,
 ];
 
 @Module({

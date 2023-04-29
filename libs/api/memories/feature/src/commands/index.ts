@@ -5,3 +5,4 @@ export * from './revive-dead-memory.handler';
 export * from './deduct-account-time.handler';
 export * from './update-memory-time.handler';
 export * from './update-memory.handler';
+export * from './only-increse-memory-time.handler';
