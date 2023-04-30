@@ -51,6 +51,7 @@ describe('Memories', () => {
         cy.get('#tab-button-profile-view').click({force: true});
         cy.wait(5*1000);
         cy.url().should('eq', `${Cypress.config().baseUrl}/home/profile-view`);
+        cy.wait(5*1000);
         cy.get(':nth-child(1) > :nth-child(1) > .memory-card > .card-content-md > .memory-card-title').should('exist');
         cy.get(':nth-child(1) > :nth-child(1) > .memory-card > .card-content-md > .span-post-timer > .memory-card-timer').should('exist');
     })

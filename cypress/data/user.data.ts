@@ -16,7 +16,12 @@ export const registredUser2 = {
   password: 'aVeryStr0ngP@swd_',
 }
 
-export const registredUser = {
+export const registredUser3 = {
   email: 'Aiyana.Wiegand@hotmail.com',
+  password: 'aVeryStr0ngP@swd_',
+}
+
+export const registredUser = {
+  email: 'Pearlie.Feil@yahoo.com',
   password: 'aVeryStr0ngP@swd_',
 }

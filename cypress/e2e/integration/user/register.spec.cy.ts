@@ -47,7 +47,6 @@ describe('Register Page', () => {
   
   it(`Register data.user with email=${data.user.email}`, () => {
     cy.register(data.user.email, data.user.password);
-    cy.writeFile(filePath,JSON.stringify(data.user));
     cy.url().should('eq', `${Cypress.config().baseUrl}/home/feed`);
     cy.get('ion-title')
     .contains('Memory Lane');
