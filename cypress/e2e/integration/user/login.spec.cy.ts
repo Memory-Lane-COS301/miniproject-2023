@@ -1,5 +1,3 @@
-import * as data from '../../../data';
-
 describe('Login Page', () => {
   before(() => {
     cy.then(Cypress.session.clearCurrentSessionData)
@@ -18,7 +16,7 @@ describe('Login Page', () => {
       .should('have.attr', 'src')
       .and('include', '../../../../../assets/Design_icons/Login-page-background-and-images/Memory-lane-logo.png');
 
-    cy.get('input[type=email]').should('have.attr', 'placeholder').and('include', 'Email');
+    cy.get('input[type=email]').should('have.attr', 'placeholder').and('include', 'Enter email');
 
     cy.get('input[type=password]').should('have.attr', 'placeholder').and('include', 'Password');
 
