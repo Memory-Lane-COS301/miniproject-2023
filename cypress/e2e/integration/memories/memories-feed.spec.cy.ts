@@ -1,3 +1,5 @@
 describe('Memories Feed', () => {
-//validate feed features
+    it('Visits feed',()=>{
+        cy.visit('/home/feed');
+    });
 })
