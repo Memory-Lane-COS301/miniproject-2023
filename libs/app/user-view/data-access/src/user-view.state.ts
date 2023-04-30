@@ -88,10 +88,8 @@ export class UserViewState {
         },
       };
       request.user.userId = await this.userViewApi.getUserId(request.user.username || ' ')
-      console.error(request);
       const responseRef = await this.userViewApi.getUserProfile(request);
       const response = responseRef.data;
-      console.error(response);
       return ctx.dispatch(new SetUserView(response.profile));
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
