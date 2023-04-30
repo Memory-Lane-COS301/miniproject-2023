@@ -52,4 +52,8 @@ describe('Register Page', () => {
     cy.get('ion-title')
     .contains('Memory Lane');
   });
+  
+  it('Logs the user out',()=>{
+    cy.logout();
+  })
 });
