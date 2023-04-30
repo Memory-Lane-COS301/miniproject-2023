@@ -7,7 +7,6 @@ describe('Login Page', () => {
   
   beforeEach(()=>{
     cy.visit('/login');
-    cy.viewport('iphone-x');
   })
   
   it('visit login page', () => {
