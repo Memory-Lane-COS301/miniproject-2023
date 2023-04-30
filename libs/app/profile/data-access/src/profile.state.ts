@@ -76,7 +76,7 @@ export class ProfileState {
     private readonly store: Store,
     private readonly toastController: ToastController
   ) {
-    this.startDecrement();
+    // this.startDecrement();
   }
 
   @Selector()

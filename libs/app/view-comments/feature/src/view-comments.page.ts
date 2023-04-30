@@ -42,7 +42,6 @@ export class ViewCommentsPageComponent {
                 userId: uid,
                 username: uname
             }
-            this.store.dispatch(new CheckUserFriendStatus(request_user));
             this.store.dispatch(new GetUserProfileRequest(request_user));
             this.navCtrl.navigateForward('/user-view');
         }
