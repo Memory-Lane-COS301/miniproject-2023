@@ -38,4 +38,4 @@ Overall, the development process for the Memory Lane App was successful. The tea
 
 ## Documentation
 
-- [Documentation](https://github.com/Memory-Lane-COS301/miniproject-2023/blob/main/Documentation/Designs/Memory_Lane_Documentation.pdf)
+- [Documentation](https://github.com/Memory-Lane-COS301/miniproject-2023/blob/dev/Documentation/Memory_Lane_Documentation.pdf)
