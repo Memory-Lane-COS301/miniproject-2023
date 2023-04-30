@@ -1,94 +1,113 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div style="z-index: 1000;">
+  <ion-buttons slot="start" style="padding-left: 10px; padding-top: 15px;">
+    <ion-icon
+      ngClass="back-icon"
+      slot="start"
+      color="light"
+      name="chevron-back-outline"
+      routerLink="/"
+      routerDirection="back"
+    ></ion-icon>
+  </ion-buttons>
+</div>
+<div class="content">
+  <ion-content color="none" style="--background: transparent;" [fullscreen]="true" scroll-y="false">
+    <!-- <ion-header collapse="condense" style="position: fixed;">
+      <ion-toolbar color="none">
+        <ion-buttons slot="start">
+          <ion-icon
+            ngClass="back-icon"
+            slot="start"
+            color="light"
+            name="chevron-back-outline"
+            routerLink="/"
+            routerDirection="back"
+          ></ion-icon>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header> -->
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Login</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <form [formGroup]="loginForm" ngxsForm="login.loginForm" (submit)="login()">
-    <ion-list class="ion-padding-vertical">
-      <ion-item>
-        <ion-label position="floating" class="required">Email</ion-label>
-        <ion-input
-          type="email"
-          minlength="6"
-          maxlength="64"
-          placeholder="Enter email"
-          required="true"
-          autocomplete="email"
-          formControlName="email"></ion-input>
+    <ion-list>
+      <ion-item color="none" lines="none">
+        <ion-img
+          ngClass="app-logo"
+          src="../../../../../assets/Design_icons/Login-page-background-and-images/Memory-lane-logo.png"
+        ></ion-img>
       </ion-item>
-      <ion-text
-        *ngIf="email?.invalid && (email?.dirty || email?.touched)"
-        class="ion-padding-start"
-        color="danger">
-        <small>{{ emailError }}</small>
-      </ion-text>
-      <ion-item>
-        <ion-label position="floating" class="required">Password</ion-label>
-        <ion-input
-          [type]="showPassword ? 'text' : 'password'"
-          minlength="6"
-          maxlength="64"
-          placeholder="Enter password"
-          required="true"
-          autocomplete="password"
-          formControlName="password"></ion-input>
-        <ion-icon
-          [name]="showPassword ? 'eye-outline' : 'eye-off-outline'"
-          slot="end"
-          class="ion-align-self-center"
-          (click)="toggleShowPassword()"></ion-icon>
-      </ion-item>
-      <ion-text
-        *ngIf="password?.invalid && (password?.dirty || password?.touched)"
-        class="ion-padding-start"
-        color="danger">
-        <small>{{ passwordError }}</small>
-      </ion-text>
     </ion-list>
 
-    <ion-grid class="ion-padding">
-      <ion-row>
-        <ion-col>
-          <ion-button
-            expand="block"
-            [disabled]="!this.loginForm.valid || (busy$ | async)"
-            type="submit">
-            <ion-spinner *ngIf="busy$ | async"></ion-spinner>
-            <ion-text>Login</ion-text>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-      <ion-row class="ion-padding-top">
-        <ion-col class="ion-text-center">
-          Having trouble?
-          <ion-nav-link routerLink="/forgot">
-            <ion-text color="primary">Forgot Password</ion-text>
-          </ion-nav-link>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col class="ion-text-center">
-          Don't have an account?
-          <ion-nav-link routerLink="/register">
-            <ion-text color="primary">Register</ion-text>
-          </ion-nav-link>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </form>
-</ion-content>
+    <form [formGroup]="loginForm" ngxsForm="login.loginForm" (submit)="login()" class="form-bg">
+      <ion-list>
+        <ion-item
+          lines="none"
+          [ngClass]="{
+            'valid-input': email?.value && !(email?.invalid && (email?.dirty || email?.touched)),
+            'invalid-input': email?.invalid && (email?.dirty || email?.touched)
+          }"
+        >
+          <ion-input
+            type="email"
+            minlength="6"
+            maxlength="64"
+            placeholder="Email"
+            required="true"
+            autocomplete="email"
+            formControlName="email"
+          ></ion-input>
+        </ion-item>
+        <ion-item
+          lines="none"
+          [ngClass]="{
+            'valid-input': password?.value && !(password?.invalid && (password?.dirty || password?.touched)),
+            'invalid-input': password?.invalid && (password?.dirty || password?.touched)
+          }"
+        >
+          <ion-input
+            [type]="showPassword ? 'text' : 'password'"
+            minlength="6"
+            maxlength="64"
+            placeholder="Password"
+            required="true"
+            autocomplete="password"
+            formControlName="password"
+          ></ion-input>
+          <ion-icon
+            [name]="showPassword ? 'eye-outline' : 'eye-off-outline'"
+            color="light"
+            slot="end"
+            class="ion-align-self-center"
+            (click)="toggleShowPassword()"
+          ></ion-icon>
+        </ion-item>
+      </ion-list>
 
-<ion-footer collapse="condense" class="ion-padding ion-text-center">
-  <ms-copyright-component></ms-copyright-component>
-</ion-footer>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button
+              expand="block"
+              [disabled]="!this.loginForm.valid || (busy$ | async)"
+              type="submit"
+              ngClass="login-btn"
+              color="none"
+            >
+              <ion-spinner *ngIf="busy$ | async"></ion-spinner>
+              <ion-text color="light">Login</ion-text>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-top">
+        </ion-row>
+      </ion-grid>
+    </form>
+    <ion-footer collapse="condense" class="ion-padding ion-text-center">
+      <ion-text color="light">Don't have an account? </ion-text>
+      <ion-nav-link routerLink="/register">
+        <ion-text color="warning"> <u>Register</u></ion-text>
+      </ion-nav-link>
+      <br>
+      <br>
+      <ms-copyright-component></ms-copyright-component>
+    </ion-footer>
+    </ion-content>
+</div>

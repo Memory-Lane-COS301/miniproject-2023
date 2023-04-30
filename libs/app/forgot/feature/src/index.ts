@@ -1,1 +1,3 @@
-export * from './li./forgot-feature';
+export * from './forgot.page';
+export * from './forgot.module';
+export * from './forgot.routing';

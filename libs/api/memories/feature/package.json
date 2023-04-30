@@ -1,0 +1,12 @@
+{
+  "name": "@mp/api/memories/feature",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
+}

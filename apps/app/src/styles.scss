@@ -29,3 +29,9 @@
   content: ' *';
   color: red;
 }
+
+.add-memory-alert,
+.file-select-alert {
+  --backdrop-opacity: 0.5;
+  --background: #ff5b5b !important;
+}

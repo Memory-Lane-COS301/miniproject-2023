@@ -8,26 +8,32 @@ const routes: Routes = [
     component: HomePage,
     children: [
       {
-        path: 'dashboard',
-        loadChildren: () =>
-          import('@mp/app/dashboard/feature').then((m) => m.DashboardModule),
+        path: 'feed',
+        loadChildren: () => import('@mp/app/feed/feature').then((m) => m.FeedModule),
       },
       {
-        path: 'profile',
-        loadChildren: () =>
-          import('@mp/app/profile/feature').then((m) => m.ProfileModule),
+        path: 'profile-view',
+        loadChildren: () => import('@mp/app/profile-view/feature').then((m) => m.ProfileViewModule),
+      },
+      {
+        path: 'notification-page',
+        loadChildren: () => import('@mp/app/notification-page/feature').then((m) => m.NotificationPageModule),
+      },
+      {
+        path: 'search-page',
+        loadChildren: () => import('@mp/app/search-page/feature').then((m) => m.SearchPageModule),
       },
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: '/home/dashboard',
+        redirectTo: '/home/feed',
       },
     ],
   },
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/home/dashboard',
+    redirectTo: '/home/feed',
   },
 ];
 

@@ -2,23 +2,26 @@ import { ProfilesModule as ProfilesDataAccessModule } from '@mp/api/profiles/dat
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import {
-    CreateProfileHandler,
-    UpdateAccountDetailsHandler,
-    UpdateAddressDetailsHandler,
-    UpdateContactDetailsHandler,
-    UpdateOccupationDetailsHandler,
-    UpdatePersonalDetailsHandler,
-    UpdateProfileStatusHandler
+  CreateProfileHandler,
+  UpdateAccountDetailsHandler,
+  UpdateAddressDetailsHandler,
+  UpdateContactDetailsHandler,
+  UpdateOccupationDetailsHandler,
+  UpdatePersonalDetailsHandler,
+  UpdateProfileStatusHandler,
 } from './commands';
 import {
-    AccountDetailsUpdatedHandler,
-    AddressDetailsUpdatedHandler,
-    ContactDetailsUpdatedHandler,
-    OccupationDetailsUpdatedHandler,
-    PersonalDetailsUpdatedHandler,
-    ProfileCreatedHandler,
-    ProfileStatusUpdatedHandler
+  AccountDetailsUpdatedHandler,
+  AddressDetailsUpdatedHandler,
+  ContactDetailsUpdatedHandler,
+  OccupationDetailsUpdatedHandler,
+  PersonalDetailsUpdatedHandler,
+  ProfileCreatedHandler,
+  ProfileStatusUpdatedHandler,
 } from './events';
+
+import { GetProfileHandler, GetDeadMemoriesHandler } from './queries';
+
 import { ProfilesSagas } from './profiles.sagas';
 import { ProfilesService } from './profiles.service';
 export const CommandHandlers = [
@@ -39,15 +42,11 @@ export const EventHandlers = [
   AccountDetailsUpdatedHandler,
   ProfileStatusUpdatedHandler,
 ];
+export const QueryHandlers = [GetProfileHandler, GetDeadMemoriesHandler];
 
 @Module({
   imports: [CqrsModule, ProfilesDataAccessModule],
-  providers: [
-    ProfilesService,
-    ...CommandHandlers,
-    ...EventHandlers,
-    ProfilesSagas,
-  ],
+  providers: [ProfilesService, ...CommandHandlers, ...EventHandlers, ...QueryHandlers, ProfilesSagas],
   exports: [ProfilesService],
 })
 export class ProfilesModule {}

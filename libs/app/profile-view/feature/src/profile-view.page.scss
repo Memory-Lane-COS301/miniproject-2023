@@ -1,0 +1,206 @@
+$greyish: #d9d9d9; //global color
+
+.burger-menu {
+  font-size: 50px;
+  color: $greyish;
+}
+
+ion-menu::part(backdrop) {
+  background-color: rgb(0, 0, 0);
+
+  .nav-bar {
+    opacity: 0.5;
+  }
+}
+
+ion-menu::part(container) {
+
+  box-shadow: 4px 0px 16px rgba(0, 0, 0, 0.488);
+}
+
+.menu-sidebar {
+  --background: #383a3e;
+}
+
+.menu-heading {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
+  font-weight: bold;
+  border-bottom: 2px solid $greyish;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+.btn-menu-exit {
+  background-color: #ffffff;
+  color: #ff0000;
+  border-radius: 5px;
+}
+
+.menu-heading-text {
+  font-size: 30px;
+  color: #ffffff;
+  font-family: 'Lato';
+}
+
+.menu-list {
+  border-radius: 5px;
+}
+
+.menu-list-item {
+  // position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  border-bottom: 2px solid $greyish;
+  font-family: 'Lato';
+  font-weight: bold;
+  // margin-bottom: 10px;
+}
+
+.menu-list-item:last-child {
+  margin-bottom: 0px;
+}
+.menu-list-item-text {
+  font-size: 21px;
+  width: auto;
+}
+
+.title {
+  font-family: 'Pattaya';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 36px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.top-bar {
+  --background: #161616;
+}
+
+.view-page {
+  --background: #222428;
+}
+
+.add-btn {
+  border: 2px solid $greyish;
+  font-size: 25px;
+}
+
+// <---------Header Details-----------> //
+.heading-grid {
+  background-color: #222428;
+  min-width: 100%;
+  max-height: 200px;
+}
+
+.heading-grid-row {
+  color: #ffffff;
+  height: 130px;
+}
+.heading-grid-row-col1,
+.heading-grid-row-col2,
+.heading-grid-row-col3 {
+  margin-top: 10px;
+}
+.heading-grid-row-col1,
+.heading-grid-row-col3 {
+  padding-top: 35px;
+}
+.heading-grid-row-col3 {
+  margin-left: 5px;
+}
+
+.heading-grid-row-col1-title,
+.heading-grid-row-col3-title {
+  font-weight: bold;
+  font-family: 'Lato';
+  opacity: 0.6;
+  font-size: 15px;
+}
+.user-profile-img {
+  height: 100px;
+  max-height: 100px;
+  width: 100px;
+  margin: auto;
+}
+.username {
+  font-size: 20px;
+  font-family: 'Lato';
+}
+.friend-memories-count {
+  font-family: 'Lato';
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.account-time {
+  text-align: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.account-time-text {
+  font-family: 'Inter';
+  font-size: 26px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.memory-list {
+  background-color: transparent;
+  padding-right: 8px;
+}
+
+.burger-menu {
+  z-index: 99;
+}
+
+.menu-icon {
+  margin-right: 14px;
+}
+
+.menu-icon-special {
+  margin-right: 18px;
+}
+
+ion-refresher {
+  background-color: #222428;
+  color: white;
+  padding-bottom: 200px;
+  z-index: -5;
+}
+
+
+ion-refresher-content {
+  background-color: #222428; 
+  .refresher-pulling {
+    position: fixed;
+    top: 300px;
+  }
+  .refresher-pulling-icon { 
+    color: white; 
+  }
+  padding-top: 50px;
+  color: white;
+}
+
+.empty-feed {
+  margin-top: 7vh;
+  padding-top: 7vh;
+  width: 100%;
+  text-align: center;
+
+  background: radial-gradient(ellipse, #293445c0 0%, #2a344340 40%, #42577500 60%);
+
+  color: #858585;
+}
+
+.empty-feed ion-icon {
+  font-size: 10em;
+
+  color: #858585;
+}

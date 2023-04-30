@@ -1,30 +1,27 @@
-import {
-    CreateProfileCommand,
-    IProfile,
-    ProfileStatus
-} from '@mp/api/profiles/util';
+import { CreateProfileCommand, IProfile, ProfileStatus } from '@mp/api/profiles/util';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Profile } from '../models';
 
 @CommandHandler(CreateProfileCommand)
-export class CreateProfileHandler
-  implements ICommandHandler<CreateProfileCommand>
-{
+export class CreateProfileHandler implements ICommandHandler<CreateProfileCommand> {
   constructor(private publisher: EventPublisher) {}
 
   async execute(command: CreateProfileCommand) {
     console.log(`${CreateProfileHandler.name}`);
 
     const request = command.request;
-    const userId = request.user.id;
-    const displayName = request.user.displayName;
+    const userId = request.user.userId;
+    const user=request.user;
+    const displayName = request.user.username;
     const email = request.user.email;
-    const photoURL = request.user.photoURL;
-    const cellphone = request.user.phoneNumber;
+    const photoURL = request.user.profileImgUrl;
+    //const cellphone = request.user.phoneNumber;
 
     const data: IProfile = {
       userId,
+      user,
+  
       accountDetails: {
         displayName,
         email,
@@ -38,7 +35,7 @@ export class CreateProfileHandler
         status: ProfileStatus.INCOMPLETE,
       },
       contactDetails: {
-        cellphone,
+        //cellphone,
         status: ProfileStatus.INCOMPLETE,
       },
       addressDetails: {

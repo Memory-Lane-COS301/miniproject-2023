@@ -8,18 +8,13 @@ export class Eventstore extends AggregateRoot implements IEventstore {
     public id: string,
     public type: string,
     public data?: Serializable | null,
-    public timestamp?: Timestamp | null
+    public timestamp?: Timestamp | null,
   ) {
     super();
   }
 
   static fromData(eventstore: IEventstore): Eventstore {
-    const instance = new Eventstore(
-      eventstore.id,
-      eventstore.type,
-      eventstore.data,
-      eventstore.timestamp
-    );
+    const instance = new Eventstore(eventstore.id, eventstore.type, eventstore.data, eventstore.timestamp);
     return instance;
   }
 

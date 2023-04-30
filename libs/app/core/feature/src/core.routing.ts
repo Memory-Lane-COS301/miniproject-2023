@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
-import {
-    AuthGuard,
-    redirectLoggedInTo,
-    redirectUnauthorizedTo
-} from '@angular/fire/auth-guard';
+import { AuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const redirectLoggedOut = () => redirectUnauthorizedTo(['']);
@@ -15,8 +11,7 @@ const routes: Routes = [
     pathMatch: 'full',
     canActivate: [AuthGuard],
     data: { authGuardPipe: redirectLoggedIn },
-    loadChildren: () =>
-      import('@mp/app/welcome/feature').then((m) => m.WelcomeModule),
+    loadChildren: () => import('@mp/app/welcome/feature').then((m) => m.WelcomeModule),
   },
   // {
   //   path: 'response',
@@ -32,8 +27,7 @@ const routes: Routes = [
     path: 'home',
     canActivate: [AuthGuard],
     data: { authGuardPipe: redirectLoggedOut },
-    loadChildren: () =>
-      import('@mp/app/home/feature').then((m) => m.HomeModule),
+    loadChildren: () => import('@mp/app/home/feature').then((m) => m.HomeModule),
   },
   {
     path: 'tos',
@@ -41,8 +35,7 @@ const routes: Routes = [
   },
   {
     path: 'privacy',
-    loadChildren: () =>
-      import('@mp/app/privacy/feature').then((m) => m.PrivacyModule),
+    loadChildren: () => import('@mp/app/privacy/feature').then((m) => m.PrivacyModule),
   },
   // {
   //   path: 'verify',
@@ -60,36 +53,43 @@ const routes: Routes = [
   //   loadChildren: () =>
   //     import('./reset/reset.module').then((m) => m.ResetPageModule),
   // },
-  // {
-  //   path: 'forgot',
-  //   pathMatch: 'full',
-  //   canActivate: [AuthGuard],
-  //   data: { authGuardPipe: redirectLoggedIn },
-  //   loadChildren: () =>
-  //     import('./forgot/forgot.module').then((m) => m.ForgotPageModule),
-  // },
+  {
+    path: 'forgot',
+    pathMatch: 'full',
+    canActivate: [AuthGuard],
+    data: { authGuardPipe: redirectLoggedIn },
+    loadChildren: () => import('@mp/app/forgot/feature').then((m) => m.ForgotPasswordModule),
+  },
   {
     path: 'register',
     pathMatch: 'full',
     canActivate: [AuthGuard],
     data: { authGuardPipe: redirectLoggedIn },
-    loadChildren: () =>
-      import('@mp/app/register/feature').then((m) => m.RegisterModule),
+    loadChildren: () => import('@mp/app/register/feature').then((m) => m.RegisterModule),
   },
   {
     path: 'login',
     pathMatch: 'full',
     canActivate: [AuthGuard],
     data: { authGuardPipe: redirectLoggedIn },
-    loadChildren: () =>
-      import('@mp/app/login/feature').then((m) => m.LoginModule),
+    loadChildren: () => import('@mp/app/login/feature').then((m) => m.LoginModule),
+  },
+  {
+    path: 'user-view',
+    loadChildren: () => import('@mp/app/user-view/feature').then((m) => m.UserViewModule),
+  },
+  {
+    path: 'search-results',
+    loadChildren: () => import('@mp/app/search-results/feature').then((m) => m.SearchResultsPageModule),
+  },
+  {
+    path: 'view-comments',
+    loadChildren: () => import('@mp/app/view-comments/feature').then((m) => m.ViewCommentsModule),
   },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
-  ],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule],
 })
 export class CoreRouting {}

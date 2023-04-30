@@ -20,6 +20,16 @@ yarn nx generate @nrwl/js:library feature --unitTestRunner=jest --directory=api/
 yarn nx generate @nrwl/js:library data-access --unitTestRunner=jest --directory=api/profiles --no-interactive
 yarn nx generate @nrwl/js:library util --unitTestRunner=jest --directory=api/profiles --no-interactive
 
+# COMMENTS
+yarn nx generate @nrwl/js:library feature --unitTestRunner=jest --directory=api/comments --no-interactive
+yarn nx generate @nrwl/js:library data-access --unitTestRunner=jest --directory=api/comments --no-interactive
+yarn nx generate @nrwl/js:library util --unitTestRunner=jest --directory=api/comments --no-interactive
+
+# MEMORIES
+yarn nx generate @nrwl/js:library feature --unitTestRunner=jest --directory=api/memories --no-interactive
+yarn nx generate @nrwl/js:library data-access --unitTestRunner=jest --directory=api/memories --no-interactive
+yarn nx generate @nrwl/js:library util --unitTestRunner=jest --directory=api/memories --no-interactive
+
 # HISTORY
 yarn nx generate @nrwl/js:library feature --unitTestRunner=jest --directory=api/history --no-interactive
 yarn nx generate @nrwl/js:library data-access --unitTestRunner=jest --directory=api/history --no-interactive

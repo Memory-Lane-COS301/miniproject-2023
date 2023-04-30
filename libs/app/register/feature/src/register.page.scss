@@ -1,0 +1,91 @@
+.content {
+  width: 100%;
+  height: 100%;
+  background-image: url('../../../../../apps/app/src/assets/Design_icons/Login-page-background-and-images/Background.png');
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+form {
+  margin-top: 190px;
+}
+
+form ion-item {
+  border-radius: 10px;
+  margin: auto;
+  margin-bottom: 15px;
+  width: 85%;
+  height: 40px;
+  --background: #6b7280;
+  background-color: #6b7280;
+}
+
+ion-input {
+  color: white;
+  font-weight: bold;
+  font-size: large;
+  background-color: #6b7280;
+  --placeholder-color: white;
+  --placeholder-opacity: 1;
+}
+
+
+.back-btn {
+  left: 20px;
+  position: absolute;
+}
+.back-icon {
+  width: 30px;
+  height: 30px;
+}
+
+ion-list {
+  background: transparent;
+}
+
+.profile-img {
+  margin: auto;
+  height: 150px;
+  width: 150px;
+}
+.app-logo {
+  margin: auto;
+  height: 220px;
+  width: 220px;
+  margin-bottom: 10px;
+}
+
+.text {
+  color: #ffffff;
+}
+
+.error-text {
+  font-weight: bold;
+  font-size: medium;
+}
+
+.register-btn {
+  border: 1px solid white;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  width: 150px;
+  margin: auto;
+  color: white;
+  height: 40px;
+  opacity: 1;
+}
+
+.valid-input {
+  border: 2px solid #08fe03;
+}
+.invalid-input {
+  border: 2px solid #ff0000;
+}
+
+ion-footer {
+  position: fixed;
+  bottom: 10px;
+}

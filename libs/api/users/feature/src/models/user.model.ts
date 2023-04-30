@@ -1,29 +1,41 @@
-import { IUser, UserCreatedEvent } from '@mp/api/users/util';
+import { IUser, UserCreatedEvent, UserUpdatedEvent } from '@mp/api/users/util';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Timestamp } from 'firebase-admin/firestore';
 
 export class User extends AggregateRoot implements IUser {
   constructor(
-    public id: string,
+    public userId: string,
+    public name?: string | null | undefined,
+    public surname?: string | null | undefined,
+    public username?: string | null | undefined,
     public email?: string | null | undefined,
-    public displayName?: string | null | undefined,
-    public photoURL?: string | null | undefined,
-    public phoneNumber?: string | null | undefined,
-    public customClaims?: { [key: string]: any } | null | undefined,
-    public created?: Timestamp | null | undefined
+    public profileImgUrl?: string | null | undefined,
+    public bio?: string | null | undefined,
+    public friendCount?: number | null | undefined,
+    public memoryCount?: number | null | undefined,
+    public accountTime?: number | null | undefined,
+    public lastOnline?: Timestamp | null | undefined,
+    public online?: boolean | null | undefined,
+    public created?: Timestamp | null | undefined,
   ) {
     super();
   }
 
   static fromData(user: IUser): User {
     const instance = new User(
-      user.id,
+      user.userId,
+      user.name,
+      user.surname,
+      user.username,
       user.email,
-      user.displayName,
-      user.photoURL,
-      user.phoneNumber,
-      user.customClaims,
-      user.created
+      user.profileImgUrl,
+      user.bio,
+      user.friendCount,
+      user.memoryCount,
+      user.accountTime,
+      user.lastOnline,
+      user.online,
+      user.created,
     );
     return instance;
   }
@@ -32,14 +44,30 @@ export class User extends AggregateRoot implements IUser {
     this.apply(new UserCreatedEvent(this.toJSON()));
   }
 
+  updateUser(user: IUser) {
+    this.name = user.name ? user.name : this.name; 
+    this.surname = user.surname ? user.surname : this.surname; 
+    this.username = user.username ? user.username : this.username; 
+    this.email = user.email ? user.email : this.email; 
+    this.profileImgUrl = user.profileImgUrl ? user.profileImgUrl : this.profileImgUrl; 
+    this.bio = user.bio ? user.bio : this.bio; 
+    this.apply(new UserUpdatedEvent(this.toJSON()));
+  }
+
   toJSON(): IUser {
     return {
-      id: this.id,
+      userId: this.userId,
+      name: this.name,
+      surname: this.surname,
+      username: this.username,
       email: this.email,
-      displayName: this.displayName,
-      photoURL: this.photoURL,
-      phoneNumber: this.phoneNumber,
-      customClaims: this.customClaims,
+      profileImgUrl: this.profileImgUrl,
+      bio: this.bio,
+      friendCount: this.friendCount,
+      memoryCount: this.memoryCount,
+      accountTime: this.accountTime,
+      lastOnline: this.lastOnline,
+      online: this.online,
       created: this.created,
     };
   }

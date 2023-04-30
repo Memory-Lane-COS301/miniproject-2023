@@ -1,20 +1,109 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="none">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-back-button text="Welcome Page" color="light" defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>Privacy Policy</ion-title>
+    <ion-title size="medium" slot="end">Privacy Policy</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Privacy Policy</ion-title>
+<ion-content [fullscreen]="true" ngClass="page-content">
+  <ion-header collapse="condense" class="ion-text-center">
+    <ion-toolbar color="none">
+      <ion-title class="ion-text-center" size="large">Privacy Policy</ion-title>
     </ion-toolbar>
+    <small class="last-updated">Last updated: 2023-03-18, 16:00 (GMT +2)</small>
   </ion-header>
-</ion-content>
 
-<ion-footer collapse="condense" class="ion-padding ion-text-center">
-  <ms-copyright-component></ms-copyright-component>
-</ion-footer>
+  <ion-list class="ion-padding" ngClass="privacy-policy-items">
+    <ion-text>
+      <h4>
+        Welcome to Memory Lane. This Privacy Policy outlines how we collect, use, disclose, and protect your personal
+        information when you use our social networking app, Memory Lane. By using Memory Lane, you agree to the terms
+        and conditions of this Privacy Policy.
+      </h4>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="privacy-policy-text">
+      <h2>Information We Collect</h2>
+      <p>
+        We collect information about you when you create an account, use our app, or communicate with us. The
+        information we collect may include your name, email address, date of birth, gender, profile picture, location
+        data, and any other information you choose to provide.
+      </p>
+      <p>
+        We may also collect information about your device, such as your device type, operating system, browser type, and
+        IP address.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="privacy-policy-text">
+      <h2>How We Use Your Information</h2>
+      <p>
+        We use the information we collect to provide and improve our app, personalize your experience, communicate with
+        you, and comply with legal obligations.
+      </p>
+      <p>We may use your information to:</p>
+      <ul>
+        <li>Create and manage your account</li>
+        <li>Connect you with other users and facilitate communication</li>
+        <li>Personalize your experience on Memory Lane</li>
+        <li>Analyze app usage and improve our app</li>
+        <li>Send you promotional messages and marketing</li>
+        <li>Comply with legal obligations</li>
+      </ul>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="privacy-policy-text">
+      <h2>How We Share Your Information</h2>
+      <p>
+        We do not sell, rent, or share your personal information with third parties for their marketing purposes without
+        your consent. However, we may share your information in the following ways:
+      </p>
+      <ul>
+        <li>With service providers who help us operate our app and provide services to you</li>
+        <li>If we believe disclosure is necessary to comply with legal obligations or protect our rights</li>
+        <li>In connection with a merger, acquisition, or sale of our company</li>
+      </ul>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="privacy-policy-text">
+      <h2>Security</h2>
+      <p>
+        We take reasonable measures to protect your personal information from unauthorized access, disclosure, or
+        destruction. However, no method of transmission over the internet or electronic storage is completely secure,
+        and we cannot guarantee the absolute security of your information.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="privacy-policy-text">
+      <h2>Children's Privacy</h2>
+      <p>
+        We do not knowingly collect personal information from children under the age of 13. If you are a parent or
+        guardian and believe your child has provided us with personal information, please contact us immediately.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="privacy-policy-text">
+      <h2>Changes to this Privacy Policy</h2>
+      <p>
+        We may update this Privacy Policy from time to time. If we make material changes, we will provide notice by
+        email or by posting a notice on our app prior to the change becoming effective. We encourage you to review this
+        Privacy Policy periodically.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="privacy-policy-text">
+      <h2>Contact Us</h2>
+      <p>
+        If you have any questions or concerns about this Privacy Policy, please contact us at
+        <a href="">memorylane@example.com</a>.
+      </p>
+    </ion-text>
+    <hr />
+  </ion-list>
+
+  <ion-footer collapse="condense" class="ion-text-center">
+    <ms-copyright-component></ms-copyright-component>
+  </ion-footer>
+</ion-content>

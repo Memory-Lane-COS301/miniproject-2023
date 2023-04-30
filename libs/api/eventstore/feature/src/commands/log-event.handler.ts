@@ -18,9 +18,7 @@ export class LogEventHandler implements ICommandHandler<LogEventCommand> {
       data: request.data,
       timestamp: Timestamp.fromDate(new Date()),
     };
-    const eventstore = this.publisher.mergeObjectContext(
-      Eventstore.fromData(data)
-    );
+    const eventstore = this.publisher.mergeObjectContext(Eventstore.fromData(data));
 
     eventstore.logEvent();
     eventstore.commit();

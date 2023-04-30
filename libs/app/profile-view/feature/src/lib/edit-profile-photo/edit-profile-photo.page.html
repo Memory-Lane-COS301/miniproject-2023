@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Edit Profile Photo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" color="dark">
+  <div class="profile-photo-container">
+    <label for="profile-photo-input">
+      <img class="profile-photo-preview" src="{{ imgUrl }}">
+    </label>
+    <ion-icon ngClass="edit-icon" name="create-outline" (click)="fileInput.click()"></ion-icon>
+    <input id="profile-photo-input" type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput>
+  </div>
+  <ion-button expand="block" class="button-save" (click)="save()">Save</ion-button>
+  <ion-button expand="block" class="button-cancel" (click)="cancel()">Cancel</ion-button>
+</ion-content>

@@ -1,0 +1,190 @@
+.back-button {
+  opacity: 0.7;
+}
+.title {
+  font-family: 'Pattaya';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 36px;
+  color: #ffffff;
+  text-align: center;
+}
+.account-time {
+  color: #7b7b7b;
+  padding-right: 5px;
+}
+
+.friend-req-btn-not-added {
+  background-color: #686868;
+  padding: 0 5px;
+  margin-top: 20px;
+  border-radius: 10px;
+  color: #fff;
+  transition: 0.1s;
+}
+.friend-req-btn-added {
+  background-color: #08ff03;
+  padding: 0 5px;
+  margin-top: 20px;
+  border-radius: 10px;
+  transition: 0.25s;
+  color: #000;
+}
+.unfriend-btn {
+  background-color: #ff0000;
+  padding: 0 5px;
+  margin-top: 20px;
+  margin-left: 20px;
+  border-radius: 10px;
+  color: #000;
+  transition: 0.25;
+}
+.unfriend-icon {
+  width: 30px;
+  height: 30px;
+}
+
+//--------------<app-user-info>---------------------------
+.heading-grid {
+  background-color: #222428;
+}
+.heading-grid-row {
+  color: #ffffff;
+  height: 130px;
+}
+.heading-grid-row-col1,
+.heading-grid-row-col2,
+.heading-grid-row-col3 {
+  margin-top: 15px;
+}
+.heading-grid-row-col1,
+.heading-grid-row-col3 {
+  padding-top: 35px;
+}
+.heading-grid-row-col3 {
+  margin-left: 5px;
+}
+
+.heading-grid-row-col1-title,
+.heading-grid-row-col3-title {
+  font-weight: bold;
+  font-family: 'Lato';
+  opacity: 0.6;
+  font-size: 15px;
+}
+.user-profile-img {
+  height: 100px;
+  width: 100px;
+  margin: auto;
+}
+.username {
+  font-size: 20px;
+  font-family: 'Lato';
+}
+.friend-memories-count {
+  font-family: 'Lato';
+  font-size: 25px;
+  font-weight: bold;
+}
+.memory-list {
+  background-color: transparent;
+  padding-right: 8px;
+}
+
+//------------ success animation when adding a friend
+.added-friend-btn {
+  background-color: transparent;
+}
+
+.wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10px;
+}
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #000;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+.checkmark {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 5;
+  stroke: #08ff03;
+  stroke-miterlimit: 10;
+  margin: 10% auto;
+  box-shadow: inset 0px 0px 0px #000;
+  animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+}
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes scale {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #000000;
+  }
+}
+
+ion-refresher {
+  background-color: #222428;
+  color: white;
+  padding-bottom: 200px;
+  z-index: -5;
+}
+
+
+ion-refresher-content {
+  background-color: #222428; 
+  .refresher-pulling {
+    position: fixed;
+    top: 300px;
+  }
+  .refresher-pulling-icon { 
+    color: white; 
+  }
+  padding-top: 50px;
+  color: white;
+}
+
+.empty-feed {
+  margin-top: 7vh;
+  padding-top: 7vh;
+  width: 100%;
+  text-align: center;
+
+  background: radial-gradient(ellipse, #293445c0 0%, #2a344340 40%, #42577500 60%);
+
+  color: #858585;
+}
+
+.empty-feed ion-icon {
+  font-size: 10em;
+
+  color: #858585;
+}

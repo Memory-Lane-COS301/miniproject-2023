@@ -11,12 +11,7 @@ export const EventHandlers = [EventLoggedHandler];
 
 @Module({
   imports: [CqrsModule, EventstoreDataAccessModule],
-  providers: [
-    EventstoreService,
-    ...CommandHandlers,
-    ...EventHandlers,
-    EventstoreSagas,
-  ],
+  providers: [EventstoreService, ...CommandHandlers, ...EventHandlers, EventstoreSagas],
   exports: [EventstoreService],
 })
 export class EventstoreModule {}

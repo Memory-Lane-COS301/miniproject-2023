@@ -1,0 +1,56 @@
+ion-tab-button {
+  --color: var(--ion-color-medium);
+  --color-selected: var(--ion-color-light);
+  padding: 5px;
+
+  &::after {
+    background-color: transparent;
+    display: block;
+    content: '';
+    margin: 0 auto;
+    width: 50%;
+    height: 2px;
+  }
+
+  &.tab-selected::after {
+    background-color: var(--ion-color-light);
+  }
+}
+
+.nav-bar {
+  --background: #000000;
+}
+
+.notification-bell {
+  position: relative;
+}
+
+.notification-amount {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-empty {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  background-color: transparent;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

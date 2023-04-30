@@ -1,11 +1,18 @@
 import { Timestamp } from 'firebase-admin/firestore';
 
 export interface IUser {
-  id: string;
+  userId: string;
+  name?: string | null | undefined;
+  surname?: string | null | undefined;
+  username?: string | null | undefined;
   email?: string | null | undefined;
-  displayName?: string | null | undefined;
-  photoURL?: string | null | undefined;
-  phoneNumber?: string | null | undefined;
-  customClaims?: { [key: string]: any } | null | undefined;
+  profileImgUrl?: string | null | undefined;
+  bio?: string | null | undefined;
+  friendCount?: number | null | undefined;
+  memoryCount?: number | null | undefined;
+  accountTime?: number | null | undefined;
+  lastOnline?: Timestamp | null | undefined;
+  online?: boolean | null | undefined;
   created?: Timestamp | null | undefined;
+  deathTime?: Timestamp | null | undefined;
 }

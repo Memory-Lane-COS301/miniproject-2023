@@ -1,0 +1,67 @@
+.background-image {
+  width: 100%;
+  height: 100%;
+  background-image: url('../../../../../apps/app/src/assets/Design_icons/Login-page-background-and-images/Background.png');
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+form ion-item {
+  border-radius: 20px;
+  margin: auto;
+  margin-bottom: 15px;
+  width: 85%;
+  height: 60px;
+}
+
+ion-list {
+  background: transparent;
+}
+
+.profile-img {
+  margin: auto;
+  height: 150px;
+  width: 150px;
+}
+.app-logo {
+  margin: auto;
+  height: 220px;
+  width: 220px;
+  justify-content: center;
+}
+
+.error-text {
+  font-weight: bold;
+  font-size: medium;
+}
+
+.forgotPassword-btn {
+  border: 3px solid #ffffff;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  width: 200px;
+  margin: auto;
+}
+.valid-input {
+  border: 2px solid #08fe03;
+}
+.invalid-input {
+  border: 2px solid #ff0000;
+}
+
+ion-footer {
+  position: absolute;
+  bottom: 20px;
+}
+
+.back-btn {
+  left: 20px;
+  position: absolute;
+}
+.back-icon {
+  width: 30px;
+  height: 30px;
+}

@@ -8,6 +8,7 @@ export interface RegisterStateModel {
   registerForm: {
     model: {
       displayName: string | null;
+      username: string | null;
       email: string | null;
       password: string | null;
     };
@@ -23,6 +24,7 @@ export interface RegisterStateModel {
     registerForm: {
       model: {
         displayName: null,
+        username: null,
         email: null,
         password: null,
       },
@@ -38,10 +40,11 @@ export class RegisterState {
   async register(ctx: StateContext<RegisterStateModel>) {
     try {
       const state = ctx.getState();
+      const username = state.registerForm.model.username;
       const email = state.registerForm.model.email;
       const password = state.registerForm.model.password;
 
-      if (email && password) {
+      if (email && password ) {
         return ctx.dispatch(new AuthRegister(email, password));
       }
       return ctx.dispatch(new SetError('Email or password not set'));

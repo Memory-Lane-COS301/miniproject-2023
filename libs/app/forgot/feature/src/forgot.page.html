@@ -1,0 +1,125 @@
+<ion-content [fullscreen]="true" scroll-y="false">
+  <div class="background-image"></div>
+
+  <ion-header collapse="condense">
+    <ion-toolbar color="none">
+      <ion-buttons slot="start">
+        <ion-icon
+          ngClass="back-icon"
+          slot="start"
+          color="light"
+          name="chevron-back-outline"
+          routerLink="/login"
+          routerDirection="back"
+        ></ion-icon>
+        <ion-button ngClass="back-btn" color="light" routerLink="/login" routerDirection="back">Login</ion-button>
+      </ion-buttons>
+      <ion-title size="large" color="light" class="ion-text-end">Forgot Password</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list>
+    <ion-item color="none" lines="none">
+      <ion-img
+        ngClass="app-logo"
+        src="../../../../../assets/Design_icons/Login-page-background-and-images/Memory-lane-logo.png"
+      ></ion-img>
+    </ion-item>
+    <ion-item color="none" lines="none">
+      <ion-img
+        ngClass="profile-img"
+        src="../../../../../assets/Design_icons/Login-page-background-and-images/Big-person.png"
+      ></ion-img>
+    </ion-item>
+  </ion-list>
+
+  <form
+    [formGroup]="forgotPasswordForm"
+    ngxsForm="forgotPassword.forgotPasswordForm"
+    (submit)="forgotPassword()"
+    class="form-bg"
+  >
+    <ion-list class="ion-padding-vertical">
+      <ion-item
+        color="medium"
+        [ngClass]="{
+            'valid-input': email?.value && !(email?.invalid && (email?.dirty || email?.touched)),
+            'invalid-input': email?.invalid && (email?.dirty || email?.touched)
+          }"
+      >
+        <ion-label position="floating" class="required">Email</ion-label>
+        <ion-input
+          type="email"
+          minlength="6"
+          maxlength="64"
+          placeholder="Enter email"
+          required="true"
+          autocomplete="email"
+          formControlName="email"
+        ></ion-input>
+      </ion-item>
+      <ion-text *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="ion-padding-start" color="danger">
+        <small class="error-text">{{ emailError }}</small>
+      </ion-text>
+      <ion-item
+        color="medium"
+        [ngClass]="{
+            'valid-input': password?.value && !(password?.invalid && (password?.dirty || password?.touched)),
+            'invalid-input': password?.invalid && (password?.dirty || password?.touched)
+          }"
+      >
+        <ion-label position="floating" class="required">Password</ion-label>
+        <ion-input
+          [type]="showPassword ? 'text' : 'password'"
+          minlength="6"
+          maxlength="64"
+          placeholder="Enter password"
+          required="true"
+          autocomplete="password"
+          formControlName="password"
+        ></ion-input>
+        <ion-icon
+          [name]="showPassword ? 'eye-outline' : 'eye-off-outline'"
+          slot="end"
+          class="ion-align-self-center"
+          (click)="toggleShowPassword()"
+        ></ion-icon>
+      </ion-item>
+      <ion-text
+        *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+        class="ion-padding-start"
+        color="danger"
+      >
+        <small class="error-text">{{ passwordError }}</small>
+      </ion-text>
+    </ion-list>
+
+    <ion-grid class="ion-padding">
+      <ion-row>
+        <ion-col>
+          <ion-button
+            expand="block"
+            [disabled]="!this.forgotPasswordForm.valid || (busy$ | async)"
+            type="submit"
+            ngClass="forgotPassword-btn"
+            color="none"
+          >
+            <ion-spinner *ngIf="busy$ | async"></ion-spinner>
+            <ion-text color="light">Reset Password</ion-text>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-center ion-padding-top">
+          <ion-text color="light">Don't have an account? </ion-text>
+          <ion-nav-link routerLink="/register">
+            <ion-text color="warning"> <u>Register</u></ion-text>
+          </ion-nav-link>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+  <ion-footer collapse="condense" class="ion-text-center">
+    <ms-copyright-component></ms-copyright-component>
+  </ion-footer>
+</ion-content>

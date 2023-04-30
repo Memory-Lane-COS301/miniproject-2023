@@ -1,10 +1,38 @@
-.center-container {
+.background-image {
+  width: 100%;
   height: 100%;
-  display: flex;
+  background-image: url('../../../../../apps/app/src/assets/Design_icons/Login-page-background-and-images/Background.png');
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
-.logo {
-  padding-bottom: 50px;
+.page-logo {
+  margin-bottom: 80px;
+}
+.logo-img {
+  width: 100%;
+  height: 100%;
+}
+.page-btns {
+  background-color: #6b7280;
+  opacity: 1;
+  border-radius: 10px;
+  font-style: bold;
+  font-weight: 700;
+  font-size: 20px;
+  height: 45px;
+}
+.google-btn {
+  background-color: #22c55e;
+  opacity: 1; 
+  border-radius: 10px;
+  color: #000;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  height: 45px;
 }
 
 // @media (prefers-color-scheme: light) {
@@ -26,3 +54,8 @@
 //     display: block;
 //   }
 // }
+
+ion-footer {
+  position: fixed;
+  bottom: 10px;
+}

@@ -1,7 +1,6 @@
 {
   "projects": {
-    "default": "cos-301-mini-project-group-7",
-    "production": "cos-301-mini-project-group-7",
-    "development": "cos-301-mini-project-group-7"
+    "default": "cos-301-memory-lane",
+    "production": "cos-301-memory-lane"
   }
 }

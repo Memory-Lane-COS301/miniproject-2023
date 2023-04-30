@@ -3,9 +3,7 @@ import { ProfileCreatedEvent } from '@mp/api/profiles/util';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
 @EventsHandler(ProfileCreatedEvent)
-export class ProfileCreatedHandler
-  implements IEventHandler<ProfileCreatedEvent>
-{
+export class ProfileCreatedHandler implements IEventHandler<ProfileCreatedEvent> {
   constructor(private readonly repository: ProfilesRepository) {}
 
   async handle(event: ProfileCreatedEvent) {

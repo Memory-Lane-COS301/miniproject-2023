@@ -1,0 +1,65 @@
+$greyish: #d9d9d9; //global color
+
+.title {
+  font-family: 'Pattaya';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 36px;
+  color: #ffffff;
+  text-align: center;
+}
+.account-time {
+  color: #7b7b7b;
+  padding-right: 5px;
+}
+.add-btn {
+  border: 2px solid $greyish;
+  font-size: 25px;
+}
+.menu-toolbar {
+  background-color: #161616;
+}
+
+.memory-list {
+  background-color: transparent;
+  padding-right: 8px;
+}
+
+.empty-feed {
+  margin-top: 10vh;
+  padding-top: 10vh;
+  width: 100%;
+  text-align: center;
+
+  background: radial-gradient(ellipse, #293445c0 0%, #2a344340 40%, #42577500 60%);
+
+  color: #858585;
+}
+
+.empty-feed ion-icon {
+  font-size: 10em;
+
+  color: #858585;
+}
+
+ion-refresher {
+  background-color: #222428;
+  color: white;
+  padding-bottom: 200px;
+  z-index: -5;
+}
+
+
+ion-refresher-content {
+  background-color: #222428; 
+  .refresher-pulling {
+    position: fixed;
+    top: 300px;
+  }
+  .refresher-pulling-icon { 
+    color: white; 
+  }
+  padding-top: 50px;
+  color: white;
+}

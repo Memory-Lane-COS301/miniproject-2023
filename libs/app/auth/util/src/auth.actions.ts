@@ -11,18 +11,17 @@ export class SetUser {
 
 export class Login {
   static readonly type = '[Auth] Login';
-  constructor(
-    public readonly email: string,
-    public readonly password: string
-  ) {}
+  constructor(public readonly email: string, public readonly password: string) {}
 }
 
 export class Register {
   static readonly type = '[Auth] Register';
-  constructor(
-    public readonly email: string,
-    public readonly password: string
-  ) {}
+  constructor(public readonly email: string, public readonly password: string) {}
+}
+
+export class ForgotPassword {
+  static readonly type = '[Auth] ForgotPassword';
+  constructor(public readonly email: string, public readonly password: string) {}
 }
 
 export class ContinueWithGoogle {

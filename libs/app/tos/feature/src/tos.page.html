@@ -1,20 +1,124 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="none">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-back-button color="light" text="Welcome Page" defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>Terms of Service</ion-title>
+    <ion-title size="medium" slot="end">Terms of Service</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Terms of Service</ion-title>
+<ion-content [fullscreen]="true" ngClass="page-content">
+  <ion-header collapse="condense" class="ion-text-center">
+    <ion-toolbar color="none">
+      <ion-title size="large" class="ion-text-center" color="light">Terms of Service</ion-title>
     </ion-toolbar>
+    <small class="last-updated">Last updated: 2023-03-18, 16:00 (GMT +2)</small>
   </ion-header>
+  <ion-list class="ion-padding" ngClass="tos-items">
+    <ion-text ngClass="terms-of-service-text">
+      <h2>Account Registration</h2>
+      <p>
+        You must create an account to use Memory Lane. When registering, you agree to provide accurate and complete
+        information about yourself. You are solely responsible for maintaining the confidentiality of your account
+        credentials and for all activities that occur under your account. Memory Lane may refuse registration, suspend
+        or terminate your account, or deny access to the app at its sole discretion.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="terms-of-service-text">
+      <h2>Time Currency</h2>
+      <p>
+        Memory Lane makes use of time as a currency. You can earn time by posting content, sharing, liking, and engaging
+        with others on the platform. The time earned can be used to view other users' posts and access premium features.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="terms-of-service-text">
+      <h2>User Conduct</h2>
+      <p>
+        You agree to use Memory Lane in compliance with applicable laws and regulations. You are responsible for your
+        conduct and the content you post. You may not use Memory Lane to post or transmit material that is unlawful,
+        harmful, threatening, abusive, harassing, defamatory, vulgar, obscene, invasive of another's privacy, hateful,
+        or racially, ethnically, or otherwise objectionable.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="terms-of-service-text">
+      <h2>Content Ownership and License</h2>
+      <p>
+        You retain ownership of the content you post on Memory Lane. However, you grant us a non-exclusive,
+        transferable, sub-licensable, royalty-free, worldwide license to use, reproduce, modify, adapt, publish,
+        translate, create derivative works from, distribute, perform, and display your content in connection with
+        operating and promoting Memory Lane.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="terms-of-service-text">
+      <h2>Intellectual Property</h2>
+      <p>
+        Memory Lane's trademarks, logos, and service marks, including without limitation, "Memory Lane," and its
+        associated design marks are the property of Memory Lane. You may not use Memory Lane's intellectual property
+        without our prior written consent
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="terms-of-service-text">
+      <h2>Termination</h2>
+      <p>
+        Memory Lane may terminate or suspend your access to the app, delete your account, or remove any content posted
+        by you on the app at any time, without prior notice, for any reason or no reason, including if you breach these
+        Terms.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="terms-of-service-text">
+      <h2>Disclaimer of Warranties</h2>
+      <p>
+        Memory Lane makes no warranties or representations about the accuracy or completeness of the content on the app
+        or the content of any websites linked to the app. Memory Lane is not responsible for any errors or omissions or
+        for any loss or damage incurred as a result of the use of the app or its content.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="terms-of-service-text">
+      <h2>Limitation of Liability</h2>
+      <p>
+        In no event shall Memory Lane be liable for any direct, indirect, incidental, punitive, or consequential damages
+        arising out of or in connection with the use of the app or the content posted on it.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="terms-of-service-text">
+      <h2>Indemnification</h2>
+      <p>
+        You agree to indemnify, defend, and hold Memory Lane, its officers, directors, employees, agents, and affiliates
+        harmless from and against any claims, liabilities, damages, losses, and expenses, including without limitation,
+        reasonable attorney's fees and costs, arising out of or in any way connected with your use of the app, your
+        content, or your violation of these Terms.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="terms-of-service-text">
+      <h2>Governing Law</h2>
+      <p>
+        These Terms and your use of the Memory Lane app shall be governed by and construed in accordance with the laws
+        of the state where Memory Lane is headquartered.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="terms-of-service-text">
+      <h2>Changes to Terms</h2>
+      <p>
+        Memory Lane reserves the right to update or modify these Terms at any time without prior notice. Your continued
+        use of the app after any changes to the Terms constitutes your acceptance of the revised Terms.
+      </p>
+    </ion-text>
+    <hr />
+    <ion-text ngClass="terms-of-service-text">
+      <h4>Thank you for using Memory Lane, and we hope you enjoy your trip down memory lane!</h4>
+    </ion-text>
+  </ion-list>
+  <ion-footer collapse="condense" class="ion-text-center">
+    <ms-copyright-component></ms-copyright-component>
+  </ion-footer>
 </ion-content>
-
-<ion-footer collapse="condense" class="ion-padding ion-text-center">
-  <ms-copyright-component></ms-copyright-component>
-</ion-footer>

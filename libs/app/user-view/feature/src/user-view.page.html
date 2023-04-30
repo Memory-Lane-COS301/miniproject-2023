@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar ngClass="menu-toolbar" [ngStyle]="{'--background':'#161616'}">
+    <ion-back-button
+      ngClass="back-button"
+      slot="start"
+      color="light"
+      defaultHref="/home/search"
+      text="Back"
+    ></ion-back-button>
+    <ion-title ngClass="title">Memory Lane</ion-title>
+    <small slot="end" ngClass="account-time">22h:52m:11s</small>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="dark" *ngIf="userProfile$ | async as userProfile">
+  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content ngClass="refresher"></ion-refresher-content>
+  </ion-refresher>
+  <!-- <app-user-info></app-user-info> -->
+  <!-- CODE BELOW WILL BE GENERATER BY ABOVE ELEMENT, REQUIRES ROUTING-->
+  <ion-grid ngClass="heading-grid">
+    <ion-row ngClass="heading-grid-row" class="ion-text-center">
+      <ion-col ngClass="heading-grid-row-col1">
+        <ion-text ngClass="heading-grid-row-col1-title">Friends</ion-text><br />
+        <ion-text ngClass="friend-memories-count">{{ userProfile.user?.friendCount }}</ion-text>
+      </ion-col>
+      <ion-col ngClass="heading-grid-row-col2">
+        <ion-avatar ngClass="user-profile-img">
+          <ion-img
+            src="{{getProfileImgUrl()}}"
+          ></ion-img
+          ><br />
+        </ion-avatar>
+        <ion-text ngClass="username">@{{ userProfile.user?.username }}</ion-text>
+      </ion-col>
+      <ion-col ngClass="heading-grid-row-col3">
+        <ion-text ngClass="heading-grid-row-col3-title">Memories</ion-text><br />
+        <ion-text ngClass="friend-memories-count">{{ userProfile.user?.memoryCount }}</ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!----------------------------------------------------------------------->
+
+  <ion-buttons class="ion-justify-content-center">
+    <ion-button
+      *ngIf="isNotFriends()"
+      ngClass="friend-req-btn-not-added"
+      (click)="addedNewFriend()"
+    >
+      <ion-icon slot="end" name="add"></ion-icon>
+      Send friend request
+    </ion-button>
+    <ion-button
+      *ngIf="isWaitingRequest()"
+      ngClass="friend-req-btn-not-added"
+    >
+      Waiting for acceptance
+    </ion-button>
+    <ion-button *ngIf="isWaitingRequest()" ngClass="unfriend-btn" (click)="cancelFriend()">
+      <ion-icon ngClass="unfriend-icon" color="dark" name="close-circle-outline" slot="end"></ion-icon>
+      Cancel
+    </ion-button>
+    <ion-button
+      *ngIf="isFriends()"
+      ngClass="friend-req-btn-added"
+    >
+      You are friends
+    </ion-button>
+    <ion-button *ngIf="isFriends()" ngClass="unfriend-btn" (click)="presentAlert()">
+      <ion-icon ngClass="unfriend-icon" color="dark" name="close-circle-outline" slot="end"></ion-icon>
+      Unfriend
+    </ion-button>
+  </ion-buttons>
+
+  <!----------------------------------------------------------------------->
+
+  <ion-list *ngIf="userProfile$ | async" ngClass="memory-list">
+    <app-memory-card *ngFor="let memory of Memories" [memory]="memory"></app-memory-card>
+    <div class="empty-feed" *ngIf="!Memories || Memories.length <= 0">
+      <ion-icon name="file-tray-outline"></ion-icon> <br /><br /><br />
+      Looks like there are no posts here.
+    </div>
+  </ion-list>
+</ion-content>

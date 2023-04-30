@@ -1,0 +1,100 @@
+.back-button {
+  opacity: 0.7;
+}
+.title {
+  font-family: 'Pattaya';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 36px;
+  color: #ffffff;
+  text-align: center;
+}
+.account-time {
+  color: #7b7b7b;
+  padding-right: 5px;
+}
+.menu-toolbar {
+  background-color: #161616;
+}
+
+.searchbar {
+  margin: 0 10px 0 0;
+  color: #ffffff;
+  transition: 0.2;
+  height: 50px;
+}
+
+.popular-memories-text {
+  margin-left: 10px;
+}
+
+.memory-list {
+  background-color: transparent;
+  padding-right: 8px;
+  margin-top: 15px;
+}
+
+.search-list {
+  margin-top: 35px;
+  color: #fff;
+  background-color: transparent;
+}
+.search-list-searched {
+  margin-top: 30px;
+  color: #fff;
+  background-color: transparent;
+}
+.search-item ion-text:hover {
+  cursor: pointer;
+  background-color: #434343;
+}
+
+.filter-tabs {
+  height: 30px;
+  background-color: transparent;
+}
+.filter-tab {
+  color: #fff;
+}
+.filter-tab-btn {
+  border-bottom: 3px solid #fff;
+  color: #ff009d;
+  font-weight: bold;
+}
+
+.no-results {
+  border: 3px solid #ff0000;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 0;
+}
+.no-results ion-card-content {
+  font-size: 25px;
+}
+.no-results ion-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.search-item {
+  border-bottom: 1px solid #686868;
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.result-username {
+  font-size: 17px;
+  max-width: 230px;
+  max-height: 25px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.result-avatar {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}

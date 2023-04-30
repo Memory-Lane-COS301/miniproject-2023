@@ -3,9 +3,7 @@ import { AddressDetailsUpdatedEvent } from '@mp/api/profiles/util';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
 @EventsHandler(AddressDetailsUpdatedEvent)
-export class AddressDetailsUpdatedHandler
-  implements IEventHandler<AddressDetailsUpdatedEvent>
-{
+export class AddressDetailsUpdatedHandler implements IEventHandler<AddressDetailsUpdatedEvent> {
   constructor(private readonly repository: ProfilesRepository) {}
 
   async handle(event: AddressDetailsUpdatedEvent) {
