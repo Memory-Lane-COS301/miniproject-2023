@@ -8,16 +8,16 @@ Memory Lane
 | Name | Surname | Student Number | Role (s) |
 | --- | --- | --- | --- |
 | Shashin | Gounden | u21458686 | Project Manager/Tester |
-| Arno | Jooste | u21457451 | Front-end Developer/Design/UI Engineer |
+| Arno | Jooste | u21457451 | UI Engineer/Integration Engineer |
 | Reuben | Jooste | u21457060 | UI Engineer/Integration Tester |
-| Armand | Krynauw | u04868286 | API Engineer/Services Engineer/Tester |
+| Armand | Krynauw | u04868286 | API Engineer/Services Engineer/Integration Engineer/Fullstack developer |
 | Luca | Loubster | u20439963 | API Engineer/Deployment |
 | Mbofho | Mamatsharaga | u18045881 | Business Analyst |
 | Bandisa | Masilela | u19018182 | API Engineer/Services Engineer |
 | Keabetswe | Mothapo | u21543462 | Business Analyst/Data Engineer Helper |
 | Andile | Ngwenya | u20612894 | Data Engineer |
 | Alistair | Ross | u21489549 | DevOps/Integration Helper |
-| Kaitlyn | Sookdhew  | u21483974 | Tester/Integration Helper |
+| Kaitlyn | Sookdhew  | u21483974 | Tester |
 | Christof | Steyn | u17021074 | Devops/Deployment |
 | Tyrone | Sutherland-Macleod | u21578878 | Design/Tester |
 
@@ -36,4 +36,6 @@ The Memory Lane App focuses on a mobile viewpoint. The app includes features suc
 
 Overall, the development process for the Memory Lane App was successful. The team delivered a high-quality application that met the project's goals and objectives.
 
+## Documentation
 
+- [Documentation](https://github.com/Memory-Lane-COS301/miniproject-2023/blob/main/Documentation/Designs/Memory_Lane_Documentation.pdf)
