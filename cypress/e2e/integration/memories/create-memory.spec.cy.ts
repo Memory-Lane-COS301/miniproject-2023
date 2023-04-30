@@ -1,4 +1,10 @@
+import * as data from '../../../data';
+
 describe('Memories', () => {
+    it(`Login User with email=${data.registredUser.email}`, () => {
+        cy.login(data.registredUser.email, data.registredUser.password);
+      });
+      
     it('visits home/feed',()=>{
         cy.visit('home/feed');
         cy.get('ion-title')
@@ -48,6 +54,10 @@ describe('Memories', () => {
         cy.url().should('eq', `${Cypress.config().baseUrl}/home/profile-view`);
         cy.get(':nth-child(1) > :nth-child(1) > .memory-card > .card-content-md > .memory-card-title').should('exist');
         cy.get(':nth-child(1) > :nth-child(1) > .memory-card > .card-content-md > .span-post-timer > .memory-card-timer').should('exist');
+    })
+  
+    it('Logs the user out',()=>{
+      cy.logout();
     })
 
 });
