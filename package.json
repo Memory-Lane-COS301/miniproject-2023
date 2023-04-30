@@ -30,12 +30,13 @@
     "host:app": "http-server dist/apps/app",
     "format": "prettier --write",
     "prettier": "prettier --check",
-    "test": "jest",
+    "test":  "jest",
     "prepare": "husky install",
     "editorconfig": "editorconfig-checker",
     "lint": "eslint --fix",
-    "test:api:watch": "jest libs/api --watch",
-    "test:api": "jest libs/api"
+    "test:api": "jest libs/api",
+    "cypress:run":"cypress run",
+    "cypress:open": "cypress open"
   },
   "private": true,
   "dependencies": {
