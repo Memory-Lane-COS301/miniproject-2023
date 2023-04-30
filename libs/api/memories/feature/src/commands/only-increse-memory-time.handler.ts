@@ -36,6 +36,9 @@ export class OnlyIncreseMemoryTimeCommandHandler
 
     if (!memoryData) throw new Error('Memory not found');
 
+    if (request.userId === memoryData.userId)
+      return { status: ReviveStatus.SUCCESS };
+
     const reviveDeadMemory: IReviveDeadMemory = {
       userId: request.userId,
       memoryId: request.memoryId,
