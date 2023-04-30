@@ -35,7 +35,8 @@
     "editorconfig": "editorconfig-checker",
     "lint": "eslint --fix",
     "cypress:open": "cypress open",
-    "test:api": "jest libs/api"
+    "test:api": "jest libs/api",
+    "cypress:run":"cypress run"
   },
   "private": true,
   "dependencies": {

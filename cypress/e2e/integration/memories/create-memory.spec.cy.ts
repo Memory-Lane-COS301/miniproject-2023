@@ -37,18 +37,18 @@ describe('Memories', () => {
     
     it('add memory',()=>{        
         cy.visit('home/feed');
-        // cy.get('.add-btn').click();
-        // cy.get('#ion-overlay-1 > app-add-memory > ion-content > ion-list > ion-item:nth-child(1) > ion-input > input').type('A Title');
-        // cy.get('.native-textarea')
-        // .type('A description');
-        // cy.get('input[type=file]').selectFile('cypress/data/pic.jpg');
-        // cy.get('#ion-overlay-1 > app-add-memory > ion-content > ion-list > ion-card > ion-card-content > ion-text.memory-show-more.md.hydrated')
-        // .click();
-        // cy.get('img').should('exist');
-        // cy.get('ion-button[ngclass=button-add]').click();
-        // cy.get('#ion-overlay-6').should('not.exist');
-        // cy.wait(5*1000);
-        //cy.get('ion-button[ngclass=button-add]').click();
+        cy.get('.add-btn').click();
+        cy.get('#ion-overlay-1 > app-add-memory > ion-content > ion-list > ion-item:nth-child(1) > ion-input > input').type('A Title');
+        cy.get('.native-textarea')
+        .type('A description');
+        cy.get('input[type=file]').selectFile('cypress/data/pic.jpg');
+        cy.get('#ion-overlay-1 > app-add-memory > ion-content > ion-list > ion-card > ion-card-content > ion-text.memory-show-more.md.hydrated')
+        .click();
+        cy.get('img').should('exist');
+        cy.get('ion-button[ngclass=button-add]').click();
+        cy.get('#ion-overlay-6').should('not.exist');
+        cy.wait(5*1000);
+        cy.get('ion-button[ngclass=button-add]').click();
         cy.get('#tab-button-profile-view').click();
         cy.wait(5*1000);
         cy.url().should('eq', `${Cypress.config().baseUrl}/home/profile-view`);
