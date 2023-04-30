@@ -197,6 +197,9 @@ export class MemoryCardComponent implements OnInit {
 
       if (deathTime)
         seconds = deathTime._seconds - Timestamp.now().seconds;
+
+      if (seconds < 0)
+        seconds = 0;
      
       this.remainingTime = this.formatTime(seconds);
     }, 1000);

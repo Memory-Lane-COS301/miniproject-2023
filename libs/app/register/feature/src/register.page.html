@@ -1,6 +1,18 @@
+<div style="z-index: 1000;">
+  <ion-buttons slot="start" style="padding-left: 10px; padding-top: 15px;">
+    <ion-icon
+      ngClass="back-icon"
+      slot="start"
+      color="light"
+      name="chevron-back-outline"
+      routerLink="/"
+      routerDirection="back"
+    ></ion-icon>
+  </ion-buttons>
+</div>
 <div class="content">
   <ion-content color="none" style="--background: transparent;" [fullscreen]="true" scroll-y="false">
-    <ion-header collapse="condense" style="position: fixed;">
+    <!-- <ion-header collapse="condense" style="position: fixed;">
       <ion-toolbar color="none">
         <ion-buttons slot="start">
           <ion-icon
@@ -14,7 +26,7 @@
           <ion-button ngClass="back-btn" color="light" routerLink="/" routerDirection="back"></ion-button>
         </ion-buttons>
       </ion-toolbar>
-    </ion-header>
+    </ion-header> -->
 
     <ion-list>
       <ion-item color="none" lines="none">

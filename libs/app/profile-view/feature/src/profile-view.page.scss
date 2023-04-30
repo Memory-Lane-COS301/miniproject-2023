@@ -78,7 +78,7 @@ ion-menu::part(container) {
 }
 
 .top-bar {
-  --background: #000000;
+  --background: #161616;
 }
 
 .view-page {
@@ -171,6 +171,7 @@ ion-refresher {
   background-color: #222428;
   color: white;
   padding-bottom: 200px;
+  z-index: -5;
 }
 
 
