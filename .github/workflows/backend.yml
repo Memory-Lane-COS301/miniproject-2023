@@ -14,14 +14,10 @@ jobs:
         run: yarn install
 
       - name: Start API
-        run:
-          command: yarn start:api:dev
-          background: true
+        run: yarn start:api:dev &
 
       - name: Start Emulators
-        run:
-          command: yarn start:emulators:imported
-          background: true
+        run: yarn start:emulators:imported &
 
       - name: Wait for services to start
         run: sleep 240
