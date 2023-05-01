@@ -14,18 +14,16 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      # Install Nx
-      #- name: Install Dependencies
-      #  run: yarn add nx
+      - name: Start API
+        run: yarn start:api:dev &
+        background: true
 
-      # Finally, run our tests
-      
-      - name: Start Emulator
-        run: |
-          yarn start:api:dev &
-          # Wait for the first emulator to be ready
-          while ! curl -s http://localhost:5005/health &> /dev/null; do sleep 5; done
-          yarn start:emulators:imported &
-          # Wait for the second emulator to be ready
-          while ! curl -s http://localhost:5001/health &> /dev/null; do sleep 5; done
-          yarn test:api
+      - name: Start Emulators
+        run: yarn start:emulators:imported &
+        background: true
+
+      - name: Wait for services to start
+        run: sleep 240
+
+      - name: Run tests
+        run: yarn test:api
