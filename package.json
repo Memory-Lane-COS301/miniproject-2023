@@ -35,6 +35,7 @@
     "prepare": "husky install",
     "editorconfig": "editorconfig-checker",
     "lint": "eslint --fix",
+    "cypress:run":"cypress run",
     "cypress:open": "cypress open",
     "test:api": "jest libs/api",
     "eslint:run": "eslint",

@@ -105,8 +105,6 @@ export class MemoryCardComponent implements OnInit {
     const user = this.store.selectSnapshot(ProfileState.user);
     const viewedUser = this.store.selectSnapshot(UserViewState.userView).user;
 
-    console.error(uid,  uname)
-
     if(!user?.userId || !uname) return;
 
     if (user && user.userId && user.username) { //check if this memory is on our profile, if so then we do not want to open our profile again
@@ -197,6 +195,9 @@ export class MemoryCardComponent implements OnInit {
 
       if (deathTime)
         seconds = deathTime._seconds - Timestamp.now().seconds;
+
+      if (seconds < 0)
+        seconds = 0;
      
       this.remainingTime = this.formatTime(seconds);
     }, 1000);

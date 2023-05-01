@@ -83,3 +83,24 @@
   height: 50px;
   margin-right: 10px;
 }
+
+ion-refresher {
+  background-color: #222428;
+  color: white;
+  padding-bottom: 200px;
+  z-index: -5;
+}
+
+
+ion-refresher-content {
+  background-color: #222428; 
+  .refresher-pulling {
+    position: fixed;
+    top: 300px;
+  }
+  .refresher-pulling-icon { 
+    color: white; 
+  }
+  padding-top: 50px;
+  color: white;
+}

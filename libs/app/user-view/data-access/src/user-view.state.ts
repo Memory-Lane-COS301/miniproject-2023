@@ -87,10 +87,10 @@ export class UserViewState {
           username: _username,
         },
       };
+      request.user.userId = await this.userViewApi.getUserId(request.user.username || ' ')
       const responseRef = await this.userViewApi.getUserProfile(request);
       const response = responseRef.data;
-      ctx.dispatch(new SetUserView(response.profile));
-      return ctx.dispatch(new GetFriends());
+      return ctx.dispatch(new SetUserView(response.profile));
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
     }
@@ -101,8 +101,12 @@ export class UserViewState {
     ctx.setState(
       produce((draft) => {
           draft.userProfile = profile;
+          draft.isFriends = false;
+          draft.isWaitingRequest = false;
+          draft.isNotFriends = false;
       })
     );
+    ctx.dispatch(new GetFriends())
   }
 
   @Action(SetUserViewBooleans)
