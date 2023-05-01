@@ -13,17 +13,20 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
+      - name: Install firebase tools
+        run: yarn add firebase-tools
+
       - name: Start API
         run: yarn start:api:dev &
 
-      - name: Install firebase tools
-        run: yarn add firebase-tools
+      - name: Wait for Api
+        run: sleep 60
 
       - name: Start Emulators
         run: yarn start:emulators:imported &
 
       - name: Wait for services to start
-        run: sleep 240
+        run: sleep 360
 
       - name: Run tests
         run: yarn test:api
