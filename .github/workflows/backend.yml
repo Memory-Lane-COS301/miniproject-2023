@@ -16,6 +16,9 @@ jobs:
       - name: Start API
         run: yarn start:api:dev &
 
+      - name: Install firebase tools
+        run: yarn add firebase-tools
+
       - name: Start Emulators
         run: yarn start:emulators:imported &
 
