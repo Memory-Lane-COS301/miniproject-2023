@@ -19,9 +19,6 @@ jobs:
       - name: Install firebase tools
         run: yarn add firebase-tools
 
-      - name: Authenticate Firebase CLI
-        run: firebase login --no-localhost --token "${FIREBASE_TOKEN}"
-
       - name: Start API
         run: yarn start:api:dev &
 
