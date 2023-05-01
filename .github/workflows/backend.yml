@@ -23,7 +23,7 @@ jobs:
         run: sleep 60
 
       - name: Start Emulators
-        run: yarn start:emulators:imported --project &
+        run: yarn start:emulators:imported &
 
       - name: Wait for services to start
         run: sleep 360
