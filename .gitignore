@@ -55,3 +55,4 @@ pubsub-debug.log
 .keys/*.json
 .env.prod
 freeports.sh
+.vscode
