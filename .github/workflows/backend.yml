@@ -19,6 +19,20 @@ jobs:
       - name: Start API
         run: yarn start:api:dev &
 
+      - name: Authenticate with Firebase CLI
+        uses: firebase/firebase-actions/setup-firebase@v2
+        with:
+          firebase-version: '9.x.x'
+        env:
+          FIREBASE_CLI_TOKEN: development
+
+      - name: Install Firebase CLI
+        uses: firebase/firebase-actions/setup-firebase@v2
+        with:
+          firebase-version: '9.x.x'
+        env:
+          FIREBASE_CLI_TOKEN: development
+
       - name: Wait for Api
         run: sleep 60
 
