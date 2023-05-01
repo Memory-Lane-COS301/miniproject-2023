@@ -1,20 +1,12 @@
-import { describe, test } from '@jest/globals';
-
-const mockData = {
-  //change according to seeded data
-  userId: '0104fa66-5a7b-429c-aedd-acab833be72e',
-  username: 'Dena52',
-  surname: 'Champlin',
-  email: 'Dena_Champlin@gmail.com',
-  profileImgUrl: 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/508.jpg',
-};
+import { describe, test, expect } from '@jest/globals';
+import { mockData } from './mock.data';
 
 describe('Tesing Cloud Function: getUser', () => {
   test(`getting user with userId = ${mockData.userId} \n using endPoint`, async () => {
     const getUserRequest = {
       data: {
         user: {
-          userId: '0104fa66-5a7b-429c-aedd-acab833be72e',
+          userId: mockData.userId,
         },
       },
     };
@@ -55,4 +47,26 @@ describe('Tesing Cloud Function: getUser', () => {
     console.debug(getUserResponse);
     expect(getUserResponse).toEqual(errorResponse);
   });
+  
+  test('hitting endpoint with invalid request structure', async()=>{
+    const createMemoryRequest = {
+      structure:{
+        info: "this should return an error"
+      }
+    };
+    const errorResponse = {
+      error: {
+        message: 'Bad Request',
+        status: 'INVALID_ARGUMENT',
+      },
+    };
+    const res = await fetch('http://127.0.0.1:5005/demo-project/us-central1/getUser', {
+      method: 'POST',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      body: JSON.stringify(createMemoryRequest),
+    });
+    const createMemoryResponse = await res.json();
+    console.debug(createMemoryResponse);
+    expect(createMemoryResponse).toEqual(errorResponse);
+  })
 });

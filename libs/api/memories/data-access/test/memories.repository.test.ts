@@ -12,7 +12,7 @@ class MockMemoriesRepository {
     const newMemoryRef = db.collection('memories').doc();
     memory.memoryId = newMemoryRef.id;
     return await newMemoryRef.set(memory);
-  }
+}
 
   async findOne(memory: IMemory) {
     return await db

@@ -14,7 +14,7 @@
         "ts",
         "tsx",
         "js",
-        "jsx",
+      "jsx",
         "json",
         "node"
       ]

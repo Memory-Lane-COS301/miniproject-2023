@@ -30,13 +30,16 @@
     "host:app": "http-server dist/apps/app",
     "format": "prettier --write",
     "prettier": "prettier --check",
-    "test":  "jest",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "prepare": "husky install",
     "editorconfig": "editorconfig-checker",
     "lint": "eslint --fix",
-    "test:api": "jest libs/api",
     "cypress:run":"cypress run",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "test:api": "jest libs/api",
+    "eslint:run": "eslint",
+    "test:int:cloudFunctions": "jest libs/api/core/feature/test"
   },
   "private": true,
   "dependencies": {
@@ -123,6 +126,7 @@
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
+    "eslint-plugin-import": "^2.27.5",
     "http-server": "^14.1.1",
     "husky": "^8.0.3",
     "jest": "^29.5.0",
