@@ -1,5 +1,8 @@
 name: Backend and integration tests
 on: push
+env:
+  FIREBASE_PROJECT_ID: demo-project
+  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -10,22 +13,23 @@ jobs:
         with:
           node-version: '18'
 
-      # Install required deps for action
       - name: Install Dependencies
         run: yarn install
 
-      # Install Nx
-      #- name: Install Dependencies
-      #  run: yarn add nx
+      - name: Install firebase tools
+        run: yarn add firebase-tools
 
-      # Finally, run our tests
-      
-      - name: Start Emulator
-        run: |
-          yarn start:api:dev &
-          # Wait for the first emulator to be ready
-          while ! curl -s http://localhost:5005/health &> /dev/null; do sleep 5; done
-          yarn start:emulators:imported &
-          # Wait for the second emulator to be ready
-          while ! curl -s http://localhost:5001/health &> /dev/null; do sleep 5; done
-          yarn test:api
+      - name: Start API
+        run: yarn start:api:dev &
+
+      - name: Wait for Api
+        run: sleep 60
+
+      - name: Start Emulators
+        run: yarn start:emulators:imported &
+
+      - name: Wait for services to start
+        run: sleep 360
+
+      - name: Run tests
+        run: yarn test:api

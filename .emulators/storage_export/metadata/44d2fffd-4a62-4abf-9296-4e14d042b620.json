@@ -1,0 +1,19 @@
+{
+  "name": "pepega.webp",
+  "bucket": "demo-project.appspot.com",
+  "metageneration": 1,
+  "generation": 1682535439925,
+  "contentType": "image/webp",
+  "storageClass": "STANDARD",
+  "contentDisposition": "inline",
+  "downloadTokens": [
+    "bf21d899-a952-4a66-96a1-114991d9536a"
+  ],
+  "etag": "MbmLZhjjWJ0LV9ixbm+bmuwGAqs",
+  "customMetadata": {},
+  "timeCreated": "2023-04-26T18:57:19.935Z",
+  "updated": "2023-04-26T18:57:19.935Z",
+  "size": 5462,
+  "md5Hash": "IfV8jfZAvFmGjUHBEIwpJw==",
+  "crc32c": "2690198054"
+}

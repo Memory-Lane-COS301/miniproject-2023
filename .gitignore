@@ -49,8 +49,10 @@ ui-debug.log
 pubsub-debug.log
 
 # Emulators
-.emulators
+# .emulators
 
 # Keys
 .keys/*.json
 .env.prod
+freeports.sh
+.vscode
