@@ -8,7 +8,7 @@
       text="Back"
     ></ion-back-button>
     <ion-title ngClass="title">Memory Lane</ion-title>
-    <small slot="end" ngClass="account-time">22h:52m:11s</small>
+    <small slot="end" ngClass="account-time" *ngIf="time$ | async as time">{{ time }}</small>
   </ion-toolbar>
 </ion-header>
 

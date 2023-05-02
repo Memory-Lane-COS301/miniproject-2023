@@ -12,6 +12,7 @@ import { IMemory } from '@mp/api/memories/util';
 import { IUser } from '@mp/api/users/util';
 import { stat } from 'fs';
 import { GetFriends } from '@mp/app/profile-view/util';
+import { ProfileState } from '@mp/app/profile/data-access';
 
 @Component({
   selector: 'app-user-view',
@@ -25,6 +26,7 @@ export class UserViewPageComponent {
   @Select(UserViewState.isFriends) isFriends$!: Observable<boolean | null>;
   @Select(UserViewState.isWaitingRequest) isWaitingRequest$!: Observable<boolean | null>;
   @Select(UserViewState.isNotFriends) isNotFriends$!: Observable<boolean | null>;
+  @Select(ProfileState.time) time$!: Observable<IUser | null>;
 
   handlerMessage = '';
   roleMessage = '';
